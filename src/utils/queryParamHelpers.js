@@ -12,16 +12,22 @@ function keepObjectKeys(object, keysToKeep) {
   return newObject;
 }
 
+/*
+Mapping : 
+fid = filterid
+cid= id
+ftid = fiscalperiodtypeid 
+noc = noofcompanies
+Selected languageid = language
+*/
+
 export const createChartParams = (params, args) => {
-  // console.log("Params received:", params);
-  // console.log("Args received:", args);
   const parsedParams = typeof params === "string" ? JSON.parse(params) : params;
-  // console.log("Parsed Params: ", parsedParams);
   const configuration = parsedParams.configuration[0];
 
   // Map the desired output structure
   const mappedParams = {
-    id: parseInt(configuration.fid, 10),
+    id: parseInt(configuration.cid, 10),
     filterid: parseInt(configuration.fid, 10),
     marketid: 3,
     fiscalperiodtypeid: parseInt(configuration.config[0].ftid, 10),
@@ -29,13 +35,9 @@ export const createChartParams = (params, args) => {
     language: "en",
   };
 
-  // console.log("Mapped Params:", mappedParams);
-
   const argsarr = args?.length ? args?.split(",").map((i) => i.trim()) : [];
   const filteredparams = keepObjectKeys(mappedParams, argsarr);
   const queryString = JSON.stringify(filteredparams);
-  // console.log("filteredparams", filteredparams);
-  // console.log("queryString", queryString);
 
   const secretKeyHex = CryptoJS.enc.Hex.parse(
     "7a1b6c4d3e2f1a0b7c8d9e0a1b2c3d4e"
@@ -46,6 +48,6 @@ export const createChartParams = (params, args) => {
   const encryptedText = CryptoJS.AES.encrypt(queryString, secretKeyHex, {
     iv,
   }).toString();
-  // console.log("Encrypted Params:", encryptedText);
+
   return btoa(encryptedText);
 };

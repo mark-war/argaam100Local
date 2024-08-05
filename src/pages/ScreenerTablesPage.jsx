@@ -9,6 +9,7 @@ import {
 import ScreenerTable from "../components/common/ScreenerTable.jsx";
 import { strings, LANGUAGES } from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 
 const ScreenerTablesPage = () => {
   const dispatch = useDispatch();
@@ -76,8 +77,7 @@ const ScreenerTablesPage = () => {
   const transformDataForTable = (
     screenerData,
     fieldConfigurations,
-    activeTabId,
-    selectedOptions
+    activeTabId
   ) => {
     const columns = [
       { key: "fixed_code", label: `${strings.code}` },
@@ -135,34 +135,70 @@ const ScreenerTablesPage = () => {
         }, {}),
     };
 
-    const formattedData = screenerData
+    // Initialize a map to track all column keys
+    const columnKeysSet = new Set();
+
+    // Initialize a map to hold the formatted data
+    const formattedDataMap = new Map();
+
+    screenerData
       .filter((item) => item.identifier.startsWith(`${activeTabId}-`))
-      .flatMap((item) =>
-        item.data.map((row) => {
-          const rowData = {
-            fixed_code: row.Code.split(".")[0] || "",
-            fixed_img: row.LogoUrl,
-            fixed_company:
-              currentLanguage === LANGUAGES.EN
-                ? row.ShortNameEn
-                : row.ShortNameAr,
-            fixed_sector:
-              currentLanguage === LANGUAGES.EN
-                ? row.SectorNameEn
-                : row.SectorNameAr,
-          };
+      .forEach((item) => {
+        // Extract the relevant part of the identifier to form the column key
+        const identifierParts = item.identifier
+          .split("-")
+          .filter((part) => part && part.trim() !== "" && part !== "null");
+        const fieldName = identifierParts.slice(1).join(" "); // This assumes identifier is formatted like `${activeTabId}-<FieldName>`
 
-          fieldConfigurations
-            .filter((config) => config.TabID === activeTabId)
-            .forEach((config) => {
-              const unitName = config.UnitNameEn ? ` ${config.UnitNameEn}` : "";
-              const columnKey = config.FieldNameEn + unitName;
-              rowData[columnKey] = row.PriceEarnings || "";
+        columnKeysSet.add(fieldName);
+
+        // Iterate through each row in the item data
+        item.data.forEach((row) => {
+          const fixedCode = row.Code.split(".")[0] || "";
+
+          // Check if the company already exists in formattedDataMap
+          if (!formattedDataMap.has(fixedCode)) {
+            formattedDataMap.set(fixedCode, {
+              fixed_code: fixedCode,
+              fixed_img: row.LogoUrl,
+              fixed_company:
+                currentLanguage === LANGUAGES.EN
+                  ? row.ShortNameEn
+                  : row.ShortNameAr,
+              fixed_sector:
+                currentLanguage === LANGUAGES.EN
+                  ? row.SectorNameEn
+                  : row.SectorNameAr,
             });
+          }
 
-          return rowData;
-        })
-      );
+          // Get the existing company data
+          const existingCompany = formattedDataMap.get(fixedCode);
+
+          // Add the value to the correct column
+          const keys = Object.keys(row);
+          const secondToLastKey = keys[keys.length - 2];
+          existingCompany[fieldName] = row[secondToLastKey] || 0;
+        });
+      });
+
+    // Convert the columnKeysSet to an array for easy iteration
+    const columnKeys = Array.from(columnKeysSet);
+
+    // Ensure all columns are present in each row
+    formattedDataMap.forEach((data) => {
+      columnKeys.forEach((key) => {
+        if (data[key] === undefined) {
+          data[key] = 0.0; // Set missing columns to 0
+        }
+      });
+    });
+
+    // Convert the Map to an array
+    const formattedData = Array.from(formattedDataMap.values());
+
+    console.log(formattedData);
+
     return {
       columns,
       data: formattedData,
@@ -178,15 +214,13 @@ const ScreenerTablesPage = () => {
     const { columns, data } = transformDataForTable(
       screenerData,
       fieldConfigurations,
-      activeTabLink,
-      selectedOptions
+      activeTabLink
     );
 
     const { pinnedRow } = transformDataForTable(
       screenerData,
       fieldConfigurations,
-      activeTabLink,
-      selectedOptions
+      activeTabLink
     );
 
     return (
@@ -201,6 +235,10 @@ const ScreenerTablesPage = () => {
       />
     );
   };
+
+  if (!isDataReady) {
+    return <LoadingScreen />;
+  }
 
   return (
     <MainLayout>
