@@ -1,26 +1,20 @@
+// src/components/LanguageSwitcher.js
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setLanguage } from "../redux/features/languageSlice.js";
-import { strings, LANGUAGES } from "../utils/constants/localizedStrings.js";
+import { useParams } from "react-router-dom";
+import useLanguageSwitch from "../hooks/useLanguageSwitch";
+import { LANGUAGES } from "../utils/constants/localizedStrings";
 
 const LanguageSwitcher = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { switchLanguage } = useLanguageSwitch();
   const { lang } = useParams();
 
-  const switchLanguage = () => {
-    const newLanguage = lang === LANGUAGES.AR ? LANGUAGES.EN : LANGUAGES.AR;
-    strings.setLanguage(newLanguage);
-    dispatch(setLanguage(newLanguage));
-    navigate(`/${newLanguage}${window.location.pathname.slice(3)}`, {
-      replace: true,
-    }); // Update URL without full reload
+  const handleLanguageSwitch = () => {
+    switchLanguage(lang, window.location.pathname);
   };
 
   return (
     <li className="nav-item">
-      <a className="nav-link" onClick={switchLanguage}>
+      <a className="nav-link" onClick={handleLanguageSwitch} href="#">
         {lang === LANGUAGES.AR
           ? LANGUAGES.EN.toUpperCase()
           : LANGUAGES.AR.toUpperCase()}
