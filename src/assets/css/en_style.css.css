@@ -1,0 +1,214 @@
+/* @font-face {
+  font-family: 'GretaArabic';
+  src: url('https://www.argaam.com/content/fonts/Greta_Arabic_Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'GretaArabicBold';
+  src: url('https://www.argaam.com/content/fonts/Greta_Arabic_Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('https://www.argaam.com/content/en/fonts/OpenSansRegular-v1.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'OpenSansSemiBold';
+  src: url('https://www.argaam.com/content/en/fonts/OpenSansSemibold-v1.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/assets/fonts/Greta_Arabic_Medium.svg') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+
+@font-face {
+  font-family: 'Greta Arabic';
+  src: url('../../fonts/Greata_arabic/GretaArabic-Medium.eot');
+  src: url('../../fonts/Greata_arabic/GretaArabic-Medium.eot?#iefix') format('embedded-opentype'),
+      url('../../fonts/Greata_arabic/GretaArabic-Medium.woff2') format('woff2'),
+      url('../../fonts/Greata_arabic/GretaArabic-Medium.woff') format('woff'),
+      url('../../fonts/Greata_arabic/GretaArabic-Medium.svg#GretaArabic-Medium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greta Arabic';
+  src: url('../../fonts/Greata_arabic/GretaArabic-Bold.eot');
+  src: url('../../fonts/Greata_arabic/GretaArabic-Bold.eot?#iefix') format('embedded-opentype'),
+      url('../../fonts/Greata_arabic/GretaArabic-Bold.woff2') format('woff2'),
+      url('../../fonts/Greata_arabic/GretaArabic-Bold.woff') format('woff'),
+      url('../../fonts/Greata_arabic/GretaArabic-Bold.svg#GretaArabic-Bold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greta Arabic';
+  src: url('../../fonts/Greata_arabic/GretaArabic.eot');
+  src: url('../../fonts/Greata_arabic/GretaArabic.eot?#iefix') format('embedded-opentype'),
+      url('../../fonts/Greata_arabic/GretaArabic.woff2') format('woff2'),
+      url('../../fonts/Greata_arabic/GretaArabic.woff') format('woff'),
+      url('../../fonts/Greata_arabic/GretaArabic.svg#GretaArabic') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Greta Arabic';
+  src: url('../../fonts/Greata_arabic/GretaArabic-Light.eot');
+  src: url('../../fonts/Greata_arabic/GretaArabic-Light.eot?#iefix') format('embedded-opentype'),
+      url('../../fonts/Greata_arabic/GretaArabic-Light.woff2') format('woff2'),
+      url('../../fonts/Greata_arabic/GretaArabic-Light.woff') format('woff'),
+      url('../../fonts/Greata_arabic/GretaArabic-Light.ttf') format('truetype'),
+      url('../../fonts/Greata_arabic/GretaArabic-Light.svg#GretaArabic-Light') format('svg');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GretaArabicARLT-ExtraLight';
+  src: url('../../fonts/Greata_arabic/GretaArabicARLT-ExtraLight.eot');
+  src: url('../../fonts/Greata_arabic/GretaArabicARLT-ExtraLight.eot?#iefix') format('embedded-opentype'),
+      url('../../fonts/Greata_arabic/GretaArabicARLT-ExtraLight.woff2') format('woff2'),
+      url('../../fonts/Greata_arabic/GretaArabicARLT-ExtraLight.woff') format('woff'),
+      url('../../fonts/Greata_arabic/GretaArabicARLT-ExtraLight.ttf') format('truetype'),
+      url('../../fonts/Greata_arabic/GretaArabicARLT-ExtraLight.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+html * {
+  font-family: 'GretaArabic', 'OpenSans';
+}
+
+p, div {
+  color: #4B4B4B;
+}
+
+/* .Navbar Starts */
+
+.navbar.bg-light {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.dropdown_default {
+  position: absolute;
+  right: 20px;
+  background: #fff;
+  top: 60px;
+  list-style-type: none;
+  padding-inline: 10px;
+  -webkit-box-shadow: 0px 0px 5px 1px rgba(189, 189, 189, 1);
+  -moz-box-shadow: 0px 0px 5px 1px rgba(189, 189, 189, 1);
+  box-shadow: 0px 0px 5px 1px rgba(189, 189, 189, 1);
+}
+
+.dropdown_default li:not(:last-child) {
+  border-bottom: 1px solid #a1abc1;
+}
+
+.dropdown_default a {
+  color: #323232;
+  text-decoration: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-inline: 10px;
+  display: block;
+}
+
+.user_dropdown {
+  right: 25px;
+}
+
+.remove_after.dropdown-toggle:after {
+  display: none;
+}
+
+.table_default td {
+  font-size: 21px;
+  color: #000000;
+}
+
+.bg_tag {
+  background-color: #dde0e7;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 15px;
+}
+
+.table_default .td_img {
+  font-size: 19px;
+}
+
+.pr_0 {
+  padding-right: 0;
+}
+
+/* Navbar Ends */
+
+/* Screener CSS Starts */
+
+.border_gray {
+  padding-bottom: 5px;
+}
+
+.heading_lg {
+  font-size: 27px;
+  
+}
+
+/* Screener CSS Ends */
+
+/* Table Layout Starts */
+
+.table_layout.table th {
+  color: #fff;
+  background-color: #485B88;
+  font-weight: normal;
+}
+
+.table.table_layout th, .table.table_layout td {
+  vertical-align: middle;
+  padding: 15px 20px 10px 20px;
+}
+
+.table_layout.table td {
+  color: #4B4B4B;
+}
+
+.table_layout.table th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.table_layout.table th:last-child {
+  border-top-right-radius: 10px;
+}
+
+.text_right {
+  text-align: right;
+}
+
+.container-fluid.px-layout, .px-layout {
+  margin-right: 3.125rem;
+  margin-left: 3.125rem;
+  padding-inline: 0;
+}
+
+.td_img img {
+  margin-right: 5px;
+}
+
+/* Table Layout Ends */
