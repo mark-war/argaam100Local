@@ -3,14 +3,12 @@ import HeaderMain from "./HeaderMain";
 import FooterMain from "./FooterMain";
 import { useSelector, useDispatch } from "react-redux";
 import { strings } from "../../utils/constants/localizedStrings";
-import LoadingScreen from "../LoadingScreen";
 import { fetchPageStructure } from "../../services/screenerApi.js"; // Import your data fetching function
 import { setApiData } from "../../redux/features/apiDataSlice.js";
 import { setLanguage } from "../../redux/features/languageSlice.js";
 import { useParams } from "react-router-dom";
 
 export default function MainLayout({ children }) {
-  const [loading, setLoading] = useState(true);
   const { lang } = useParams(); // Get language parameter from URL
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
@@ -34,19 +32,13 @@ export default function MainLayout({ children }) {
         } else {
           console.error("Unexpected API response structure");
         }
-        setLoading(false); // Set loading to false after fetching data
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false); // Set loading to false even if there is an error
       }
     };
 
     loadData();
   }, [dispatch]);
-
-  if (loading) {
-    return <LoadingScreen />;
-  }
 
   return (
     <>

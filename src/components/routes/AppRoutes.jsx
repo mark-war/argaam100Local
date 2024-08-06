@@ -1,5 +1,4 @@
-// src/components/AppRoutes.js
-import React, { useEffect, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useRef } from "react";
 import {
   BrowserRouter,
   Route,
@@ -7,10 +6,14 @@ import {
   useLocation,
   useParams,
 } from "react-router-dom";
-import ScreenerTablesPage from "../../pages/ScreenerTablesPage";
-import TopTenCompaniesPage from "../../pages/TopTenCompaniesPage";
 import DefaultRedirect from "../DefaultRedirect";
 import useLanguageSwitch from "../../hooks/useLanguageSwitch";
+import LoadingScreen from "../LoadingScreen";
+
+const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
+const TopTenCompaniesPage = lazy(() =>
+  import("../../pages/TopTenCompaniesPage")
+);
 
 function AppRoutes() {
   const location = useLocation();
@@ -27,14 +30,16 @@ function AppRoutes() {
   }, [lang, location, switchLanguage]);
 
   return (
-    <Routes>
-      {/* Default Route Redirecting to default language Screener */}
-      <Route path="/" element={<DefaultRedirect />} />
-      <Route path="/:lang" element={<DefaultRedirect />} />
-      {/* Route to available Pages */}
-      <Route path="/:lang/screener" element={<ScreenerTablesPage />} />
-      <Route path="/:lang/top-10" element={<TopTenCompaniesPage />} />
-    </Routes>
+    <Suspense fallback={<LoadingScreen />}>
+      <Routes>
+        {/* Default Route Redirecting to default language Screener */}
+        <Route path="/" element={<DefaultRedirect />} />
+        <Route path="/:lang" element={<DefaultRedirect />} />
+        {/* Route to available Pages */}
+        <Route path="/:lang/screener" element={<ScreenerTablesPage />} />
+        <Route path="/:lang/top-10" element={<TopTenCompaniesPage />} />
+      </Routes>
+    </Suspense>
   );
 }
 

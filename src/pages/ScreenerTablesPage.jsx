@@ -197,8 +197,6 @@ const ScreenerTablesPage = () => {
     // Convert the Map to an array
     const formattedData = Array.from(formattedDataMap.values());
 
-    console.log(formattedData);
-
     return {
       columns,
       data: formattedData,

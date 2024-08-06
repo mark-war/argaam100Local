@@ -11,22 +11,22 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
+  whitelist: ["language", "apiData", "screener"],
 };
 
-const reducer = combineReducers({
+const rootReducer = combineReducers({
   language: languageReducer,
   apiData: apiDataReducer, // Add the new reducer
   screener: fieldConfigurationReducer, // Use the correct reducer name
 });
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore non-serializable values in actions
         ignoredActions: [
           "persist/PERSIST",
           "persist/REHYDRATE",
@@ -35,8 +35,6 @@ const store = configureStore({
           "persist/PURGE",
           "persist/REGISTER",
         ],
-        // Ignore specific state paths if necessary
-        ignoredPaths: ["yourStatePathToIgnore"], // Add paths if you have specific paths that are non-serializable
       },
     }),
   devTools: process.env.NODE_ENV !== "production",
