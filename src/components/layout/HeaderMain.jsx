@@ -119,7 +119,7 @@ const HeaderMain = () => {
       </div>
       {/* Mobile Nav Ends */}
 
-      <navbar className="navbar navbar-expand-md navbar-light sticky bg-light shadow_btm">
+      <nav className="navbar navbar-expand-md navbar-light sticky bg-light shadow_btm">
         <div className="container-fluid px-layout">
           <div className="d-flex container_inner w-100 align-items-center">
             <div className="flex-fill justify-content-center">
@@ -143,8 +143,9 @@ const HeaderMain = () => {
                   <li key={index} className="nav-item">
                     <NavLink
                       to={link.path}
-                      className="nav-link"
-                      activeClassName="active"
+                      className={({ isActive }) =>
+                        isActive ? "nav-link active" : "nav-link"
+                      }
                     >
                       {link.name}
                     </NavLink>
@@ -220,11 +221,11 @@ const HeaderMain = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 455 455"
                         >
-                          <g stroke-width="0"></g>
+                          <g strokeWidth="0"></g>
                           <g
                             id="SVGRepo_tracerCarrier"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           ></g>
                           <g id="SVGRepo_iconCarrier">
                             {" "}
@@ -245,7 +246,7 @@ const HeaderMain = () => {
             </div>
           </div>
         </div>
-      </navbar>
+      </nav>
     </>
   );
 };

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Table, Pagination, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
+import { useSelector } from "react-redux";
 
 const ScreenerTable = ({
   data,
@@ -11,9 +12,28 @@ const ScreenerTable = ({
   selectedTab,
   selectedOptions, // selected sectors
   setSelectedOptions, // to control selected options
+  decimals = 2, // Add a prop to configure decimal places
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const initialSortSet = useRef(false);
+  const currentLanguage = useSelector(
+    (state) => state.language.currentLanguage
+  );
+
+  // Function to find the first dynamic column
+  const getFirstDynamicColumn = () => {
+    return columns.find((col) => !col.key.startsWith("fixed_"));
+  };
+
+  // Initialize sorting configuration for the first dynamic column when data is loaded or tab is changed
+  useEffect(() => {
+    const firstDynamicColumn = getFirstDynamicColumn();
+    if (firstDynamicColumn) {
+      setSortConfig({ key: firstDynamicColumn.key, direction: "asc" });
+      initialSortSet.current = true;
+    }
+  }, [columns, selectedTab]);
 
   // Function to handle sector filter
   const handleSectorClick = (sector) => {
@@ -36,7 +56,7 @@ const ScreenerTable = ({
   // Reset pagination when selectedTab changes
   useEffect(() => {
     setCurrentPage(1);
-    setSortConfig({ key: null, direction: "asc" });
+    //setSortConfig({ key: null, direction: "asc" });
   }, [selectedTab, selectedOptions]);
 
   // Pagination
@@ -136,6 +156,17 @@ const ScreenerTable = ({
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
 
+  // Function to format values to the specified number of decimal places
+  const formatValue = (value) => {
+    if (typeof value === "number") {
+      const formattedValue = value.toFixed(decimals);
+      return value < 0
+        ? `(${Math.abs(formattedValue).toFixed(decimals)})`
+        : formattedValue;
+    }
+    return value;
+  };
+
   return (
     <Row>
       <Col lg={12} className="mx-auto">
@@ -182,7 +213,16 @@ const ScreenerTable = ({
                               ) : null
                             ) : (
                               // Handle dynamic columns
-                              pinnedRow[column.key]
+                              <span
+                                style={{
+                                  color:
+                                    pinnedRow[column.key] < 0
+                                      ? "red"
+                                      : "inherit",
+                                }}
+                              >
+                                {formatValue(pinnedRow[column.key])}
+                              </span>
                             )}
                           </td>
                         );
@@ -209,7 +249,7 @@ const ScreenerTable = ({
                                 <a
                                   target="_blank" // This will open the link in a new tab
                                   rel="noreferrer"
-                                  href={`https://www.argaam.com/en/tadawul/tasi/${
+                                  href={`https://www.argaam.com/${currentLanguage}/tadawul/tasi/${
                                     row[column.key]
                                   }`} // to replace with link to Argaam company page using company id
                                   className="company-link"
@@ -240,7 +280,14 @@ const ScreenerTable = ({
                               ) : null
                             ) : (
                               // Handle dynamic columns
-                              row[column.key]
+                              <span
+                                style={{
+                                  color:
+                                    row[column.key] < 0 ? "red" : "inherit",
+                                }}
+                              >
+                                {formatValue(row[column.key])}
+                              </span>
                             )}
                           </td>
                         );
@@ -348,6 +395,7 @@ ScreenerTable.propTypes = {
   selectedTab: PropTypes.number.isRequired, // Add this line to accept selectedTab prop
   selectedOptions: PropTypes.array, // Define prop type for selectedOptions
   setSelectedOptions: PropTypes.func.isRequired, // Function to update selected options
+  decimals: PropTypes.number, // Add PropTypes validation for the decimals prop
 };
 
 export default ScreenerTable;

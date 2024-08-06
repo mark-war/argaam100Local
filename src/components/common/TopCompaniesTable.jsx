@@ -126,12 +126,6 @@ TopCompaniesTable.propTypes = {
       }).isRequired,
     })
   ).isRequired,
-  subTabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };
 
 export default TopCompaniesTable;

@@ -43,7 +43,7 @@ const TopCompaniesSubHeader = ({
                 data-name="Rectangle 28005"
                 fill="#fff"
                 stroke="#8193b0"
-                stroke-width="0.3"
+                strokeWidth="0.3"
               >
                 <rect width="39" height="37" rx="4" stroke="none"></rect>
                 <rect
@@ -91,7 +91,7 @@ const TopCompaniesSubHeader = ({
                 data-name="Rectangle 28005"
                 fill="#fff"
                 stroke="#8193b0"
-                stroke-width="0.3"
+                strokeWidth="0.3"
               >
                 <rect width="39" height="37" rx="4" stroke="none" />
                 <rect

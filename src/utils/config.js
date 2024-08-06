@@ -1,8 +1,11 @@
 const config = {
-  apiUrl: "https://screenerapi.edanat.com/api/v1/json/screener", // Base URL for your API
-  defaultLanguage: "en", // Default language
-  supportedLanguages: ["en", "ar"], // List of supported languages
-  screenerTableItemPerPage: 20,
+  apiUrl: import.meta.env.VITE_API_URL,
+  defaultLanguage: import.meta.env.VITE_DEFAULT_LANGUAGE,
+  supportedLanguages: import.meta.env.VITE_SUPPORTED_LANGUAGES.split(","),
+  screenerTableItemPerPage: Number(
+    import.meta.env.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE
+  ),
+  decimals: Number(import.meta.env.VITE_DECIMALS),
   // Add other global configurations here
 };
 

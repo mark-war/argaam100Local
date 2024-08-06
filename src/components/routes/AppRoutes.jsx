@@ -9,6 +9,7 @@ import {
 import DefaultRedirect from "../DefaultRedirect";
 import useLanguageSwitch from "../../hooks/useLanguageSwitch";
 import LoadingScreen from "../LoadingScreen";
+import ErrorBoundary from "../ErrorBoundary";
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -30,16 +31,18 @@ function AppRoutes() {
   }, [lang, location, switchLanguage]);
 
   return (
-    <Suspense fallback={<LoadingScreen />}>
-      <Routes>
-        {/* Default Route Redirecting to default language Screener */}
-        <Route path="/" element={<DefaultRedirect />} />
-        <Route path="/:lang" element={<DefaultRedirect />} />
-        {/* Route to available Pages */}
-        <Route path="/:lang/screener" element={<ScreenerTablesPage />} />
-        <Route path="/:lang/top-10" element={<TopTenCompaniesPage />} />
-      </Routes>
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes>
+          {/* Default Route Redirecting to default language Screener */}
+          <Route path="/" element={<DefaultRedirect />} />
+          <Route path="/:lang" element={<DefaultRedirect />} />
+          {/* Route to available Pages */}
+          <Route path="/:lang/screener" element={<ScreenerTablesPage />} />
+          <Route path="/:lang/top-10" element={<TopTenCompaniesPage />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 

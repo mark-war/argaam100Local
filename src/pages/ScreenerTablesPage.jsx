@@ -230,6 +230,7 @@ const ScreenerTablesPage = () => {
         selectedTab={activeTabLink}
         selectedOptions={selectedOptions}
         setSelectedOptions={setSelectedOptions}
+        decimals={config.decimals}
       />
     );
   };
