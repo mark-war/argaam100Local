@@ -575,7 +575,7 @@ div {
 .tabs_nav.navbar-nav .nav-item .nav-link.active span {
   padding-inline: 10px;
   border-bottom: 4px solid #254ba2;
-  padding-bottom: 10px;
+  padding-bottom: 11px;
   color: #254ba2;
   font-size: 18px;
 }
@@ -1514,6 +1514,7 @@ div {
   color: #4b4b4b;
   text-decoration: none;
   font-weight: 500;
+  display: flex;
 }
 
 .table_layout.table_full a:hover,
@@ -1573,4 +1574,12 @@ div {
 /* Handle on hover */
 .multi_select_container ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.table.table_layout.table_full tbody tr:first-child td.td_img {
+  font-weight: 500;
+} 
+
+.table_layout.table-striped td:nth-child(3) {
+   width: 10%;
 }
