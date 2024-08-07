@@ -6,10 +6,10 @@ import {
   useLocation,
   useParams,
 } from "react-router-dom";
-import DefaultRedirect from "../DefaultRedirect";
+import DefaultRedirect from "../common/DefaultRedirect";
 import useLanguageSwitch from "../../hooks/useLanguageSwitch";
-import LoadingScreen from "../LoadingScreen";
-import ErrorBoundary from "../ErrorBoundary";
+import LoadingScreen from "../common/LoadingScreen";
+import ErrorBoundary from "../common/ErrorBoundary";
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>

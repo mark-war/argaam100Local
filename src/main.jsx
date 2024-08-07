@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./redux/store";
-import LoadingScreen from "./components/LoadingScreen";
+import LoadingScreen from "./components/common/LoadingScreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

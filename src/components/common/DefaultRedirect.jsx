@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import config from "../utils/config.js";
-import { setLanguage } from "../redux/features/languageSlice.js";
+import config from "../../utils/config.js";
+import { setLanguage } from "../../redux/features/languageSlice.js";
 
 const DefaultRedirect = () => {
   const { pathname } = useLocation();

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { strings, LANGUAGES } from "../../utils/constants/localizedStrings";
-import SectorDropdown from "./SectorDropdown";
+import SectorDropdown from "../common/SectorDropdown";
 
 const PageSubHeader = ({
   title,

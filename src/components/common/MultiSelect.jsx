@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { strings } from "../utils/constants/localizedStrings";
+import { strings } from "../../utils/constants/localizedStrings";
 
 const MultiSelect = ({ options, selectedOptions, onChange }) => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input

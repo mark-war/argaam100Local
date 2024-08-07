@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MainLayout from "../components/layout/MainLayout";
-import PageSubHeader from "../components/common/PageSubHeader";
+import PageSubHeader from "../components/screener/PageSubHeader.jsx";
 import {
   fetchFieldConfigurationData,
   fetchScreenerData,
 } from "../redux/features/fieldConfigurationSlice.js";
-import ScreenerTable from "../components/common/ScreenerTable.jsx";
+import ScreenerTable from "../components/screener/ScreenerTable.jsx";
 import { strings, LANGUAGES } from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
-import LoadingScreen from "../components/LoadingScreen.jsx";
+import LoadingScreen from "../components/common/LoadingScreen.jsx";
 
 const ScreenerTablesPage = () => {
   const dispatch = useDispatch();

@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../redux/features/languageSlice.js";
 import { strings, LANGUAGES } from "../../utils/constants/localizedStrings.js";
 import config from "../../utils/config.js";
-import LanguageSwitcher from "../LanguageSwitcher";
-import LoadingScreen from "../LoadingScreen";
+import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
+import LoadingScreen from "../common/LoadingScreen.jsx";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();

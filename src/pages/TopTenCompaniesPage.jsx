@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import MainLayout from "../components/layout/MainLayout";
-import TopCompaniesSubHeader from "../components/common/TopCompaniesSubHeader";
+import TopCompaniesSubHeader from "../components/topten/TopCompaniesSubHeader";
 import { useSelector } from "react-redux";
-import TopCompaniesTable from "../components/common/TopCompaniesTable";
+import TopCompaniesTable from "../components/topten/TopCompaniesTable";
 
 const TopTenCompaniesPage = () => {
   const currentLanguage = useSelector(

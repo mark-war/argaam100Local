@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import MultiSelectCheckbox from "../MultiSelect.jsx";
+import MultiSelectCheckbox from "./MultiSelect.jsx";
 import { strings } from "../../utils/constants/localizedStrings.js";
 
 const SectorDropdown = ({ selectedSectors, onChange }) => {

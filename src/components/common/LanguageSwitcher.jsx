@@ -1,8 +1,8 @@
 // src/components/LanguageSwitcher.js
 import React from "react";
 import { useParams } from "react-router-dom";
-import useLanguageSwitch from "../hooks/useLanguageSwitch";
-import { LANGUAGES } from "../utils/constants/localizedStrings";
+import useLanguageSwitch from "../../hooks/useLanguageSwitch";
+import { LANGUAGES } from "../../utils/constants/localizedStrings";
 
 const LanguageSwitcher = () => {
   const { switchLanguage } = useLanguageSwitch();
