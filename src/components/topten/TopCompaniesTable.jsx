@@ -1,101 +1,206 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { Row, Col, Card, Table } from "react-bootstrap";
+import {
+  strings,
+  LANGUAGES,
+  SUBTABS,
+} from "../../utils/constants/localizedStrings";
+import { useSelector } from "react-redux";
+import NumberFormatter from "../common/NumberFormatter";
 
-const TopCompaniesTable = ({ sections }) => {
-  const [activeSubTab, setActiveSubTab] = useState(1);
+const TopCompaniesTable = ({ selectedTab, data }) => {
+  const transformColumnName = (fieldName) => {
+    return fieldName
+      .split(" ")
+      .map((word) => word.toUpperCase())
+      .join("_");
+  };
 
-  const renderTableRows = (data) =>
-    data.map(({ rank, company, logo, chartValue }) => (
-      <tr key={rank}>
-        <td>
-          <span className="bg_tag">{rank}</span>
-        </td>
-        <td className="td_img">
-          <img alt="Image" src={logo} /> {company}
-        </td>
-        <td>
-          <div className="charts_table_bg" style={{ width: `${chartValue}%` }}>
-            <span className="bg"></span>{" "}
-            <span>{chartValue.toLocaleString()}</span>
-          </div>
+  const currentLanguage = useSelector(
+    (state) => state.language.currentLanguage
+  );
+
+  // Initialize activeSubTab state for each section
+  const initializeActiveSubTabs = (data) => {
+    return data.map((section) => {
+      const selectedSubTab = section.subTabs.find(
+        (subTab) => subTab.isSelected === "1"
+      );
+      const activeTab = selectedSubTab
+        ? SUBTABS[transformColumnName(selectedSubTab.tabNameEn)]
+        : 1;
+      return activeTab;
+    });
+  };
+
+  const [activeSubTabs, setActiveSubTabs] = useState(
+    initializeActiveSubTabs(data)
+  );
+
+  // Reset activeSubTabs whenever selectedTab changes
+  useEffect(() => {
+    const newActiveSubTabs = initializeActiveSubTabs(
+      filterDataBySelectedTab(selectedTab)
+    );
+    setActiveSubTabs(newActiveSubTabs);
+  }, [selectedTab, data]); // Dependency on selectedTab and data
+
+  // Function to filter data based on selectedTab
+  const filterDataBySelectedTab = (tab) => {
+    return data.filter((item) => item.identifier.startsWith(tab));
+  };
+
+  const handleSubTabClick = (subSectionIndex, subTabName) => {
+    const value = SUBTABS[transformColumnName(subTabName)];
+    setActiveSubTabs((prevActiveSubTabs) =>
+      prevActiveSubTabs.map((tab, index) =>
+        index === subSectionIndex ? value : tab
+      )
+    );
+  };
+
+  const filteredData = filterDataBySelectedTab(selectedTab);
+
+  const renderTableRows = (subSection) => {
+    if (!subSection.data) return;
+    return subSection.data.map((item) => {
+      // Get the property names of the item
+      const propertyNames = Object.keys(item);
+      // Check if there are at least two properties
+      const secondToLastProperty =
+        propertyNames.length > 1
+          ? propertyNames[propertyNames.length - 2]
+          : null;
+
+      // Ensure we have a valid second-to-last property
+      const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
+
+      // Convert chartValue to a percentage and format it correctly
+      const chartPercentage = parseFloat(chartValue);
+
+      return (
+        <tr key={item.Rank}>
+          <td>
+            <span className="bg_tag">{item.Rank}</span>
+          </td>
+          <td className="td_img">
+            <img alt="Image" src={item.LogoUrl} className="logo_image" />
+            {currentLanguage === LANGUAGES.EN
+              ? item.ShortNameEn
+              : item.ShortNameAr}
+          </td>
+          <td>
+            {/* TODO: need to fix how the percentage is computed here */}
+            <div className="charts_table_bg">
+              <span className="bg"></span>
+              <span>
+                <NumberFormatter value={chartPercentage} />
+              </span>
+            </div>
+          </td>
+        </tr>
+      );
+    });
+  };
+
+  const renderChart = () => {
+    return (
+      <tr>
+        <td colSpan="3">
+          <img
+            alt="Image"
+            src="/assets/images/chart_img.png"
+            className="img-fluid nav_chart"
+          />
+          {/* <div style={{ width: "100%", height: "1000px" }}>
+    <embed src="https://visuals.argaam.com/charts/cash-dividend?companyid=43&amp;fiscalperiodtype=4&amp;fromyear=2004&amp;toyear=2024&amp;fiscalperiodid=%5Bobject+Object%5D&amp;language=2&amp;lang=2&amp;ismobile=0&amp;marketid=3&amp;uid=4-43-1-46-0&amp;vot=1&amp;dot=2"></embed>
+  </div> */}
         </td>
       </tr>
-    ));
+    );
+  };
 
   return (
     <div className="px-layout col_space mt-4 pt-1">
       <Row>
-        {sections.map((section, index) => (
-          <Col lg={6} key={index}>
-            <div className="tabs_inner_nav row px-3">
-              <div className="col-6">
-                <p className="sub_heading">{section.title}</p>
-              </div>
-              <div className="col-6">
-                <div className="flex-fill justify-content-end">
-                  {/* Tabs Starts */}
-                  <ul className="tabs_nav tabs_inner navbar-nav align-items-center flex-row justify-content-end">
-                    {section.subtabs.map((subTab, index) => (
-                      <li className="nav-item" key={index}>
-                        <button
-                          className={`nav-link cursor-pointer ${
-                            activeSubTab === subTab.id ? "active" : ""
-                          }`}
-                          onClick={() => setActiveSubTab(subTab.id)}
-                        >
-                          <span>{subTab.name}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  {/* Tabs Ends */}
+        {filteredData.map((subSection, subSectionIndex) => {
+          // Create sortedSubTabs within the map function for each subSection
+          const sortedSubTabs = [...subSection.subTabs].sort(
+            (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
+          );
+
+          return (
+            <Col lg={6} key={subSectionIndex}>
+              <div className="tabs_inner_nav row px-3">
+                <div className="col-6">
+                  <p className="sub_heading">
+                    {subSection.identifier.split("-")[1]}
+                  </p>
+                </div>
+                <div className="col-6">
+                  <div className="flex-fill justify-content-end">
+                    {/* Tabs Starts */}
+                    <ul className="tabs_nav tabs_inner navbar-nav align-items-center flex-row justify-content-end">
+                      {sortedSubTabs.map((subTab, subTabIndex) => (
+                        <li className="nav-item" key={subTabIndex}>
+                          <button
+                            className={`nav-link cursor-pointer ${
+                              activeSubTabs[subSectionIndex] ===
+                              SUBTABS[transformColumnName(subTab.tabNameEn)]
+                                ? "active"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              handleSubTabClick(
+                                subSectionIndex,
+                                currentLanguage === LANGUAGES.EN
+                                  ? subTab.tabNameEn
+                                  : subTab.tabNameAr
+                              )
+                            }
+                          >
+                            <span>
+                              {currentLanguage === LANGUAGES.EN
+                                ? subTab.tabNameEn
+                                : subTab.tabNameAr}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                    {/* Tabs Ends */}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Card Rendering */}
-            <Card className="rounded border-0 table_chart">
-              <Card.Body className="px-layout bg-white rounded">
-                <div className="table-responsive">
-                  <Table className="table_layout" style={{ width: "100%" }}>
-                    <thead>
-                      <tr>
-                        <th>Rank</th>
-                        <th>Companies</th>
-                        <th>Charts</th>
-                      </tr>
-                    </thead>
-
-                    {activeSubTab === 1 && (
-                      <tbody className="border_top_0">
+              {/* Card Rendering */}
+              <Card className="rounded border-0 table_chart">
+                <Card.Body className="px-layout bg-white rounded">
+                  <div className="table-responsive">
+                    <Table className="table_layout" style={{ width: "100%" }}>
+                      <thead>
                         <tr>
-                          <td colSpan="3">
-                            <img
-                              alt="Image"
-                              src="/assets/images/chart_img.png"
-                              className="img-fluid nav_chart"
-                            />
-                          </td>
+                          <th>{strings.rank}</th>
+                          <th>{strings.companies}</th>
+                          <th>{strings.charts}</th>
                         </tr>
-                      </tbody>
-                    )}
+                      </thead>
 
-                    {activeSubTab === 2 && (
-                      <tbody>{renderTableRows(section.data.lastClose)}</tbody>
-                    )}
+                      {activeSubTabs[subSectionIndex] === 1 && (
+                        <tbody className="border_top_0">{renderChart()}</tbody>
+                      )}
 
-                    {activeSubTab === 3 && (
-                      <tbody>
-                        {renderTableRows(section.data.lastFiscalPeriod)}
-                      </tbody>
-                    )}
-                  </Table>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+                      {activeSubTabs[subSectionIndex] !== 1 && (
+                        <tbody>{renderTableRows(subSection)}</tbody>
+                      )}
+                    </Table>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          );
+        })}
       </Row>
     </div>
   );
@@ -103,27 +208,26 @@ const TopCompaniesTable = ({ sections }) => {
 
 // Define PropTypes for the component
 TopCompaniesTable.propTypes = {
-  sections: PropTypes.arrayOf(
+  selectedTab: PropTypes.number,
+  data: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      data: PropTypes.shape({
-        lastClose: PropTypes.arrayOf(
-          PropTypes.shape({
-            rank: PropTypes.number.isRequired,
-            company: PropTypes.string.isRequired,
-            logo: PropTypes.string.isRequired,
-            chartValue: PropTypes.number.isRequired,
-          })
-        ).isRequired,
-        lastFiscalPeriod: PropTypes.arrayOf(
-          PropTypes.shape({
-            rank: PropTypes.number.isRequired,
-            company: PropTypes.string.isRequired,
-            logo: PropTypes.string.isRequired,
-            chartValue: PropTypes.number.isRequired,
-          })
-        ).isRequired,
-      }).isRequired,
+      identifier: PropTypes.string.isRequired,
+      subTabs: PropTypes.arrayOf(
+        PropTypes.shape({
+          tabNameEn: PropTypes.string.isRequired,
+          tabNameAr: PropTypes.string.isRequired,
+          displaySeq: PropTypes.number.isRequired, // Add displaySeq as a required prop
+          isSelected: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          Rank: PropTypes.number.isRequired,
+          ShortNameEn: PropTypes.string.isRequired,
+          ShortNameAr: PropTypes.string.isRequired,
+          LogoUrl: PropTypes.string.isRequired,
+        })
+      ).isRequired,
     })
   ).isRequired,
 };

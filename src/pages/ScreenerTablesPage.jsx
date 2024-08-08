@@ -7,7 +7,11 @@ import {
   fetchScreenerData,
 } from "../redux/features/fieldConfigurationSlice.js";
 import ScreenerTable from "../components/screener/ScreenerTable.jsx";
-import { strings, LANGUAGES } from "../utils/constants/localizedStrings.js";
+import {
+  strings,
+  LANGUAGES,
+  PAGES,
+} from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
 import LoadingScreen from "../components/common/LoadingScreen.jsx";
 
@@ -37,13 +41,18 @@ const ScreenerTablesPage = () => {
     [fieldConfigurations, isScreenerDataLoaded]
   );
 
+  // console.log("DISPATCH CONFIG");
+  // dispatch(fetchFieldConfigurationData());
+  // console.log("DISPATCH SCREENER");
+  // dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
+
   useEffect(() => {
     if (isDataReady) {
-      dispatch(fetchScreenerData({ fieldConfigurations }));
+      dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
     }
   }, [fieldConfigurations, isDataReady, dispatch]);
 
-  const selectedPage = pages.find((page) => page.isSelected);
+  const selectedPage = pages.find((page) => page.pageId === PAGES.SCREENER);
   const selectedSection = selectedPage?.sections.find(
     (section) => section.isSelected
   );
@@ -153,6 +162,7 @@ const ScreenerTablesPage = () => {
         columnKeysSet.add(fieldName);
 
         // Iterate through each row in the item data
+        if (!item.data) return;
         item.data.forEach((row) => {
           const fixedCode = row.Code.split(".")[0] || "";
 

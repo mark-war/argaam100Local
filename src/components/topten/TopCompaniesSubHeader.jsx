@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { strings } from "../../utils/constants/localizedStrings";
+import { strings, LANGUAGES } from "../../utils/constants/localizedStrings";
 
 const TopCompaniesSubHeader = ({
   title,
   tabLinksArray,
   activeTabLink,
   handleActiveTabLink,
+  defaultSubTab,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isSelect, setIsSelect] = useState(false);
@@ -140,10 +141,17 @@ const TopCompaniesSubHeader = ({
                   className={`nav-link ${
                     activeTabLink === tabItem.tabLinkId ? "active" : ""
                   }`}
-                  onClick={() => handleActiveTabLink(tabItem.tabLinkId)}
+                  onClick={() =>
+                    handleActiveTabLink(
+                      tabItem.tabLinkId,
+                      tabItem.defaultSubTab
+                    )
+                  }
                 >
                   <span>
-                    {currentLanguage === "ar" ? tabItem.nameAr : tabItem.nameEn}
+                    {currentLanguage === LANGUAGES.AR
+                      ? tabItem.nameAr
+                      : tabItem.nameEn}
                   </span>
                 </Link>
               </li>

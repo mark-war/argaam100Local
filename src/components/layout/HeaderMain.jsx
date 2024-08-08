@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../redux/features/languageSlice.js";
@@ -14,6 +14,8 @@ const HeaderMain = () => {
   const { lang } = useParams(); // Access the current language from URL parameters
   const [isOpen, setIsOpen] = useState(false);
 
+  const dropdownRef = useRef(null); // Create a ref for the dropdown element
+
   const pages = useSelector((state) => state.apiData.pages); // Access pages from Redux store
 
   const toggleDropdown = () => {
@@ -22,6 +24,13 @@ const HeaderMain = () => {
 
   const handleMenuInnerClick = (event) => {
     event.stopPropagation(); // Prevents the click from propagating to the container
+  };
+
+  // Handle click outside the dropdown
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -39,6 +48,15 @@ const HeaderMain = () => {
 
     document.documentElement.lang = lang;
   }, [lang, dispatch, navigate]);
+
+  useEffect(() => {
+    // Add event listener to handle clicks outside the dropdown
+    document.addEventListener("mousedown", handleClickOutside);
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
 
   const getNavLinks = () => {
     const links = [];
@@ -175,7 +193,10 @@ const HeaderMain = () => {
                       </li>
                       <LanguageSwitcher /> {/* Add the new component */}
                     </ul>
-                    <div className="nav-item position-relative user_toggle">
+                    <div
+                      className="nav-item position-relative user_toggle"
+                      ref={dropdownRef}
+                    >
                       <button
                         onClick={toggleDropdown}
                         className="btn borderless-transparent dropdown-toggle remove_after pr_0"

@@ -31,6 +31,8 @@ export const strings = new LocalizedStrings({
     shareholder: "Shareholder's Equity (LFY)",
     revenue: "Revenue (TTM)",
     profit: "Profit (TTM)",
+    rank: "Rank",
+    charts: "Charts",
   },
   ar: {
     topTen: "أعلى 10",
@@ -61,10 +63,29 @@ export const strings = new LocalizedStrings({
     shareholder: "(اخر فترة مالية) حقوق المساهمين",
     revenue: "(اخر 12) الايردات",
     profit: "(اخر 12) الأرباح",
+    rank: "رتبة",
+    charts: "الرسوم البيانية",
   },
 });
 
 export const LANGUAGES = {
   EN: "en",
   AR: "ar",
+};
+
+export const LANGUAGEID = {
+  AR: 1,
+  EN: 2,
+};
+
+export const PAGES = {
+  SCREENER: 1,
+  TOPTEN: 2,
+};
+
+export const SUBTABS = {
+  HISTORICAL_EVOLUTION: 1,
+  LAST_CLOSE: 2,
+  LAST_FISCAL_PERIOD: 3,
+  TTM: 4,
 };

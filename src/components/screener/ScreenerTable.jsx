@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Table, Pagination, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
 import { useSelector } from "react-redux";
+import NumberFormatter from "../common/NumberFormatter";
 
 const ScreenerTable = ({
   data,
@@ -12,7 +13,6 @@ const ScreenerTable = ({
   selectedTab,
   selectedOptions, // selected sectors
   setSelectedOptions, // to control selected options
-  decimals = 2, // Add a prop to configure decimal places
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
@@ -156,17 +156,6 @@ const ScreenerTable = ({
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
 
-  // Function to format values to the specified number of decimal places
-  const formatValue = (value) => {
-    if (typeof value === "number") {
-      const formattedValue = value.toFixed(decimals);
-      return value < 0
-        ? `(${Math.abs(formattedValue).toFixed(decimals)})`
-        : formattedValue;
-    }
-    return value;
-  };
-
   return (
     <Row>
       <Col lg={12} className="mx-auto">
@@ -221,7 +210,9 @@ const ScreenerTable = ({
                                       : "inherit",
                                 }}
                               >
-                                {formatValue(pinnedRow[column.key])}
+                                <NumberFormatter
+                                  value={pinnedRow[column.key]}
+                                />
                               </span>
                             )}
                           </td>
@@ -286,7 +277,7 @@ const ScreenerTable = ({
                                     row[column.key] < 0 ? "red" : "inherit",
                                 }}
                               >
-                                {formatValue(row[column.key])}
+                                <NumberFormatter value={row[column.key]} />
                               </span>
                             )}
                           </td>
@@ -395,7 +386,6 @@ ScreenerTable.propTypes = {
   selectedTab: PropTypes.number.isRequired, // Add this line to accept selectedTab prop
   selectedOptions: PropTypes.array, // Define prop type for selectedOptions
   setSelectedOptions: PropTypes.func.isRequired, // Function to update selected options
-  decimals: PropTypes.number, // Add PropTypes validation for the decimals prop
 };
 
 export default ScreenerTable;

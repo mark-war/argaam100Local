@@ -1561,13 +1561,13 @@ div {
 
 /* Track */
 .multi_select_container ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 .multi_select_container ::-webkit-scrollbar-thumb {
-  background: #888; 
-  border-radius: 10px; 
+  background: #888;
+  border-radius: 10px;
 }
 
 /* Handle on hover */
