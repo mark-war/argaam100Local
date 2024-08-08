@@ -91,8 +91,8 @@ export const fetchScreenerData = createAsyncThunk(
                 return {
                   data: response.data,
                   sectors: {
-                    ar: extractedSectors.distinctSectorsArabic,
-                    en: extractedSectors.distinctSectorsEnglish,
+                    ar: extractedSectors.distinctSectorsArabic || [], // Use empty array if null
+                    en: extractedSectors.distinctSectorsEnglish || [], // Use empty array if null
                   },
                 };
               })
@@ -103,6 +103,10 @@ export const fetchScreenerData = createAsyncThunk(
               identifier: data.identifier,
               data: responses[0].data || {}, // Include primary response
               chartData: responses.slice(1), // Include additional responses
+              sectors: {
+                ar: responses[0]?.sectors?.ar || [], // Use empty array if null
+                en: responses[0]?.sectors?.en || [], // Use empty array if null
+              },
               subTabs: data.subTabs,
             };
           } catch (error) {
@@ -170,8 +174,8 @@ const fieldConfigurationSlice = createSlice({
         const allSectors = action.payload.reduce(
           (acc, item) => {
             if (item && item.sectors) {
-              acc.ar = [...acc.ar, ...item.sectors.ar];
-              acc.en = [...acc.en, ...item.sectors.en];
+              acc.ar = [...acc.ar, ...(item.sectors.ar || [])]; // Use empty array if null
+              acc.en = [...acc.en, ...(item.sectors.en || [])]; // Use empty array if null
             }
             return acc;
           },
