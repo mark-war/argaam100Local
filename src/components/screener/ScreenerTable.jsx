@@ -194,7 +194,7 @@ const ScreenerTable = ({
                                     src={pinnedRow.fixed_img} // Get the src from fixed_img
                                     className="logo_image"
                                   />
-                                  {pinnedRow[column.key]}
+                                  <span>{pinnedRow[column.key]}</span>
                                 </>
                               ) : column.key === "fixed_sector" ? (
                                 // Handle fixed sector column without additional styling
@@ -250,7 +250,7 @@ const ScreenerTable = ({
                                     src={row.fixed_img} // Get the src from fixed_img
                                     className="logo_image"
                                   />
-                                  {row[column.key]}
+                                  <span>{row[column.key]}</span>
                                 </a>
                               ) : column.key === "fixed_code" ? (
                                 // Handle fixed code column with span
