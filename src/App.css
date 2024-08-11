@@ -266,7 +266,7 @@ div {
 
 .nav-link.active {
   color: #254ba2 !important;
-  font-weight: bold;
+  font-weight: 600;
   text-decoration: underline;
 }
 
@@ -934,7 +934,7 @@ div {
   }
 
   .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-    font-size: 25px;
+    font-size: 23px;
   }
 
   .tabs_nav.navbar-nav.tabs_inner .nav-item .nav-link.active span {
@@ -942,11 +942,11 @@ div {
   }
 
   [lang="ar"] .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   [lang="ar"] .tabs_nav.tabs_inner.navbar-nav .nav-item .nav-link.active span {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   [lang="ar"] .center_nav.navbar-nav {
@@ -959,11 +959,11 @@ div {
   }
 
   .heading_lg {
-    font-size: 27px;
+    font-size: 26px;
   }
 
   [lang="ar"] .heading_lg {
-    font-size: 29px;
+    font-size: 27px;
   }
 
   [lang="ar"] .top_companies .heading_lg {
@@ -971,24 +971,24 @@ div {
   }
 
   .font-20 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .right_nav.navbar-nav .nav-link {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .center_nav.navbar-nav .nav-link {
-    font-size: 21px;
+    font-size: 18px;
   }
 
   .multi_select_toggle {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .table.table_layout th,
   .table.table_layout td {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .table_chart .table.table_layout th,
@@ -997,19 +997,19 @@ div {
   }
 
   .table_chart .table.table_layout td span {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .table.table_layout td.text-center {
-    font-size: 21px;
+    font-size: 20px;
   }
 
   .tabs_inner.tabs_nav.navbar-nav .nav-link {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .sub_heading {
-    font-size: 21px;
+    font-size: 20px;
   }
 }
 
@@ -1476,11 +1476,11 @@ div {
 }
 
 .table_layout.table td:nth-child(2) {
-  width: 10.5%;
+  width: 14%;
 }
 
 [lang="ar"] .table_layout.table td:nth-child(2) {
-  width: 10.5%;
+  width: 14%;
 }
 
 .custom-next-btn span svg {
@@ -1593,6 +1593,10 @@ div {
 
 .table_layout.table-striped td:nth-child(4) {
   width: 15%;
+}
+
+.table_layout.table-striped td:nth-child(6) {
+  width: 17%;
 }
 
 
