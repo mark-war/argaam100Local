@@ -87,10 +87,12 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
             <span className="bg_tag">{item.Rank}</span>
           </td>
           <td className="td_img">
+            <span className="d-flex align-items-center">
             <img alt="Image" src={item.LogoUrl} className="logo_image" />
-            {currentLanguage === LANGUAGES.EN
+            <span>{currentLanguage === LANGUAGES.EN
               ? item.ShortNameEn
-              : item.ShortNameAr}
+              : item.ShortNameAr}</span>
+              </span>
           </td>
           <td>
             {/* TODO: need to fix how the percentage is computed here */}
