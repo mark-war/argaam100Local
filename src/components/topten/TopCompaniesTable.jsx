@@ -4,10 +4,12 @@ import { Row, Col, Card, Table } from "react-bootstrap";
 import {
   strings,
   LANGUAGES,
+  LANGUAGEID,
   SUBTABS,
 } from "../../utils/constants/localizedStrings";
 import { useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
+import config from "../../utils/config";
 
 const TopCompaniesTable = ({ selectedTab, data }) => {
   const transformColumnName = (fieldName) => {
@@ -104,20 +106,17 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     });
   };
 
-  const renderChart = () => {
+  const renderChart = (subSection) => {
+    const formattedChartUrl = `${config.chartsUrl}/race-bar-chart?params=${
+      subSection.chartData
+    }&language=${LANGUAGEID[currentLanguage.toUpperCase()]}`;
+
     return (
-      <tr>
-        <td colSpan="3">
-          <img
-            alt="Image"
-            src="/assets/images/chart_img.png"
-            className="img-fluid nav_chart"
-          />
-          {/* <div style={{ width: "100%", height: "1000px" }}>
-    <embed src="https://visuals.argaam.com/charts/cash-dividend?companyid=43&amp;fiscalperiodtype=4&amp;fromyear=2004&amp;toyear=2024&amp;fiscalperiodid=%5Bobject+Object%5D&amp;language=2&amp;lang=2&amp;ismobile=0&amp;marketid=3&amp;uid=4-43-1-46-0&amp;vot=1&amp;dot=2"></embed>
-  </div> */}
-        </td>
-      </tr>
+      <embed
+        className="race_chart"
+        src={`${formattedChartUrl}`}
+        //src="https://chartsqa.edanat.com/charts/race-bar-chart?params=RnJMOW5jclFzcmRPUUpDOWZxQkpJc0dxZ0FoM080VTZyUGUwb0cyWkVtUmJUT0dNZnVRUDZqOG5Zem8vektoL3pPS3BsbDdERVd5NzhUVlUzMWdUK3U1SE9iV3NxMjdEYnlkMkUzSkw1ZGV5UlQyaUJGSGo2MWZ5UHJseVRnOUc=&language=2"
+      ></embed>
     );
   };
 
@@ -177,25 +176,26 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
               {/* Card Rendering */}
               <Card className="rounded border-0 table_chart">
                 <Card.Body className="px-layout bg-white rounded">
-                  <div className="table-responsive">
-                    <Table className="table_layout" style={{ width: "100%" }}>
-                      <thead>
-                        <tr>
-                          <th>{strings.rank}</th>
-                          <th>{strings.companies}</th>
-                          <th>{strings.charts}</th>
-                        </tr>
-                      </thead>
+                  {activeSubTabs[subSectionIndex] === 1 && (
+                    <div className="chart-responsive">
+                      {renderChart(subSection)}
+                    </div>
+                  )}
+                  {activeSubTabs[subSectionIndex] !== 1 && (
+                    <div className="table-responsive">
+                      <Table className="table_layout" style={{ width: "100%" }}>
+                        <thead>
+                          <tr>
+                            <th>{strings.rank}</th>
+                            <th>{strings.companies}</th>
+                            <th>{strings.charts}</th>
+                          </tr>
+                        </thead>
 
-                      {activeSubTabs[subSectionIndex] === 1 && (
-                        <tbody className="border_top_0">{renderChart()}</tbody>
-                      )}
-
-                      {activeSubTabs[subSectionIndex] !== 1 && (
                         <tbody>{renderTableRows(subSection)}</tbody>
-                      )}
-                    </Table>
-                  </div>
+                      </Table>
+                    </div>
+                  )}
                 </Card.Body>
               </Card>
             </Col>

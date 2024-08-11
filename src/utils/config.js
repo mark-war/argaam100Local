@@ -1,5 +1,6 @@
 const config = {
   apiUrl: import.meta.env.VITE_API_URL,
+  chartsUrl: import.meta.env.VITE_CHARTS_URL,
   defaultLanguage: import.meta.env.VITE_DEFAULT_LANGUAGE,
   supportedLanguages: import.meta.env.VITE_SUPPORTED_LANGUAGES.split(","),
   screenerTableItemPerPage: Number(
