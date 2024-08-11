@@ -728,12 +728,12 @@ div {
 
 [lang="ar"] .table.table_layout.table_full tbody tr:first-child td {
   border-top: 2px solid #154ac3;
-  border-bottom: 7px solid #154ac3;
+  border-bottom: 8px solid #154ac3;
 }
 
 .table.table_layout.table_full tbody tr:first-child td {
   border-top: 2px solid #154ac3;
-  border-bottom: 7px solid #154ac3;
+  border-bottom: 8px solid #154ac3;
 }
 
 .table_layout.table_full td {
