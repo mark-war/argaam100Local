@@ -92,6 +92,7 @@ const ScreenerTablesPage = () => {
       { key: "fixed_code", label: `${strings.code}` },
       { key: "fixed_company", label: `${strings.companies}` },
       { key: "fixed_sector", label: `${strings.sector}` },
+      { key: "CompanyID", label: "CompanyID", hidden: true },
       ...fieldConfigurations
         .filter((item) => item.TabID === activeTabId)
         .map((item) => {
@@ -179,6 +180,7 @@ const ScreenerTablesPage = () => {
                 currentLanguage === LANGUAGES.EN
                   ? row.SectorNameEn
                   : row.SectorNameAr,
+              CompanyID: row.CompanyID,
             });
           }
 

@@ -36,6 +36,8 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
     <thead>
       <tr>
         {columns.map((column) => {
+          // Skip rendering this column if it is marked as hidden
+          if (column.hidden) return null;
           const isFixedColumn = column.key.startsWith("fixed_");
           return isFixedColumn ? (
             <th key={column.key} className={`${column.className}`}>

@@ -4,6 +4,7 @@ import { Table, Pagination, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
 import { useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
+import { LANGUAGES } from "../../utils/constants/localizedStrings";
 
 const ScreenerTable = ({
   data,
@@ -23,7 +24,7 @@ const ScreenerTable = ({
 
   // Function to find the first dynamic column
   const getFirstDynamicColumn = () => {
-    return columns.find((col) => !col.key.startsWith("fixed_"));
+    return columns.find((col) => !col.key.startsWith("fixed_") && !col.hidden);
   };
 
   // Initialize sorting configuration for the first dynamic column when data is loaded or tab is changed
@@ -156,6 +157,12 @@ const ScreenerTable = ({
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
 
+  const argaamUrl = (companyID) => {
+    return currentLanguage === LANGUAGES.AR
+      ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
+      : `https://www.argaam.com/${currentLanguage}/tadawul/tasi/`;
+  };
+
   return (
     <Row>
       <Col lg={12} className="mx-auto">
@@ -177,6 +184,7 @@ const ScreenerTable = ({
                   {pinnedRow && (
                     <tr>
                       {columns.map((column) => {
+                        if (column.hidden) return null; // Skip rendering this column
                         const isFixedColumn = column.key.startsWith("fixed_");
                         const tdClassName = isFixedColumn
                           ? column.key === "fixed_company"
@@ -223,6 +231,7 @@ const ScreenerTable = ({
                   {currentRows.map((row, index) => (
                     <tr key={index}>
                       {columns.map((column) => {
+                        if (column.hidden) return null; // Skip rendering this column
                         // Check if the column is a fixed column
                         const isFixedColumn = column.key.startsWith("fixed_");
                         // Determine class for the <td> element
@@ -240,9 +249,13 @@ const ScreenerTable = ({
                                 <a
                                   target="_blank" // This will open the link in a new tab
                                   rel="noreferrer"
-                                  href={`https://www.argaam.com/${currentLanguage}/tadawul/tasi/${
-                                    row[column.key]
-                                  }`} // to replace with link to Argaam company page using company id
+                                  href={
+                                    currentLanguage === LANGUAGES.AR
+                                      ? `${argaamUrl(row.CompanyID)}${
+                                          row[column.key]
+                                        }`
+                                      : `${argaamUrl()}${row[column.key]}`
+                                  }
                                   className="company-link"
                                 >
                                   <img
