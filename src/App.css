@@ -1607,18 +1607,22 @@ div {
   font-weight: 500;
 }
 
+.table_layout.table td:nth-child(2) {
+  width: 14%;
+}
+
 .table_layout.table-striped td:nth-child(3) {
-  width: 15%;
+  width: 10%;
 }
 
 .table_layout.table-striped td:nth-child(4) {
   width: 15%;
 }
 
-.table_layout.table-striped td:nth-child(6) {
-  width: 16%;
+.table_layout.table-striped td {
+  min-width: 13%;
+  max-width: 13%;
 }
-
 
 [lang="ar"] .sub_heading_tabs_container {
   margin-top: 0.4rem !important;
