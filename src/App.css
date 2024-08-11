@@ -152,8 +152,8 @@ div {
 /* .Navbar Starts */
 
 .navbar.bg-light {
-  padding-top: 1.4rem;
-  padding-bottom: 1.5rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.3rem;
 }
 
 .mobile_nav {
@@ -369,14 +369,14 @@ div {
 
 .multi_select {
   text-align: right;
-  max-width: 240px;
-  min-width: 240px;
+  max-width: 220px;
+  min-width: 220px;
   position: relative;
 }
 
 .multi_select_toggle {
   border: 1px solid #8e9bb6;
-  max-width: 240px;
+  max-width: 220px;
   text-align: left;
   padding: 5px 15px;
   border-radius: 8px;
@@ -573,7 +573,7 @@ div {
 }
 
 .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-  padding-inline: 10px;
+  padding-inline: 17px;
   border-bottom: 4px solid #254ba2;
   padding-bottom: 11px;
   color: #254ba2;
@@ -637,7 +637,7 @@ div {
 .table.table_layout th,
 .table.table_layout td {
   vertical-align: middle;
-  padding: 15px 10px 10px 10px;
+  padding: 12px 10px 10px 10px;
   font-size: 15px;
   line-height: normal;
 }
@@ -661,15 +661,15 @@ div {
 
 .container-fluid.px-layout,
 .px-layout {
-  margin-right: 2.6rem;
-  margin-left: 2.6rem;
+  margin-right: 2.9rem;
+  margin-left: 2.9rem;
   padding-inline: 0;
 }
 
 [lang="ar"] .container-fluid.px-layout,
 .px-layout {
-  margin-right: 2.6rem;
-  margin-left: 2.6rem;
+  margin-right: 2.9rem;
+  margin-left: 2.9rem;
   padding-inline: 0;
 }
 
@@ -907,16 +907,23 @@ div {
 }
 
 .select_container {
-  margin-bottom: 11px;
+  margin-bottom: 5px;
+  margin-top: 6px;
 }
 
 .sub_heading_tabs_container {
   margin-bottom: 1.8rem !important;
-  margin-top: 1rem !important;
+  margin-top: 0.7rem !important;
 }
 
 .section_heading {
   padding-bottom: 3px !important;
+}
+
+.table_layout.table td:nth-child(2),
+.table_layout.table th:nth-child(2) {
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 /* Media Query Starts */
@@ -1030,7 +1037,7 @@ div {
   }
 
   .multi_select_toggle {
-    min-width: 240px;
+    min-width: 200px;
   }
 
   .col_space .col-lg-6 {
@@ -1474,11 +1481,11 @@ div {
 }
 
 .table_layout.table td:nth-child(2) {
-  width: 13%;
+  width: 10.5%;
 }
 
 [lang="ar"] .table_layout.table td:nth-child(2) {
-  width: 13%;
+  width: 10.5%;
 }
 
 .custom-next-btn span svg {
@@ -1586,5 +1593,18 @@ div {
 }
 
 .table_layout.table-striped td:nth-child(3) {
-  width: 10%;
+  width: 15%;
+}
+
+.table_layout.table-striped td:nth-child(4) {
+  width: 15%;
+}
+
+
+[lang="ar"] .sub_heading_tabs_container {
+  margin-top: 0.4rem !important;
+}
+
+[lang="ar"] .table_layout.table-striped td:nth-child(3) {
+  width: 14%;
 }
