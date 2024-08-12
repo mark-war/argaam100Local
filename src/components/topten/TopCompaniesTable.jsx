@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { Row, Col, Card, Table } from "react-bootstrap";
 import {
@@ -23,6 +23,8 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     (state) => state.language.currentLanguage
   );
 
+  const isInitialMount = useRef(true); // Track the initial render
+
   // Initialize activeSubTab state for each section
   const initializeActiveSubTabs = (data) => {
     return data.map((section) => {
@@ -40,13 +42,17 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     initializeActiveSubTabs(data)
   );
 
-  // Reset activeSubTabs whenever selectedTab changes
+  // Effect to reset activeSubTabs only when selectedTab changes on initial render
   useEffect(() => {
-    const newActiveSubTabs = initializeActiveSubTabs(
-      filterDataBySelectedTab(selectedTab)
-    );
-    setActiveSubTabs(newActiveSubTabs);
-  }, [selectedTab, data]); // Dependency on selectedTab and data
+    if (isInitialMount.current) {
+      isInitialMount.current = false; // After initial mount, mark as false
+    } else {
+      const newActiveSubTabs = initializeActiveSubTabs(
+        filterDataBySelectedTab(selectedTab)
+      );
+      setActiveSubTabs(newActiveSubTabs);
+    }
+  }, [selectedTab, data]);
 
   // Function to filter data based on selectedTab
   const filterDataBySelectedTab = (tab) => {
@@ -66,20 +72,25 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
 
   const renderTableRows = (subSection) => {
     if (!subSection.data) return;
+
+    // Determine the second-to-last property name
+    const propertyNames =
+      subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
+    const secondToLastProperty =
+      propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
+
+    // Ensure we have a valid second-to-last property
+    const maxValue = secondToLastProperty
+      ? Math.max(
+          ...subSection.data.map((item) =>
+            parseFloat(item[secondToLastProperty])
+          )
+        )
+      : 1;
+
     return subSection.data.map((item) => {
-      // Get the property names of the item
-      const propertyNames = Object.keys(item);
-      // Check if there are at least two properties
-      const secondToLastProperty =
-        propertyNames.length > 1
-          ? propertyNames[propertyNames.length - 2]
-          : null;
-
-      // Ensure we have a valid second-to-last property
       const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
-
-      // Convert chartValue to a percentage and format it correctly
-      const chartPercentage = parseFloat(chartValue);
+      const chartPercentage = (parseFloat(chartValue) / maxValue) * 100;
 
       return (
         <tr key={item.Rank}>
@@ -88,18 +99,22 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
           </td>
           <td className="td_img">
             <span className="d-flex align-items-center">
-            <img alt="Image" src={item.LogoUrl} className="logo_image" />
-            <span>{currentLanguage === LANGUAGES.EN
-              ? item.ShortNameEn
-              : item.ShortNameAr}</span>
+              <img alt="Image" src={item.LogoUrl} className="logo_image" />
+              <span>
+                {currentLanguage === LANGUAGES.EN
+                  ? item.ShortNameEn
+                  : item.ShortNameAr}
               </span>
+            </span>
           </td>
           <td>
-            {/* TODO: need to fix how the percentage is computed here */}
             <div className="charts_table_bg">
-              <span className="bg"></span>
+              <span
+                className="bg"
+                style={{ width: `${chartPercentage}%` }}
+              ></span>
               <span>
-                <NumberFormatter value={chartPercentage} />
+                <NumberFormatter value={chartValue} />
               </span>
             </div>
           </td>
