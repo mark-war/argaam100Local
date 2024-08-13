@@ -65,7 +65,7 @@ export const createChartParams = (params, args, lang) => {
       id: parseInt(configuration.cid, 10),
       filterid: parseInt(configuration.fid, 10),
       marketid: 3,
-      fiscalperiodtypeid: parseInt(configuration.config[0].ftid, 10),
+      fiscalperiodtypeid: configuration.config[0].ftid, //parseInt(configuration.config[0].ftid, 10),
       noofcompanies: parseInt(configuration.noc, 10),
       language: LANGUAGEID[lang.toUpperCase()],
     };

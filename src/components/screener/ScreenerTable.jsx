@@ -69,13 +69,14 @@ const ScreenerTable = ({
   const customSort = (data, key, direction) => {
     // Define the group for each value
     const getGroup = (value) => {
+      if (value === "-" || value === undefined || value === null) return 3; // Dash values (last group)
       if (value < 0) return 2; // Negatives (last group)
       if (value >= 100) return 1; // Positives >= 100 (second group)
       return 0; // Positives < 100 (first group)
     };
 
     // Define the fixed group order
-    const groupOrder = [0, 1, 2]; // Fixed order: positives < 100, positives >= 100, negatives
+    const groupOrder = [0, 1, 2, 3]; // Fixed order: positives < 100, positives >= 100, negatives
 
     // Separate data into groups
     const groups = groupOrder.reduce((acc, group) => {
@@ -93,6 +94,10 @@ const ScreenerTable = ({
       groups[group].sort((a, b) => {
         const aValue = a[key];
         const bValue = b[key];
+
+        // Treat dash values as equal within their group
+        if (aValue === "-" || bValue === "-") return 0;
+
         return direction === "asc" ? aValue - bValue : bValue - aValue;
       });
     });
@@ -118,10 +123,16 @@ const ScreenerTable = ({
         return customSort(filteredData, sortConfig.key, sortConfig.direction);
       } else {
         return [...filteredData].sort((a, b) => {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
+          const aValue = a[sortConfig.key] === "-" ? null : a[sortConfig.key];
+          const bValue = b[sortConfig.key] === "-" ? null : b[sortConfig.key];
+
+          if (aValue === null) return 1; // Place dash at the bottom
+          if (bValue === null) return -1; // Place dash at the bottom
+
+          if (aValue < bValue) {
             return sortConfig.direction === "asc" ? -1 : 1;
           }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
+          if (aValue > bValue) {
             return sortConfig.direction === "asc" ? 1 : -1;
           }
           return 0;
@@ -132,18 +143,27 @@ const ScreenerTable = ({
   }, [filteredData, sortConfig]);
 
   // Calculate total pages
-  const totalPages = Math.ceil(
-    (filteredData.length + (pinnedRow ? 1 : 0)) / itemsPerPage
-  );
+  // const totalPages = Math.ceil(
+  //   (filteredData.length + (pinnedRow ? 1 : 0)) / itemsPerPage
+  // );
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   // Ensure currentPage is within bounds
   const validCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
 
   // Get paginated rows
   const getPaginatedRows = () => {
-    const indexOfLastRow =
-      validCurrentPage * itemsPerPage - (pinnedRow ? 1 : 0);
-    const indexOfFirstRow = indexOfLastRow - itemsPerPage + (pinnedRow ? 1 : 0);
+    // const indexOfLastRow =
+    //   validCurrentPage * itemsPerPage - (pinnedRow ? 1 : 0);
+    // const indexOfFirstRow = indexOfLastRow - itemsPerPage + (pinnedRow ? 1 : 0);
+    // return sortedData.slice(indexOfFirstRow, indexOfLastRow);
+    // Calculate the index of the last row, considering the pinnedRow if it exists
+    const indexOfLastRow = validCurrentPage * itemsPerPage;
+
+    // Calculate the index of the first row
+    const indexOfFirstRow = indexOfLastRow - itemsPerPage;
+
+    // Slice the sorted data for the current page
     return sortedData.slice(indexOfFirstRow, indexOfLastRow);
   };
 
@@ -220,6 +240,9 @@ const ScreenerTable = ({
                               >
                                 <NumberFormatter
                                   value={pinnedRow[column.key]}
+                                  isPEColumn={column.key
+                                    .toLowerCase()
+                                    .includes("p/e")}
                                 />
                               </span>
                             )}
@@ -290,7 +313,12 @@ const ScreenerTable = ({
                                     row[column.key] < 0 ? "red" : "inherit",
                                 }}
                               >
-                                <NumberFormatter value={row[column.key]} />
+                                <NumberFormatter
+                                  value={row[column.key]}
+                                  isPEColumn={column.key
+                                    .toLowerCase()
+                                    .includes("p/e")}
+                                />
                               </span>
                             )}
                           </td>

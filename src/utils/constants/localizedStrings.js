@@ -33,6 +33,8 @@ export const strings = new LocalizedStrings({
     profit: "Profit (TTM)",
     rank: "Rank",
     charts: "Charts",
+    neg: "NEG",
+    moreThan100: "More than 100",
   },
   ar: {
     topTen: "أعلى 10",
@@ -65,6 +67,8 @@ export const strings = new LocalizedStrings({
     profit: "(اخر 12) الأرباح",
     rank: "رتبة",
     charts: "الرسوم البيانية",
+    neg: "سالب",
+    moreThan100: "أكبر من 100",
   },
 });
 
@@ -83,9 +87,37 @@ export const PAGES = {
   TOPTEN: 2,
 };
 
+export const SECTIONS = {
+  STOCK_SCREENER: 3,
+  TOPTEN_COMPANIES: 4,
+};
+
+export const TABS = {
+  S_PE: 5,
+  S_FINANCIAL_RATIO: 6,
+  S_PERFORMANCE_AND_SIZE: 7,
+
+  T_RANKING: 8,
+  T_STOCK_PERFORMANCE: 9,
+  T_ARR_MULTIPLE: 10,
+  T_FINANCIAL_RATIO: 11,
+  T_GROWTH_AND_DIVIDENDS: 12,
+};
+
 export const SUBTABS = {
   HISTORICAL_EVOLUTION: 1,
   LAST_CLOSE: 2,
   LAST_FISCAL_PERIOD: 3,
   TTM: 4,
+
+  SP_DAY: 5,
+  SP_MONTH: 6,
+  SP_3_MONTHS: 7,
+  SP_5_YEARS: 8,
+  SP_FROM_BEGINNING_OF_THE_YEAR: 9,
+
+  GD_3_YEARS: 10,
+  GD_5_YEARS: 11,
+  GD_7_YEARS: 12,
+  GD_10_YEARS: 13,
 };

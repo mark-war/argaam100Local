@@ -19,12 +19,20 @@ export const fetchFieldConfigurationData = createAsyncThunk(
   }
 );
 
-function extractDistinctSectors(screnerData) {
+function extractDistinctSectors(screenerData) {
+  // Check if screenerData is null or undefined
+  if (!screenerData) {
+    return {
+      distinctSectorsArabic: [],
+      distinctSectorsEnglish: [],
+    };
+  }
+
   const distinctSectorsAr = new Set(); // To store distinct Arabic sector names
   const distinctSectorsEn = new Set(); // To store distinct English sector names
 
   // Iterate through the data
-  screnerData.forEach((item) => {
+  screenerData.forEach((item) => {
     if (item.SectorNameAr) {
       distinctSectorsAr.add(item.SectorNameAr);
     }
@@ -82,44 +90,60 @@ export const fetchScreenerData = createAsyncThunk(
       const results = await Promise.all(
         processedData.map(async (data) => {
           try {
-            /* THIS LOGIC IS FOR PASSING ALL encryptedConfigJsons TO BE PROCESSED BY THE API
-            // const responses = await Promise.all(
-            //   data.encryptedConfigJsons.map(async (encryptedConfig) => {
-            //     // console.log("IDENTIFIER: ", data.identifier);
-            //     // console.log("ENCRYPTED JSON: ", encryptedConfig);
-            //     const response = await fetchScreenerTableData(encryptedConfig);
-            //     const extractedSectors = extractDistinctSectors(response.data);
-            //     return {
-            //       data: response.data,
-            //       sectors: {
-            //         ar: extractedSectors.distinctSectorsArabic || [], // Use empty array if null
-            //         en: extractedSectors.distinctSectorsEnglish || [], // Use empty array if null
-            //       },
-            //     };
-            //   })
-            // );
-            */
+            const subTabsCount = data.subTabs.length;
 
-            // Process the first item (index 0)
-            const encryptedConfig = data.encryptedConfigJsons[0];
-            const response = await fetchScreenerTableData(encryptedConfig);
-            const extractedSectors = extractDistinctSectors(response.data);
+            // New process: If subtabs count is more than 2
+            if (subTabsCount > 2) {
+              const responses = await Promise.all(
+                data.encryptedConfigJsons.map(
+                  async (encryptedConfig, index) => {
+                    const response = await fetchScreenerTableData(
+                      encryptedConfig
+                    );
 
-            // Store the remaining items (index > 0) in a constant
-            const historicalEncryptedConfig =
-              data.encryptedConfigJsons.slice(1);
+                    // Extract only the serializable parts of the response
+                    const { data: responseData } = response;
 
-            // Combine responses if necessary or handle separately
-            return {
-              identifier: data.identifier,
-              data: response.data || {}, // Include primary response
-              chartData: historicalEncryptedConfig[0] || null, // Add a check for undefined
-              sectors: {
-                ar: extractedSectors.distinctSectorsArabic || [],
-                en: extractedSectors.distinctSectorsEnglish || [],
-              },
-              subTabs: data.subTabs,
-            };
+                    return {
+                      data: responseData || {},
+                    };
+                  }
+                )
+              );
+
+              return {
+                identifier: data.identifier,
+                data: responses,
+                chartData: "",
+                sectors: null,
+                subTabs: data.subTabs, // Store the responses corresponding to each sub-tab
+              };
+            } else {
+              // Process the first item (index 0)
+              const encryptedConfig = data.encryptedConfigJsons[0];
+              const response = await fetchScreenerTableData(encryptedConfig);
+
+              // Extract only the serializable parts of the response
+              const { data: responseData } = response;
+
+              const extractedSectors = extractDistinctSectors(responseData);
+
+              // Store the remaining items (index > 0) in a constant
+              const historicalEncryptedConfig =
+                data.encryptedConfigJsons.slice(1);
+
+              // Combine responses if necessary or handle separately
+              return {
+                identifier: data.identifier,
+                data: responseData || {}, // Include primary response
+                chartData: historicalEncryptedConfig[0] || null, // Add a check for undefined
+                sectors: {
+                  ar: extractedSectors.distinctSectorsArabic || [],
+                  en: extractedSectors.distinctSectorsEnglish || [],
+                },
+                subTabs: data.subTabs,
+              };
+            }
           } catch (error) {
             console.error("Error in processing data:", error);
             return null; // Handle errors gracefully

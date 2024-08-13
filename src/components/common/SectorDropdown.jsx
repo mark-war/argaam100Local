@@ -27,14 +27,27 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [dropdownRef]);
 
   useEffect(() => {
     setSelectedOptions(selectedSectors || []);
   }, [selectedSectors]);
 
+  useEffect(() => {
+    if (isSelect && dropdownRef.current) {
+      const input = dropdownRef.current.querySelector(".search-input");
+      if (input) {
+        input.focus(); // Focus on the search textbox when dropdown is opened
+      }
+    }
+  }, [isSelect]);
+
+  // const handleSelect = () => {
+  //   setIsSelect(!isSelect);
+  // };
+
   const handleSelect = () => {
-    setIsSelect(!isSelect);
+    setIsSelect((prev) => !prev);
   };
 
   const handleSelectedOptionsChange = (newSelectedOptions) => {

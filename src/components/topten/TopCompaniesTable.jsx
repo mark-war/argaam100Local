@@ -74,53 +74,15 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     if (!subSection.data) return;
 
     // Determine the second-to-last property name
-    const propertyNames =
-      subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
-    const secondToLastProperty =
-      propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
+    return ProcessSubSection(subSection, currentLanguage);
+  };
 
-    // Ensure we have a valid second-to-last property
-    const maxValue = secondToLastProperty
-      ? Math.max(
-          ...subSection.data.map((item) =>
-            parseFloat(item[secondToLastProperty])
-          )
-        )
-      : 1;
+  const renderMultipleTableRows = (subSection) => {
+    console.log("SUBSECTION: ", subSection.data);
+    if (!subSection.data) return;
 
-    return subSection.data.map((item) => {
-      const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
-      const chartPercentage = (parseFloat(chartValue) / maxValue) * 100;
-
-      return (
-        <tr key={item.Rank}>
-          <td>
-            <span className="bg_tag">{item.Rank}</span>
-          </td>
-          <td className="td_img">
-            <span className="d-flex align-items-center">
-              <img alt="Image" src={item.LogoUrl} className="logo_image" />
-              <span>
-                {currentLanguage === LANGUAGES.EN
-                  ? item.ShortNameEn
-                  : item.ShortNameAr}
-              </span>
-            </span>
-          </td>
-          <td>
-            <div className="charts_table_bg">
-              <span
-                className="bg"
-                style={{ width: `${chartPercentage}%` }}
-              ></span>
-              <span>
-                <NumberFormatter value={chartValue} />
-              </span>
-            </div>
-          </td>
-        </tr>
-      );
-    });
+    // Determine the second-to-last property name
+    return ProcessSubSection(subSection.data, currentLanguage);
   };
 
   const renderChart = (subSection) => {
@@ -145,6 +107,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
           const sortedSubTabs = [...subSection.subTabs].sort(
             (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
           );
+          const subTabCount = sortedSubTabs.length;
 
           return (
             <Col lg={6} key={subSectionIndex}>
@@ -163,7 +126,12 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
                           <button
                             className={`nav-link cursor-pointer ${
                               activeSubTabs[subSectionIndex] ===
-                              SUBTABS[transformColumnName(subTab.tabNameEn)]
+                              SUBTABS[
+                                subTabCount > 2
+                                  ? "SP_" +
+                                    transformColumnName(subTab.tabNameEn)
+                                  : transformColumnName(subTab.tabNameEn)
+                              ]
                                 ? "active"
                                 : ""
                             }`}
@@ -209,7 +177,11 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
                           </tr>
                         </thead>
 
-                        <tbody>{renderTableRows(subSection)}</tbody>
+                        <tbody>
+                          {subTabCount === 2
+                            ? renderTableRows(subSection)
+                            : null}
+                        </tbody>
                       </Table>
                     </div>
                   )}
@@ -239,10 +211,10 @@ TopCompaniesTable.propTypes = {
       ).isRequired,
       data: PropTypes.arrayOf(
         PropTypes.shape({
-          Rank: PropTypes.number.isRequired,
-          ShortNameEn: PropTypes.string.isRequired,
-          ShortNameAr: PropTypes.string.isRequired,
-          LogoUrl: PropTypes.string.isRequired,
+          Rank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // Make Rank optional
+          ShortNameEn: PropTypes.string,
+          ShortNameAr: PropTypes.string,
+          LogoUrl: PropTypes.string,
         })
       ).isRequired,
     })
@@ -250,3 +222,53 @@ TopCompaniesTable.propTypes = {
 };
 
 export default TopCompaniesTable;
+
+function ProcessSubSection(subSection, currentLanguage) {
+  const propertyNames =
+    subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
+  const secondToLastProperty =
+    propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
+
+  // Ensure we have a valid second-to-last property
+  const maxValue = secondToLastProperty
+    ? Math.max(
+        ...subSection.data.map((item) => parseFloat(item[secondToLastProperty]))
+      )
+    : 1;
+
+  return subSection.data.map((item, index) => {
+    const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
+    const chartPercentage = (parseFloat(chartValue) / maxValue) * 100;
+
+    return (
+      <tr key={index}>
+        <td>
+          <span className="bg_tag">
+            {item.Rank !== undefined ? item.Rank : "-"}
+          </span>
+        </td>
+        <td className="td_img">
+          <span className="d-flex align-items-center">
+            <img alt="Image" src={item.LogoUrl} className="logo_image" />
+            <span>
+              {currentLanguage === LANGUAGES.EN
+                ? item.ShortNameEn
+                : item.ShortNameAr}
+            </span>
+          </span>
+        </td>
+        <td>
+          <div className="charts_table_bg">
+            <span
+              className="bg"
+              style={{ width: `${chartPercentage}%` }}
+            ></span>
+            <span>
+              <NumberFormatter value={chartValue} />
+            </span>
+          </div>
+        </td>
+      </tr>
+    );
+  });
+}

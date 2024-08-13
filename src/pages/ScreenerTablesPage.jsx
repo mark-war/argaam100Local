@@ -190,7 +190,7 @@ const ScreenerTablesPage = () => {
           // Add the value to the correct column
           const keys = Object.keys(row);
           const secondToLastKey = keys[keys.length - 2];
-          existingCompany[fieldName] = row[secondToLastKey] || 0;
+          existingCompany[fieldName] = row[secondToLastKey] ?? "-"; // Use dash if undefined or null
         });
       });
 
@@ -201,7 +201,7 @@ const ScreenerTablesPage = () => {
     formattedDataMap.forEach((data) => {
       columnKeys.forEach((key) => {
         if (data[key] === undefined) {
-          data[key] = 0.0; // Set missing columns to 0
+          data[key] = "-"; // Set missing columns to - (dash)
         }
       });
     });

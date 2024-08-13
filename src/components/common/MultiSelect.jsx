@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { strings } from "../../utils/constants/localizedStrings";
 
 const MultiSelect = ({ options, selectedOptions, onChange }) => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [filteredOptions, setFilteredOptions] = useState(options); // State for filtered options
+  const searchInputRef = useRef(null); // Ref for the search input
 
   const toggleOption = (option) => {
     const currentIndex = selectedOptions.indexOf(option);
@@ -31,15 +32,30 @@ const MultiSelect = ({ options, selectedOptions, onChange }) => {
     );
   };
 
+  // Clear selected options and focus the search input
+  const clearSelection = () => {
+    onChange([]);
+    setSearchTerm(""); // Optionally clear the search term
+    if (searchInputRef.current) {
+      searchInputRef.current.focus(); // Focus the search input
+    }
+  };
+
   return (
     <div className="dropdown-menu">
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder={strings.search}
-        className="search-input"
-      />
+      <div className="search-container">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder={strings.search}
+          className="search-input"
+          ref={searchInputRef} // Attach ref here
+        />
+        <button type="button" onClick={clearSelection} className="clear-button">
+          X
+        </button>
+      </div>
       {filteredOptions.length > 0 ? (
         filteredOptions.map((option) => (
           <div key={option}>

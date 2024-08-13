@@ -432,12 +432,32 @@ div {
   overflow-y: auto;
 }
 
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Space between search input and options */
+}
+
 .search-input {
-  width: 100%;
+  width: calc(100% - 40px); /* Adjust width to accommodate the clear button */
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-bottom: 8px; /* Space between search input and options */
+}
+
+.clear-button {
+  background: #f38020;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.clear-button:hover {
+  background: #d9641d;
 }
 
 .no-results {
