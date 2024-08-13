@@ -939,9 +939,18 @@ div {
   border-bottom: 7px solid #154ac3;
 }
 
+.table_chart .table_layout.table td:nth-child(2) {
+  width: 26%;
+}
+
 /* Media Query Starts */
 
 @media screen and (min-width: 1700px) {
+
+  .table_chart .table_layout.table td:nth-child(2) {
+    width: 22%;
+  }
+
   .tabs_nav.navbar-nav .nav-link {
     font-size: 1.313rem;
   }
@@ -1131,6 +1140,10 @@ div {
     font-size: 0.938rem;
   }
 
+  .table_chart tbody td:nth-child(3), .table_chart th:nth-child(3) {
+    width: 60% !important;
+   }
+
   [lang="ar"] .container-fluid.px-layout,
   .px-layout {
     margin-right: 1rem;
@@ -1308,6 +1321,7 @@ div {
   .heading_lg {
     font-size: 15px;
   }
+  
 
   .multi_select_toggle {
     min-width: 150px;
@@ -1618,3 +1632,4 @@ div {
 .heading_lg strong {
   font-weight: 500;
 }
+
