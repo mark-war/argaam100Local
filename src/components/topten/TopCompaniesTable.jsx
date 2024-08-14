@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { Row, Col, Card, Table } from "react-bootstrap";
 import {
   strings,
   LANGUAGES,
-  LANGUAGEID,
   SUBTABS,
+  TABS,
 } from "../../utils/constants/localizedStrings";
 import { useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
-import config from "../../utils/config";
+import RaceChart from "../common/RaceChart";
+import { localized } from "../../utils/localization";
+import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
 
 const TopCompaniesTable = ({ selectedTab, data }) => {
   const transformColumnName = (fieldName) => {
@@ -17,6 +19,21 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
       .split(" ")
       .map((word) => word.toUpperCase())
       .join("_");
+  };
+
+  // Function to get the sub-tab key dynamically
+  const getSubTabKey = (subTabName) => {
+    const transformedName = transformColumnName(subTabName);
+
+    if (selectedTab === TABS.T_STOCK_PERFORMANCE) {
+      return `SP_${transformedName}`;
+    }
+
+    if (selectedTab === TABS.T_GROWTH_AND_DIVIDENDS) {
+      return `GD_${transformedName}`;
+    }
+
+    return transformedName;
   };
 
   const currentLanguage = useSelector(
@@ -31,16 +48,22 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
       const selectedSubTab = section.subTabs.find(
         (subTab) => subTab.isSelected === "1"
       );
-      const activeTab = selectedSubTab
-        ? SUBTABS[transformColumnName(selectedSubTab.tabNameEn)]
-        : 1;
+      const subTabKey = getSubTabKey(
+        selectedSubTab.tabNameEn,
+        section.subTabs.length
+      );
+      const subTabValue = SUBTABS[subTabKey];
+      const activeTab = selectedSubTab ? subTabValue : 1;
       return activeTab;
     });
   };
 
-  const [activeSubTabs, setActiveSubTabs] = useState(
+  const [activeSubTabs, setActiveSubTabs] = useState(() =>
     initializeActiveSubTabs(data)
   );
+  // const [selectedSubTab, setSelectedSubTab] = useState(() =>
+  //   initializeActiveSubTabs(data)
+  // );
 
   // Effect to reset activeSubTabs only when selectedTab changes on initial render
   useEffect(() => {
@@ -59,51 +82,141 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     return data.filter((item) => item.identifier.startsWith(tab));
   };
 
+  //change active/selected sub tab
   const handleSubTabClick = (subSectionIndex, subTabName) => {
-    const value = SUBTABS[transformColumnName(subTabName)];
+    const subTabKey = getSubTabKey(subTabName, 0);
+    const value = SUBTABS[subTabKey];
     setActiveSubTabs((prevActiveSubTabs) =>
       prevActiveSubTabs.map((tab, index) =>
         index === subSectionIndex ? value : tab
       )
     );
+    // setSelectedSubTab(value);
+    // console.log("activeSubTabs: ", activeSubTabs);
+    // console.log("selectedSubTab: ", selectedSubTab);
   };
 
-  const filteredData = filterDataBySelectedTab(selectedTab);
+  const filteredData = useMemo(
+    () => filterDataBySelectedTab(selectedTab),
+    [selectedTab, data]
+  );
 
-  const renderTableRows = (subSection) => {
-    if (!subSection.data) return;
+  //constant table header for topten page
+  const headers = [
+    { label: strings.rank },
+    { label: strings.companies },
+    { label: strings.charts },
+  ];
 
-    // Determine the second-to-last property name
-    return ProcessSubSection(subSection, currentLanguage);
-  };
-
-  const renderMultipleTableRows = (subSection) => {
-    console.log("SUBSECTION: ", subSection.data);
-    if (!subSection.data) return;
-
-    // Determine the second-to-last property name
-    return ProcessSubSection(subSection.data, currentLanguage);
-  };
-
-  const renderChart = (subSection) => {
-    const formattedChartUrl = `${config.chartsUrl}/race-bar-chart?params=${
-      subSection.chartData
-    }&language=${LANGUAGEID[currentLanguage.toUpperCase()]}`;
-
+  // Helper function to render table headers
+  const renderTableHeaders = (columns) => {
     return (
-      <embed
-        className="race_chart"
-        src={`${formattedChartUrl}`}
-        //src="https://chartsqa.edanat.com/charts/race-bar-chart?params=RnJMOW5jclFzcmRPUUpDOWZxQkpJc0dxZ0FoM080VTZyUGUwb0cyWkVtUmJUT0dNZnVRUDZqOG5Zem8vektoL3pPS3BsbDdERVd5NzhUVlUzMWdUK3U1SE9iV3NxMjdEYnlkMkUzSkw1ZGV5UlQyaUJGSGo2MWZ5UHJseVRnOUc=&language=2"
-      ></embed>
+      <thead>
+        <tr>
+          {columns.map((column, index) => (
+            <th key={index}>{column.label}</th>
+          ))}
+        </tr>
+      </thead>
     );
   };
+
+  // Helper function to render a single row of data
+  const renderTableRows = (subSection) => {
+    if (!subSection.data) return null;
+
+    return (
+      <>
+        {renderTableHeaders(headers)}
+        <tbody>{ProcessSubSection(subSection, currentLanguage)}</tbody>
+      </>
+    );
+  };
+
+  // Helper function to render multiple rows of data
+  const renderMultipleTableRows = (subSection, subSectionIndex) => {
+    if (!subSection.data) return null;
+
+    // Find the active sub-tab index within the subTabs array
+    const activeSubTabIndex = subSection.subTabs.findIndex(
+      (subTab) =>
+        SUBTABS[getSubTabKey(localized(subTab, "tabName", currentLanguage))] ===
+        activeSubTabs[subSectionIndex]
+    );
+
+    const activeData = subSection.data[activeSubTabIndex];
+
+    if (!activeData) return null;
+
+    return (
+      <>
+        {renderTableHeaders(headers)}
+        <tbody>{ProcessSubSection(activeData, currentLanguage)}</tbody>
+      </>
+    );
+  };
+
+  // Function to process and render data based on subsection type
+  function ProcessSubSection(subSection, currentLanguage) {
+    if (!subSection.data) return null;
+    const propertyNames =
+      subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
+    const secondToLastProperty =
+      propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
+
+    // const maxValue = secondToLastProperty
+    //   ? Math.max(
+    //       ...subSection.data.map((item) =>
+    //         parseFloat(item[secondToLastProperty])
+    //       )
+    //     )
+    //   : 1;
+
+    const rankToBarWidth = generateRankToBarWidth(10, 85, 5);
+
+    return subSection.data.map((item, index) => {
+      const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
+      const rank = item.Rank !== undefined ? item.Rank : null;
+      const chartWidth = rankToBarWidth[rank] || "0%";
+      // const chartPercentage = (parseFloat(chartValue) / maxValue) * 100;
+
+      return (
+        <tr key={index}>
+          <td>
+            <span className="bg_tag">
+              {item.Rank !== undefined ? item.Rank : "-"}
+            </span>
+          </td>
+          <td className="td_img">
+            <span className="d-flex align-items-center">
+              <img alt="Image" src={item.LogoUrl} className="logo_image" />
+              <span>
+                {
+                  /* {currentLanguage === LANGUAGES.EN
+                  ? item.ShortNameEn
+                  : item.ShortNameAr} */
+                  localized(item, "ShortName", currentLanguage)
+                }
+              </span>
+            </span>
+          </td>
+          <td>
+            <div className="charts_table_bg">
+              <span className="bg" style={{ width: `${chartWidth}` }}></span>
+              <span>
+                <NumberFormatter value={chartValue} />
+              </span>
+            </div>
+          </td>
+        </tr>
+      );
+    });
+  }
 
   return (
     <div className="px-layout col_space mt-4 pt-1">
       <Row>
         {filteredData.map((subSection, subSectionIndex) => {
-          // Create sortedSubTabs within the map function for each subSection
           const sortedSubTabs = [...subSection.subTabs].sort(
             (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
           );
@@ -119,69 +232,74 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
                 </div>
                 <div className="col-6">
                   <div className="flex-fill justify-content-end">
-                    {/* Tabs Starts */}
                     <ul className="tabs_nav tabs_inner navbar-nav align-items-center flex-row justify-content-end">
-                      {sortedSubTabs.map((subTab, subTabIndex) => (
-                        <li className="nav-item" key={subTabIndex}>
-                          <button
-                            className={`nav-link cursor-pointer ${
-                              activeSubTabs[subSectionIndex] ===
-                              SUBTABS[
-                                subTabCount > 2
-                                  ? "SP_" +
-                                    transformColumnName(subTab.tabNameEn)
-                                  : transformColumnName(subTab.tabNameEn)
-                              ]
-                                ? "active"
-                                : ""
-                            }`}
-                            onClick={() =>
-                              handleSubTabClick(
-                                subSectionIndex,
-                                currentLanguage === LANGUAGES.EN
+                      {sortedSubTabs.map((subTab, subTabIndex) => {
+                        // Determine the dynamic key based on the current sub-tab and count
+                        const subTabKey = getSubTabKey(
+                          localized(subTab, "tabName", currentLanguage),
+                          // currentLanguage === LANGUAGES.EN
+                          //   ? subTab.tabNameEn
+                          //   : subTab.tabNameAr,
+                          subTabCount
+                        );
+
+                        return (
+                          <li className="nav-item" key={subTabIndex}>
+                            <button
+                              className={`nav-link cursor-pointer ${
+                                activeSubTabs[subSectionIndex] ===
+                                SUBTABS[subTabKey]
+                                  ? "active"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleSubTabClick(
+                                  subSectionIndex,
+                                  localized(subTab, "tabName", currentLanguage)
+                                  // currentLanguage === LANGUAGES.EN
+                                  //   ? subTab.tabNameEn
+                                  //   : subTab.tabNameAr
+                                )
+                              }
+                            >
+                              <span>
+                                {
+                                  /* {currentLanguage === LANGUAGES.EN
                                   ? subTab.tabNameEn
-                                  : subTab.tabNameAr
-                              )
-                            }
-                          >
-                            <span>
-                              {currentLanguage === LANGUAGES.EN
-                                ? subTab.tabNameEn
-                                : subTab.tabNameAr}
-                            </span>
-                          </button>
-                        </li>
-                      ))}
+                                  : subTab.tabNameAr} */
+                                  localized(subTab, "tabName", currentLanguage)
+                                }
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
                     </ul>
-                    {/* Tabs Ends */}
                   </div>
                 </div>
               </div>
 
-              {/* Card Rendering */}
               <Card className="rounded border-0 table_chart">
                 <Card.Body className="px-layout bg-white rounded">
-                  {activeSubTabs[subSectionIndex] === 1 && (
+                  {activeSubTabs[subSectionIndex] ===
+                    SUBTABS.HISTORICAL_EVOLUTION && (
                     <div className="chart-responsive">
-                      {renderChart(subSection)}
+                      <RaceChart
+                        chartData={subSection.chartData}
+                        currentLanguage={currentLanguage}
+                      />
                     </div>
                   )}
-                  {activeSubTabs[subSectionIndex] !== 1 && (
+                  {activeSubTabs[subSectionIndex] !==
+                    SUBTABS.HISTORICAL_EVOLUTION && (
                     <div className="table-responsive">
                       <Table className="table_layout" style={{ width: "100%" }}>
-                        <thead>
-                          <tr>
-                            <th>{strings.rank}</th>
-                            <th>{strings.companies}</th>
-                            <th>{strings.charts}</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {subTabCount === 2
-                            ? renderTableRows(subSection)
-                            : null}
-                        </tbody>
+                        {subTabCount === 2
+                          ? renderTableRows(subSection)
+                          : renderMultipleTableRows(
+                              subSection,
+                              subSectionIndex
+                            )}
                       </Table>
                     </div>
                   )}
@@ -212,9 +330,9 @@ TopCompaniesTable.propTypes = {
       data: PropTypes.arrayOf(
         PropTypes.shape({
           Rank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // Make Rank optional
+          LogoUrl: PropTypes.string,
           ShortNameEn: PropTypes.string,
           ShortNameAr: PropTypes.string,
-          LogoUrl: PropTypes.string,
         })
       ).isRequired,
     })
@@ -222,53 +340,3 @@ TopCompaniesTable.propTypes = {
 };
 
 export default TopCompaniesTable;
-
-function ProcessSubSection(subSection, currentLanguage) {
-  const propertyNames =
-    subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
-  const secondToLastProperty =
-    propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
-
-  // Ensure we have a valid second-to-last property
-  const maxValue = secondToLastProperty
-    ? Math.max(
-        ...subSection.data.map((item) => parseFloat(item[secondToLastProperty]))
-      )
-    : 1;
-
-  return subSection.data.map((item, index) => {
-    const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
-    const chartPercentage = (parseFloat(chartValue) / maxValue) * 100;
-
-    return (
-      <tr key={index}>
-        <td>
-          <span className="bg_tag">
-            {item.Rank !== undefined ? item.Rank : "-"}
-          </span>
-        </td>
-        <td className="td_img">
-          <span className="d-flex align-items-center">
-            <img alt="Image" src={item.LogoUrl} className="logo_image" />
-            <span>
-              {currentLanguage === LANGUAGES.EN
-                ? item.ShortNameEn
-                : item.ShortNameAr}
-            </span>
-          </span>
-        </td>
-        <td>
-          <div className="charts_table_bg">
-            <span
-              className="bg"
-              style={{ width: `${chartPercentage}%` }}
-            ></span>
-            <span>
-              <NumberFormatter value={chartValue} />
-            </span>
-          </div>
-        </td>
-      </tr>
-    );
-  });
-}

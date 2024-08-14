@@ -5,6 +5,7 @@ import TableHeader from "./TableHeader";
 import { useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
 import { LANGUAGES } from "../../utils/constants/localizedStrings";
+import ScreenerPagination from "./ScreenerPagination";
 
 const ScreenerTable = ({
   data,
@@ -142,28 +143,13 @@ const ScreenerTable = ({
     return filteredData;
   }, [filteredData, sortConfig]);
 
-  // Calculate total pages
-  // const totalPages = Math.ceil(
-  //   (filteredData.length + (pinnedRow ? 1 : 0)) / itemsPerPage
-  // );
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-  // Ensure currentPage is within bounds
   const validCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
 
   // Get paginated rows
   const getPaginatedRows = () => {
-    // const indexOfLastRow =
-    //   validCurrentPage * itemsPerPage - (pinnedRow ? 1 : 0);
-    // const indexOfFirstRow = indexOfLastRow - itemsPerPage + (pinnedRow ? 1 : 0);
-    // return sortedData.slice(indexOfFirstRow, indexOfLastRow);
-    // Calculate the index of the last row, considering the pinnedRow if it exists
     const indexOfLastRow = validCurrentPage * itemsPerPage;
-
-    // Calculate the index of the first row
     const indexOfFirstRow = indexOfLastRow - itemsPerPage;
-
-    // Slice the sorted data for the current page
     return sortedData.slice(indexOfFirstRow, indexOfLastRow);
   };
 
@@ -180,7 +166,7 @@ const ScreenerTable = ({
   const argaamUrl = (companyID) => {
     return currentLanguage === LANGUAGES.AR
       ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
-      : `https://www.argaam.com/${currentLanguage}/tadawul/tasi/`;
+      : `https://www.argaam.com/en/tadawul/tasi/`;
   };
 
   return (
@@ -332,82 +318,13 @@ const ScreenerTable = ({
           </Card.Body>
         </Card>
 
-        <div className="pagination px-layout justify-content-end">
-          <Pagination>
-            <Pagination.Prev
-              disabled={validCurrentPage === 1}
-              onClick={() => handlePageChange(validCurrentPage - 1)}
-              className="custom-prev-btn"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="7.175"
-                height="12.657"
-                viewBox="0 0 7.175 12.657"
-              >
-                <g
-                  id="Polygon_31"
-                  data-name="Polygon 31"
-                  transform="translate(0 12.657) rotate(-90)"
-                  fill="#193168"
-                >
-                  {/* <path
-                    d="M 11.54963779449463 6.675000190734863 L 1.107739448547363 6.675000190734863 L 6.328688621520996 0.7558746337890625 L 11.54963779449463 6.675000190734863 Z"
-                    stroke="none"
-                  />
-                  <path
-                    d="M 6.328688621520996 1.511727809906006 L 2.215461730957031 6.175000190734863 L 10.44191551208496 6.175000190734863 L 6.328688621520996 1.511727809906006 M 6.328688621520996 0 L 12.65737819671631 7.175000190734863 L -9.5367431640625e-07 7.175000190734863 L 6.328688621520996 0 Z"
-                    stroke="none"
-                    fill="#193168"
-                  /> */}
-                  <path d="M 11.55 6.68 L 1.11 6.68 L 6.33 0.76 L 11.55 6.68 Z" />
-                  <path d="M 6.33 1.51 L 2.22 6.18 L 10.44 6.18 L 6.33 1.51 M 6.33 0 L 12.66 7.18 L 0 7.18 L 6.33 0 Z" />
-                </g>
-              </svg>
-              <span className="mr-4">Previous</span>
-            </Pagination.Prev>
-            {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
-              <Pagination.Item
-                key={startPage + index}
-                active={startPage + index === validCurrentPage}
-                onClick={() => handlePageChange(startPage + index)}
-              >
-                {startPage + index}
-              </Pagination.Item>
-            ))}
-            <Pagination.Next
-              onClick={() => handlePageChange(validCurrentPage + 1)}
-              disabled={validCurrentPage === totalPages}
-              className="custom-next-btn"
-            >
-              <span>Next</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 7.175 12.657"
-                height="12.657"
-                width="7.175"
-              >
-                <g
-                  xmlns="http://www.w3.org/2000/svg"
-                  transform="matrix(-1 0 0 -1 7.175 12.657)"
-                >
-                  {/* <path
-                    d="M 11.54963779449463 6.675000190734863 L 1.107739448547363 6.675000190734863 L 6.328688621520996 0.7558746337890625 L 11.54963779449463 6.675000190734863 Z"
-                    fill="#193168"
-                    stroke="none"
-                  />
-                  <path
-                    d="M 6.328688621520996 1.511727809906006 L 2.215461730957031 6.175000190734863 L 10.44191551208496 6.175000190734863 L 6.328688621520996 1.511727809906006 M 6.328688621520996 0 L 12.65737819671631 7.175000190734863 L -9.5367431640625e-07 7.175000190734863 L 6.328688621520996"
-                    fill="#193168"
-                    stroke="none"
-                  /> */}
-                  <path d="M 11.55 6.68 L 1.11 6.68 L 6.33 0.76 L 11.55 6.68 Z" />
-                  <path d="M 6.33 1.51 L 2.22 6.18 L 10.44 6.18 L 6.33 1.51 M 6.33 0 L 12.66 7.18 L 0 7.18 L 6.33 0 Z" />
-                </g>
-              </svg>
-            </Pagination.Next>
-          </Pagination>
-        </div>
+        <ScreenerPagination
+          validCurrentPage={validCurrentPage}
+          handlePageChange={handlePageChange}
+          startPage={startPage}
+          endPage={endPage}
+          totalPages={totalPages}
+        />
       </Col>
     </Row>
   );
