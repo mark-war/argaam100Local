@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import TopCompaniesSubHeader from "../components/topten/TopCompaniesSubHeader";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,26 +32,26 @@ const TopTenCompaniesPage = () => {
     setActiveTabLink(tab);
   };
 
-  useEffect(() => {
-    dispatch(fetchFieldConfigurationData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchFieldConfigurationData());
+  // }, [dispatch]);
 
-  useEffect(() => {
-    if (fieldConfigurations.length > 0) {
-      dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
-    }
-  }, [fieldConfigurations, dispatch]);
+  // useEffect(() => {
+  //   if (fieldConfigurations.length > 0) {
+  //     dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
+  //   }
+  // }, [fieldConfigurations, dispatch, currentLanguage]);
 
-  // Memoize tabLinksArray
-  const tabLinksArray = useMemo(
-    () =>
-      selectedSection?.tabs.map((tab) => ({
-        tabLinkId: tab.tabId,
-        nameEn: tab.tabNameEn,
-        nameAr: tab.tabNameAr,
-      })) || [],
-    [selectedSection]
-  );
+  // Memoize tabLinksArray to avoid recalculating it unnecessarily
+  const tabLinksArray = useMemo(() => {
+    if (!selectedSection) return [];
+
+    return selectedSection.tabs.map((tab) => ({
+      tabLinkId: tab.tabId,
+      nameEn: tab.tabNameEn,
+      nameAr: tab.tabNameAr,
+    }));
+  }, [selectedSection?.tabs]);
 
   useEffect(() => {
     if (tabLinksArray.length > 0) {
@@ -69,11 +69,11 @@ const TopTenCompaniesPage = () => {
     }, []);
   };
 
-  const renderTabContent = () => {
+  const renderTabContent = useCallback(() => {
     return (
       <TopCompaniesTable selectedTab={activeTabLink} data={getFilteredData()} />
     );
-  };
+  }, [activeTabLink, getFilteredData]);
 
   return (
     <MainLayout>

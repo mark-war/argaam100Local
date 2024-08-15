@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { Row, Col, Card, Table } from "react-bootstrap";
-import {
-  strings,
-  LANGUAGES,
-  SUBTABS,
-  TABS,
-} from "../../utils/constants/localizedStrings";
+import { strings, SUBTABS, TABS } from "../../utils/constants/localizedStrings";
 import { useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
 import RaceChart from "../common/RaceChart";
@@ -14,6 +9,8 @@ import { localized } from "../../utils/localization";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
 
 const TopCompaniesTable = ({ selectedTab, data }) => {
+  const embeddedContentRef = useRef(null); // Ref for the embedded content
+
   const transformColumnName = (fieldName) => {
     return fieldName
       .split(" ")
@@ -61,9 +58,6 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
   const [activeSubTabs, setActiveSubTabs] = useState(() =>
     initializeActiveSubTabs(data)
   );
-  // const [selectedSubTab, setSelectedSubTab] = useState(() =>
-  //   initializeActiveSubTabs(data)
-  // );
 
   // Effect to reset activeSubTabs only when selectedTab changes on initial render
   useEffect(() => {
@@ -91,9 +85,6 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
         index === subSectionIndex ? value : tab
       )
     );
-    // setSelectedSubTab(value);
-    // console.log("activeSubTabs: ", activeSubTabs);
-    // console.log("selectedSubTab: ", selectedSubTab);
   };
 
   const filteredData = useMemo(
@@ -212,6 +203,19 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
       );
     });
   }
+
+  useEffect(() => {
+    const handleLoad = () => setIsLoading(false);
+
+    const currentContent = embeddedContentRef.current;
+
+    if (currentContent) {
+      currentContent.addEventListener("load", handleLoad);
+      return () => {
+        currentContent.removeEventListener("load", handleLoad);
+      };
+    }
+  }, [embeddedContentRef]);
 
   return (
     <div className="px-layout col_space mt-4 pt-1">

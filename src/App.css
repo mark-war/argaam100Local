@@ -845,6 +845,32 @@ div {
   padding-left: 0 !important;
 }
 
+.race_chart_container {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .race_chart {
   width: 100%;
   height: 700px;
@@ -966,7 +992,6 @@ div {
 /* Media Query Starts */
 
 @media screen and (min-width: 1700px) {
-
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
   }
@@ -1160,9 +1185,10 @@ div {
     font-size: 0.938rem;
   }
 
-  .table_chart tbody td:nth-child(3), .table_chart th:nth-child(3) {
+  .table_chart tbody td:nth-child(3),
+  .table_chart th:nth-child(3) {
     width: 60% !important;
-   }
+  }
 
   [lang="ar"] .container-fluid.px-layout,
   .px-layout {
@@ -1341,7 +1367,6 @@ div {
   .heading_lg {
     font-size: 15px;
   }
-  
 
   .multi_select_toggle {
     min-width: 150px;
@@ -1652,4 +1677,3 @@ div {
 .heading_lg strong {
   font-weight: 500;
 }
-

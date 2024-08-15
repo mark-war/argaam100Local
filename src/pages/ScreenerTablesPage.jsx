@@ -32,9 +32,9 @@ const ScreenerTablesPage = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeTabLink, setActiveTabLink] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchFieldConfigurationData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchFieldConfigurationData());
+  // }, [dispatch]);
 
   const isDataReady = useMemo(
     () => fieldConfigurations.length > 0 && !isScreenerDataLoaded,
@@ -46,11 +46,11 @@ const ScreenerTablesPage = () => {
   // console.log("DISPATCH SCREENER");
   // dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
 
-  useEffect(() => {
-    if (isDataReady) {
-      dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
-    }
-  }, [fieldConfigurations, isDataReady, dispatch]);
+  // useEffect(() => {
+  //   if (isDataReady) {
+  //     dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
+  //   }
+  // }, [fieldConfigurations, isDataReady, dispatch]);
 
   const selectedPage = pages.find((page) => page.pageId === PAGES.SCREENER);
   const selectedSection = selectedPage?.sections.find(

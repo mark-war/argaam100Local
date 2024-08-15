@@ -78,9 +78,6 @@ export const fetchScreenerData = createAsyncThunk(
 
         // Create a unique identifier
         const identifier = `${item.TabID}-${item.FieldNameEn}-${item.UnitNameEn}`;
-
-        console.log("IDENTIFIER: ", identifier);
-        console.log("JSONS: ", encryptedConfigJsons);
         return {
           ...item,
           encryptedConfigJsons,
