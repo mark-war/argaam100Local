@@ -53,7 +53,7 @@ const MultiSelect = ({ options, selectedOptions, onChange }) => {
           ref={searchInputRef} // Attach ref here
         />
         <button type="button" onClick={clearSelection} className="clear-button">
-          X
+           ✕
         </button>
       </div>
       {filteredOptions.length > 0 ? (

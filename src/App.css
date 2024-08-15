@@ -1610,6 +1610,7 @@ div {
   margin-right: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
+  margin-left: 5px;
 }
 
 .multi_select_container .search-input {
@@ -1617,6 +1618,7 @@ div {
   margin-left: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
+  outline: 0 !important;
 }
 
 [lang="ar"] .table.table_layout th img:nth-child(2) {
@@ -1676,4 +1678,22 @@ div {
 
 .heading_lg strong {
   font-weight: 500;
+}
+
+.dropdown-menu .clear-button {
+  background: #fff;
+  color: #212529;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 6px;
+  margin-right: 7px;
+}
+
+[lang="ar"] .dropdown-menu .clear-button {
+  padding-top: 8px;
+  margin-right: 2px;
+  margin-left: 7px;
 }
