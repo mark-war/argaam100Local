@@ -10,6 +10,7 @@ import DefaultRedirect from "../common/DefaultRedirect";
 import useLanguageSwitch from "../../hooks/useLanguageSwitch";
 import LoadingScreen from "../common/LoadingScreen";
 import ErrorBoundary from "../common/ErrorBoundary";
+import LanguageProvider from "../../components/common/LanguageProvider";
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -37,9 +38,11 @@ function AppRoutes() {
           {/* Default Route Redirecting to default language Screener */}
           <Route path="/" element={<DefaultRedirect />} />
           <Route path="/:lang" element={<DefaultRedirect />} />
-          {/* Route to available Pages */}
-          <Route path="/:lang/screener" element={<ScreenerTablesPage />} />
-          <Route path="/:lang/top-10" element={<TopTenCompaniesPage />} />
+          <Route path="/:lang" element={<LanguageProvider />}>
+            <Route path="screener" element={<ScreenerTablesPage />} />
+            <Route path="top-10" element={<TopTenCompaniesPage />} />
+          </Route>
+          <Route path="*" element={<DefaultRedirect />} />
         </Routes>
       </Suspense>
     </ErrorBoundary>

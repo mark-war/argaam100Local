@@ -7,9 +7,11 @@ import NumberFormatter from "../common/NumberFormatter";
 import RaceChart from "../common/RaceChart";
 import { localized } from "../../utils/localization";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
+import { selectCurrentLanguage } from "../../redux/selectors";
 
 const TopCompaniesTable = ({ selectedTab, data }) => {
-  const embeddedContentRef = useRef(null); // Ref for the embedded content
+  const currentLanguage = useSelector(selectCurrentLanguage);
+  const isInitialMount = useRef(true); // Track the initial render
 
   const transformColumnName = (fieldName) => {
     return fieldName
@@ -22,52 +24,40 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
   const getSubTabKey = (subTabName) => {
     const transformedName = transformColumnName(subTabName);
 
-    if (selectedTab === TABS.T_STOCK_PERFORMANCE) {
-      return `SP_${transformedName}`;
+    switch (selectedTab) {
+      case TABS.T_STOCK_PERFORMANCE:
+        return `SP_${transformedName}`;
+      case TABS.T_GROWTH_AND_DIVIDENDS:
+        return `GD_${transformedName}`;
+      default:
+        return transformedName;
     }
-
-    if (selectedTab === TABS.T_GROWTH_AND_DIVIDENDS) {
-      return `GD_${transformedName}`;
-    }
-
-    return transformedName;
   };
 
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
-
-  const isInitialMount = useRef(true); // Track the initial render
-
-  // Initialize activeSubTab state for each section
+  // Initialize active sub-tabs
   const initializeActiveSubTabs = (data) => {
     return data.map((section) => {
       const selectedSubTab = section.subTabs.find(
         (subTab) => subTab.isSelected === "1"
       );
-      const subTabKey = getSubTabKey(
-        selectedSubTab.tabNameEn,
-        section.subTabs.length
-      );
-      const subTabValue = SUBTABS[subTabKey];
-      const activeTab = selectedSubTab ? subTabValue : 1;
-      return activeTab;
+      const subTabKey = getSubTabKey(selectedSubTab?.tabNameEn || "");
+      return SUBTABS[subTabKey] || 1;
     });
   };
 
+  // State and effect for active sub-tabs
   const [activeSubTabs, setActiveSubTabs] = useState(() =>
     initializeActiveSubTabs(data)
   );
 
-  // Effect to reset activeSubTabs only when selectedTab changes on initial render
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false; // After initial mount, mark as false
-    } else {
+    if (!isInitialMount.current) {
       const newActiveSubTabs = initializeActiveSubTabs(
         filterDataBySelectedTab(selectedTab)
       );
       setActiveSubTabs(newActiveSubTabs);
+    } else {
+      isInitialMount.current = false;
     }
   }, [selectedTab, data]);
 
@@ -78,7 +68,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
 
   //change active/selected sub tab
   const handleSubTabClick = (subSectionIndex, subTabName) => {
-    const subTabKey = getSubTabKey(subTabName, 0);
+    const subTabKey = getSubTabKey(subTabName);
     const value = SUBTABS[subTabKey];
     setActiveSubTabs((prevActiveSubTabs) =>
       prevActiveSubTabs.map((tab, index) =>
@@ -119,7 +109,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     return (
       <>
         {renderTableHeaders(headers)}
-        <tbody>{ProcessSubSection(subSection, currentLanguage)}</tbody>
+        <tbody>{processSubSection(subSection)}</tbody>
       </>
     );
   };
@@ -136,32 +126,24 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     );
 
     const activeData = subSection.data[activeSubTabIndex];
-
     if (!activeData) return null;
 
     return (
       <>
         {renderTableHeaders(headers)}
-        <tbody>{ProcessSubSection(activeData, currentLanguage)}</tbody>
+        <tbody>{processSubSection(activeData)}</tbody>
       </>
     );
   };
 
   // Function to process and render data based on subsection type
-  function ProcessSubSection(subSection, currentLanguage) {
+  const processSubSection = (subSection) => {
     if (!subSection.data) return null;
+
     const propertyNames =
       subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
     const secondToLastProperty =
       propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
-
-    // const maxValue = secondToLastProperty
-    //   ? Math.max(
-    //       ...subSection.data.map((item) =>
-    //         parseFloat(item[secondToLastProperty])
-    //       )
-    //     )
-    //   : 1;
 
     const rankToBarWidth = generateRankToBarWidth(10, 85, 5);
 
@@ -174,9 +156,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
       return (
         <tr key={index}>
           <td>
-            <span className="bg_tag">
-              {item.Rank !== undefined ? item.Rank : "-"}
-            </span>
+            <span className="bg_tag">{rank}</span>
           </td>
           <td className="td_img">
             <span className="d-flex align-items-center">
@@ -195,27 +175,14 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
             <div className="charts_table_bg">
               <span className="bg" style={{ width: `${chartWidth}` }}></span>
               <span>
-                <NumberFormatter value={chartValue} />
+                <NumberFormatter value={chartValue || 0} />
               </span>
             </div>
           </td>
         </tr>
       );
     });
-  }
-
-  useEffect(() => {
-    const handleLoad = () => setIsLoading(false);
-
-    const currentContent = embeddedContentRef.current;
-
-    if (currentContent) {
-      currentContent.addEventListener("load", handleLoad);
-      return () => {
-        currentContent.removeEventListener("load", handleLoad);
-      };
-    }
-  }, [embeddedContentRef]);
+  };
 
   return (
     <div className="px-layout col_space mt-4 pt-1">
@@ -266,14 +233,12 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
                                 )
                               }
                             >
-                              <span>
-                                {
-                                  /* {currentLanguage === LANGUAGES.EN
+                              {
+                                /* {currentLanguage === LANGUAGES.EN
                                   ? subTab.tabNameEn
                                   : subTab.tabNameAr} */
-                                  localized(subTab, "tabName", currentLanguage)
-                                }
-                              </span>
+                                localized(subTab, "tabName", currentLanguage)
+                              }
                             </button>
                           </li>
                         );
@@ -286,16 +251,14 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
               <Card className="rounded border-0 table_chart">
                 <Card.Body className="px-layout bg-white rounded">
                   {activeSubTabs[subSectionIndex] ===
-                    SUBTABS.HISTORICAL_EVOLUTION && (
+                  SUBTABS.HISTORICAL_EVOLUTION ? (
                     <div className="chart-responsive">
                       <RaceChart
                         chartData={subSection.chartData}
                         currentLanguage={currentLanguage}
                       />
                     </div>
-                  )}
-                  {activeSubTabs[subSectionIndex] !==
-                    SUBTABS.HISTORICAL_EVOLUTION && (
+                  ) : (
                     <div className="table-responsive">
                       <Table className="table_layout" style={{ width: "100%" }}>
                         {subTabCount === 2
@@ -327,13 +290,13 @@ TopCompaniesTable.propTypes = {
         PropTypes.shape({
           tabNameEn: PropTypes.string.isRequired,
           tabNameAr: PropTypes.string.isRequired,
-          displaySeq: PropTypes.number.isRequired, // Add displaySeq as a required prop
+          displaySeq: PropTypes.number.isRequired,
           isSelected: PropTypes.string.isRequired,
         })
       ).isRequired,
       data: PropTypes.arrayOf(
         PropTypes.shape({
-          Rank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]), // Make Rank optional
+          Rank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
           LogoUrl: PropTypes.string,
           ShortNameEn: PropTypes.string,
           ShortNameAr: PropTypes.string,

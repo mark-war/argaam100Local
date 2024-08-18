@@ -10,9 +10,11 @@ const DefaultRedirect = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("Extracted Language:", lang);
     const validLang = config.supportedLanguages.includes(lang)
       ? lang
       : config.defaultLanguage;
+    console.log("Setting Language:", validLang);
     dispatch(setLanguage(validLang)); // Update the application language
   }, [lang, dispatch]);
 
@@ -20,6 +22,7 @@ const DefaultRedirect = () => {
     config.supportedLanguages.includes(lang) ? lang : config.defaultLanguage
   }/screener`;
 
+  console.log("Redirect Path:", redirectPath);
   return <Navigate to={redirectPath} replace />;
 };
 

@@ -6,6 +6,7 @@ import { strings, LANGUAGES } from "../../utils/constants/localizedStrings.js";
 import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
+import { fetchFieldConfigurationData } from "../../redux/features/fieldConfigurationSlice.js";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const HeaderMain = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchFieldConfigurationData());
     if (config.supportedLanguages.includes(lang)) {
       if (!lang) {
         dispatch(setLanguage(lang));

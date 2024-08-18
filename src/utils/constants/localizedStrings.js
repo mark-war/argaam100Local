@@ -7,7 +7,7 @@ export const strings = new LocalizedStrings({
     navLinkArgaam: "Argaam",
     navLinkAbout: "About Us",
     sector: "Sector",
-    date: "Last Update : 23/06/2024",
+    date: "Last Update :",
     code: "Code",
     companies: "Companies",
     sector: "Sector",
@@ -35,6 +35,7 @@ export const strings = new LocalizedStrings({
     charts: "Charts",
     neg: "NEG",
     moreThan100: "More than 100",
+    pe: "P/E",
   },
   ar: {
     topTen: "أعلى 10",
@@ -48,7 +49,7 @@ export const strings = new LocalizedStrings({
     par: "(معدل سنوياً) مكرر الربح",
     priceBook: "(اخر فترة مالية) القيمة الدفترية",
     priceSales: "(اخر 12) مضاعف الإيرادات",
-    date: "آخر تحديث : 2024/06/23",
+    date: "التحديث الأخير :",
     bookValue: "(معدل سنوياً) مكرر الربح",
     stockScreener: "نتيجة الفلتر",
     topTenCompanies: "أعلى 10 شركات",
@@ -69,6 +70,7 @@ export const strings = new LocalizedStrings({
     charts: "الرسوم البيانية",
     neg: "سالب",
     moreThan100: "أكبر من 100",
+    pe: "مكرر الربح",
   },
 });
 

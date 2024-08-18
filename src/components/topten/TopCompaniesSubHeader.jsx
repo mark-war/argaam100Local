@@ -31,7 +31,7 @@ const TopCompaniesSubHeader = ({
         <div className="flex-fill heading_lg">
           <strong>{title}</strong>
         </div>
-        <div className="flex-fill text_right mt-2">
+        {/* <div className="flex-fill text_right mt-2">
           <a className="screen_icons" href="#">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +119,7 @@ const TopCompaniesSubHeader = ({
               </g>
             </svg>
           </a>
-        </div>
+        </div> */}
       </div>
       {/* Info Ends */}
 

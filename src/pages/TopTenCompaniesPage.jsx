@@ -1,16 +1,12 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import TopCompaniesSubHeader from "../components/topten/TopCompaniesSubHeader";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import TopCompaniesTable from "../components/topten/TopCompaniesTable";
 import { LANGUAGES, PAGES } from "../utils/constants/localizedStrings";
-import {
-  fetchFieldConfigurationData,
-  fetchScreenerData,
-} from "../redux/features/fieldConfigurationSlice.js";
+import useTabDataFetch from "../hooks/useTabDataFetch";
 
 const TopTenCompaniesPage = () => {
-  const dispatch = useDispatch();
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
@@ -28,19 +24,12 @@ const TopTenCompaniesPage = () => {
   //defaultActiveTab
   const [activeTabLink, setActiveTabLink] = useState(null);
 
+  //hook to fetch data by active tab
+  const { loading } = useTabDataFetch(activeTabLink);
+
   const handleActiveTabLink = (tab) => {
     setActiveTabLink(tab);
   };
-
-  // useEffect(() => {
-  //   dispatch(fetchFieldConfigurationData());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (fieldConfigurations.length > 0) {
-  //     dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
-  //   }
-  // }, [fieldConfigurations, dispatch, currentLanguage]);
 
   // Memoize tabLinksArray to avoid recalculating it unnecessarily
   const tabLinksArray = useMemo(() => {
@@ -60,20 +49,25 @@ const TopTenCompaniesPage = () => {
   }, [tabLinksArray]);
 
   const getFilteredData = () => {
-    return tabLinksArray.reduce((acc, tab) => {
-      const filtered = screenerData.filter((item) =>
-        item.identifier.startsWith(tab.tabLinkId)
-      );
-
-      return acc.concat(filtered);
-    }, []);
+    if (!activeTabLink) return [];
+    return screenerData.filter(
+      (item) =>
+        item.identifier.startsWith(activeTabLink) &&
+        item.identifier.endsWith(`-${currentLanguage}`)
+    );
   };
 
   const renderTabContent = useCallback(() => {
     return (
-      <TopCompaniesTable selectedTab={activeTabLink} data={getFilteredData()} />
+      <>
+        {loading && <div className="spinner"></div>}
+        <TopCompaniesTable
+          selectedTab={activeTabLink}
+          data={getFilteredData()}
+        />
+      </>
     );
-  }, [activeTabLink, getFilteredData]);
+  }, [activeTabLink, getFilteredData, loading]);
 
   return (
     <MainLayout>

@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { strings, LANGUAGES } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
+import { selectCurrentLanguage } from "../../redux/selectors";
+import { localized } from "../../utils/localization";
+import { setLanguage } from "../../redux/features/languageSlice";
+import { useEffect } from "react";
 
 const PageSubHeader = ({
   title,
@@ -12,9 +16,30 @@ const PageSubHeader = ({
   selectedOptions, // Pass selectedOptions here
   setSelectedOptions, // Receive setSelectedOptions here
 }) => {
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
+  const currentLanguage = useSelector(selectCurrentLanguage);
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const langParam = params.get("lang");
+
+    if (langParam && langParam !== currentLanguage) {
+      dispatch(setLanguage(langParam));
+    }
+  }, [location.search, currentLanguage, dispatch]);
+
+  const getCurrentDateFormatted = () => {
+    const today = new Date();
+
+    const day = String(today.getDate()).padStart(2, "0"); // Get day and add leading zero if necessary
+    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so add 1
+    const year = today.getFullYear(); // Get the full year
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const dateNow = getCurrentDateFormatted();
 
   const handleSelectedOptionsChange = (newSelectedOptions) => {
     setSelectedOptions(newSelectedOptions);
@@ -30,7 +55,9 @@ const PageSubHeader = ({
           <strong>{title}</strong>
         </div>
         <div className="flex-fill text_right mt-2">
-          <p className="font-20 mb-0 date">{strings.date}</p>
+          <p className="font-20 mb-0 date">
+            {strings.date} {dateNow}
+          </p>
         </div>
       </div>
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
@@ -46,9 +73,10 @@ const PageSubHeader = ({
                   onClick={() => handleActiveTabLink(tabItem.tabLinkId)}
                 >
                   <span>
-                    {currentLanguage === LANGUAGES.AR
+                    {localized(tabItem, "name", currentLanguage)}
+                    {/* {currentLanguage === LANGUAGES.AR
                       ? tabItem.nameAr
-                      : tabItem.nameEn}
+                      : tabItem.nameEn} */}
                   </span>
                 </Link>
               </li>
@@ -61,7 +89,7 @@ const PageSubHeader = ({
             selectedSectors={selectedOptions}
             onChange={handleSelectedOptionsChange}
           />
-          <div className="d_flex">
+          {/* <div className="d_flex">
             <a className="screen_icons" href="#">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +177,7 @@ const PageSubHeader = ({
                 </g>
               </svg>
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

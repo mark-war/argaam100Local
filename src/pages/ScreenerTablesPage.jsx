@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import MainLayout from "../components/layout/MainLayout";
 import PageSubHeader from "../components/screener/PageSubHeader.jsx";
-import {
-  fetchFieldConfigurationData,
-  fetchScreenerData,
-} from "../redux/features/fieldConfigurationSlice.js";
 import ScreenerTable from "../components/screener/ScreenerTable.jsx";
 import {
   strings,
@@ -13,44 +9,25 @@ import {
   PAGES,
 } from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
-import LoadingScreen from "../components/common/LoadingScreen.jsx";
+import useTabDataFetch from "../hooks/useTabDataFetch"; // Import the hook
+import {
+  selectPages,
+  selectFieldConfigurations,
+  selectCurrentLanguage,
+  selectScreenerData,
+} from "../redux/selectors.js";
 
 const ScreenerTablesPage = () => {
-  const dispatch = useDispatch();
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
-  const fieldConfigurations = useSelector(
-    (state) => state.screener.fieldConfigurations
-  );
-  const screenerData = useSelector((state) => state.screener.screenerData);
-  const isScreenerDataLoaded = useSelector(
-    (state) => state.screener.isScreenerDataLoaded
-  );
-  const pages = useSelector((state) => state.apiData.pages);
+  const pages = useSelector(selectPages);
+  const currentLanguage = useSelector(selectCurrentLanguage);
+  const fieldConfigurations = useSelector(selectFieldConfigurations);
+  const screenerData = useSelector(selectScreenerData);
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeTabLink, setActiveTabLink] = useState(null);
 
-  // useEffect(() => {
-  //   dispatch(fetchFieldConfigurationData());
-  // }, [dispatch]);
-
-  const isDataReady = useMemo(
-    () => fieldConfigurations.length > 0 && !isScreenerDataLoaded,
-    [fieldConfigurations, isScreenerDataLoaded]
-  );
-
-  // console.log("DISPATCH CONFIG");
-  // dispatch(fetchFieldConfigurationData());
-  // console.log("DISPATCH SCREENER");
-  // dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
-
-  // useEffect(() => {
-  //   if (isDataReady) {
-  //     dispatch(fetchScreenerData({ fieldConfigurations, currentLanguage }));
-  //   }
-  // }, [fieldConfigurations, isDataReady, dispatch]);
+  //hook to fetch data by active tab
+  const { loading } = useTabDataFetch(activeTabLink);
 
   const selectedPage = pages.find((page) => page.pageId === PAGES.SCREENER);
   const selectedSection = selectedPage?.sections.find(
@@ -65,7 +42,7 @@ const ScreenerTablesPage = () => {
         nameEn: tab.tabNameEn,
         nameAr: tab.tabNameAr,
       })) || [],
-    [selectedSection]
+    [selectedSection, currentLanguage]
   );
 
   // Set default value for activeTabLink
@@ -73,7 +50,7 @@ const ScreenerTablesPage = () => {
     const defaultTab =
       tabLinksArray.length > 0 ? tabLinksArray[0].tabLinkId : null;
     setActiveTabLink(defaultTab);
-  }, [tabLinksArray]);
+  }, [tabLinksArray, , currentLanguage]);
 
   const handleActiveTabLink = (tab) => {
     setActiveTabLink(tab);
@@ -147,18 +124,21 @@ const ScreenerTablesPage = () => {
 
     // Initialize a map to track all column keys
     const columnKeysSet = new Set();
-
     // Initialize a map to hold the formatted data
     const formattedDataMap = new Map();
 
     screenerData
-      .filter((item) => item.identifier.startsWith(`${activeTabId}-`))
+      .filter(
+        (item) =>
+          item.identifier.startsWith(`${activeTabId}-`) &&
+          item.identifier.endsWith(`-${currentLanguage}`)
+      )
       .forEach((item) => {
         // Extract the relevant part of the identifier to form the column key
         const identifierParts = item.identifier
           .split("-")
           .filter((part) => part && part.trim() !== "" && part !== "null");
-        const fieldName = identifierParts.slice(1).join(" "); // This assumes identifier is formatted like `${activeTabId}-<FieldName>`
+        const fieldName = identifierParts.slice(1, -1).join(" "); // join the identifier parts using white space and remove the language part
 
         columnKeysSet.add(fieldName);
 
@@ -234,22 +214,24 @@ const ScreenerTablesPage = () => {
     );
 
     return (
-      <ScreenerTable
-        data={data}
-        columns={columns}
-        itemsPerPage={config.screenerTableItemPerPage}
-        pinnedRow={pinnedRow}
-        selectedTab={activeTabLink}
-        selectedOptions={selectedOptions}
-        setSelectedOptions={setSelectedOptions}
-        decimals={config.decimals}
-      />
+      <>
+        {loading ? (
+          <div className="spinner"></div> // Your loading spinner
+        ) : (
+          <ScreenerTable
+            data={data}
+            columns={columns}
+            itemsPerPage={config.screenerTableItemPerPage}
+            pinnedRow={pinnedRow}
+            selectedTab={activeTabLink}
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+            decimals={config.decimals}
+          />
+        )}
+      </>
     );
   };
-
-  if (!isDataReady) {
-    return <LoadingScreen />;
-  }
 
   return (
     <MainLayout>

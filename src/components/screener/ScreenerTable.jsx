@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { Table, Pagination, Row, Col, Card } from "react-bootstrap";
+import { Table, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
-import { LANGUAGES } from "../../utils/constants/localizedStrings";
+import { LANGUAGES, strings } from "../../utils/constants/localizedStrings";
 import ScreenerPagination from "./ScreenerPagination";
+import { useNavigate, useParams } from "react-router-dom";
+import { setLanguage } from "../../redux/features/languageSlice.js";
+import config from "../../utils/config.js";
 
 const ScreenerTable = ({
   data,
@@ -16,12 +19,30 @@ const ScreenerTable = ({
   selectedOptions, // selected sectors
   setSelectedOptions, // to control selected options
 }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const initialSortSet = useRef(false);
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
+  // const currentLanguage = useSelector(selectCurrentLanguage);
+  const { lang } = useParams(); // Access the current language from URL parameters
+
+  useEffect(() => {
+    if (config.supportedLanguages.includes(lang)) {
+      if (!lang) {
+        dispatch(setLanguage(lang));
+      }
+      strings.setLanguage(lang);
+    } else {
+      const defaultLanguage = config.defaultLanguage; // Fallback to default language
+      dispatch(setLanguage(defaultLanguage));
+      strings.setLanguage(defaultLanguage);
+      navigate(`/${defaultLanguage}` + window.location.pathname.slice(3));
+    }
+
+    document.documentElement.lang = lang;
+  }, [lang, dispatch, navigate]);
 
   // Function to find the first dynamic column
   const getFirstDynamicColumn = () => {
@@ -120,7 +141,7 @@ const ScreenerTable = ({
 
   const sortedData = React.useMemo(() => {
     if (sortConfig.key) {
-      if (sortConfig.key.toLowerCase().includes("p/e")) {
+      if (sortConfig.key.includes(strings.pe)) {
         return customSort(filteredData, sortConfig.key, sortConfig.direction);
       } else {
         return [...filteredData].sort((a, b) => {
@@ -163,10 +184,13 @@ const ScreenerTable = ({
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
 
-  const argaamUrl = (companyID) => {
-    return currentLanguage === LANGUAGES.AR
-      ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
-      : `https://www.argaam.com/en/tadawul/tasi/`;
+  const argaamUrl = (companyID = "") => {
+    const baseUrl =
+      lang === LANGUAGES.AR
+        ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
+        : `https://www.argaam.com/en/tadawul/tasi/`;
+
+    return baseUrl;
   };
 
   return (
@@ -186,8 +210,8 @@ const ScreenerTable = ({
                   sortConfig={sortConfig}
                 />
                 <tbody>
-                  {/* Render the pinned row if it exists */}
-                  {pinnedRow && (
+                  {/* HIDE THE PINNER ROW FOR NOW */}
+                  {/* {pinnedRow && (
                     <tr>
                       {columns.map((column) => {
                         if (column.hidden) return null; // Skip rendering this column
@@ -227,8 +251,7 @@ const ScreenerTable = ({
                                 <NumberFormatter
                                   value={pinnedRow[column.key]}
                                   isPEColumn={column.key
-                                    .toLowerCase()
-                                    .includes("p/e")}
+                                    .includes(strings.pe)}
                                 />
                               </span>
                             )}
@@ -236,7 +259,7 @@ const ScreenerTable = ({
                         );
                       })}
                     </tr>
-                  )}
+                  )} */}
                   {currentRows.map((row, index) => (
                     <tr key={index}>
                       {columns.map((column) => {
@@ -258,13 +281,9 @@ const ScreenerTable = ({
                                 <a
                                   target="_blank" // This will open the link in a new tab
                                   rel="noreferrer"
-                                  href={
-                                    currentLanguage === LANGUAGES.AR
-                                      ? `${argaamUrl(row.CompanyID)}${
-                                          row[column.key]
-                                        }`
-                                      : `${argaamUrl()}${row[column.key]}`
-                                  }
+                                  href={`${argaamUrl(row.CompanyID)}${
+                                    row[column.key]
+                                  }`}
                                   className="company-link"
                                 >
                                   <img
@@ -301,9 +320,7 @@ const ScreenerTable = ({
                               >
                                 <NumberFormatter
                                   value={row[column.key]}
-                                  isPEColumn={column.key
-                                    .toLowerCase()
-                                    .includes("p/e")}
+                                  isPEColumn={column.key.includes(strings.pe)}
                                 />
                               </span>
                             )}
