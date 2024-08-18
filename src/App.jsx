@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPageStructure } from "./services/screenerApi";
 import { fetchFieldConfigurationData } from "./redux/features/fieldConfigurationSlice";
-import { selectCurrentLanguage, selectSelectedTab } from "./redux/selectors";
+import { selectSelectedTab } from "./redux/selectors";
 import { useParams } from "react-router-dom";
 import { setApiData } from "./redux/features/apiDataSlice.js";
 import { strings } from "./utils/constants/localizedStrings";
@@ -14,7 +14,7 @@ import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
 
 function App() {
   const dispatch = useDispatch();
-  const currentLanguage = useSelector(selectCurrentLanguage);
+  const currentLanguage = (state) => state.language.currentLanguage;
   const selectedTab = useSelector(selectSelectedTab);
   const { lang } = useParams();
 

@@ -7,7 +7,6 @@ import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
 import { fetchFieldConfigurationData } from "../../redux/features/fieldConfigurationSlice.js";
-import { localized } from "../../utils/localization.js";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -78,10 +77,10 @@ const HeaderMain = () => {
     if (pages?.length) {
       pages.forEach((page, index) => {
         links.push({
-          path: `/${lang}/${localized(page, "pageName", lang)
+          path: `/${lang}/${page.pageNameEn
             .toLowerCase()
             .replace(/\s+/g, "-")}`,
-          name: localized(page, "pageName", lang), //lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
+          name: lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
           isSelected: index === 0,
         });
       });
@@ -109,13 +108,13 @@ const HeaderMain = () => {
           ref={dropdownMobileRef}
         >
           <ul>
-            {navLinks.map((link, index) => (
+            {/* {navLinks.map((link, index) => (
               <li key={index} className="nav-item">
                 <NavLink to={link.path} className="nav-link">
                   {link.name}
                 </NavLink>
               </li>
-            ))}
+            ))} */}
             <li>
               <a href="#" className="dropdown-item">
                 <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
