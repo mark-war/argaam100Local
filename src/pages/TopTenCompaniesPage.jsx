@@ -3,16 +3,17 @@ import MainLayout from "../components/layout/MainLayout";
 import TopCompaniesSubHeader from "../components/topten/TopCompaniesSubHeader";
 import { useSelector } from "react-redux";
 import TopCompaniesTable from "../components/topten/TopCompaniesTable";
-import { LANGUAGES, PAGES } from "../utils/constants/localizedStrings";
+import { PAGES } from "../utils/constants/localizedStrings";
 import useTabDataFetch from "../hooks/useTabDataFetch";
+import { localized } from "../utils/localization";
 
 const TopTenCompaniesPage = () => {
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-  const fieldConfigurations = useSelector(
-    (state) => state.screener.fieldConfigurations
-  );
+  // const fieldConfigurations = useSelector(
+  //   (state) => state.screener.fieldConfigurations
+  // );
   const screenerData = useSelector((state) => state.screener.screenerData);
   const pages = useSelector((state) => state.apiData.pages);
 
@@ -73,11 +74,7 @@ const TopTenCompaniesPage = () => {
     <MainLayout>
       <div className="pb-5">
         <TopCompaniesSubHeader
-          title={
-            currentLanguage === LANGUAGES.EN
-              ? selectedSection?.sectionNameEn
-              : selectedSection?.sectionNameAr
-          }
+          title={localized(selectedSection, "sectionName", currentLanguage)}
           tabLinksArray={tabLinksArray}
           activeTabLink={activeTabLink}
           handleActiveTabLink={handleActiveTabLink}
