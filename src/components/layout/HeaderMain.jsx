@@ -7,30 +7,43 @@ import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
 import { fetchFieldConfigurationData } from "../../redux/features/fieldConfigurationSlice.js";
+import { localized } from "../../utils/localization.js";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { lang } = useParams(); // Access the current language from URL parameters
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const dropdownRef = useRef(null); // Create a ref for the dropdown element
-
+  const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.apiData.pages); // Access pages from Redux store
 
   const toggleDropdown = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  const toggleMobileDropdown = () => {
+    setIsMobileOpen((prevState) => !prevState);
+  };
+
   const handleMenuInnerClick = (event) => {
-    event.stopPropagation(); // Prevents the click from propagating to the container
+    if (isMobileOpen) {
+      toggleMobileDropdown(); // This function should toggle the state to close the menu
+    }
+    // event.stopPropagation(); // Prevents the click from propagating to the container
   };
 
   // Handle click outside the dropdown
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen(false);
+    }
+    if (
+      dropdownMobileRef.current &&
+      !dropdownMobileRef.current.contains(event.target)
+    ) {
+      setIsMobileOpen(false);
     }
   };
 
@@ -62,15 +75,13 @@ const HeaderMain = () => {
 
   const getNavLinks = () => {
     const links = [];
-
-    // Check if pages is defined and an array
     if (pages?.length) {
       pages.forEach((page, index) => {
         links.push({
-          path: `/${lang}/${page.pageNameEn
+          path: `/${lang}/${localized(page, "pageName", lang)
             .toLowerCase()
             .replace(/\s+/g, "-")}`,
-          name: lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
+          name: localized(page, "pageName", lang), //lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
           isSelected: index === 0,
         });
       });
@@ -89,11 +100,22 @@ const HeaderMain = () => {
     <>
       {/* Mobile Nav Starts */}
       <div
-        className={`mobile_nav ${isOpen ? "mobile-active" : ""}`}
-        onClick={toggleDropdown}
+        className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}
+        ref={dropdownMobileRef}
       >
-        <div className="mobile_menu" onClick={handleMenuInnerClick}>
+        <div
+          className="mobile_menu"
+          onClick={handleMenuInnerClick}
+          ref={dropdownMobileRef}
+        >
           <ul>
+            {navLinks.map((link, index) => (
+              <li key={index} className="nav-item">
+                <NavLink to={link.path} className="nav-link">
+                  {link.name}
+                </NavLink>
+              </li>
+            ))}
             <li>
               <a href="#" className="dropdown-item">
                 <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
@@ -123,7 +145,12 @@ const HeaderMain = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link">
+              <a
+                target="_blank" // This will open the link in a new tab
+                rel="noreferrer"
+                href="https://www.argaam.com/"
+                className="nav-link"
+              >
                 {strings.navLinkArgaam}
               </a>
             </li>
@@ -135,7 +162,7 @@ const HeaderMain = () => {
             <LanguageSwitcher /> {/* Add the new component */}
           </ul>
         </div>
-        <div className="mobile_menu_bg" onClick={toggleDropdown}></div>
+        <div className="mobile_menu_bg" onClick={toggleMobileDropdown}></div>
       </div>
       {/* Mobile Nav Ends */}
 
@@ -235,7 +262,10 @@ const HeaderMain = () => {
                         </ul>
                       )}
                       {/* Toggle Button */}
-                      <div className="nav_toggle" onClick={toggleDropdown}>
+                      <div
+                        className="nav_toggle"
+                        onClick={toggleMobileDropdown}
+                      >
                         <svg
                           fill="#000000"
                           width="30"

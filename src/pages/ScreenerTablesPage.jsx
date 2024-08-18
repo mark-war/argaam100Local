@@ -16,6 +16,7 @@ import {
   selectCurrentLanguage,
   selectScreenerData,
 } from "../redux/selectors.js";
+import { localized } from "../utils/localization.js";
 
 const ScreenerTablesPage = () => {
   const pages = useSelector(selectPages);
@@ -73,14 +74,8 @@ const ScreenerTablesPage = () => {
       ...fieldConfigurations
         .filter((item) => item.TabID === activeTabId)
         .map((item) => {
-          const unitName =
-            currentLanguage === LANGUAGES.AR
-              ? item.UnitNameAr
-              : item.UnitNameEn;
-          const fieldName =
-            currentLanguage === LANGUAGES.AR
-              ? item.FieldNameAr
-              : item.FieldNameEn;
+          const unitName = localized(item, "UnitName", currentLanguage);
+          const fieldName = localized(item, "FieldName", currentLanguage);
           const optionalUnitName = unitName ? ` ${unitName}` : "";
           return {
             key: fieldName + optionalUnitName,
@@ -152,14 +147,8 @@ const ScreenerTablesPage = () => {
             formattedDataMap.set(fixedCode, {
               fixed_code: fixedCode,
               fixed_img: row.LogoUrl,
-              fixed_company:
-                currentLanguage === LANGUAGES.EN
-                  ? row.ShortNameEn
-                  : row.ShortNameAr,
-              fixed_sector:
-                currentLanguage === LANGUAGES.EN
-                  ? row.SectorNameEn
-                  : row.SectorNameAr,
+              fixed_company: localized(row, "ShortName", currentLanguage),
+              fixed_sector: localized(row, "SectorName", currentLanguage),
               CompanyID: row.CompanyID,
             });
           }
@@ -237,11 +226,7 @@ const ScreenerTablesPage = () => {
     <MainLayout>
       <div className="pb-5">
         <PageSubHeader
-          title={
-            currentLanguage === LANGUAGES.EN
-              ? selectedSection?.sectionNameEn
-              : selectedSection?.sectionNameAr
-          }
+          title={localized(selectedSection, "sectionName", currentLanguage)}
           tabLinksArray={tabLinksArray}
           activeTabLink={activeTabLink}
           handleActiveTabLink={handleActiveTabLink}

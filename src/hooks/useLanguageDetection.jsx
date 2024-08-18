@@ -8,7 +8,6 @@ const useLanguageDetection = () => {
   const { setLanguageFromUrl } = useLanguageSwitch();
 
   useEffect(() => {
-    console.log("LANGUAGE: ", lang);
     if (lang === LANGUAGES.AR || lang === LANGUAGES.EN) {
       setLanguageFromUrl(lang);
     }
