@@ -35,10 +35,10 @@ function extractDistinctSectors(screenerData) {
   // Iterate through the data
   screenerData.forEach((item) => {
     if (item.SectorNameAr) {
-      distinctSectorsAr.add(item.SectorNameAr);
+      distinctSectorsAr.add(item.SectorNameAr.trim());
     }
     if (item.SectorNameEn) {
-      distinctSectorsEn.add(item.SectorNameEn);
+      distinctSectorsEn.add(item.SectorNameEn.trim());
     }
   });
 
