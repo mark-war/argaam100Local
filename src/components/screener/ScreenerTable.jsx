@@ -46,7 +46,17 @@ const ScreenerTable = ({
 
   // Function to find the first dynamic column
   const getFirstDynamicColumn = () => {
-    return columns.find((col) => !col.key.startsWith("fixed_") && !col.hidden);
+    // return columns.find(
+    //   (col) =>
+    //     typeof col.key === "string" &&
+    //     !col.key.startsWith("fixed_") &&
+    //     !col.hidden
+    // );
+    return columns.find(
+      (col) =>
+        typeof col.key === "number" && // Key is a number
+        !col.hidden // Column is not hidden
+    );
   };
 
   // Initialize sorting configuration for the first dynamic column when data is loaded or tab is changed
@@ -141,7 +151,7 @@ const ScreenerTable = ({
 
   const sortedData = React.useMemo(() => {
     if (sortConfig.key) {
-      if (sortConfig.key.includes(strings.pe)) {
+      if (config.peFieldIds.has(sortConfig.key)) {
         return customSort(filteredData, sortConfig.key, sortConfig.direction);
       } else {
         return [...filteredData].sort((a, b) => {
@@ -265,7 +275,9 @@ const ScreenerTable = ({
                       {columns.map((column) => {
                         if (column.hidden) return null; // Skip rendering this column
                         // Check if the column is a fixed column
-                        const isFixedColumn = column.key.startsWith("fixed_");
+                        const isFixedColumn =
+                          typeof column.key === "string" &&
+                          column.key.startsWith("fixed_");
                         // Determine class for the <td> element
                         const tdClassName = isFixedColumn
                           ? column.key === "fixed_company"
@@ -320,7 +332,7 @@ const ScreenerTable = ({
                               >
                                 <NumberFormatter
                                   value={row[column.key]}
-                                  isPEColumn={column.key.includes(strings.pe)}
+                                  isPEColumn={config.peFieldIds.has(column.key)}
                                 />
                               </span>
                             )}
@@ -351,7 +363,7 @@ ScreenerTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
-      key: PropTypes.string.isRequired,
+      key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       label: PropTypes.string.isRequired,
       className: PropTypes.string,
     })

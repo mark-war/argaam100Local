@@ -12,7 +12,6 @@ import { selectCurrentLanguage } from "../../redux/selectors";
 const TopCompaniesTable = ({ selectedTab, data }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
   const isInitialMount = useRef(true); // Track the initial render
-
   const transformColumnName = (fieldName) => {
     return fieldName
       .split(" ")
@@ -183,7 +182,6 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
       );
     });
   };
-
   return (
     <div className="px-layout col_space mt-4 pt-1">
       <Row>
@@ -197,9 +195,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
             <Col lg={6} key={subSectionIndex}>
               <div className="tabs_inner_nav row px-3">
                 <div className="col-6">
-                  <p className="sub_heading">
-                    {subSection.identifier.split("-")[1]}
-                  </p>
+                  <p className="sub_heading">{subSection.fieldNameEn}</p>
                 </div>
                 <div className="col-6">
                   <div className="flex-fill justify-content-end">

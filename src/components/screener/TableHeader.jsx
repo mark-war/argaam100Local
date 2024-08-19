@@ -38,7 +38,8 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
         {columns.map((column) => {
           // Skip rendering this column if it is marked as hidden
           if (column.hidden) return null;
-          const isFixedColumn = column.key.startsWith("fixed_");
+          const isFixedColumn =
+            typeof column.key === "string" && column.key.startsWith("fixed_");
           return isFixedColumn ? (
             <th key={column.key} className={`${column.className}`}>
               {column.label}
@@ -62,14 +63,14 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
 TableHeader.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({
-      key: PropTypes.string.isRequired,
+      key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       label: PropTypes.string.isRequired,
       className: PropTypes.string,
     })
   ).isRequired,
   onSort: PropTypes.func.isRequired,
   sortConfig: PropTypes.shape({
-    key: PropTypes.string,
+    key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     direction: PropTypes.string,
   }),
 };

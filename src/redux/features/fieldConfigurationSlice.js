@@ -187,11 +187,13 @@ export const fetchScreenerTabData = createAsyncThunk(
         );
 
         // Create a unique identifier
-        const identifier = `${item.TabID}-${localized(
-          item,
-          "FieldName",
-          currentLanguage
-        )}-${localized(item, "UnitName", currentLanguage)}-${currentLanguage}`;
+        // const identifier = `${item.TabID}-${localized(
+        //   item,
+        //   "FieldName",
+        //   currentLanguage
+        // )}-${localized(item, "UnitName", currentLanguage)}-${currentLanguage}`;
+
+        const identifier = `${item.TabID}-${item.Pkey}-${currentLanguage}`;
 
         return {
           ...item,
@@ -209,20 +211,18 @@ export const fetchScreenerTabData = createAsyncThunk(
             // New process: If subtabs count is more than 2
             if (subTabsCount > 2) {
               const responses = await Promise.all(
-                data.encryptedConfigJsons.map(
-                  async (encryptedConfig, index) => {
-                    const response = await fetchScreenerTableData(
-                      encryptedConfig
-                    );
+                data.encryptedConfigJsons.map(async (encryptedConfig) => {
+                  const response = await fetchScreenerTableData(
+                    encryptedConfig
+                  );
 
-                    // Extract only the serializable parts of the response
-                    const { data: responseData } = response;
+                  // Extract only the serializable parts of the response
+                  const { data: responseData } = response;
 
-                    return {
-                      data: responseData || {},
-                    };
-                  }
-                )
+                  return {
+                    data: responseData || {},
+                  };
+                })
               );
 
               return {

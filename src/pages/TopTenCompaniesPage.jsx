@@ -11,9 +11,9 @@ const TopTenCompaniesPage = () => {
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-  // const fieldConfigurations = useSelector(
-  //   (state) => state.screener.fieldConfigurations
-  // );
+  const fieldConfigurations = useSelector(
+    (state) => state.screener.fieldConfigurations
+  );
   const screenerData = useSelector((state) => state.screener.screenerData);
   const pages = useSelector((state) => state.apiData.pages);
 
@@ -22,6 +22,7 @@ const TopTenCompaniesPage = () => {
   const selectedSection = selectedPage?.sections.find(
     (section) => section.isSelected
   );
+
   //defaultActiveTab
   const [activeTabLink, setActiveTabLink] = useState(null);
 
@@ -49,13 +50,34 @@ const TopTenCompaniesPage = () => {
     }
   }, [tabLinksArray]);
 
+  // Create a map of field configurations for easier lookup
+  const fieldConfigMap = useMemo(() => {
+    const map = {};
+    fieldConfigurations.forEach((field) => {
+      map[field.Pkey] = {
+        nameEn: field.FieldNameEn,
+        nameAr: field.FieldNameAr,
+      };
+    });
+    return map;
+  }, [fieldConfigurations]);
+
   const getFilteredData = () => {
     if (!activeTabLink) return [];
-    return screenerData.filter(
-      (item) =>
-        item.identifier.startsWith(activeTabLink) &&
-        item.identifier.endsWith(`-${currentLanguage}`)
-    );
+    return screenerData
+      .filter(
+        (item) =>
+          item.identifier.startsWith(activeTabLink) &&
+          item.identifier.endsWith(`-${currentLanguage}`)
+      )
+      .map((item) => {
+        const fieldId = item.identifier.split("-")[1];
+        return {
+          ...item,
+          fieldNameEn: fieldConfigMap[fieldId]?.nameEn || fieldId,
+          fieldNameAr: fieldConfigMap[fieldId]?.nameAr || fieldId,
+        };
+      });
   };
 
   const renderTabContent = useCallback(() => {

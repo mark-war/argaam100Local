@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import MainLayout from "../components/layout/MainLayout";
 import PageSubHeader from "../components/screener/PageSubHeader.jsx";
@@ -51,15 +51,15 @@ const ScreenerTablesPage = () => {
     const defaultTab =
       tabLinksArray.length > 0 ? tabLinksArray[0].tabLinkId : null;
     setActiveTabLink(defaultTab);
-  }, [tabLinksArray, , currentLanguage]);
+  }, [tabLinksArray, currentLanguage]);
 
-  const handleActiveTabLink = (tab) => {
+  const handleActiveTabLink = useCallback((tab) => {
     setActiveTabLink(tab);
-  };
+  }, []);
 
-  const handleSelectedOptionsChange = (newSelectedOptions) => {
+  const handleSelectedOptionsChange = useCallback((newSelectedOptions) => {
     setSelectedOptions(newSelectedOptions);
-  };
+  }, []);
 
   const transformDataForTable = (
     screenerData,
@@ -78,7 +78,8 @@ const ScreenerTablesPage = () => {
           const fieldName = localized(item, "FieldName", currentLanguage);
           const optionalUnitName = unitName ? ` ${unitName}` : "";
           return {
-            key: fieldName + optionalUnitName,
+            //key: fieldName + optionalUnitName,
+            key: item.Pkey,
             label: fieldName + optionalUnitName,
           };
         }),
@@ -133,9 +134,11 @@ const ScreenerTablesPage = () => {
         const identifierParts = item.identifier
           .split("-")
           .filter((part) => part && part.trim() !== "" && part !== "null");
-        const fieldName = identifierParts.slice(1, -1).join(" "); // join the identifier parts using white space and remove the language part
+        //const fieldName = identifierParts.slice(1, -1).join(" "); // join the identifier parts using white space and remove the language part
+        const fieldId = item.identifier.split("-")[1];
 
-        columnKeysSet.add(fieldName);
+        //columnKeysSet.add(fieldName);
+        columnKeysSet.add(fieldId);
 
         // Iterate through each row in the item data
         if (!item.data) return;
@@ -159,7 +162,8 @@ const ScreenerTablesPage = () => {
           // Add the value to the correct column
           const keys = Object.keys(row);
           const secondToLastKey = keys[keys.length - 2];
-          existingCompany[fieldName] = row[secondToLastKey] ?? "-"; // Use dash if undefined or null
+          //existingCompany[fieldName] = row[secondToLastKey] ?? "-"; // Use dash if undefined or null
+          existingCompany[fieldId] = row[secondToLastKey] ?? "-"; // Use dash if undefined or null
         });
       });
 
