@@ -3,6 +3,10 @@ body, html {
   overflow-x: hidden;
 }
 
+.app {
+  min-height: calc(100vh - 48px);
+}
+
 /* LoadingScreen.css */
 .loading-screen {
   display: flex;
@@ -134,9 +138,9 @@ div {
   color: #4b4b4b;
 }
 
-#root {
+/* #root {
   border-bottom: 3rem solid #193168;
-}
+} */
 
 .d_flex {
   display: flex;
@@ -1024,11 +1028,11 @@ div {
     font-size: 1.313rem;
   }
 
-  .table.table_layout.table_full tbody tr:first-child td,
+  /* .table.table_layout.table_full tbody tr:first-child td,
   [lang="ar"] .table.table_layout.table_full tbody tr:first-child td {
     border-top: 2px solid #154ac3;
     border-bottom: 8px solid #154ac3;
-  }
+  } */
 
   .table.table_layout th,
   .table.table_layout td {
@@ -1045,11 +1049,6 @@ div {
 
   [lang="ar"] .center_nav.navbar-nav {
     padding-right: 10px;
-  }
-
-  [lang="ar"] .table.table_layout.table_full tbody tr:first-child td {
-    border-bottom: 8px solid #154ac3;
-    border-top: 2px solid #154ac3;
   }
 
   .heading_lg {
@@ -1773,7 +1772,7 @@ div {
 
 
 .table_chart .px-layout {
-  min-height: 500px;
+  min-height: 600px;
 }
 
 .table_layout.table-striped {
@@ -1784,4 +1783,15 @@ div {
 .tabs_inner.tabs_nav.navbar-nav .nav-item .active {
   color: #E27922 !important;
   text-decoration: underline;
+}
+
+footer {
+  height:50px;
+  width:100%;
+  background-color: #193168;
+
+}
+
+.pb-5 {
+  min-height: 800px;
 }
