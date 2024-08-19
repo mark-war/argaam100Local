@@ -1795,3 +1795,7 @@ footer {
 .min__height {
   min-height: 800px;
 }
+
+.px-layout.bg-white {
+   min-height: 600px;
+}

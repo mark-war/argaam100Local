@@ -94,7 +94,7 @@ const TopTenCompaniesPage = () => {
 
   return (
     <MainLayout>
-      <div className="pb-5">
+      <div className="pb-5 min__height">
         <TopCompaniesSubHeader
           title={localized(selectedSection, "sectionName", currentLanguage)}
           tabLinksArray={tabLinksArray}
