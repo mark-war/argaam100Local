@@ -228,7 +228,7 @@ const ScreenerTablesPage = () => {
 
   return (
     <MainLayout>
-      <div className="pb-5">
+      <div className="pb-5 min__height">
         <PageSubHeader
           title={localized(selectedSection, "sectionName", currentLanguage)}
           tabLinksArray={tabLinksArray}

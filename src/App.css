@@ -634,7 +634,7 @@ div {
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-link {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
 }
 
@@ -643,7 +643,7 @@ div {
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-link.active span {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
   color: #e27922;
   text-decoration: underline;
@@ -1398,7 +1398,7 @@ div {
   }
 
   .tabs_nav.navbar-nav .nav-link {
-    font-size: 17px;
+    font-size: 0.938rem;
   }
 
   .custom-next-btn.page-item svg {
@@ -1427,11 +1427,11 @@ div {
   }
 
   .font-20 {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .tabs_nav.navbar-nav .nav-link {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .tabs_nav.navbar-nav .nav-link {
@@ -1792,6 +1792,6 @@ footer {
 
 }
 
-.pb-5 {
+.min__height {
   min-height: 800px;
 }
