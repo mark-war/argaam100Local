@@ -195,7 +195,9 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
             <Col lg={6} key={subSectionIndex}>
               <div className="tabs_inner_nav row px-3">
                 <div className="col-6">
-                  <p className="sub_heading">{subSection.fieldNameEn}</p>
+                  <p className="sub_heading">
+                    {localized(subSection, "fieldName", currentLanguage)}
+                  </p>
                 </div>
                 <div className="col-6">
                   <div className="flex-fill justify-content-end">
