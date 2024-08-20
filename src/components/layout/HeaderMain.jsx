@@ -171,7 +171,7 @@ const HeaderMain = () => {
         <div className="container-fluid px-layout">
           <div className="d-flex container_inner w-100 align-items-center">
             <div className="flex-fill justify-content-center">
-              <NavLink className="navbar-brand" to={`/${lang}/screener`}>
+              <NavLink className="navbar-brand cursor-default" to={`/${lang}/screener`}>
                 {lang === LANGUAGES.AR ? (
                   <img
                     alt="Argaam Screener Logo"

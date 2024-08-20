@@ -385,14 +385,13 @@ div {
 
 .multi_select {
   text-align: right;
-  max-width: 220px;
-  min-width: 220px;
+  min-width: 240px;
   position: relative;
 }
 
 .multi_select_toggle {
   border: 1px solid #8e9bb6;
-  max-width: 220px;
+  max-width: 235px;
   text-align: left;
   padding: 5px 15px;
   border-radius: 8px;
@@ -1796,4 +1795,9 @@ footer {
 
 .px-layout.bg-white {
   min-height: 600px;
+}
+
+
+.cursor-default {
+  cursor: default;
 }
