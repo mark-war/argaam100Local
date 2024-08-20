@@ -10,7 +10,7 @@ import { strings } from "../../utils/constants/localizedStrings";
  * If the number is negative, it formats it with parentheses.
  */
 const NumberFormatter = ({ value, isPEColumn = false }) => {
-  const decimals = config.decimals;
+  const decimals = config.decimals || 2;
 
   // Function to format the value
   const formatValue = (value, decimals, isPEColumn) => {
@@ -22,21 +22,28 @@ const NumberFormatter = ({ value, isPEColumn = false }) => {
         return strings.moreThan100;
       }
       if (typeof value === "number") {
-        const formattedValue = value.toFixed(decimals);
-        return value < 0
-          ? `(${Math.abs(formattedValue).toFixed(decimals)})`
-          : formattedValue;
+        return formatNumber(value, decimals);
       }
       return value;
     }
 
     if (typeof value === "number") {
-      const formattedValue = value.toFixed(decimals);
-      return value < 0
-        ? `(${Math.abs(formattedValue).toFixed(decimals)})`
-        : formattedValue;
+      return formatNumber(value, decimals);
     }
     return value;
+  };
+
+  // Helper function to format the number with commas and decimals
+  const formatNumber = (number, decimals) => {
+    // Format the number with commas and specified decimals
+    const formattedValue = new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(Math.abs(number));
+
+    return number < 0
+      ? `(${formattedValue})` // Add parentheses for negative numbers
+      : formattedValue; // Return formatted number
   };
 
   // Render the formatted value
@@ -46,6 +53,7 @@ const NumberFormatter = ({ value, isPEColumn = false }) => {
 // Define prop types
 NumberFormatter.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  isPEColumn: PropTypes.bool,
 };
 
 export default NumberFormatter;
