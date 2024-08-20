@@ -1,5 +1,6 @@
 import React from "react";
 import { Pagination } from "react-bootstrap";
+import { strings } from "../../utils/constants/localizedStrings";
 
 const ScreenerPagination = ({
   validCurrentPage,
@@ -12,13 +13,13 @@ const ScreenerPagination = ({
     <div className="pagination px-layout justify-content-end">
       <Pagination>
         {/* First Page */}
-        <Pagination.First
+        {/* <Pagination.First
           disabled={validCurrentPage === 1}
           onClick={() => handlePageChange(1)}
           className="custom-first-btn"
         >
           First
-        </Pagination.First>
+        </Pagination.First> */}
         <Pagination.Prev
           disabled={validCurrentPage === 1}
           onClick={() => handlePageChange(validCurrentPage - 1)}
@@ -40,7 +41,7 @@ const ScreenerPagination = ({
               <path d="M 6.33 1.51 L 2.22 6.18 L 10.44 6.18 L 6.33 1.51 M 6.33 0 L 12.66 7.18 L 0 7.18 L 6.33 0 Z" />
             </g>
           </svg>
-          <span className="mr-4">Previous</span>
+          <span className="mr-4">{strings.prev}</span>
         </Pagination.Prev>
         {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
           <Pagination.Item
@@ -56,7 +57,7 @@ const ScreenerPagination = ({
           disabled={validCurrentPage === totalPages}
           className="custom-next-btn"
         >
-          <span>Next</span>
+          <span>{strings.next}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 7.175 12.657"
@@ -73,13 +74,13 @@ const ScreenerPagination = ({
           </svg>
         </Pagination.Next>
         {/* Last Page */}
-        <Pagination.Last
+        {/* <Pagination.Last
           disabled={validCurrentPage === totalPages}
           onClick={() => handlePageChange(totalPages)}
           className="custom-last-btn"
         >
           Last
-        </Pagination.Last>
+        </Pagination.Last> */}
       </Pagination>
     </div>
   );

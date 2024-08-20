@@ -36,6 +36,8 @@ export const strings = new LocalizedStrings({
     neg: "NEG",
     moreThan100: "More than 100",
     pe: "P/E",
+    prev: "Previous",
+    next: "Next",
   },
   ar: {
     topTen: "أعلى 10",
@@ -71,6 +73,8 @@ export const strings = new LocalizedStrings({
     neg: "سالب",
     moreThan100: "أكبر من 100",
     pe: "مكرر الربح",
+    prev: "السابق",
+    next: "التالي",
   },
 });
 

@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   width: 100%;
   overflow-x: hidden;
 }
@@ -277,6 +278,12 @@ div {
   color: #254ba2 !important;
   font-weight: 600;
   text-decoration: underline;
+}
+
+.nav-link.disabled {
+  color: gray;
+  pointer-events: none; /* Disable click */
+  cursor: not-allowed;
 }
 
 /* Navbar Ends */
@@ -1015,8 +1022,6 @@ div {
   width: 26%;
 }
 
-
-
 /* Media Query Starts */
 
 @media screen and (min-width: 1700px) {
@@ -1123,8 +1128,6 @@ div {
   [lang="ar"] .navbar.sticky.bg-light {
     padding-bottom: 3rem;
   }
-
-
 
   .dropdown-menu .dropdown-item {
     padding: 8px 5px;
@@ -1404,11 +1407,9 @@ div {
   .custom-next-btn.page-item svg {
     width: 6px;
   }
-
 }
 
 @media screen and (max-width: 575px) {
-
   .navbar .navbar-brand img {
     max-width: 220px;
   }
@@ -1451,8 +1452,7 @@ div {
     padding-inline: 4px;
     padding-top: 0px;
     padding-bottom: 0px;
-   }
-
+  }
 }
 
 @media screen and (max-width: 360px) {
@@ -1770,7 +1770,6 @@ div {
   margin-left: 7px;
 }
 
-
 .table_chart .px-layout {
   min-height: 600px;
 }
@@ -1781,15 +1780,14 @@ div {
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-item .active {
-  color: #E27922 !important;
+  color: #e27922 !important;
   text-decoration: underline;
 }
 
 footer {
-  height:50px;
-  width:100%;
+  height: 50px;
+  width: 100%;
   background-color: #193168;
-
 }
 
 .min__height {

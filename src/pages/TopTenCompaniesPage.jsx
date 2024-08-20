@@ -63,7 +63,7 @@ const TopTenCompaniesPage = () => {
   }, [fieldConfigurations]);
 
   const getFilteredData = () => {
-    if (!activeTabLink) return [];
+    if (!activeTabLink || !screenerData) return [];
     return screenerData
       .filter(
         (item) =>

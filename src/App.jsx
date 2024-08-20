@@ -10,7 +10,7 @@ import { setApiData } from "./redux/features/apiDataSlice.js";
 import { strings } from "./utils/constants/localizedStrings";
 import { setLanguage } from "./redux/features/languageSlice.js";
 import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
-// import { resetState } from "./redux/features/fieldConfigurationSlice.js";
+import { resetState } from "./redux/features/fieldConfigurationSlice.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +18,23 @@ function App() {
   const selectedTab = useSelector(selectSelectedTab);
   const { lang } = useParams();
 
-  // dispatch(resetState());
+  // Add event listener for key combination to reset state
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "/") {
+        // Check for Ctrl+R combination
+        event.preventDefault(); // Prevent the default browser refresh action
+        dispatch(resetState()); // Dispatch the resetState action
+        window.location.reload(); // Reload the page to re-initialize the app
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (lang && lang !== currentLanguage) {

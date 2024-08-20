@@ -6,13 +6,25 @@ const screenerDataState = (state) => state.screener.screenerData;
 
 export const selectPages = (state) => state.apiData.pages || [];
 
-export const selectSelectedTab = (state) => {
-  const pages = selectPages(state);
-  const selectedPage = pages.find((page) => page.isSelected) || {};
-  const selectedSection =
-    (selectedPage.sections || []).find((section) => section.isSelected) || {};
-  return (selectedSection.tabs || []).find((tab) => tab.isSelected) || {};
-};
+// Memoized selector for selected page
+const selectSelectedPage = createSelector(
+  [selectPages],
+  (pages) => pages.find((page) => page.isSelected) || {}
+);
+
+// Memoized selector for selected section
+const selectSelectedSection = createSelector(
+  [selectSelectedPage],
+  (selectedPage) =>
+    (selectedPage.sections || []).find((section) => section.isSelected) || {}
+);
+
+// Memoized selector for selected tab
+export const selectSelectedTab = createSelector(
+  [selectSelectedSection],
+  (selectedSection) =>
+    (selectedSection.tabs || []).find((tab) => tab.isSelected) || {}
+);
 
 export const selectFieldConfigurations = createSelector(
   [fieldConfigurationsState],
@@ -36,9 +48,3 @@ export const selectScreenerData = createSelector(
     return screenerData;
   }
 );
-
-// This is the selector that filters screenerData by tabId.
-// export const selectScreenerDataByTabId = (tabId) =>
-//   createSelector([screenerDataState], (screenerData) => {
-//     return screenerData.filter((data) => data.tabId === tabId);
-//   });

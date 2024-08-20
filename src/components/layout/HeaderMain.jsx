@@ -75,13 +75,15 @@ const HeaderMain = () => {
   const getNavLinks = () => {
     const links = [];
     if (pages?.length) {
-      pages.forEach((page, index) => {
+      pages.forEach((page) => {
+        const isEnabled = page.isSelected;
         links.push({
           path: `/${lang}/${page.pageNameEn
             .toLowerCase()
             .replace(/\s+/g, "-")}`,
           name: lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
-          isSelected: index === 0,
+          isSelected: page.isSelected, //index === 0,
+          enabled: isEnabled, // Add a new property to control enable/disable
         });
       });
     }
@@ -187,14 +189,18 @@ const HeaderMain = () => {
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                 {navLinks.map((link, index) => (
                   <li key={index} className="nav-item">
-                    <NavLink
-                      to={link.path}
-                      className={({ isActive }) =>
-                        isActive ? "nav-link active" : "nav-link"
-                      }
-                    >
-                      {link.name}
-                    </NavLink>
+                    {link.enabled ? (
+                      <NavLink
+                        to={link.path}
+                        className={({ isActive }) =>
+                          isActive ? "nav-link active" : "nav-link"
+                        }
+                      >
+                        {link.name}
+                      </NavLink>
+                    ) : (
+                      <span className="nav-link disabled">{link.name}</span>
+                    )}
                   </li>
                 ))}
               </ul>
