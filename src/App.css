@@ -1801,3 +1801,19 @@ footer {
 .cursor-default {
   cursor: default;
 }
+
+.pagination .page-item .page-link:focus,
+.pagination .page-item .page-link .page-link:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.table_layout.table.table-striped th:first-child {
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
+[lang="ar"] .table_layout.table.table-striped th:first-child {
+   padding-right: 20px;
+   padding-left: 5px;
+}
