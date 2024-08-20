@@ -4,7 +4,11 @@ import { Table, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
 import { useDispatch } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
-import { LANGUAGES, strings } from "../../utils/constants/localizedStrings";
+import {
+  TABS,
+  LANGUAGES,
+  strings,
+} from "../../utils/constants/localizedStrings";
 import ScreenerPagination from "./ScreenerPagination";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLanguage } from "../../redux/features/languageSlice.js";
@@ -63,7 +67,9 @@ const ScreenerTable = ({
   useEffect(() => {
     const firstDynamicColumn = getFirstDynamicColumn();
     if (firstDynamicColumn) {
-      setSortConfig({ key: firstDynamicColumn.key, direction: "asc" });
+      if (selectedTab === TABS.S_PE)
+        setSortConfig({ key: firstDynamicColumn.key, direction: "asc" });
+      else setSortConfig({ key: firstDynamicColumn.key, direction: "desc" });
       initialSortSet.current = true;
     }
   }, [columns, selectedTab]);
