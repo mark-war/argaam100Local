@@ -141,6 +141,8 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
 
     const propertyNames =
       subSection.data.length > 0 ? Object.keys(subSection.data[0]) : [];
+    const thirdToLastProperty =
+      propertyNames.length > 1 ? propertyNames[propertyNames.length - 3] : null;
     const secondToLastProperty =
       propertyNames.length > 1 ? propertyNames[propertyNames.length - 2] : null;
 
@@ -148,9 +150,19 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
 
     return subSection.data.map((item, index) => {
       const chartValue = secondToLastProperty ? item[secondToLastProperty] : 0;
-      const rank = item.Rank !== undefined ? item.Rank : null;
+      let rank = item.Rank !== undefined ? item.Rank : null;
+      if (!rank) rank = item.rankno !== undefined ? item.rankno : null;
       const chartWidth = rankToBarWidth[rank] || "0%";
       // const chartPercentage = (parseFloat(chartValue) / maxValue) * 100;
+
+      // Create the string in "thirdValue/secondValue" format
+      const valueString =
+        item[thirdToLastProperty] !== null &&
+        item[secondToLastProperty] !== null &&
+        typeof item[thirdToLastProperty] === "number" &&
+        typeof item[secondToLastProperty] === "number"
+          ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
+          : null;
 
       return (
         <tr key={index}>
@@ -174,7 +186,11 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
             <div className="charts_table_bg">
               <span className="bg" style={{ width: `${chartWidth}` }}></span>
               <span>
-                <NumberFormatter value={chartValue || 0} />
+                {valueString !== null ? (
+                  valueString
+                ) : (
+                  <NumberFormatter value={chartValue || 0} />
+                )}
               </span>
             </div>
           </td>
@@ -182,6 +198,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
       );
     });
   };
+
   return (
     <div className="px-layout col_space mt-4 pt-1">
       <Row>

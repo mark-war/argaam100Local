@@ -1,4 +1,5 @@
 import React from "react";
+import { strings } from "../../utils/constants/localizedStrings";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <div>Something went wrong.</div>;
+      return <div>{strings.errorPage}</div>;
     }
 
     return this.props.children;
