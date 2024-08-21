@@ -821,7 +821,7 @@ div {
 /* Table Chart Starts */
 
 .table_chart .card-body {
-  padding-top: 10px;
+  padding-top: 5px;
 }
 
 .table_chart .table_layout.table th {
@@ -831,6 +831,11 @@ div {
   font-weight: 500;
   padding-bottom: 10px;
   border: 1px solid #eeeef3;
+}
+
+.table_chart .table_layout.table th {
+  border-top: 2px solid #adb1b6;
+  border-bottom: 1px solid #adb1b6;
 }
 
 .table.table_layout tbody td {
@@ -984,6 +989,7 @@ div {
 }
 
 .col_space .row {
+  align-items: baseline;
   justify-content: space-between;
 }
 
@@ -1024,6 +1030,11 @@ div {
 
 .table_chart .table_layout.table td:nth-child(2) {
   width: 26%;
+}
+
+.table_chart th:first-child {
+    padding-right: 25px;
+    padding-left: 20px;
 }
 
 /* Media Query Starts */
@@ -1873,9 +1884,9 @@ footer {
   border-top-left-radius: 10px;
 }
 
-/* .flex-fill .navbar-brand {
-  cursor: default;
-} */
+.top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
+  padding-bottom: 11px;
+}
 
 .table_layout.table-striped tbody tr:first-child {
   outline: 1px solid #e0e0e0;
