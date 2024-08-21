@@ -40,6 +40,7 @@ export const strings = new LocalizedStrings({
     next: "Next",
     notFound: "No results found",
     title: "Argaam Screener",
+    errorPage: "Something went wrong...",
   },
   ar: {
     topTen: "أعلى 10",
@@ -53,7 +54,7 @@ export const strings = new LocalizedStrings({
     par: "(معدل سنوياً) مكرر الربح",
     priceBook: "(اخر فترة مالية) القيمة الدفترية",
     priceSales: "(اخر 12) مضاعف الإيرادات",
-    date: "التحديث الأخير :",
+    date: "آخر تحديث :",
     bookValue: "(معدل سنوياً) مكرر الربح",
     stockScreener: "نتيجة الفلتر",
     topTenCompanies: "أعلى 10 شركات",
@@ -79,6 +80,7 @@ export const strings = new LocalizedStrings({
     next: "التالي",
     notFound: "لا توجد نتائج للبحث",
     title: "تحليل الأسهم",
+    errorPage: "حدث خطأ ما...",
   },
 });
 

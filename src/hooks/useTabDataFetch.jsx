@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { fetchScreenerTabData } from "../redux/features/fieldConfigurationSlice";
+import { fetchScreenerData } from "../redux/features/fieldConfigurationSlice";
 import {
   selectFieldConfigurations,
   selectCurrentLanguage,
@@ -37,7 +37,7 @@ const useTabDataFetch = (tabId) => {
         setLoading(true); // Set loading to true when fetching starts
 
         dispatch(
-          fetchScreenerTabData({ filteredConfigurations, currentLanguage })
+          fetchScreenerData({ filteredConfigurations, currentLanguage })
         ).then(() => {
           setLoading(false); // Set loading to false when fetching completes
         });
