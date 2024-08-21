@@ -385,7 +385,7 @@ div {
 
 .multi_select {
   text-align: right;
-  min-width: 240px;
+  min-width: 235px;
   position: relative;
 }
 
@@ -442,7 +442,7 @@ div {
   background: #fff;
   width: 235px;
   border-radius: 5px;
-  right: 5px;
+  right: 0;
   display: block;
   top: -7px;
   max-height: 300px;
@@ -883,7 +883,16 @@ div {
 .table_chart tbody td:nth-child(3),
 .table_chart th:nth-child(3) {
   width: 70%;
-  padding-left: 0 !important;
+}
+
+.table_chart th:nth-child(3) {
+  padding-right: 10px;
+  padding-left: 25px;
+}
+
+[lang="ar"] .table_chart th:nth-child(3) {
+  padding-right: 35px;
+  padding-left: 10px;
 }
 
 .race_chart_container {
@@ -924,10 +933,12 @@ div {
   height: 100vh; /* or any other height */
 }
 
-[lang="ar"] .table_chart tbody td:nth-child(3),
-[lang="ar"] .table_chart th:nth-child(3) {
-  padding-right: 0 !important;
-  padding-left: 20px !important;
+[lang="ar"] .table_chart tbody th:nth-child(3) {
+  padding-right: 45px !important;
+}
+
+[lang="ar"] .table_chart tbody td:nth-child(3) {
+  padding-right: 0;
 }
 
 .sub_heading {
@@ -1029,8 +1040,10 @@ div {
 } */
 
 .table_chart .table_layout.table td:nth-child(2) {
-  width: 26%;
+  width: 24%;
 }
+
+
 
 .table_chart th:first-child {
     padding-right: 25px;
