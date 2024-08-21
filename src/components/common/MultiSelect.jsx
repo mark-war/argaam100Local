@@ -1,19 +1,45 @@
 import React, { useState, useRef } from "react";
 import { strings } from "../../utils/constants/localizedStrings";
 
-const MultiSelect = ({ options, selectedOptions, onChange }) => {
+const MultiSelect = ({ options, fullOptions, selectedOptions, onChange }) => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [filteredOptions, setFilteredOptions] = useState(options); // State for filtered options
   const searchInputRef = useRef(null); // Ref for the search input
 
+  // Create a mapping between English and Arabic options
+  const createMapping = () => {
+    const mapping = {};
+    fullOptions.en.forEach((option, index) => {
+      mapping[option] = fullOptions.ar[index];
+      mapping[fullOptions.ar[index]] = option;
+    });
+    return mapping;
+  };
+
+  const optionMapping = createMapping();
+
   const toggleOption = (option) => {
     const currentIndex = selectedOptions.indexOf(option);
     const newSelectedOptions = [...selectedOptions];
+    const correspondingOption = optionMapping[option];
 
     if (currentIndex === -1) {
       newSelectedOptions.push(option);
+      if (
+        correspondingOption &&
+        !newSelectedOptions.includes(correspondingOption)
+      ) {
+        newSelectedOptions.push(correspondingOption);
+      }
     } else {
       newSelectedOptions.splice(currentIndex, 1);
+      if (correspondingOption) {
+        const correspondingIndex =
+          newSelectedOptions.indexOf(correspondingOption);
+        if (correspondingIndex !== -1) {
+          newSelectedOptions.splice(correspondingIndex, 1);
+        }
+      }
     }
 
     onChange(newSelectedOptions);
@@ -36,6 +62,7 @@ const MultiSelect = ({ options, selectedOptions, onChange }) => {
   const clearSelection = () => {
     onChange([]);
     setSearchTerm(""); // Optionally clear the search term
+    setFilteredOptions(options); // Reset filtered options to show all
     if (searchInputRef.current) {
       searchInputRef.current.focus(); // Focus the search input
     }
@@ -53,7 +80,7 @@ const MultiSelect = ({ options, selectedOptions, onChange }) => {
           ref={searchInputRef} // Attach ref here
         />
         <button type="button" onClick={clearSelection} className="clear-button">
-           ✕
+          ✕
         </button>
       </div>
       {filteredOptions.length > 0 ? (
@@ -71,7 +98,7 @@ const MultiSelect = ({ options, selectedOptions, onChange }) => {
           </div>
         ))
       ) : (
-        <div className="no-results">No results found</div>
+        <div className="no-results">{strings.notFound}</div>
       )}
     </div>
   );

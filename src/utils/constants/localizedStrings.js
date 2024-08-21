@@ -38,6 +38,7 @@ export const strings = new LocalizedStrings({
     pe: "P/E",
     prev: "Previous",
     next: "Next",
+    notFound: "No results found",
   },
   ar: {
     topTen: "أعلى 10",
@@ -75,6 +76,7 @@ export const strings = new LocalizedStrings({
     pe: "مكرر الربح",
     prev: "السابق",
     next: "التالي",
+    notFound: "لا توجد نتائج للبحث",
   },
 });
 

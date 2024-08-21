@@ -7,9 +7,10 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-  const sectors = useSelector(
+  const langSectors = useSelector(
     (state) => state.screener.sectors[currentLanguage]
   );
+  const sectors = useSelector((state) => state.screener.sectors);
   const status = useSelector((state) => state.screener.loading);
   const error = useSelector((state) => state.screener.error);
   const [isSelect, setIsSelect] = useState(false);
@@ -72,7 +73,8 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
       <div className="multi_select_container position-relative">
         {isSelect && (
           <MultiSelectCheckbox
-            options={sectors}
+            options={langSectors}
+            fullOptions={sectors}
             selectedOptions={selectedOptions}
             onChange={handleSelectedOptionsChange}
           />
