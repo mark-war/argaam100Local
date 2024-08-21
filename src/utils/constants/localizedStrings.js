@@ -8,7 +8,7 @@ export const strings = new LocalizedStrings({
     navLinkAbout: "About Us",
     sector: "Sector",
     date: "Last Update :",
-    code: "Code",
+    code: "Symbol",
     companies: "Companies",
     sector: "Sector",
     pemtt: "P/E (MTT)",
@@ -39,13 +39,14 @@ export const strings = new LocalizedStrings({
     prev: "Previous",
     next: "Next",
     notFound: "No results found",
+    title: "Argaam Screener",
   },
   ar: {
     topTen: "أعلى 10",
     screener: "تحليل الاسهم",
     navLinkArgaam: "أرقام",
     navLinkAbout: "معلومات عنا",
-    code: "الكود  ",
+    code: "الرمز",
     companies: "الشركة",
     sector: "القطاع",
     pemtt: "مكرر الربح ( أخر 12 )",
@@ -77,6 +78,7 @@ export const strings = new LocalizedStrings({
     prev: "السابق",
     next: "التالي",
     notFound: "لا توجد نتائج للبحث",
+    title: "تحليل الأسهم",
   },
 });
 

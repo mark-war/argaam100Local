@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Table, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
 import {
   TABS,
@@ -13,6 +13,7 @@ import ScreenerPagination from "./ScreenerPagination";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLanguage } from "../../redux/features/languageSlice.js";
 import config from "../../utils/config.js";
+import { selectScreenerData } from "../../redux/selectors.js";
 
 const ScreenerTable = ({
   data,
@@ -32,6 +33,20 @@ const ScreenerTable = ({
   // const currentLanguage = useSelector(selectCurrentLanguage);
   const { lang } = useParams(); // Access the current language from URL parameters
 
+  const fullOptions = useSelector(selectScreenerData)[0].sectors;
+
+  // Create a mapping between English and Arabic options
+  const createMapping = () => {
+    const mapping = {};
+    fullOptions.en.forEach((option, index) => {
+      mapping[option] = fullOptions.ar[index]; // Map English to Arabic
+      mapping[fullOptions.ar[index]] = option; // Map Arabic to English
+    });
+    return mapping;
+  };
+
+  const optionMapping = createMapping();
+
   useEffect(() => {
     if (config.supportedLanguages.includes(lang)) {
       if (!lang) {
@@ -50,12 +65,6 @@ const ScreenerTable = ({
 
   // Function to find the first dynamic column
   const getFirstDynamicColumn = () => {
-    // return columns.find(
-    //   (col) =>
-    //     typeof col.key === "string" &&
-    //     !col.key.startsWith("fixed_") &&
-    //     !col.hidden
-    // );
     return columns.find(
       (col) =>
         typeof col.key === "number" && // Key is a number
@@ -76,12 +85,13 @@ const ScreenerTable = ({
 
   // Function to handle sector filter
   const handleSectorClick = (sector) => {
-    setSelectedOptions(
-      (prevOptions) =>
-        prevOptions.includes(sector)
-          ? prevOptions.filter((option) => option !== sector) // Remove if already selected
-          : [...prevOptions, sector] // Add if not selected
-    );
+    console.log("CLICKED SECTOR: ", sector);
+    // Get the Arabic or English sector based on the mapping
+    const mappedSector = optionMapping[sector];
+    console.log("MAPPED SECTOR: ", mappedSector);
+    // Set the selected options to only include the newly clicked sector and its mapped counterpart
+    setSelectedOptions([sector, mappedSector]);
+    console.log("SELECTED OPTIONS: ", selectedOptions);
   };
 
   const filteredData = data.filter((row) => {

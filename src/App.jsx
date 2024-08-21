@@ -18,6 +18,12 @@ function App() {
   const selectedTab = useSelector(selectSelectedTab);
   const { lang } = useParams();
 
+  // Set dynamic page title
+  useEffect(() => {
+    const title = strings.title;
+    document.title = title;
+  }, [currentLanguage, selectedTab]);
+
   // Add event listener for key combination to reset state
   useEffect(() => {
     const handleKeyDown = (event) => {
