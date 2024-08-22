@@ -6,6 +6,7 @@ import TopCompaniesTable from "../components/topten/TopCompaniesTable";
 import { PAGES } from "../utils/constants/localizedStrings";
 import useTabDataFetch from "../hooks/useTabDataFetch";
 import { localized } from "../utils/localization";
+import config from "../utils/config.js";
 
 const TopTenCompaniesPage = () => {
   const currentLanguage = useSelector(
@@ -27,7 +28,10 @@ const TopTenCompaniesPage = () => {
   const [activeTabLink, setActiveTabLink] = useState(null);
 
   //hook to fetch data by active tab
-  const { loading } = useTabDataFetch(activeTabLink);
+  const { loading } = useTabDataFetch(
+    activeTabLink,
+    config.expirationInMinutes
+  );
 
   const handleActiveTabLink = (tab) => {
     setActiveTabLink(tab);

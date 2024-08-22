@@ -32,6 +32,24 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
     );
   };
 
+  const renderColumnLabel = (label) => {
+    const match = label.match(/^(.+?)(\s\(.+\))?$/); // Match FieldName and optional (UnitName)
+    const fieldName = match ? match[1] : label;
+    const unitName = match && match[2] ? match[2] : "";
+
+    return (
+      <>
+        <span style={{ fontSize: "1rem" }}>{fieldName}</span>
+        <br /> {/* to put the unit name below the field */}
+        {unitName && (
+          <span style={{ fontSize: "x-small", marginLeft: "5px" }}>
+            {unitName}
+          </span>
+        )}
+      </>
+    );
+  };
+
   return (
     <thead>
       <tr>
@@ -51,7 +69,7 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
               onClick={() => onSort(column.key)}
             >
               {getSortIcon(column.key)}
-              {column.label}
+              {renderColumnLabel(column.label)}
             </th>
           );
         })}

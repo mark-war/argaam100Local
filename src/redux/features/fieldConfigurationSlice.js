@@ -116,6 +116,7 @@ export const fetchScreenerData = createAsyncThunk(
                 chartData: "",
                 sectors: null,
                 subTabs: data.subTabs, // Store the responses corresponding to each sub-tab
+                timestamp: Date.now(), // Add timestamp here
               };
             } else {
               // Process the first item (index 0)
@@ -141,6 +142,7 @@ export const fetchScreenerData = createAsyncThunk(
                   en: extractedSectors.distinctSectorsEnglish || [],
                 },
                 subTabs: data.subTabs,
+                timestamp: Date.now(), // Add timestamp here
               };
             }
           } catch (error) {
@@ -162,7 +164,7 @@ export const fetchScreenerData = createAsyncThunk(
 );
 
 const initialState = {
-  screenerData: null,
+  screenerData: [],
   chartData: "",
   fieldConfigurations: [],
   sectors: { ar: [], en: [] },
@@ -176,6 +178,15 @@ const fieldConfigurationSlice = createSlice({
   name: "screener",
   initialState,
   reducers: {
+    resetTabData: (state, action) => {
+      const { tabId } = action.payload;
+      if (Array.isArray(state.screenerData)) {
+        state.screenerData = state.screenerData.filter(
+          (item) => item.identifier.split("-")[0] !== tabId
+        );
+      }
+      // Optionally, you can reset other related states if needed
+    },
     resetState: () => initialState, // Add this line
   },
   extraReducers: (builder) => {
@@ -207,11 +218,21 @@ const fieldConfigurationSlice = createSlice({
           return;
         }
 
+        // Filter out null values and existing identifiers
+        const newItems = action.payload.filter((item) => item !== null);
+        const existingIdentifiers = new Set(
+          state.screenerData.map((item) => item.identifier)
+        );
+
         // Merge new screener data with existing data
         state.screenerData = [
           ...(state.screenerData || []),
-          ...action.payload.filter((item) => item !== null), // Filter out null values
+          ...newItems.filter(
+            (item) => !existingIdentifiers.has(item.identifier)
+          ),
         ];
+
+        console.log("STORAGE FOR SCREENER: ", state.screenerData);
 
         // Merge sectors without duplicates
         const allSectors = action.payload.reduce(
@@ -249,6 +270,7 @@ const fieldConfigurationSlice = createSlice({
   },
 });
 
+export const { resetTabData } = fieldConfigurationSlice.actions;
 export const { resetState } = fieldConfigurationSlice.actions;
 
 // Export actions and reducer

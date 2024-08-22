@@ -28,7 +28,10 @@ const ScreenerTablesPage = () => {
   const [activeTabLink, setActiveTabLink] = useState(null);
 
   //hook to fetch data by active tab
-  const { loading } = useTabDataFetch(activeTabLink);
+  const { loading } = useTabDataFetch(
+    activeTabLink,
+    config.expirationInMinutes
+  );
 
   const selectedPage = pages.find((page) => page.pageId === PAGES.SCREENER);
   const selectedSection = selectedPage?.sections.find(
@@ -80,7 +83,7 @@ const ScreenerTablesPage = () => {
           return {
             //key: fieldName + optionalUnitName,
             key: item.Pkey,
-            label: fieldName + optionalUnitName,
+            label: `${fieldName}${optionalUnitName}`, // Combine fieldName and optionalUnitName into a single string
           };
         }),
     ];

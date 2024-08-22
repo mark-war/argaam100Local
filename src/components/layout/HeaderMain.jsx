@@ -35,8 +35,8 @@ const HeaderMain = () => {
 
   // Handle click outside the dropdown
   const handleClickOutside = (event) => {
-    if (dropdownMobileRef.current && !dropdownMobileRef.current.contains(event.target)) {
-      setIsMobileOpen(false);
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
     }
     if (
       dropdownMobileRef.current &&
@@ -100,10 +100,7 @@ const HeaderMain = () => {
   return (
     <>
       {/* Mobile Nav Starts */}
-      <div
-        className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}
-       
-      >
+      <div className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}>
         <div
           className="mobile_menu"
           onClick={handleMenuInnerClick}

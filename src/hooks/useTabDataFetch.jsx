@@ -1,19 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { fetchScreenerData } from "../redux/features/fieldConfigurationSlice";
+import {
+  fetchScreenerData,
+  resetTabData,
+} from "../redux/features/fieldConfigurationSlice";
 import {
   selectFieldConfigurations,
   selectCurrentLanguage,
-  selectScreenerData,
 } from "../redux/selectors";
 
-const useTabDataFetch = (tabId) => {
+const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const dispatch = useDispatch();
   const fieldConfigurations = useSelector(selectFieldConfigurations);
   const currentLanguage = useSelector(selectCurrentLanguage);
-  const screenerData = useSelector(selectScreenerData);
 
   const [loading, setLoading] = useState(false); // Add loading state
+  const [localCache, setLocalCache] = useState({});
   const hasFetchedData = useRef(false);
 
   useEffect(() => {
@@ -22,14 +24,30 @@ const useTabDataFetch = (tabId) => {
 
   useEffect(() => {
     if (fieldConfigurations.length > 0 && tabId) {
-      // Check if the data for the current tab and language already exists
-      const existingData = screenerData?.find(
-        (data) =>
-          data.identifier.startsWith(tabId) &&
-          data.identifier.endsWith(currentLanguage)
-      );
+      const cacheKey = `${tabId}_${currentLanguage}`;
 
-      if (!existingData && !hasFetchedData.current) {
+      // Check if we need to fetch data based on local cache
+      const cacheEntry = localCache[cacheKey] || {
+        needsFetch: true,
+        timestamp: 0,
+      };
+
+      const isExpired = (cacheEntry) => {
+        if (expirationTimeInMinutes === 0) return false; // No expiration
+        const currentTime = Date.now();
+        const expirationTime = expirationTimeInMinutes * 60 * 1000;
+        return currentTime - cacheEntry.timestamp > expirationTime;
+      };
+
+      if (
+        (cacheEntry.needsFetch || isExpired(cacheEntry)) &&
+        !hasFetchedData.current
+      ) {
+        console.log("Fetching data...");
+
+        dispatch(resetTabData({ tabId })); // Reset data for the current tab
+
+        // Use the filtered configurations passed as a parameter
         const filteredConfigurations = fieldConfigurations.filter(
           (config) => config.TabID === tabId
         );
@@ -39,7 +57,14 @@ const useTabDataFetch = (tabId) => {
         dispatch(
           fetchScreenerData({ filteredConfigurations, currentLanguage })
         ).then(() => {
+          console.log("Data fetch complete");
           setLoading(false); // Set loading to false when fetching completes
+
+          // Update local cache after fetch
+          setLocalCache((prevCache) => ({
+            ...prevCache,
+            [cacheKey]: { needsFetch: false, timestamp: Date.now() },
+          }));
         });
 
         hasFetchedData.current = true; // Set the flag to prevent re-dispatch
@@ -49,7 +74,14 @@ const useTabDataFetch = (tabId) => {
         );
       }
     }
-  }, [dispatch, currentLanguage, fieldConfigurations, tabId, screenerData]);
+  }, [
+    dispatch,
+    currentLanguage,
+    fieldConfigurations,
+    tabId,
+    expirationTimeInMinutes,
+    localCache,
+  ]);
 
   return { loading }; // Return the loading state
 };

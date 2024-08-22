@@ -8,6 +8,8 @@ const config = {
   ),
   decimals: Number(import.meta.env.VITE_DECIMALS),
   peFieldIds: new Set(import.meta.env.VITE_PE_FIELDIDS.split(",").map(Number)),
+  refreshOnReload: Number(import.meta.env.VITE_REFRESH_ONRELOAD),
+  expirationInMinutes: Number(import.meta.env.VITE_EXPIRATION_IN_MINUTES),
   // Add other global configurations here
 };
 

@@ -11,6 +11,7 @@ import { strings } from "./utils/constants/localizedStrings";
 import { setLanguage } from "./redux/features/languageSlice.js";
 import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
 import { resetState } from "./redux/features/fieldConfigurationSlice.js";
+import config from "./utils/config.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +43,20 @@ function App() {
     };
   }, [dispatch]);
 
+  //for refreshing data fetch
+  useEffect(() => {
+    if (config.refreshOnReload === 1) {
+      const handleResetState = () => {
+        dispatch(resetState());
+      };
+      window.addEventListener("beforeunload", handleResetState());
+
+      return () => {
+        window.removeEventListener("beforeunload", handleResetState());
+      };
+    }
+  }, [dispatch]);
+
   useEffect(() => {
     if (lang && lang !== currentLanguage) {
       dispatch(setLanguage(lang));
@@ -68,7 +83,10 @@ function App() {
   }, [dispatch]);
 
   // Use the custom hook to handle tab data fetching
-  const { loading } = useTabDataFetch(selectedTab.tabId);
+  const { loading } = useTabDataFetch(
+    selectedTab.tabId,
+    config.expirationInMinutes
+  );
 
   return (
     <div className="App">
