@@ -1921,3 +1921,7 @@ footer {
 .col__split span {
   display: block;
 }
+
+.table.table_layout th img + img + span:first-child {
+  font-size: 0.875rem !important;
+}

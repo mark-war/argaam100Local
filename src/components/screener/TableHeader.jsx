@@ -44,10 +44,10 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
     console.log("UN: ", unitName);
     return (
       <>
-        <span style={{ fontSize: "1rem" }}>{fieldName}</span>
+        <span className="thead_title">{fieldName}</span>
         <br /> {/* to put the unit name below the field */}
         {unitName && (
-          <span style={{ fontSize: "x-small", marginLeft: "5px" }}>
+          <span className="thead_title" style={{ marginLeft: "5px" }}>
             {unitName}
           </span>
         )}
