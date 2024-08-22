@@ -1918,3 +1918,6 @@ footer {
   overflow: auto;
 }
 
+.col__split span {
+  display: block;
+}
