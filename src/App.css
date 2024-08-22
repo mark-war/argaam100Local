@@ -744,7 +744,7 @@ div {
 }
 
 .table.table_layout th span {
-  font-size: 0.875rem;
+  font-size: 15px;
 }
 
 .table.table_layout td.text-center {
@@ -1922,6 +1922,6 @@ footer {
   display: block;
 }
 
-.table.table_layout th img + img + span:first-child {
-  font-size: 0.875rem !important;
+.table.table_layout th .thead_title {
+  font-size: 14px !important;
 }
