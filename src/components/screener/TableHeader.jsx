@@ -39,9 +39,7 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
     const parts = label.split("(");
     const fieldName = parts[0].trim(); // The part before "("
     const unitName = parts[1] ? `(${parts[1].trim()}` : ""; // The part after "(", add back the "("
-    console.log("LABEL:", label);
-    console.log("FN: ", fieldName);
-    console.log("UN: ", unitName);
+
     return (
       <>
         <span className="thead_title">{fieldName}</span>
