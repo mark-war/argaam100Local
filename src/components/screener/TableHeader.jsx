@@ -33,10 +33,15 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
   };
 
   const renderColumnLabel = (label) => {
-    const match = label.match(/^(.+?)(\s\(.+\))?$/); // Match FieldName and optional (UnitName)
-    const fieldName = match ? match[1] : label;
-    const unitName = match && match[2] ? match[2] : "";
-
+    // const match = label.match(/^(.+?)\s*(\(.+\))$/);
+    // const fieldName = match ? match[1] : label;
+    // const unitName = match && match[2] ? match[2] : "";
+    const parts = label.split("(");
+    const fieldName = parts[0].trim(); // The part before "("
+    const unitName = parts[1] ? `(${parts[1].trim()}` : ""; // The part after "(", add back the "("
+    console.log("LABEL:", label);
+    console.log("FN: ", fieldName);
+    console.log("UN: ", unitName);
     return (
       <>
         <span style={{ fontSize: "1rem" }}>{fieldName}</span>
