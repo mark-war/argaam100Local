@@ -10,10 +10,14 @@ const __dirname = dirname(__filename);
 const sourceDir = `${__dirname}/dist`;
 const enDir = `${__dirname}/dist/en/screener`;
 const arDir = `${__dirname}/dist/ar/screener`;
+const en10Dir = `${__dirname}/dist/en/top-10`;
+const ar10Dir = `${__dirname}/dist/ar/top-10`;
 
 // Create language-specific directories and subdirectories if they don't exist
 fs.ensureDirSync(enDir);
 fs.ensureDirSync(arDir);
+fs.ensureDirSync(en10Dir);
+fs.ensureDirSync(ar10Dir);
 
 // Example of copying files to respective directories with a filter
 fs.readdir(sourceDir, (err, files) => {
@@ -27,6 +31,8 @@ fs.readdir(sourceDir, (err, files) => {
       // Here you could add logic to determine which files go where
       fs.copyFileSync(srcPath, `${enDir}/${file}`);
       fs.copyFileSync(srcPath, `${arDir}/${file}`);
+      fs.copyFileSync(srcPath, `${en10Dir}/${file}`);
+      fs.copyFileSync(srcPath, `${ar10Dir}/${file}`);
     }
   });
 
