@@ -17,10 +17,18 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const [loading, setLoading] = useState(false); // Add loading state
   const [localCache, setLocalCache] = useState({});
   const hasFetchedData = useRef(false);
+  const previousLanguage = useRef(currentLanguage);
 
   useEffect(() => {
     hasFetchedData.current = false;
   }, [tabId]);
+
+  useEffect(() => {
+    if (previousLanguage.current !== currentLanguage) {
+      hasFetchedData.current = false;
+      previousLanguage.current = currentLanguage;
+    }
+  }, [currentLanguage]);
 
   useEffect(() => {
     if (fieldConfigurations.length > 0 && tabId) {

@@ -1,4 +1,3 @@
-// src/components/LanguageSwitcher.js
 import React from "react";
 import { useParams } from "react-router-dom";
 import useLanguageSwitch from "../../hooks/useLanguageSwitch";

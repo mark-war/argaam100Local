@@ -2,11 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../redux/features/languageSlice.js";
-import { strings, LANGUAGES } from "../../utils/constants/localizedStrings.js";
+import {
+  strings,
+  LANGUAGES,
+  PAGES,
+} from "../../utils/constants/localizedStrings.js";
 import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
-import { fetchFieldConfigurationData } from "../../redux/features/fieldConfigurationSlice.js";
+// import { fetchFieldConfigurationData } from "../../redux/features/fieldConfigurationSlice.js";
+// import { selectFieldConfigurations } from "../../redux/selectors.js";
+import useTabDataFetch from "../../hooks/useTabDataFetch.jsx";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -17,6 +23,9 @@ const HeaderMain = () => {
   const dropdownRef = useRef(null); // Create a ref for the dropdown element
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.apiData.pages); // Access pages from Redux store
+
+  // temporary logic to disable top-10
+  const [disabledLink, setDisabledLink] = useState(`/${lang}/top-10`);
 
   const toggleDropdown = () => {
     setIsOpen((prevState) => !prevState);
@@ -46,8 +55,14 @@ const HeaderMain = () => {
     }
   };
 
+  const selectedPage = pages.find((page) => page.pageId === PAGES.SCREENER);
+
+  if (selectedPage === PAGES.SCREENER) {
+    console.log("SELECTED PAGE: ", selectedPage);
+    useTabDataFetch(5, config.expirationInMinutes);
+  }
+
   useEffect(() => {
-    dispatch(fetchFieldConfigurationData());
     if (config.supportedLanguages.includes(lang)) {
       if (!lang) {
         dispatch(setLanguage(lang));
@@ -76,14 +91,12 @@ const HeaderMain = () => {
     const links = [];
     if (pages?.length) {
       pages.forEach((page) => {
-        const isEnabled = page.isSelected;
         links.push({
           path: `/${lang}/${page.pageNameEn
             .toLowerCase()
             .replace(/\s+/g, "-")}`,
           name: lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
-          isSelected: page.isSelected, //index === 0,
-          enabled: isEnabled, // Add a new property to control enable/disable
+          isSelected: page.isSelected, //index === 0
         });
       });
     }
@@ -96,6 +109,11 @@ const HeaderMain = () => {
   if (!pages) {
     return <LoadingScreen />; // Optional: Show loading screen if pages data is not available
   }
+
+  useEffect(() => {
+    // Set the disabled link whenever the component mounts or updates
+    setDisabledLink(`/${lang}/top-10`);
+  }, [lang]); // Dependency on lang to ensure it updates accordingly
 
   return (
     <>
@@ -190,18 +208,16 @@ const HeaderMain = () => {
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                 {navLinks.map((link, index) => (
                   <li key={index} className="nav-item">
-                    {link.enabled ? (
-                      <NavLink
-                        to={link.path}
-                        className={({ isActive }) =>
-                          isActive ? "nav-link active" : "nav-link"
-                        }
-                      >
-                        {link.name}
-                      </NavLink>
-                    ) : (
-                      <span className="nav-link disabled">{link.name}</span>
-                    )}
+                    <NavLink
+                      to={link.path}
+                      className={({ isActive }) =>
+                        `nav-link ${isActive ? "active" : ""} ${
+                          link.path === disabledLink ? "disabled" : ""
+                        }`
+                      }
+                    >
+                      {link.name}
+                    </NavLink>
                   </li>
                 ))}
               </ul>

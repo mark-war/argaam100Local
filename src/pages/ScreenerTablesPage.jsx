@@ -27,6 +27,7 @@ const ScreenerTablesPage = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeTabLink, setActiveTabLink] = useState(null);
 
+  console.log("ACTIVE TAB LINK: ", activeTabLink);
   //hook to fetch data by active tab
   const { loading } = useTabDataFetch(
     activeTabLink,
