@@ -155,11 +155,7 @@ const ScreenerTablesPage = () => {
               fixed_code: fixedCode,
               fixed_img: row.LogoUrl,
               fixed_company: localized(row, "ShortName", currentLanguage),
-              fixed_sector: localized(
-                row,
-                "SectorName",
-                currentLanguage
-              ).trim(),
+              fixed_sector: localized(row, "SectorName", currentLanguage),
               CompanyID: row.CompanyID,
             });
           }

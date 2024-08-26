@@ -1,28 +1,16 @@
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { strings, LANGUAGES } from "../../utils/constants/localizedStrings";
+import { localized } from "../../utils/localization";
 
 const TopCompaniesSubHeader = ({
   title,
   tabLinksArray,
   activeTabLink,
   handleActiveTabLink,
-  defaultSubTab,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isSelect, setIsSelect] = useState(false);
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-
-  const handleSelect = () => {
-    setIsSelect((prevState) => !prevState);
-  };
-
-  const handleSelectedOptionsChange = (newSelectedOptions) => {
-    setSelectedOptions(newSelectedOptions);
-  };
 
   return (
     <div className="shadow_btm sub_header top_companies">
@@ -148,11 +136,7 @@ const TopCompaniesSubHeader = ({
                     )
                   }
                 >
-                  <span>
-                    {currentLanguage === LANGUAGES.AR
-                      ? tabItem.nameAr
-                      : tabItem.nameEn}
-                  </span>
+                  <span>{localized(tabItem, "name", currentLanguage)}</span>
                 </Link>
               </li>
             ))}
