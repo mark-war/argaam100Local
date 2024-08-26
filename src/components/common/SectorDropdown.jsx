@@ -2,17 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import MultiSelectCheckbox from "./MultiSelect.jsx";
 import { strings } from "../../utils/constants/localizedStrings.js";
+import PropTypes from "prop-types";
 
 const SectorDropdown = ({ selectedSectors, onChange }) => {
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
-  const langSectors = useSelector(
-    (state) => state.screener.sectors[currentLanguage]
-  );
-  const sectors = useSelector((state) => state.screener.sectors);
-  const status = useSelector((state) => state.screener.loading);
-  const error = useSelector((state) => state.screener.error);
+  const { langSectors, sectors, status, error } = useSelector((state) => ({
+    langSectors: state.screener.sectors[state.language.currentLanguage],
+    sectors: state.screener.sectors,
+    status: state.screener.loading,
+    error: state.screener.error,
+  }));
+
   const [isSelect, setIsSelect] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(selectedSectors || []);
   const dropdownRef = useRef(null);
@@ -28,7 +27,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef]);
+  }, []);
 
   useEffect(() => {
     setSelectedOptions(selectedSectors || []);
@@ -37,19 +36,11 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
   useEffect(() => {
     if (isSelect && dropdownRef.current) {
       const input = dropdownRef.current.querySelector(".search-input");
-      if (input) {
-        input.focus(); // Focus on the search textbox when dropdown is opened
-      }
+      if (input) input.focus(); // Focus on the search textbox when dropdown is opened
     }
   }, [isSelect]);
 
-  // const handleSelect = () => {
-  //   setIsSelect(!isSelect);
-  // };
-
-  const handleSelect = () => {
-    setIsSelect((prev) => !prev);
-  };
+  const handleSelect = () => setIsSelect((prev) => !prev);
 
   const handleSelectedOptionsChange = (newSelectedOptions) => {
     setSelectedOptions(newSelectedOptions); //pass selection from parent to child component
@@ -62,11 +53,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
   return (
     <div className="sector_dropdown" ref={dropdownRef}>
       <div onClick={handleSelect} className="multi_select">
-        <div
-          className={
-            isSelect ? "multi_select_toggle hover-class" : "multi_select_toggle"
-          }
-        >
+        <div className={`multi_select_toggle ${isSelect ? "hover-class" : ""}`}>
           <img alt="Filter" src="/assets/images/filter.svg" /> {strings.sector}
         </div>
       </div>
@@ -82,6 +69,11 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
       </div>
     </div>
   );
+};
+
+SectorDropdown.propTypes = {
+  selectedSectors: PropTypes.array,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default SectorDropdown;
