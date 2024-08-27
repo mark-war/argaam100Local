@@ -61,9 +61,10 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
         <button
           //TODO: add refresh icon
           onClick={handleRefresh} // Handle refresh click
-          className="clear-button"
+          className="clear-button reset__button"
         >
-          ✕
+          <span>Reset</span> 
+            <img width="15" src="https://tools.argaam.com/content/images/refresh.png" />
         </button>
       )}
       <div className="sector_dropdown" ref={dropdownRef}>
