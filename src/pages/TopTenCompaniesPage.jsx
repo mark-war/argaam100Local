@@ -25,7 +25,7 @@ const TopTenCompaniesPage = () => {
   );
 
   //defaultActiveTab
-  const [activeTabLink, setActiveTabLink] = useState(null);
+  const [activeTabLink, setActiveTabLink] = useState(8);
 
   //hook to fetch data by active tab
   const { loading } = useTabDataFetch(
@@ -85,6 +85,7 @@ const TopTenCompaniesPage = () => {
   };
 
   const renderTabContent = useCallback(() => {
+    console.log("SELECTED TAB: ", activeTabLink);
     return (
       <>
         {loading && <div className="spinner"></div>}
