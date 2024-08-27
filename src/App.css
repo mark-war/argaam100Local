@@ -1075,6 +1075,7 @@ div {
   align-items: center;
   display: flex;
   padding-inline: 9px;
+  white-space: nowrap;
 }
 
 .reset__button span {
@@ -1222,7 +1223,7 @@ div {
   }
 
   .multi_select_toggle {
-    min-width: 200px;
+    min-width: 160px;
   }
 
   .col_space .col-lg-6 {
