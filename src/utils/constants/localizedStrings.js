@@ -41,6 +41,7 @@ export const strings = new LocalizedStrings({
     notFound: "No results found",
     title: "Argaam Screener",
     errorPage: "Something went wrong...",
+    reset: "Reset",
   },
   ar: {
     topTen: "أعلى 10",
@@ -81,6 +82,7 @@ export const strings = new LocalizedStrings({
     notFound: "لا توجد نتائج للبحث",
     title: "تحليل الأسهم",
     errorPage: "حدث خطأ ما...",
+    reset: "إعادة تعيين",
   },
 });
 
