@@ -5,7 +5,7 @@ import SectorDropdown from "../common/SectorDropdown";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import { localized } from "../../utils/localization";
 import { setLanguage } from "../../redux/features/languageSlice";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 const PageSubHeader = ({
   title,
@@ -29,24 +29,29 @@ const PageSubHeader = ({
     }
   }, [location.search, currentLanguage, dispatch]);
 
-  const getCurrentDateFormatted = () => {
+  const getCurrentDateFormatted = useCallback(() => {
     const today = new Date();
-
-    const day = String(today.getDate()).padStart(2, "0"); // Get day and add leading zero if necessary
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so add 1
-    const year = today.getFullYear(); // Get the full year
-
-    return `${day}/${month}/${year}`;
-  };
+    return today.toLocaleDateString(
+      currentLanguage === "ar" ? "ar-SA" : "en-GB",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    );
+  }, [currentLanguage]);
 
   const dateNow = getCurrentDateFormatted();
 
-  const handleSelectedOptionsChange = (newSelectedOptions) => {
-    setSelectedOptions(newSelectedOptions);
-    if (onSelectedOptionsChange) {
-      onSelectedOptionsChange(newSelectedOptions);
-    }
-  };
+  const handleSelectedOptionsChange = useCallback(
+    (newSelectedOptions) => {
+      setSelectedOptions(newSelectedOptions);
+      if (onSelectedOptionsChange) {
+        onSelectedOptionsChange(newSelectedOptions);
+      }
+    },
+    [setSelectedOptions, onSelectedOptionsChange]
+  );
 
   return (
     <div className="shadow_btm sub_header">
@@ -69,18 +74,13 @@ const PageSubHeader = ({
             {tabLinksArray?.map((tabItem) => (
               <li className="nav-item" key={tabItem.tabLinkId}>
                 <Link
-                  to="" // No specific route provided; consider adding if needed
+                  to="" // TODO: add a route for each tab on this...
                   className={`nav-link ${
                     activeTabLink === tabItem.tabLinkId ? "active" : ""
                   }`}
                   onClick={() => handleActiveTabLink(tabItem.tabLinkId)}
                 >
-                  <span>
-                    {localized(tabItem, "name", currentLanguage)}
-                    {/* {currentLanguage === LANGUAGES.AR
-                      ? tabItem.nameAr
-                      : tabItem.nameEn} */}
-                  </span>
+                  <span>{localized(tabItem, "name", currentLanguage)}</span>
                 </Link>
               </li>
             ))}
