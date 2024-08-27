@@ -47,27 +47,46 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
     onChange(newSelectedOptions); // Notify parent component of selection changes
   };
 
+  const handleRefresh = () => {
+    setSelectedOptions([]); // Clear the selected options
+    onChange([]); // Notify parent component of the cleared selection
+  };
+
   if (status === "loading") return <div>Loading...</div>;
   if (status === "failed") return <div>Error: {error}</div>;
 
   return (
-    <div className="sector_dropdown" ref={dropdownRef}>
-      <div onClick={handleSelect} className="multi_select">
-        <div className={`multi_select_toggle ${isSelect ? "hover-class" : ""}`}>
-          <img alt="Filter" src="/assets/images/filter.svg" /> {strings.sector}
+    <>
+      {selectedOptions.length > 0 && (
+        <button
+          //TODO: add refresh icon
+          onClick={handleRefresh} // Handle refresh click
+          className="clear-button"
+        >
+          ✕
+        </button>
+      )}
+      <div className="sector_dropdown" ref={dropdownRef}>
+        <div onClick={handleSelect} className="multi_select">
+          <div
+            className={`multi_select_toggle ${isSelect ? "hover-class" : ""}`}
+          >
+            <img alt="Filter" src="/assets/images/filter.svg" />{" "}
+            {strings.sector}
+          </div>
+        </div>
+        <div className="multi_select_container position-relative">
+          {isSelect && (
+            <MultiSelectCheckbox
+              options={langSectors}
+              fullOptions={sectors}
+              selectedOptions={selectedOptions}
+              onChange={handleSelectedOptionsChange}
+            />
+          )}
         </div>
       </div>
-      <div className="multi_select_container position-relative">
-        {isSelect && (
-          <MultiSelectCheckbox
-            options={langSectors}
-            fullOptions={sectors}
-            selectedOptions={selectedOptions}
-            onChange={handleSelectedOptionsChange}
-          />
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 
