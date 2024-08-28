@@ -1,6 +1,5 @@
 import React, { useState, useRef, useMemo, useCallback } from "react";
 import { LANGUAGES, strings } from "../../utils/constants/localizedStrings";
-import debounce from "lodash.debounce";
 
 const MultiSelect = ({
   options,
@@ -45,19 +44,10 @@ const MultiSelect = ({
       .replace(/\إ/g, "ا");
   };
 
-  // Memoized search function with debounce
-  const handleSearchChange = useMemo(
-    () =>
-      debounce((value) => {
-        setSearchTerm(value);
-      }, 300),
-    []
-  );
-
-  const onSearchChange = (event) => {
+  const onSearchChange = useCallback((event) => {
     const value = event.target.value;
-    handleSearchChange(value);
-  };
+    setSearchTerm(value);
+  }, []);
 
   // Filter options based on the search term
   const filteredOptions = useMemo(() => {
