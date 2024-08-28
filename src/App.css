@@ -1993,3 +1993,7 @@ footer {
 .table.table_layout th .thead_title {
   font-size: 12.5px !important;
 }
+
+.font-20.date {
+  color: #000000A6;
+}
