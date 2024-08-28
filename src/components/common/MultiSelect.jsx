@@ -1,8 +1,14 @@
 import React, { useState, useRef, useMemo, useCallback } from "react";
-import { strings } from "../../utils/constants/localizedStrings";
+import { LANGUAGES, strings } from "../../utils/constants/localizedStrings";
 import debounce from "lodash.debounce";
 
-const MultiSelect = ({ options, fullOptions, selectedOptions, onChange }) => {
+const MultiSelect = ({
+  options,
+  fullOptions,
+  selectedOptions,
+  onChange,
+  currentLanguage,
+}) => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
   const [filteredOptions, setFilteredOptions] = useState(options); // State for filtered options
   const searchInputRef = useRef(null); // Ref for the search input
@@ -47,13 +53,33 @@ const MultiSelect = ({ options, fullOptions, selectedOptions, onChange }) => {
     [selectedOptions, optionMapping, onChange]
   );
 
+  // Normalization function to replace specified Arabic characters
+  const normalizeArabic = (text) => {
+    return text
+      .replace(/\ا/g, "أ")
+      .replace(/\أ/g, "ا")
+      .replace(/\ى/g, "ي")
+      .replace(/\ه/g, "ة")
+      .replace(/\ا/g, "آ")
+      .replace(/\عِ/g, "ع")
+      .replace(/\آ/g, "ا")
+      .replace(/\إ/g, "ا");
+  };
+
   // Debounced handler for search input changes
   const handleSearchChange = useMemo(
     () =>
       debounce((value) => {
+        const normalizedValue =
+          currentLanguage === LANGUAGES.AR
+            ? normalizeArabic(value.toLowerCase())
+            : value.toLowerCase();
         setFilteredOptions(
           options.filter((option) =>
-            option.toLowerCase().includes(value.toLowerCase())
+            (currentLanguage === LANGUAGES.AR
+              ? normalizeArabic(option.toLowerCase())
+              : option.toLowerCase()
+            ).includes(normalizedValue)
           )
         );
       }, 300),
@@ -64,16 +90,6 @@ const MultiSelect = ({ options, fullOptions, selectedOptions, onChange }) => {
     const value = event.target.value;
     setSearchTerm(value);
     handleSearchChange(value);
-  };
-
-  // Clear selected options and focus the search input
-  const clearSelection = () => {
-    onChange([]);
-    setSearchTerm(""); // Optionally clear the search term
-    setFilteredOptions(options); // Reset filtered options to show all
-    if (searchInputRef.current) {
-      searchInputRef.current.focus(); // Focus the search input
-    }
   };
 
   return (
@@ -87,9 +103,6 @@ const MultiSelect = ({ options, fullOptions, selectedOptions, onChange }) => {
           className="search-input"
           ref={searchInputRef} // Attach ref here
         />
-        {/* <button type="button" onClick={clearSelection} className="clear-button">
-          ✕
-        </button> */}
       </div>
       {filteredOptions.length > 0 ? (
         filteredOptions.map((option) => (

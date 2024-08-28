@@ -5,12 +5,15 @@ import { strings } from "../../utils/constants/localizedStrings.js";
 import PropTypes from "prop-types";
 
 const SectorDropdown = ({ selectedSectors, onChange }) => {
-  const { langSectors, sectors, status, error } = useSelector((state) => ({
-    langSectors: state.screener.sectors[state.language.currentLanguage],
-    sectors: state.screener.sectors,
-    status: state.screener.loading,
-    error: state.screener.error,
-  }));
+  const { lang, langSectors, sectors, status, error } = useSelector(
+    (state) => ({
+      lang: state.language.currentLanguage,
+      langSectors: state.screener.sectors[state.language.currentLanguage],
+      sectors: state.screener.sectors,
+      status: state.screener.loading,
+      error: state.screener.error,
+    })
+  );
 
   const [isSelect, setIsSelect] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(selectedSectors || []);
@@ -86,6 +89,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
               fullOptions={sectors}
               selectedOptions={selectedOptions}
               onChange={handleSelectedOptionsChange}
+              currentLanguage={lang}
             />
           )}
         </div>

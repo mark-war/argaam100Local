@@ -37,6 +37,8 @@ const PageSubHeader = ({
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
+        calendar: "gregory", // Ensure the Gregorian calendar is used
+        numberingSystem: "latn", // Use Western Arabic numerals (0-9)
       }
     );
   }, [currentLanguage]);
