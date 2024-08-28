@@ -3,18 +3,19 @@ import { useSelector } from "react-redux";
 import MultiSelectCheckbox from "./MultiSelect.jsx";
 import { strings } from "../../utils/constants/localizedStrings.js";
 import PropTypes from "prop-types";
+import { selectLocalizedSectors } from "../../redux/selectors.js";
 
 const SectorDropdown = ({ selectedSectors, onChange }) => {
-  const { lang, langSectors, sectors, status, error } = useSelector(
-    (state) => ({
-      lang: state.language.currentLanguage,
-      langSectors: state.screener.sectors[state.language.currentLanguage],
-      sectors: state.screener.sectors,
-      status: state.screener.loading,
-      error: state.screener.error,
-    })
-  );
+  const { lang, status, error } = useSelector((state) => ({
+    lang: state.language.currentLanguage,
+    // langSectors: state.screener.sectors[state.language.currentLanguage],
+    // sectors: state.screener.sectors,
+    status: state.screener.loading,
+    error: state.screener.error,
+  }));
 
+  const argaamSectors = useSelector(selectLocalizedSectors);
+  // console.log("ARGAAM SECTORS: ", argaamSectors);
   const [isSelect, setIsSelect] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(selectedSectors || []);
   const dropdownRef = useRef(null);
@@ -48,6 +49,10 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
   const handleSelectedOptionsChange = (newSelectedOptions) => {
     setSelectedOptions(newSelectedOptions); //pass selection from parent to child component
     onChange(newSelectedOptions); // Notify parent component of selection changes
+
+    if (newSelectedOptions.length === 0) {
+      handleRefresh(); // Call handleRefresh to clear the selected options in the parent
+    }
   };
 
   const handleRefresh = () => {
@@ -62,7 +67,6 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
     <>
       {selectedOptions.length > 0 && (
         <button
-          //TODO: add refresh icon
           onClick={handleRefresh} // Handle refresh click
           className="clear-button reset__button"
         >
@@ -85,8 +89,8 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
         <div className="multi_select_container position-relative">
           {isSelect && (
             <MultiSelectCheckbox
-              options={langSectors}
-              fullOptions={sectors}
+              options={argaamSectors}
+              // fullOptions={sectors}
               selectedOptions={selectedOptions}
               onChange={handleSelectedOptionsChange}
               currentLanguage={lang}

@@ -27,7 +27,6 @@ const ScreenerTablesPage = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeTabLink, setActiveTabLink] = useState(null);
 
-  console.log("ACTIVE TAB LINK: ", activeTabLink);
   //hook to fetch data by active tab
   const { loading } = useTabDataFetch(
     activeTabLink,
@@ -75,6 +74,7 @@ const ScreenerTablesPage = () => {
       { key: "fixed_company", label: `${strings.companies}` },
       { key: "fixed_sector", label: `${strings.sector}` },
       { key: "CompanyID", label: "CompanyID", hidden: true },
+      { key: "SectorID", label: "SectorID", hidden: true },
       ...fieldConfigurations
         .filter((item) => item.TabID === activeTabId)
         .map((item) => {
@@ -135,9 +135,9 @@ const ScreenerTablesPage = () => {
       )
       .forEach((item) => {
         // Extract the relevant part of the identifier to form the column key
-        const identifierParts = item.identifier
-          .split("-")
-          .filter((part) => part && part.trim() !== "" && part !== "null");
+        // const identifierParts = item.identifier
+        //   .split("-")
+        //   .filter((part) => part && part.trim() !== "" && part !== "null");
         //const fieldName = identifierParts.slice(1, -1).join(" "); // join the identifier parts using white space and remove the language part
         const fieldId = item.identifier.split("-")[1];
 
@@ -157,6 +157,7 @@ const ScreenerTablesPage = () => {
               fixed_company: localized(row, "ShortName", currentLanguage),
               fixed_sector: localized(row, "SectorName", currentLanguage),
               CompanyID: row.CompanyID,
+              SectorID: row.ArgaamSectorID,
             });
           }
 

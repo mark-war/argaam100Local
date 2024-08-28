@@ -126,7 +126,7 @@ export const fetchScreenerData = createAsyncThunk(
               // Extract only the serializable parts of the response
               const { data: responseData } = response;
 
-              const extractedSectors = extractDistinctSectors(responseData);
+              //const extractedSectors = extractDistinctSectors(responseData);
 
               // Store the remaining items (index > 0) in a constant
               const historicalEncryptedConfig =
@@ -137,10 +137,10 @@ export const fetchScreenerData = createAsyncThunk(
                 identifier: data.identifier,
                 data: responseData || {}, // Include primary response
                 chartData: historicalEncryptedConfig[0] || null, // Add a check for undefined
-                sectors: {
-                  ar: extractedSectors.distinctSectorsArabic || [],
-                  en: extractedSectors.distinctSectorsEnglish || [],
-                },
+                // sectors: {
+                //   ar: extractedSectors.distinctSectorsArabic || [],
+                //   en: extractedSectors.distinctSectorsEnglish || [],
+                // },
                 subTabs: data.subTabs,
                 timestamp: Date.now(), // Add timestamp here
               };
@@ -167,7 +167,7 @@ const initialState = {
   screenerData: [],
   chartData: "",
   fieldConfigurations: [],
-  sectors: { ar: [], en: [] },
+  // sectors: { ar: [], en: [] },
   subTabs: [],
   loading: false,
   error: null,
@@ -235,21 +235,21 @@ const fieldConfigurationSlice = createSlice({
         console.log("STORAGE FOR SCREENER: ", state.screenerData);
 
         // Merge sectors without duplicates
-        const allSectors = action.payload.reduce(
-          (acc, item) => {
-            if (item && item.sectors) {
-              acc.ar = [...acc.ar, ...(item.sectors.ar || [])];
-              acc.en = [...acc.en, ...(item.sectors.en || [])];
-            }
-            return acc;
-          },
-          { ar: state.sectors.ar || [], en: state.sectors.en || [] }
-        );
+        // const allSectors = action.payload.reduce(
+        //   (acc, item) => {
+        //     if (item && item.sectors) {
+        //       acc.ar = [...acc.ar, ...(item.sectors.ar || [])];
+        //       acc.en = [...acc.en, ...(item.sectors.en || [])];
+        //     }
+        //     return acc;
+        //   },
+        //   { ar: state.sectors.ar || [], en: state.sectors.en || [] }
+        // );
 
-        state.sectors = {
-          ar: Array.from(new Set(allSectors.ar)),
-          en: Array.from(new Set(allSectors.en)),
-        };
+        // state.sectors = {
+        //   ar: Array.from(new Set(allSectors.ar)),
+        //   en: Array.from(new Set(allSectors.en)),
+        // };
 
         // Extract and store subTabs
         const allSubTabs = action.payload.reduce((acc, item) => {

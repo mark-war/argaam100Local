@@ -1,8 +1,10 @@
 import { createSelector } from "reselect";
+import { localized } from "../utils/localization";
 
 const currentLanguageState = (state) => state.language.currentLanguage;
 const fieldConfigurationsState = (state) => state.screener.fieldConfigurations;
 const screenerDataState = (state) => state.screener.screenerData;
+const argaamSectorsState = (state) => state.argaamSectors.sectors || [];
 
 export const selectPages = (state) => state.apiData.pages || [];
 
@@ -46,5 +48,16 @@ export const selectScreenerData = createSelector(
   [screenerDataState],
   (screenerData) => {
     return screenerData;
+  }
+);
+
+// Updated localized sectors selector
+export const selectLocalizedSectors = createSelector(
+  [argaamSectorsState, currentLanguageState],
+  (argaamSectors, currentLanguage) => {
+    return argaamSectors.map((sector) => ({
+      id: sector.ARGAAMSECTORID,
+      name: localized(sector, "ARGAAMSECTORNAME", currentLanguage, true),
+    }));
   }
 );

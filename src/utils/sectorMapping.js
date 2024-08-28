@@ -1,8 +1,7 @@
-export const createMapping = (fullOptions) => {
+export const createSectorMapping = (options) => {
   const mapping = {};
-  fullOptions.en.forEach((option, index) => {
-    mapping[option] = fullOptions.ar[index]; // Map English to Arabic
-    mapping[fullOptions.ar[index]] = option; // Map Arabic to English
+  options.forEach((option) => {
+    mapping[option.id] = option.name;
   });
   return mapping;
 };

@@ -40,18 +40,14 @@ export const fetchScreenerTableData = async (encryptedConfigJson) => {
   }
 };
 
-export const fetchDistinctSectors = async () => {
+export const fetchArgaamSectors = async () => {
   try {
-    const fieldConfig = await fetchFieldConfiguration();
-    if (fieldConfig && fieldConfig.sectors) {
-      const distinctSectors = Array.from(
-        new Set(fieldConfig.sectors.map((sector) => sector.name))
-      );
-      return distinctSectors;
-    }
-    return [];
+    const argaamSectors = await axiosInstance.get(
+      "/get-argaam-sectors?marketid=3"
+    );
+    return argaamSectors.data;
   } catch (error) {
-    console.error("Error fetching distinct sectors:", error);
+    console.error("Error fetching Argaam sectors:", error);
     return [];
   }
 };

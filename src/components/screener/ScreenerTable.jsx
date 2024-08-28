@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Table, Row, Col, Card } from "react-bootstrap";
 import TableHeader from "./TableHeader";
@@ -13,7 +13,7 @@ import ScreenerPagination from "./ScreenerPagination";
 import { useNavigate, useParams } from "react-router-dom";
 import { setLanguage } from "../../redux/features/languageSlice.js";
 import config from "../../utils/config.js";
-import { selectScreenerData } from "../../redux/selectors.js";
+import { selectLocalizedSectors } from "../../redux/selectors.js";
 
 const ScreenerTable = ({
   data,
@@ -33,19 +33,16 @@ const ScreenerTable = ({
   // const currentLanguage = useSelector(selectCurrentLanguage);
   const { lang } = useParams(); // Access the current language from URL parameters
 
-  const fullOptions = useSelector(selectScreenerData)[0].sectors;
+  // const fullOptions = useSelector(selectScreenerData)[0].sectors;
+  const fullOptions = useSelector(selectLocalizedSectors);
 
-  // Create a mapping between English and Arabic options
-  const createMapping = () => {
+  const optionMapping = useMemo(() => {
     const mapping = {};
-    fullOptions.en.forEach((option, index) => {
-      mapping[option] = fullOptions.ar[index]; // Map English to Arabic
-      mapping[fullOptions.ar[index]] = option; // Map Arabic to English
+    fullOptions.forEach((option) => {
+      mapping[option.id] = option.name;
     });
     return mapping;
-  };
-
-  const optionMapping = createMapping();
+  }, [fullOptions, lang]);
 
   useEffect(() => {
     if (config.supportedLanguages.includes(lang)) {
@@ -85,13 +82,13 @@ const ScreenerTable = ({
 
   // Function to handle sector filter
   const handleSectorClick = (sector) => {
-    console.log("CLICKED SECTOR: ", sector);
+    //console.log("CLICKED SECTOR: ", sector);
     // Get the Arabic or English sector based on the mapping
-    const mappedSector = optionMapping[sector];
-    console.log("MAPPED SECTOR: ", mappedSector);
+    // const mappedSector = optionMapping[sector];
+    // console.log("MAPPED SECTOR: ", mappedSector);
     // Set the selected options to only include the newly clicked sector and its mapped counterpart
-    setSelectedOptions([sector, mappedSector]);
-    console.log("SELECTED OPTIONS: ", selectedOptions);
+    setSelectedOptions([sector]);
+    //console.log("SELECTED OPTIONS: ", selectedOptions);
   };
 
   const filteredData = data.filter((row) => {
@@ -99,7 +96,7 @@ const ScreenerTable = ({
     if (selectedOptions.length === 0) return true;
 
     // Check if the row's sector is in the list of selected sectors
-    return selectedOptions.includes(row.fixed_sector);
+    return selectedOptions.includes(row.SectorID);
   });
 
   // Reset pagination when selectedTab changes
@@ -331,7 +328,7 @@ const ScreenerTable = ({
                                 <a
                                   href="#"
                                   onClick={() =>
-                                    handleSectorClick(row[column.key])
+                                    handleSectorClick(row.SectorID)
                                   }
                                   className="sector-link"
                                 >

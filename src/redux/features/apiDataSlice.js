@@ -1,10 +1,9 @@
-// redux/features/apiDataSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const apiDataSlice = createSlice({
   name: "apiData",
   initialState: {
-    pages: [], // Define the structure based on your API response
+    pages: [],
   },
   reducers: {
     setApiData: (state, action) => {

@@ -12,6 +12,8 @@ import { setLanguage } from "./redux/features/languageSlice.js";
 import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
 import { resetState } from "./redux/features/fieldConfigurationSlice.js";
 import config from "./utils/config.js";
+import { fetchArgaamSectors } from "./services/screenerApi";
+import { setArgaamSectors } from "./redux/features/sectorSlice.js"; // Adjust the path to your slice
 
 function App() {
   const dispatch = useDispatch();
@@ -80,6 +82,20 @@ function App() {
     };
 
     loadData();
+  }, [dispatch]);
+
+  // Fetch Argaam sectors data
+  useEffect(() => {
+    const fetchSectors = async () => {
+      try {
+        const fetchedSectors = await fetchArgaamSectors();
+        dispatch(setArgaamSectors(fetchedSectors));
+      } catch (error) {
+        console.error("Error fetching Argaam sectors:", error);
+      }
+    };
+
+    fetchSectors();
   }, [dispatch]);
 
   // Use the custom hook to handle tab data fetching

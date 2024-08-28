@@ -4,53 +4,32 @@ import debounce from "lodash.debounce";
 
 const MultiSelect = ({
   options,
-  fullOptions,
   selectedOptions,
   onChange,
   currentLanguage,
 }) => {
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
-  const [filteredOptions, setFilteredOptions] = useState(options); // State for filtered options
   const searchInputRef = useRef(null); // Ref for the search input
 
   // Memoize the mapping creation
   const optionMapping = useMemo(() => {
     const mapping = {};
-    fullOptions.en.forEach((option, index) => {
-      mapping[option] = fullOptions.ar[index];
-      mapping[fullOptions.ar[index]] = option;
+    options.forEach((option) => {
+      mapping[option.id] = option.name;
     });
     return mapping;
-  }, [fullOptions]);
+  }, [options]);
 
+  // Function to toggle the selected option
   const toggleOption = useCallback(
-    (option) => {
-      const currentIndex = selectedOptions.indexOf(option);
-      const newSelectedOptions = [...selectedOptions];
-      const correspondingOption = optionMapping[option];
+    (optionId) => {
+      const newSelectedOptions = selectedOptions.includes(optionId)
+        ? selectedOptions.filter((id) => id !== optionId) // Remove if already selected
+        : [...selectedOptions, optionId]; // Add if not selected
 
-      if (currentIndex === -1) {
-        newSelectedOptions.push(option);
-        if (
-          correspondingOption &&
-          !newSelectedOptions.includes(correspondingOption)
-        ) {
-          newSelectedOptions.push(correspondingOption);
-        }
-      } else {
-        newSelectedOptions.splice(currentIndex, 1);
-        if (correspondingOption) {
-          const correspondingIndex =
-            newSelectedOptions.indexOf(correspondingOption);
-          if (correspondingIndex !== -1) {
-            newSelectedOptions.splice(correspondingIndex, 1);
-          }
-        }
-      }
-
-      onChange(newSelectedOptions);
+      onChange(newSelectedOptions); // Notify parent with updated selection
     },
-    [selectedOptions, optionMapping, onChange]
+    [onChange, selectedOptions]
   );
 
   // Normalization function to replace specified Arabic characters
@@ -66,31 +45,34 @@ const MultiSelect = ({
       .replace(/\إ/g, "ا");
   };
 
-  // Debounced handler for search input changes
+  // Memoized search function with debounce
   const handleSearchChange = useMemo(
     () =>
       debounce((value) => {
-        const normalizedValue =
-          currentLanguage === LANGUAGES.AR
-            ? normalizeArabic(value.toLowerCase())
-            : value.toLowerCase();
-        setFilteredOptions(
-          options.filter((option) =>
-            (currentLanguage === LANGUAGES.AR
-              ? normalizeArabic(option.toLowerCase())
-              : option.toLowerCase()
-            ).includes(normalizedValue)
-          )
-        );
+        setSearchTerm(value);
       }, 300),
-    [options]
+    []
   );
 
   const onSearchChange = (event) => {
     const value = event.target.value;
-    setSearchTerm(value);
     handleSearchChange(value);
   };
+
+  // Filter options based on the search term
+  const filteredOptions = useMemo(() => {
+    const normalizedValue =
+      currentLanguage === LANGUAGES.AR
+        ? normalizeArabic(searchTerm.toLowerCase())
+        : searchTerm.toLowerCase();
+
+    return options.filter((option) =>
+      (currentLanguage === LANGUAGES.AR
+        ? normalizeArabic(optionMapping[option.id].toLowerCase())
+        : optionMapping[option.id].toLowerCase()
+      ).includes(normalizedValue)
+    );
+  }, [options, optionMapping, searchTerm, currentLanguage]);
 
   return (
     <div className="dropdown-menu">
@@ -101,20 +83,20 @@ const MultiSelect = ({
           onChange={onSearchChange}
           placeholder={strings.search}
           className="search-input"
-          ref={searchInputRef} // Attach ref here
+          ref={searchInputRef}
         />
       </div>
       {filteredOptions.length > 0 ? (
         filteredOptions.map((option) => (
-          <div key={option}>
+          <div key={option.id}>
             <li className="dropdown-item">
               <input
                 type="checkbox"
-                value={option}
-                checked={selectedOptions.includes(option)}
-                onChange={() => toggleOption(option)}
+                value={option.id}
+                checked={selectedOptions.includes(option.id)}
+                onChange={() => toggleOption(option.id)}
               />
-              <span>{option}</span>
+              <span>{optionMapping[option.id]}</span>
             </li>
           </div>
         ))

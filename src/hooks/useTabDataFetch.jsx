@@ -82,14 +82,7 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
         );
       }
     }
-  }, [
-    dispatch,
-    currentLanguage,
-    fieldConfigurations,
-    tabId,
-    expirationTimeInMinutes,
-    localCache,
-  ]);
+  }, [dispatch, currentLanguage, tabId, expirationTimeInMinutes]);
 
   return { loading }; // Return the loading state
 };
