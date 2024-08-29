@@ -7,7 +7,12 @@ import React, {
 } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { Row, Col, Card, Table } from "react-bootstrap";
-import { strings, SUBTABS, TABS } from "../../utils/constants/localizedStrings";
+import {
+  strings,
+  SUBSECTIONS,
+  SUBTABS,
+  TABS,
+} from "../../utils/constants/localizedStrings";
 import { useSelector } from "react-redux";
 import NumberFormatter from "../common/NumberFormatter";
 import RaceChart from "../common/RaceChart";
@@ -119,15 +124,42 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
     []
   );
 
+  const withPercentageLabels = [
+    SUBSECTIONS.THE_HIGHEST,
+    SUBSECTIONS.THE_LOWEST,
+    SUBSECTIONS.RET_SH,
+    SUBSECTIONS.IND_OVER_SH,
+    SUBSECTIONS.NET_PROF_MARGIN,
+    SUBSECTIONS.TOT_PROF_MARGIN,
+    SUBSECTIONS.HIGHEST_RET,
+  ];
+
   const processSubSection = useCallback(
     (subSection) => {
-      if (!subSection.data) return null;
+      if (
+        !subSection.data ||
+        (typeof subSection.data === "object" &&
+          Object.keys(subSection.data).length === 0)
+      ) {
+        return null; // Return null if subSection.data is null, undefined, or an empty object
+      }
 
-      const rankToBarWidth = generateRankToBarWidth(10, 85, 5);
+      //const rankToBarWidth = generateRankToBarWidth(10, 85, 5);
       const propertyNames = Object.keys(subSection.data[0] || {});
       const thirdToLastProperty = propertyNames[propertyNames.length - 3];
       const secondToLastProperty = propertyNames[propertyNames.length - 2];
 
+      // Extract the values to base the rank-to-bar width on
+      const values = subSection.data.map(
+        (item) =>
+          (typeof item[thirdToLastProperty] === "number"
+            ? item[thirdToLastProperty]
+            : item[secondToLastProperty]) || 0
+      );
+
+      // Generate rank to bar width based on the values
+      const rankToBarWidth = generateRankToBarWidth(values, 85, 5);
+      if (!subSection.data === null) return null;
       return subSection.data.map((item, index) => {
         const chartValue = secondToLastProperty
           ? item[secondToLastProperty]
@@ -176,7 +208,6 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
   const renderTableRows = useCallback(
     (subSection) => {
       if (!subSection.data) return null;
-
       return (
         <>
           {renderTableHeaders(headers)}
@@ -190,7 +221,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
   const renderMultipleTableRows = useCallback(
     (subSection, subSectionIndex) => {
       if (!subSection.data) return null;
-
+      console.log("SS: ", subSection);
       const activeSubTabIndex = subSection.subTabs.findIndex(
         (subTab) =>
           SUBTABS[
@@ -226,13 +257,19 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
             (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
           );
           const subTabCount = sortedSubTabs.length;
+          const sectionIndex = subSection.identifier.split("-")[1];
 
           return (
             <Col lg={6} key={subSectionIndex}>
               <div className="tabs_inner_nav row px-3">
                 <div className="col-6">
                   <p className="sub_heading">
-                    {localized(subSection, "fieldName", currentLanguage)}
+                    {localized(subSection, "fieldName", currentLanguage)}{" "}
+                    <span>
+                      {withPercentageLabels.includes(Number(sectionIndex))
+                        ? "%"
+                        : ""}
+                    </span>
                   </p>
                 </div>
                 <div className="col-6">

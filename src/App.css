@@ -896,6 +896,26 @@ div {
 
 .race_chart_container {
   position: relative;
+  display: flex;
+  align-items: stretch; /* Ensure both columns stretch to the same height */
+}
+
+.rank_column {
+  display: flex;
+  flex-direction: column; /* Stack the ranks vertically */
+  justify-content: space-between; /* Distribute ranks evenly */
+  height: 100%; /* Full height of the race chart */
+  text-align: center; /* Center align the text in the rank column */
+  gap: 25px;
+}
+
+.rtl {
+  flex-direction: row-reverse; /* Reverse the order for RTL */
+}
+
+.rtl .rank_column {
+  margin-left: 10px; /* Adjust spacing for RTL */
+  margin-right: 0; /* Remove right margin in RTL */
 }
 
 .spinner {
@@ -1047,15 +1067,13 @@ div {
   padding-left: 20px;
 }
 
-
-
 .table.table_layout.table_full tr,
 .table.table_layout.table_full td,
 .table_layout.table-striped tr:nth-child(odd) td {
-   background-color: #fff !important;
+  background-color: #fff !important;
 }
 
-.table.table_layout.table_full.table-striped>tbody>tr:nth-of-type(odd)>* {
+.table.table_layout.table_full.table-striped > tbody > tr:nth-of-type(odd) > * {
   --bs-table-bg-type: transparent !important;
 }
 
@@ -1086,7 +1104,6 @@ div {
   padding-right: 0;
   padding-left: 5px;
 }
-
 
 .reset__button img {
   margin-bottom: 1px;
@@ -1320,7 +1337,6 @@ div {
     margin-right: 0;
     margin-left: 10px;
   }
-
 
   [lang="ar"] .table_layout.table-striped th:nth-child(2),
   [lang="ar"] .table_layout.table-striped td:nth-child(2) {

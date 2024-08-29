@@ -2,17 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../redux/features/languageSlice.js";
-import {
-  strings,
-  LANGUAGES,
-  PAGES,
-} from "../../utils/constants/localizedStrings.js";
+import { strings, LANGUAGES } from "../../utils/constants/localizedStrings.js";
 import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
-// import { fetchFieldConfigurationData } from "../../redux/features/fieldConfigurationSlice.js";
-// import { selectFieldConfigurations } from "../../redux/selectors.js";
-import useTabDataFetch from "../../hooks/useTabDataFetch.jsx";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -27,19 +20,12 @@ const HeaderMain = () => {
   // temporary logic to disable top-10
   const [disabledLink, setDisabledLink] = useState(`/${lang}/top-10`);
 
-  const toggleDropdown = () => {
-    setIsOpen((prevState) => !prevState);
-  };
+  const toggleDropdown = () => setIsOpen((prevState) => !prevState);
 
-  const toggleMobileDropdown = () => {
-    setIsMobileOpen((prevState) => !prevState);
-  };
+  const toggleMobileDropdown = () => setIsMobileOpen((prevState) => !prevState);
 
-  const handleMenuInnerClick = (event) => {
-    if (isMobileOpen) {
-      toggleMobileDropdown(); // This function should toggle the state to close the menu
-    }
-    // event.stopPropagation(); // Prevents the click from propagating to the container
+  const handleMenuInnerClick = () => {
+    if (isMobileOpen) toggleMobileDropdown(); // This function should toggle the state to close the menu
   };
 
   // Handle click outside the dropdown
@@ -54,13 +40,6 @@ const HeaderMain = () => {
       setIsMobileOpen(false);
     }
   };
-
-  const selectedPage = pages.find((page) => page.pageId === PAGES.SCREENER);
-
-  if (selectedPage === PAGES.SCREENER) {
-    console.log("SELECTED PAGE: ", selectedPage);
-    useTabDataFetch(5, config.expirationInMinutes);
-  }
 
   useEffect(() => {
     if (config.supportedLanguages.includes(lang)) {

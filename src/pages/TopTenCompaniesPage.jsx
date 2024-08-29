@@ -85,7 +85,6 @@ const TopTenCompaniesPage = () => {
   };
 
   const renderTabContent = useCallback(() => {
-    console.log("SELECTED TAB: ", activeTabLink);
     return (
       <>
         {loading && <div className="spinner"></div>}

@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { Table, Row, Col, Card } from "react-bootstrap";
-import TableHeader from "./TableHeader";
-import { useDispatch, useSelector } from "react-redux";
-import NumberFormatter from "../common/NumberFormatter";
-import {
-  TABS,
-  LANGUAGES,
-  strings,
-} from "../../utils/constants/localizedStrings";
-import ScreenerPagination from "./ScreenerPagination";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import ScreenerPagination from "./ScreenerPagination";
+import TableHeader from "./TableHeader";
+import TableRow from "./TableRow.jsx";
 import { setLanguage } from "../../redux/features/languageSlice.js";
+import { TABS, strings } from "../../utils/constants/localizedStrings";
 import config from "../../utils/config.js";
-import { selectLocalizedSectors } from "../../redux/selectors.js";
 
 const ScreenerTable = ({
   data,
@@ -26,24 +21,13 @@ const ScreenerTable = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { lang } = useParams(); // Access the current language from URL parameters
 
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const initialSortSet = useRef(false);
-  // const currentLanguage = useSelector(selectCurrentLanguage);
-  const { lang } = useParams(); // Access the current language from URL parameters
 
-  // const fullOptions = useSelector(selectScreenerData)[0].sectors;
-  const fullOptions = useSelector(selectLocalizedSectors);
-
-  const optionMapping = useMemo(() => {
-    const mapping = {};
-    fullOptions.forEach((option) => {
-      mapping[option.id] = option.name;
-    });
-    return mapping;
-  }, [fullOptions, lang]);
-
+  // Set up language on component mount and language change
   useEffect(() => {
     if (config.supportedLanguages.includes(lang)) {
       if (!lang) {
@@ -60,16 +44,11 @@ const ScreenerTable = ({
     document.documentElement.lang = lang;
   }, [lang, dispatch, navigate]);
 
-  // Function to find the first dynamic column
-  const getFirstDynamicColumn = () => {
-    return columns.find(
-      (col) =>
-        typeof col.key === "number" && // Key is a number
-        !col.hidden // Column is not hidden
-    );
-  };
+  // Find the first dynamic column
+  const getFirstDynamicColumn = () =>
+    columns.find((col) => typeof col.key === "number" && !col.hidden);
 
-  // Initialize sorting configuration for the first dynamic column when data is loaded or tab is changed
+  // Initialize sorting configuration for the first dynamic column
   useEffect(() => {
     const firstDynamicColumn = getFirstDynamicColumn();
     if (firstDynamicColumn) {
@@ -80,35 +59,22 @@ const ScreenerTable = ({
     }
   }, [columns, selectedTab]);
 
-  // Function to handle sector filter
-  const handleSectorClick = (sector) => {
-    //console.log("CLICKED SECTOR: ", sector);
-    // Get the Arabic or English sector based on the mapping
-    // const mappedSector = optionMapping[sector];
-    // console.log("MAPPED SECTOR: ", mappedSector);
-    // Set the selected options to only include the newly clicked sector and its mapped counterpart
-    setSelectedOptions([sector]);
-    //console.log("SELECTED OPTIONS: ", selectedOptions);
-  };
+  // Handle sector filter click
+  const handleSectorClick = (sector) => setSelectedOptions([sector]);
 
-  const filteredData = data.filter((row) => {
-    // If no sector is selected, return all rows
-    if (selectedOptions.length === 0) return true;
+  // Filter data based on selected options (sectors)
+  const filteredData = useMemo(() => {
+    if (!selectedOptions.length) return data;
+    return data.filter((row) => selectedOptions.includes(row.SectorID));
+  }, [data, selectedOptions]);
 
-    // Check if the row's sector is in the list of selected sectors
-    return selectedOptions.includes(row.SectorID);
-  });
-
-  // Reset pagination when selectedTab changes
+  // Reset pagination when selectedTab or selectedOptions changes
   useEffect(() => {
     setCurrentPage(1);
-    //setSortConfig({ key: null, direction: "asc" });
   }, [selectedTab, selectedOptions]);
 
-  // Pagination
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  // Handle page change
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   // Custom sorting function
   const customSort = (data, key, direction) => {
@@ -137,13 +103,9 @@ const ScreenerTable = ({
     // Sort each group based on the direction
     Object.keys(groups).forEach((group) => {
       groups[group].sort((a, b) => {
-        const aValue = a[key];
-        const bValue = b[key];
-
         // Treat dash values as equal within their group
-        if (aValue === "-" || bValue === "-") return 0;
-
-        return direction === "asc" ? aValue - bValue : bValue - aValue;
+        if (a[key] === "-" || b[key] === "-") return 0;
+        return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
       });
     });
 
@@ -151,38 +113,33 @@ const ScreenerTable = ({
     return groupOrder.flatMap((group) => groups[group]);
   };
 
+  // Handle sort action
   const handleSort = (columnKey) => {
     const direction =
-      sortConfig.key === columnKey
-        ? sortConfig.direction === "asc"
-          ? "desc"
-          : "asc"
+      sortConfig.key === columnKey && sortConfig.direction === "asc"
+        ? "desc"
         : "asc";
-
     setSortConfig({ key: columnKey, direction });
   };
 
-  const sortedData = React.useMemo(() => {
+  // Sort the filtered data based on the current sort configuration
+  const sortedData = useMemo(() => {
     if (sortConfig.key) {
       if (config.peFieldIds.has(sortConfig.key)) {
         return customSort(filteredData, sortConfig.key, sortConfig.direction);
-      } else {
-        return [...filteredData].sort((a, b) => {
-          const aValue = a[sortConfig.key] === "-" ? null : a[sortConfig.key];
-          const bValue = b[sortConfig.key] === "-" ? null : b[sortConfig.key];
-
-          if (aValue === null) return 1; // Place dash at the bottom
-          if (bValue === null) return -1; // Place dash at the bottom
-
-          if (aValue < bValue) {
-            return sortConfig.direction === "asc" ? -1 : 1;
-          }
-          if (aValue > bValue) {
-            return sortConfig.direction === "asc" ? 1 : -1;
-          }
-          return 0;
-        });
       }
+      return [...filteredData].sort((a, b) => {
+        const aValue = a[sortConfig.key] === "-" ? null : a[sortConfig.key];
+        const bValue = b[sortConfig.key] === "-" ? null : b[sortConfig.key];
+
+        if (aValue === null) return 1; // Place dash at the bottom
+        if (bValue === null) return -1; // Place dash at the bottom
+
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+
+        return 0;
+      });
     }
     return filteredData;
   }, [filteredData, sortConfig]);
@@ -191,30 +148,19 @@ const ScreenerTable = ({
   const validCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
 
   // Get paginated rows
-  const getPaginatedRows = () => {
+  const currentRows = useMemo(() => {
     const indexOfLastRow = validCurrentPage * itemsPerPage;
     const indexOfFirstRow = indexOfLastRow - itemsPerPage;
     return sortedData.slice(indexOfFirstRow, indexOfLastRow);
-  };
+  }, [sortedData, validCurrentPage, itemsPerPage]);
 
-  const currentRows = getPaginatedRows();
-
-  // Pagination Range
+  // Pagination range calculation
   const paginationRange = 8; // Number of page numbers to show
   const startPage = Math.max(
     1,
     validCurrentPage - Math.floor(paginationRange / 2)
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
-
-  const argaamUrl = (companyID = "") => {
-    const baseUrl =
-      lang === LANGUAGES.AR
-        ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
-        : `https://www.argaam.com/en/tadawul/tasi/`;
-
-    return baseUrl;
-  };
 
   return (
     <Row>
@@ -233,7 +179,7 @@ const ScreenerTable = ({
                   sortConfig={sortConfig}
                 />
                 <tbody>
-                  {/* HIDE THE PINNER ROW FOR NOW */}
+                  {/* HIDE THE PINNED ROW FOR NOW */}
                   {/* {pinnedRow && (
                     <tr>
                       {columns.map((column) => {
@@ -284,75 +230,13 @@ const ScreenerTable = ({
                     </tr>
                   )} */}
                   {currentRows.map((row, index) => (
-                    <tr key={index}>
-                      {columns.map((column) => {
-                        if (column.hidden) return null; // Skip rendering this column
-                        // Check if the column is a fixed column
-                        const isFixedColumn =
-                          typeof column.key === "string" &&
-                          column.key.startsWith("fixed_");
-                        // Determine class for the <td> element
-                        const tdClassName = isFixedColumn
-                          ? column.key === "fixed_company"
-                            ? "td_img"
-                            : column.className // Apply td_img for fixed_company
-                          : `text-center ${column.className}`;
-
-                        return (
-                          <td key={column.key} className={tdClassName}>
-                            {isFixedColumn ? (
-                              column.key === "fixed_company" ? (
-                                // Handle fixed company column with image and company name
-                                <a
-                                  target="_blank" // This will open the link in a new tab
-                                  rel="noreferrer"
-                                  href={`${argaamUrl(row.CompanyID)}${
-                                    row[column.key]
-                                  }`}
-                                  className="company-link"
-                                >
-                                  <img
-                                    alt=""
-                                    src={row.fixed_img} // Get the src from fixed_img
-                                    className="logo_image"
-                                  />
-                                  <span>{row[column.key]}</span>
-                                </a>
-                              ) : column.key === "fixed_code" ? (
-                                // Handle fixed code column with span
-                                <span className="bg_tag">
-                                  {row[column.key]}
-                                </span>
-                              ) : column.key === "fixed_sector" ? (
-                                // Handle fixed sector column without additional styling
-                                <a
-                                  href="#"
-                                  onClick={() =>
-                                    handleSectorClick(row.SectorID)
-                                  }
-                                  className="sector-link"
-                                >
-                                  {row[column.key]}
-                                </a>
-                              ) : null
-                            ) : (
-                              // Handle dynamic columns
-                              <span
-                                style={{
-                                  color:
-                                    row[column.key] < 0 ? "red" : "inherit",
-                                }}
-                              >
-                                <NumberFormatter
-                                  value={row[column.key]}
-                                  isPEColumn={config.peFieldIds.has(column.key)}
-                                />
-                              </span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
+                    <TableRow
+                      key={index}
+                      row={row}
+                      columns={columns}
+                      handleSectorClick={handleSectorClick}
+                      config={config}
+                    />
                   ))}
                 </tbody>
               </Table>
