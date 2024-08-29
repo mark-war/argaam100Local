@@ -1094,6 +1094,12 @@ div {
   display: flex;
   padding-inline: 9px;
   white-space: nowrap;
+  margin-right: 0;
+}
+
+[lang=ar] .reset__button {
+  margin-right: 8px;
+  margin-left: 0;
 }
 
 .reset__button span {
@@ -1329,13 +1335,13 @@ div {
   }
 
   .reset__button {
-    margin-right: 10px;
-    margin-left: 0;
+    margin-right: 0;
+    margin-left: 10px;
   }
 
   [lang="ar"] .reset__button {
-    margin-right: 0;
-    margin-left: 10px;
+    margin-right: 10px;
+    margin-left: 0;
   }
 
   [lang="ar"] .table_layout.table-striped th:nth-child(2),

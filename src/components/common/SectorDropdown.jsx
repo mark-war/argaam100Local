@@ -65,18 +65,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
 
   return (
     <>
-      {selectedOptions.length > 0 && (
-        <button
-          onClick={handleRefresh} // Handle refresh click
-          className="clear-button reset__button"
-        >
-          <span>{strings.reset}</span>
-          <img
-            width="15"
-            src="https://tools.argaam.com/content/images/refresh.png"
-          />
-        </button>
-      )}
+
       <div className="sector_dropdown" ref={dropdownRef}>
         <div onClick={handleSelect} className="multi_select">
           <div
@@ -98,6 +87,18 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
           )}
         </div>
       </div>
+      {selectedOptions.length > 0 && (
+        <button
+          onClick={handleRefresh} // Handle refresh click
+          className="clear-button reset__button"
+        >
+          <span>{strings.reset}</span>
+          <img
+            width="15"
+            src="https://tools.argaam.com/content/images/refresh.png"
+          />
+        </button>
+      )}
     </>
   );
 };
