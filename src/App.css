@@ -905,8 +905,8 @@ div {
   flex-direction: column; /* Stack the ranks vertically */
   justify-content: space-between; /* Distribute ranks evenly */
   height: 100%; /* Full height of the race chart */
-  text-align: center; /* Center align the text in the rank column */
-  gap: 25px;
+  margin-top: -88px;
+  gap: 27px;
 }
 
 .rtl {
@@ -1097,7 +1097,7 @@ div {
   margin-right: 0;
 }
 
-[lang=ar] .reset__button {
+[lang="ar"] .reset__button {
   margin-right: 8px;
   margin-left: 0;
 }
