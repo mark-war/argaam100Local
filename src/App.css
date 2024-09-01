@@ -727,7 +727,7 @@ div {
 
 /* Ensure this CSS is included in your project */
 .logo_image {
-  width: 27px;
+  width: 36px;
   height: 26px;
 }
 
@@ -750,6 +750,7 @@ div {
 .table.table_layout td.text-center {
   font-weight: normal;
   color: #000000;
+  font-size: 1rem;
 }
 
 .table_chart .px-layout {
@@ -1380,7 +1381,8 @@ div {
 .td_img img {
   margin-right: 10px;
   border-radius: 3px;
-  object-fit: cover;
+  object-fit: contain;
+  border: 1px solid #eeeeee;
   /* display: block;
   float: left; */
 }
@@ -1537,7 +1539,7 @@ footer {
 }
 
 [lang="ar"] .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-  padding-bottom: 12px;
+  padding-bottom: 13px;
 }
 
 [lang="ar"] .table_layout.table.table-striped th:first-child {
