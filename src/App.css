@@ -1621,6 +1621,9 @@ footer {
   padding-bottom: 25px;
 }
 
+.center_nav.navbar-nav .nav-link {
+  font-size: 1.125rem;
+}
 
 /* Col Borders Ends */
 
