@@ -573,7 +573,7 @@ div {
 .tabs_nav.navbar-nav .nav-link {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
-  line-height: 16px;
+  line-height: 13px;
   border-right: 2px solid #e2e3e6;
 }
 
@@ -727,6 +727,7 @@ div {
 
 /* Ensure this CSS is included in your project */
 .logo_image {
+  min-width: 36px;
   width: 36px;
   height: 26px;
 }
@@ -883,7 +884,7 @@ div {
 
 .table_chart tbody td:nth-child(3),
 .table_chart th:nth-child(3) {
-  width: 70%;
+  width: 85%;
 }
 
 .table_chart th:nth-child(3) {
@@ -907,8 +908,8 @@ div {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  margin-top: -50px;
-  gap: 15px;
+  margin-top: -46px;
+  gap: 16px;
   overflow: hidden;
   max-height: 496px;
 }
@@ -951,7 +952,7 @@ div {
 .race_chart {
   width: 97%;
   min-height: 575px;
-  margin-top: -30px !important;
+  margin-top: -27px !important;
 }
 
 [lang="ar"] .race_chart {
@@ -970,7 +971,7 @@ div {
 }
 
 [lang="ar"] .table_chart tbody td:nth-child(3) {
-  padding-right: 0;
+  padding-right: 5px;
 }
 
 .sub_heading {
@@ -1159,16 +1160,21 @@ div {
 }
 
 [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
-  padding-right: 17px;
+  padding-right: 5px;
 }
 
 [lang="ar"] .table_chart th:nth-child(3) {
-  padding-right: 8px;
+  padding-right: 0;
 }
 
 .table_layout.table th:nth-child(2) {
-  padding-left: 2px;
+  padding-left: 0;
 }
+
+.table-striped.table_layout.table th:nth-child(2) {
+  padding-left: 9px;
+}
+
 
 /* AR CSS Starts */
 
@@ -1537,7 +1543,7 @@ footer {
 }
 
 [lang="ar"] .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-  padding-bottom: 13px;
+  padding-bottom: 16px;
 }
 
 [lang="ar"] .table_layout.table.table-striped th:first-child {
@@ -1551,7 +1557,7 @@ footer {
 }
 
 .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-  padding-bottom: 9px;
+  padding-bottom: 8px;
 }
 
 /* .table_layout.table-striped tbody tr:first-child {
@@ -1627,6 +1633,14 @@ footer {
 
 /* Col Borders Ends */
 
+.min__height.pb-5 {
+  zoom: 0.9;
+}
+
+.table_layout.table-striped {
+  zoom: 1.1;
+}
+
 /* Media Query Starts */
 
 @media screen and (min-width: 1700px) {
@@ -1634,10 +1648,22 @@ footer {
     width: 22%;
   }
 
+  .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
+    padding-bottom: 10px;
+  }
+
+  .table_layout.table th:nth-child(2) {
+    padding-left: 7px;
+  }
+
+  [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
+    padding-right: 10px;
+  }
+
   .rank_column {
     max-height: 569px;
-    margin-top: -51px;
-    gap: 15px;
+    margin-top: -49px;
+    gap: 14px;
   }
 
   .tabs_nav.tabs_inner.navbar-nav .nav-link {
@@ -1665,7 +1691,11 @@ footer {
   }
 
   [lang="ar"] body .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-    padding-bottom: 11px;
+    padding-bottom: 14px;
+  }
+
+  [lang="ar"] body .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
+    padding-bottom: 10px;
   }
 
   .table.table_layout th,
@@ -1711,7 +1741,7 @@ footer {
   }
 
   .center_nav.navbar-nav .nav-link {
-    font-size: 1.313rem;
+    font-size: 1.25rem;
   }
 
   .table_chart .table_layout.table th:nth-child(2), .table_chart .table_layout.table td:nth-child(2) {
@@ -1746,7 +1776,7 @@ footer {
   }
 
   .table_chart .table.table_layout td span {
-    font-size: 1.125rem;
+    font-size: 1.188rem;
   }
 
   .table.table_layout td.text-center {
@@ -1759,7 +1789,7 @@ footer {
 
   .sub_heading {
     font-size: 1.3rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   
@@ -1770,11 +1800,24 @@ footer {
     max-width: 230px;
   }
 
+  .min__height.pb-5 {
+    zoom: unset;
+  }
+
+  .rank_column {
+    margin-top: -43px;
+    gap: 15px;
+  }
+  
+
   .col_space .col-lg-6:nth-last-child(2) {
   border-bottom: 1px solid #dee2e8;
   margin-bottom: 25px;
 }
 
+.table_layout.table-striped {
+  zoom: unset;
+}
 
 
   .nav_toggle {
@@ -1788,6 +1831,12 @@ footer {
 
   .table.table_layout th {
     white-space: nowrap;
+  }
+
+  [lang="ar"] .col_space .col-lg-6:nth-child(odd),
+  .col_space .col-lg-6:nth-child(odd) {
+    padding-right: 0;
+    padding-left: 0;
   }
 
   .dropdown-menu .dropdown-item {
@@ -1870,6 +1919,44 @@ footer {
     overflow-x: auto;
   }
 
+  .table_chart .table_layout.table th:nth-child(2), .table_chart .table_layout.table td:nth-child(2) {
+    width: 34%;
+  }
+
+  .table_chart .td_img,
+  .table_chart .table_layout.table th:nth-child(2) {
+    position: sticky;
+    left: 0;
+  }
+
+  [lang="ar"] .table_chart .td_img,
+  [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
+    right: 0;
+    left: unset;
+  }
+
+  [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
+    padding-right: 11px;
+  }
+
+  [lang="ar"] .table_chart .table_layout.table th:first-child {
+    padding-right: 25px;
+    padding-left: 13px;
+  }
+
+  .tabs_nav.navbar-nav .nav-link {
+    line-height: 12px;
+  }
+
+
+  .table_chart .table_layout.table th:first-child {
+    padding-right: 17px;
+  }
+
+  .table_chart .table_layout.table th:nth-child(2) {
+    padding-left: 10px;
+  }
+
   .race_chart_container .table.table_layout {
     margin-bottom: 10px;
   }
@@ -1887,6 +1974,10 @@ footer {
 
   [lang="ar"] .navbar.sticky.bg-light {
     padding-bottom: 3.5rem;
+  }
+
+  .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
+    padding-bottom: 10px;
   }
 
   .top_companies .sub_heading_tabs {
@@ -2125,7 +2216,7 @@ footer {
   }
 
   .top_companies .sub_heading_tabs .tabs_nav {
-    margin-bottom: 6px;
+    margin-bottom: 9px;
   }
 
   .table_chart th:nth-child(3) {
@@ -2171,10 +2262,10 @@ footer {
     max-width: 220px;
   }
 
-  .table_chart .table_layout.table th:nth-child(2),
+  /* .table_chart .table_layout.table th:nth-child(2),
   .table_chart .table_layout.table td:nth-child(2) {
     width: 30%;
-  }
+  } */
 
   .multi_select_toggle {
     min-width: 150px;
