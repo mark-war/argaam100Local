@@ -2,10 +2,16 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { strings, TABS } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
-import { selectCurrentLanguage } from "../../redux/selectors";
+import {
+  selectCurrentLanguage,
+  selectScreenerDataOfSelectedTab,
+  selectFieldConfigurations,
+  selectLocalizedTabNameById,
+} from "../../redux/selectors";
 import { localized } from "../../utils/localization";
 import { setLanguage } from "../../redux/features/languageSlice";
 import { useEffect, useCallback } from "react";
+import { exportToExcel } from "../../utils/exportToExcel";
 
 const PageSubHeader = ({
   title,
@@ -17,6 +23,13 @@ const PageSubHeader = ({
   setSelectedOptions, // Receive setSelectedOptions here
 }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
+  const selectDataForTab = selectScreenerDataOfSelectedTab();
+  const data = useSelector((state) =>
+    selectDataForTab(state)(activeTabLink, currentLanguage)
+  );
+  const fieldConfig = useSelector(selectFieldConfigurations);
+  const activeTabName = useSelector(selectLocalizedTabNameById(activeTabLink));
+
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -54,6 +67,44 @@ const PageSubHeader = ({
     },
     [setSelectedOptions, onSelectedOptionsChange]
   );
+
+  const handleExport = () => {
+    exportToExcel(
+      data,
+      fieldConfig,
+      activeTabLink,
+      currentLanguage,
+      "ArgaamScreener",
+      activeTabName
+    );
+  };
+
+  const handleExportMultipleTab = () => {
+    // Ensure both arrays are of the same length
+    if (activeTabLink.length !== activeTabNames.length) {
+      console.error("Tab IDs and Tab Names arrays must be of the same length.");
+      return;
+    }
+
+    // Iterate through each tab ID and call exportToExcel
+    activeTabLink.forEach((tabId, index) => {
+      const tabName = activeTabNames[index];
+
+      exportToExcel(
+        data,
+        fieldConfig,
+        tabId, // Pass the current tab ID
+        currentLanguage,
+        `ArgaamScreener_${tabName}`, // Customize the file name if needed
+        tabName // Use the tab name for the sheet name
+      );
+    });
+  };
+
+  //   return (
+  //     <button onClick={handleExport}>Export to Excel</button>
+  //   );
+  // };
 
   return (
     <div className="shadow_btm sub_header">
@@ -94,7 +145,8 @@ const PageSubHeader = ({
             selectedSectors={selectedOptions}
             onChange={handleSelectedOptionsChange}
           />
-          {/* <div className="d_flex">
+
+          {/*<div className="d_flex">
             <a className="screen_icons" href="#">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +195,7 @@ const PageSubHeader = ({
                 </g>
               </svg>
             </a>
-            <a className="screen_icons" href="#">
+            <a className="screen_icons" href="#" onClick={handleExport}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="39"
@@ -182,7 +234,7 @@ const PageSubHeader = ({
                 </g>
               </svg>
             </a>
-          </div> */}
+          </div>*/}
         </div>
       </div>
     </div>

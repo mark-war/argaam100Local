@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPageStructure } from "./services/screenerApi";
 import { fetchFieldConfigurationData } from "./redux/features/fieldConfigurationSlice";
-import { selectSelectedTab } from "./redux/selectors";
+import { selectDefaultTab } from "./redux/selectors";
 import { useParams } from "react-router-dom";
 import { setApiData } from "./redux/features/apiDataSlice.js";
 import { strings } from "./utils/constants/localizedStrings";
@@ -18,7 +18,7 @@ import { setArgaamSectors } from "./redux/features/sectorSlice.js"; // Adjust th
 function App() {
   const dispatch = useDispatch();
   const currentLanguage = (state) => state.language.currentLanguage;
-  const selectedTab = useSelector(selectSelectedTab);
+  const selectedTab = useSelector(selectDefaultTab);
   const { lang } = useParams();
 
   // Set dynamic page title

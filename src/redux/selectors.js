@@ -22,11 +22,23 @@ const selectSelectedSection = createSelector(
 );
 
 // Memoized selector for selected tab
-export const selectSelectedTab = createSelector(
+export const selectDefaultTab = createSelector(
   [selectSelectedSection],
   (selectedSection) =>
     (selectedSection.tabs || []).find((tab) => tab.isSelected) || {}
 );
+
+// New selector to get localized tab name by tabId
+export const selectLocalizedTabNameById = (tabId) =>
+  createSelector(
+    [selectSelectedSection, currentLanguageState],
+    (selectedSection, currentLanguage) => {
+      // Find the tab that matches the provided tabId
+      const tab =
+        (selectedSection.tabs || []).find((t) => t.tabId === tabId) || {};
+      return localized(tab, "tabName", currentLanguage);
+    }
+  );
 
 export const selectFieldConfigurations = createSelector(
   [fieldConfigurationsState],
@@ -61,3 +73,15 @@ export const selectLocalizedSectors = createSelector(
     }));
   }
 );
+
+// Create a memoized selector that takes the selected tab ID as an argument
+export const selectScreenerDataOfSelectedTab = () =>
+  createSelector([screenerDataState], (screenerData) => {
+    return (selectedTabId, currentLanguage) => {
+      return screenerData.filter(
+        (data) =>
+          data.identifier.startsWith(`${selectedTabId}-`) &&
+          data.identifier.endsWith(`-${currentLanguage}`)
+      );
+    };
+  });
