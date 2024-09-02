@@ -119,7 +119,7 @@ const TopCompaniesSubHeader = ({
                   <li className="nav-item"><a href="/performance-and-size" className="nav-link"><span>Performance And Size</span></a></li>
              </ul> */}
 
-      <div className="d-flex pt-4 mb-4 border_gray px-layout pb-0">
+      <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
         <div className="sub_heading_tabs">
           <div className="tabs_nav navbar-nav align-items-center flex-row">
             {tabLinksArray?.map((tabItem, index) => (
