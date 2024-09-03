@@ -146,3 +146,115 @@ export const exportToExcel = async (
   });
   saveAs(blob, fileName);
 };
+
+export const exportMultipleTabsToExcel = async (
+  screenerData,
+  fieldConfig,
+  tabIdsAndNames,
+  currentLanguage,
+  fileName
+) => {
+  const workbook = new ExcelJS.Workbook();
+
+  // Loop through each tab and create a sheet
+  for (const { tabId, tabName } of tabIdsAndNames) {
+    const sanitizedSheetName = sanitizeSheetName(tabName);
+
+    const columns = [
+      { key: "fixed_code", label: `${strings.code}` },
+      { key: "fixed_company", label: `${strings.companies}` },
+      { key: "fixed_sector", label: `${strings.sector}` },
+      { key: "CompanyID", label: "CompanyID", hidden: true },
+      { key: "SectorID", label: "SectorID", hidden: true },
+      ...fieldConfig
+        .filter((item) => item.TabID === tabId)
+        .map((item) => {
+          const unitName = localized(item, "UnitName", currentLanguage);
+          const fieldName = localized(item, "FieldName", currentLanguage);
+          const optionalUnitName = unitName ? ` ${unitName}` : "";
+          return {
+            key: item.Pkey,
+            label: `${fieldName}${optionalUnitName}`,
+          };
+        }),
+    ];
+
+    const worksheet = workbook.addWorksheet(sanitizedSheetName);
+
+    // Define headers based on your column definitions
+    const headers = columns
+      .filter((column) => !column.hidden)
+      .map((column) => ({
+        header: column.label || column.key,
+        key: column.key,
+        width: 30,
+      }));
+
+    worksheet.columns = headers;
+
+    // Prepare a map to store rows by the company code
+    const rowMap = new Map();
+
+    console.log("DATA: ", screenerData);
+    screenerData
+      .filter(
+        (item) =>
+          item.identifier.startsWith(`${tabId}-`) &&
+          item.identifier.endsWith(`-${currentLanguage}`)
+      )
+      .forEach((item) => {
+        const fieldId = item.identifier.split("-")[1];
+        console.log("ITEM: ", item);
+        item.data.forEach((rowData) => {
+          const fixedCode = rowData.Code.split(".")[0];
+          if (!rowMap.has(fixedCode)) {
+            rowMap.set(fixedCode, {
+              fixed_code: fixedCode,
+              fixed_img: rowData.LogoUrl,
+              fixed_company: localized(rowData, "ShortName", currentLanguage),
+              fixed_sector: localized(rowData, "SectorName", currentLanguage),
+              CompanyID: rowData.CompanyID,
+              SectorID: rowData.ArgaamSectorID,
+            });
+          }
+          const existingCompany = rowMap.get(fixedCode);
+          const keys = Object.keys(rowData);
+          const secondToLastKey = keys[keys.length - 2];
+
+          // Use the value from the second-to-last key or fallback to "-"
+          const value = config.peFieldIds.has(Number(fieldId))
+            ? formatValue(rowData[secondToLastKey], 2, true)
+            : formatValue(rowData[secondToLastKey]);
+
+          existingCompany[fieldId] = value ?? "-";
+        });
+      });
+
+    // Add rows to the worksheet
+    rowMap.forEach((rowData) => {
+      const newRow = worksheet.addRow(rowData);
+
+      // Apply hyperlink to the 'fixed_company' cell
+      if (rowData.fixed_company) {
+        const cell = newRow.getCell("fixed_company");
+        cell.value = {
+          text: rowData.fixed_company,
+          hyperlink: argaamUrl(rowData.CompanyID, currentLanguage),
+        };
+        cell.font = { color: { argb: "FF0000FF" }, underline: true };
+      }
+    });
+
+    // Apply bold styling to header row
+    worksheet.getRow(1).font = { bold: true };
+  }
+
+  // Generate Excel file buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  // Download the Excel file
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+  saveAs(blob, fileName);
+};

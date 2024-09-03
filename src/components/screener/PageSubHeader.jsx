@@ -2,16 +2,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { strings, TABS } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
-import {
-  selectCurrentLanguage,
-  selectScreenerDataOfSelectedTab,
-  selectFieldConfigurations,
-  selectLocalizedTabNameById,
-} from "../../redux/selectors";
+import { selectCurrentLanguage } from "../../redux/selectors";
 import { localized } from "../../utils/localization";
 import { setLanguage } from "../../redux/features/languageSlice";
 import { useEffect, useCallback } from "react";
-import { exportToExcel } from "../../utils/exportToExcel";
+import ExportDropdown from "../common/ExportDropdown";
 
 const PageSubHeader = ({
   title,
@@ -23,12 +18,6 @@ const PageSubHeader = ({
   setSelectedOptions, // Receive setSelectedOptions here
 }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
-  const selectDataForTab = selectScreenerDataOfSelectedTab();
-  const data = useSelector((state) =>
-    selectDataForTab(state)(activeTabLink, currentLanguage)
-  );
-  const fieldConfig = useSelector(selectFieldConfigurations);
-  const activeTabName = useSelector(selectLocalizedTabNameById(activeTabLink));
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -67,44 +56,6 @@ const PageSubHeader = ({
     },
     [setSelectedOptions, onSelectedOptionsChange]
   );
-
-  const handleExport = () => {
-    exportToExcel(
-      data,
-      fieldConfig,
-      activeTabLink,
-      currentLanguage,
-      "ArgaamScreener",
-      activeTabName
-    );
-  };
-
-  const handleExportMultipleTab = () => {
-    // Ensure both arrays are of the same length
-    if (activeTabLink.length !== activeTabNames.length) {
-      console.error("Tab IDs and Tab Names arrays must be of the same length.");
-      return;
-    }
-
-    // Iterate through each tab ID and call exportToExcel
-    activeTabLink.forEach((tabId, index) => {
-      const tabName = activeTabNames[index];
-
-      exportToExcel(
-        data,
-        fieldConfig,
-        tabId, // Pass the current tab ID
-        currentLanguage,
-        `ArgaamScreener_${tabName}`, // Customize the file name if needed
-        tabName // Use the tab name for the sheet name
-      );
-    });
-  };
-
-  //   return (
-  //     <button onClick={handleExport}>Export to Excel</button>
-  //   );
-  // };
 
   return (
     <div className="shadow_btm sub_header">
@@ -146,7 +97,7 @@ const PageSubHeader = ({
             onChange={handleSelectedOptionsChange}
           />
 
-          {/*<div className="d_flex">
+          {/* <div className="d_flex">
             <a className="screen_icons" href="#">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -195,46 +146,8 @@ const PageSubHeader = ({
                 </g>
               </svg>
             </a>
-            <a className="screen_icons" href="#" onClick={handleExport}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="39"
-                height="37"
-                viewBox="0 0 39 37"
-              >
-                <g
-                  className="screen_icon_border"
-                  data-name="Rectangle 28005"
-                  fill="#fff"
-                  stroke="#8193b0"
-                  strokeWidth="0.3"
-                >
-                  <rect width="39" height="37" rx="4" stroke="none" />
-                  <rect
-                    x="0.15"
-                    y="0.15"
-                    width="38.7"
-                    height="36.7"
-                    rx="3.85"
-                    fill="none"
-                  />
-                </g>
-                <g
-                  className="screen_icon_svg"
-                  data-name="svgexport-10 (9)"
-                  transform="translate(10.002 8.001)"
-                >
-                  <path
-                    id="Path_65084"
-                    data-name="Path 65084"
-                    d="M2.828,2.813,14.952,1.082a.482.482,0,0,1,.551.477V21.664a.482.482,0,0,1-.55.477L2.827,20.41A.964.964,0,0,1,2,19.456V3.768a.964.964,0,0,1,.828-.955Zm13.638.119h3.858a.964.964,0,0,1,.964.964V19.327a.964.964,0,0,1-.964.964H16.467Zm-6.558,8.68,2.7-3.858H10.294l-1.543,2.2-1.543-2.2H4.893l2.7,3.858-2.7,3.858H7.208l1.543-2.2,1.543,2.2h2.315Z"
-                    transform="translate(-1.999 -1.077)"
-                    fill="#6d7f9b"
-                  />
-                </g>
-              </svg>
-            </a>
-          </div>*/}
+            <ExportDropdown activeTabLink={activeTabLink} />
+          </div> */}
         </div>
       </div>
     </div>

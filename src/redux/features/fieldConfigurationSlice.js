@@ -19,44 +19,17 @@ export const fetchFieldConfigurationData = createAsyncThunk(
   }
 );
 
-function extractDistinctSectors(screenerData) {
-  // Check if screenerData is null or undefined
-  if (!screenerData) {
-    return {
-      distinctSectorsArabic: [],
-      distinctSectorsEnglish: [],
-    };
-  }
-
-  const distinctSectorsAr = new Set(); // To store distinct Arabic sector names
-  const distinctSectorsEn = new Set(); // To store distinct English sector names
-
-  // Iterate through the data
-  screenerData.forEach((item) => {
-    if (item.SectorNameAr) {
-      distinctSectorsAr.add(item.SectorNameAr);
-    }
-    if (item.SectorNameEn) {
-      distinctSectorsEn.add(item.SectorNameEn);
-    }
-  });
-
-  // Convert Sets to arrays
-  const distinctArabicSectorsArray = Array.from(distinctSectorsAr);
-  const distinctEnglishSectorsArray = Array.from(distinctSectorsEn);
-
-  // Return the distinct sector names
-  return {
-    distinctSectorsArabic: distinctArabicSectorsArray,
-    distinctSectorsEnglish: distinctEnglishSectorsArray,
-  };
-}
-
 // Fetch Screener Data Thunk with filtered configurations
 export const fetchScreenerData = createAsyncThunk(
   "screener/fetchScreenerData",
-  async ({ filteredConfigurations, currentLanguage }, { rejectWithValue }) => {
+  async (
+    { filteredConfigurations, currentLanguage },
+    { rejectWithValue, getState }
+  ) => {
     try {
+      const currentState = getState();
+      console.log("Current State in Thunk: ", currentState);
+
       const processedData = filteredConfigurations.map((item) => {
         const configJson = JSON.parse(item.ConfigJson);
         const args = item.Args;
@@ -67,6 +40,10 @@ export const fetchScreenerData = createAsyncThunk(
           tabNameAr: config.tar,
           isSelected: config.IA,
           displaySeq: Number(config.dsno),
+          direction:
+            config.extraparams && config.extraparams.ob
+              ? config.extraparams.ob // Assign the value of 'ob' to direction
+              : "", // Use an empty string if 'extraparams' or 'ob' is not available
         }));
 
         // Generate encrypted configuration JSON
@@ -114,7 +91,6 @@ export const fetchScreenerData = createAsyncThunk(
                 identifier: data.identifier,
                 data: responses,
                 chartData: "",
-                sectors: null,
                 subTabs: data.subTabs, // Store the responses corresponding to each sub-tab
                 timestamp: Date.now(), // Add timestamp here
               };
@@ -126,8 +102,6 @@ export const fetchScreenerData = createAsyncThunk(
               // Extract only the serializable parts of the response
               const { data: responseData } = response;
 
-              //const extractedSectors = extractDistinctSectors(responseData);
-
               // Store the remaining items (index > 0) in a constant
               const historicalEncryptedConfig =
                 data.encryptedConfigJsons.slice(1);
@@ -137,10 +111,6 @@ export const fetchScreenerData = createAsyncThunk(
                 identifier: data.identifier,
                 data: responseData || {}, // Include primary response
                 chartData: historicalEncryptedConfig[0] || null, // Add a check for undefined
-                // sectors: {
-                //   ar: extractedSectors.distinctSectorsArabic || [],
-                //   en: extractedSectors.distinctSectorsEnglish || [],
-                // },
                 subTabs: data.subTabs,
                 timestamp: Date.now(), // Add timestamp here
               };
@@ -167,7 +137,6 @@ const initialState = {
   screenerData: [],
   chartData: "",
   fieldConfigurations: [],
-  // sectors: { ar: [], en: [] },
   subTabs: [],
   loading: false,
   error: null,
@@ -185,9 +154,9 @@ const fieldConfigurationSlice = createSlice({
           (item) => item.identifier.split("-")[0] !== tabId
         );
       }
-      // Optionally, you can reset other related states if needed
+      // can reset other related states if required
     },
-    resetState: () => initialState, // Add this line
+    resetState: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -233,23 +202,6 @@ const fieldConfigurationSlice = createSlice({
         ];
 
         console.log("STORAGE FOR SCREENER: ", state.screenerData);
-
-        // Merge sectors without duplicates
-        // const allSectors = action.payload.reduce(
-        //   (acc, item) => {
-        //     if (item && item.sectors) {
-        //       acc.ar = [...acc.ar, ...(item.sectors.ar || [])];
-        //       acc.en = [...acc.en, ...(item.sectors.en || [])];
-        //     }
-        //     return acc;
-        //   },
-        //   { ar: state.sectors.ar || [], en: state.sectors.en || [] }
-        // );
-
-        // state.sectors = {
-        //   ar: Array.from(new Set(allSectors.ar)),
-        //   en: Array.from(new Set(allSectors.en)),
-        // };
 
         // Extract and store subTabs
         const allSubTabs = action.payload.reduce((acc, item) => {

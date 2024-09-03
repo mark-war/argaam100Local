@@ -134,6 +134,23 @@ export const SUBTABS = {
   GD_5_YEARS: 11,
   GD_7_YEARS: 12,
   GD_10_YEARS: 13,
+
+  //arabic subtabs (TODO: need to find a different approach handling these subtabs)
+  التطور_التاريخي: 1,
+  آخر_إغلاق: 2,
+  القيمة_الدفترية: 3,
+  آخر_12_شهرا: 4,
+
+  SP_1_يوم: 5,
+  SP_شهر: 6,
+  SP_3_أشهر: 7,
+  SP_5_سنوات: 8,
+  SP_منذ_بداية_العام: 9,
+
+  GD_3_سنوات: 10,
+  GD_5_سنوات: 11,
+  GD_7_سنوات: 12,
+  GD_10_سنوات: 13,
 };
 
 export const SUBSECTIONS = {

@@ -21,6 +21,21 @@ const selectSelectedSection = createSelector(
     (selectedPage.sections || []).find((section) => section.isSelected) || {}
 );
 
+// Memoized Selector to find a section by its ID
+const selectSectionById = (sectionId) =>
+  createSelector([selectPages], (pages) => {
+    // Iterate through all pages to find the section with the provided sectionId
+    for (const page of pages) {
+      const section = (page.sections || []).find(
+        (section) => section.sectionId === sectionId
+      );
+      if (section) {
+        return section;
+      }
+    }
+    return {}; // Return an empty object if no section is found
+  });
+
 // Memoized selector for selected tab
 export const selectDefaultTab = createSelector(
   [selectSelectedSection],
@@ -40,41 +55,19 @@ export const selectLocalizedTabNameById = (tabId) =>
     }
   );
 
-export const selectFieldConfigurations = createSelector(
-  [fieldConfigurationsState],
-  (fieldConfigurations) => {
-    // Return a copy or perform minimal transformation if needed
-    return fieldConfigurations;
-  }
-);
+// to get tab ids and localized tab names for a section
+export const selectTabIdsAndNamesForSection = (sectionId) =>
+  createSelector(
+    [selectSectionById(sectionId), currentLanguageState],
+    (selectedSection, currentLanguage) => {
+      return (selectedSection.tabs || []).map((tab) => ({
+        tabId: tab.tabId,
+        tabName: localized(tab, "tabName", currentLanguage),
+      }));
+    }
+  );
 
-export const selectCurrentLanguage = createSelector(
-  [currentLanguageState],
-  (currentLanguage) => {
-    // Ensure that the result is processed if needed
-    return currentLanguage;
-  }
-);
-
-export const selectScreenerData = createSelector(
-  [screenerDataState],
-  (screenerData) => {
-    return screenerData;
-  }
-);
-
-// Updated localized sectors selector
-export const selectLocalizedSectors = createSelector(
-  [argaamSectorsState, currentLanguageState],
-  (argaamSectors, currentLanguage) => {
-    return argaamSectors.map((sector) => ({
-      id: sector.ARGAAMSECTORID,
-      name: localized(sector, "ARGAAMSECTORNAME", currentLanguage, true),
-    }));
-  }
-);
-
-// Create a memoized selector that takes the selected tab ID as an argument
+// Create a memoized selector that takes the selected tab ID as an argument for screener data
 export const selectScreenerDataOfSelectedTab = () =>
   createSelector([screenerDataState], (screenerData) => {
     return (selectedTabId, currentLanguage) => {
@@ -85,3 +78,58 @@ export const selectScreenerDataOfSelectedTab = () =>
       );
     };
   });
+
+// Create a memoized selector that takes the section ID as an argument for screener data
+export const selectScreenerDataOfSection = () =>
+  createSelector([screenerDataState, selectPages], (screenerData, pages) => {
+    return (sectionId, currentLanguage) => {
+      // Find the section by its ID from the pages
+      const section = pages
+        .flatMap((page) => page.sections || [])
+        .find((sec) => sec.sectionId === sectionId);
+      if (!section || !section.tabs) {
+        return []; // Return an empty array if no section or no tabs are found
+      }
+
+      // Iterate over the tabs of the found section and collect screener data for each tab
+      return section.tabs.flatMap((tab) =>
+        screenerData.filter(
+          (data) =>
+            data.identifier.startsWith(`${tab.tabId}-`) &&
+            data.identifier.endsWith(`-${currentLanguage}`)
+        )
+      );
+    };
+  });
+
+export const selectFieldConfigurations = createSelector(
+  [fieldConfigurationsState],
+  (fieldConfigurations) => {
+    // Return a copy or perform minimal transformation if needed
+    return fieldConfigurations;
+  }
+);
+
+export const selectScreenerData = createSelector(
+  [screenerDataState],
+  (screenerData) => {
+    return screenerData;
+  }
+);
+
+export const selectLocalizedSectors = createSelector(
+  [argaamSectorsState, currentLanguageState],
+  (argaamSectors, currentLanguage) => {
+    return argaamSectors.map((sector) => ({
+      id: sector.ARGAAMSECTORID,
+      name: localized(sector, "ARGAAMSECTORNAME", currentLanguage, true),
+    }));
+  }
+);
+
+export const selectCurrentLanguage = createSelector(
+  [currentLanguageState],
+  (currentLanguage) => {
+    return currentLanguage;
+  }
+);

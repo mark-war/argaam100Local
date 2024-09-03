@@ -250,6 +250,30 @@ div {
   display: none;
 }
 
+.export-dropdown-menu {
+  position: absolute;
+  top: 50px; /* Adjust based on your layout */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.export-dropdown-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.export-dropdown-menu button:hover {
+  background: #f0f0f0;
+}
+
 .table_default td {
   font-size: 21px;
   color: #000000;

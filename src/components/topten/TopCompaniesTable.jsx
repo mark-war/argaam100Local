@@ -33,15 +33,22 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
 
   const getSubTabKey = useCallback(
     (subTabName) => {
+      console.log("SELECTED TAB BEFORE TRANSFORM: ", subTabName);
       const transformedName = transformColumnName(subTabName);
-
+      console.log("SELECTED TAB XXX: ", selectedTab);
       switch (selectedTab) {
-        case TABS.T_STOCK_PERFORMANCE:
+        case TABS.T_STOCK_PERFORMANCE: {
+          console.log("MERGED: ", `SP_${transformedName}`);
           return `SP_${transformedName}`;
-        case TABS.T_GROWTH_AND_DIVIDENDS:
+        }
+        case TABS.T_GROWTH_AND_DIVIDENDS: {
+          console.log("MERGED: ", `GD_${transformedName}`);
           return `GD_${transformedName}`;
-        default:
+        }
+        default: {
+          console.log("MERGED: ", transformedName);
           return transformedName;
+        }
       }
     },
     [selectedTab, transformColumnName]
@@ -85,6 +92,7 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
 
   const handleSubTabClick = useCallback(
     (subSectionIndex, subTabName) => {
+      console.log("SELECTED TAB NAME XXX: ", subTabName);
       const subTabKey = getSubTabKey(subTabName);
       const value = SUBTABS[subTabKey];
       setActiveSubTabs((prevActiveSubTabs) =>
@@ -258,7 +266,9 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
           );
           const subTabCount = sortedSubTabs.length;
           const sectionIndex = subSection.identifier.split("-")[1];
-
+          const raceChartDIrection =
+            subSection.subTabs[SUBTABS.HISTORICAL_EVOLUTION].direction ||
+            subSection.subTabs[SUBTABS.التطور_التاريخي].direction;
           return (
             <Col lg={6} key={subSectionIndex}>
               <div className="tabs_inner_nav row px-3">
@@ -310,11 +320,12 @@ const TopCompaniesTable = ({ selectedTab, data }) => {
               <Card className="rounded border-0 table_chart">
                 <Card.Body className="px-layout bg-white rounded">
                   {activeSubTabs[subSectionIndex] ===
-                  SUBTABS.HISTORICAL_EVOLUTION ? (
+                  (SUBTABS.HISTORICAL_EVOLUTION || SUBTABS.التطور_التاريخي) ? (
                     <div className="chart-responsive">
                       <RaceChart
                         chartData={subSection.chartData}
                         currentLanguage={currentLanguage}
+                        direction={raceChartDIrection}
                       />
                     </div>
                   ) : (

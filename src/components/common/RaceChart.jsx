@@ -3,7 +3,7 @@ import config from "../../utils/config";
 import { LANGUAGEID } from "../../utils/constants/localizedStrings";
 import { Table } from "react-bootstrap";
 
-const RaceChart = ({ chartData, currentLanguage }) => {
+const RaceChart = ({ chartData, currentLanguage, direction = "" }) => {
   const [loading, setLoading] = useState(true); // Add loading state
   const iframeRef = useRef(null);
 
@@ -12,11 +12,17 @@ const RaceChart = ({ chartData, currentLanguage }) => {
     setLoading(false); // Set loading to false once the iframe is loaded
   };
 
-  const formattedChartUrl = `${
+  let formattedChartUrl = `${
     config.chartsUrl
   }/race-bar-chart?params=${chartData}&language=${
     LANGUAGEID[currentLanguage.toUpperCase()]
   }`;
+
+  //append ob if available
+  formattedChartUrl =
+    direction !== ""
+      ? formattedChartUrl + `&ob=${direction}`
+      : formattedChartUrl;
 
   return (
     <div className="race_chart_container">
