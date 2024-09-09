@@ -15,10 +15,10 @@ const HeaderMain = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const dropdownRef = useRef(null); // Create a ref for the dropdown element
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
-  const pages = useSelector((state) => state.apiData.pages); // Access pages from Redux store
+  const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
 
   // temporary logic to disable top-10
-  const [disabledLink, setDisabledLink] = useState(`/${lang}/top-10`);
+  const [disabledLink, setDisabledLink] = useState();
 
   const toggleDropdown = () => setIsOpen((prevState) => !prevState);
 
@@ -89,10 +89,10 @@ const HeaderMain = () => {
     return <LoadingScreen />; // Optional: Show loading screen if pages data is not available
   }
 
-  useEffect(() => {
-    // Set the disabled link whenever the component mounts or updates
-    setDisabledLink(`/${lang}/top-10`);
-  }, [lang]); // Dependency on lang to ensure it updates accordingly
+  // useEffect(() => {
+  //   // Set the disabled link whenever the component mounts or updates
+  //   setDisabledLink(`/${lang}/top-10`);
+  // }, [lang]); // Dependency on lang to ensure it updates accordingly
 
   return (
     <>

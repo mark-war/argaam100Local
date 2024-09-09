@@ -15,7 +15,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
   }));
 
   const argaamSectors = useSelector(selectLocalizedSectors);
-  // console.log("ARGAAM SECTORS: ", argaamSectors);
+
   const [isSelect, setIsSelect] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(selectedSectors || []);
   const dropdownRef = useRef(null);
@@ -65,7 +65,6 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
 
   return (
     <>
-
       <div className="sector_dropdown" ref={dropdownRef}>
         <div onClick={handleSelect} className="multi_select">
           <div

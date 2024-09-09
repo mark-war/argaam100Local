@@ -7,6 +7,7 @@ import { localized } from "../../utils/localization";
 import { setLanguage } from "../../redux/features/languageSlice";
 import { useEffect, useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
+import { printScreen } from "../../utils/printPage";
 
 const PageSubHeader = ({
   title,
@@ -97,8 +98,8 @@ const PageSubHeader = ({
             onChange={handleSelectedOptionsChange}
           />
 
-          {/* <div className="d_flex">
-            <a className="screen_icons" href="#">
+          <div className="d_flex">
+            <a className="screen_icons" href="#" onClick={printScreen}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="39"
@@ -147,7 +148,7 @@ const PageSubHeader = ({
               </svg>
             </a>
             <ExportDropdown activeTabLink={activeTabLink} />
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

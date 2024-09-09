@@ -1199,7 +1199,6 @@ div {
   padding-left: 9px;
 }
 
-
 /* AR CSS Starts */
 
 [lang="ar"] {
@@ -1718,7 +1717,13 @@ footer {
     padding-bottom: 14px;
   }
 
-  [lang="ar"] body .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
+  [lang="ar"]
+    body
+    .top_companies
+    .tabs_nav.navbar-nav
+    .nav-item
+    .nav-link.active
+    span {
     padding-bottom: 10px;
   }
 
@@ -1768,7 +1773,8 @@ footer {
     font-size: 1.25rem;
   }
 
-  .table_chart .table_layout.table th:nth-child(2), .table_chart .table_layout.table td:nth-child(2) {
+  .table_chart .table_layout.table th:nth-child(2),
+  .table_chart .table_layout.table td:nth-child(2) {
     line-height: 15px;
   }
 
@@ -1815,8 +1821,6 @@ footer {
     font-size: 1.3rem;
     font-weight: 500;
   }
-
-  
 }
 
 @media screen and (max-width: 1024px) {
@@ -1832,17 +1836,15 @@ footer {
     margin-top: -43px;
     gap: 15px;
   }
-  
 
   .col_space .col-lg-6:nth-last-child(2) {
-  border-bottom: 1px solid #dee2e8;
-  margin-bottom: 25px;
-}
+    border-bottom: 1px solid #dee2e8;
+    margin-bottom: 25px;
+  }
 
-.table_layout.table-striped {
-  zoom: unset;
-}
-
+  .table_layout.table-striped {
+    zoom: unset;
+  }
 
   .nav_toggle {
     display: block;
@@ -1943,7 +1945,8 @@ footer {
     overflow-x: auto;
   }
 
-  .table_chart .table_layout.table th:nth-child(2), .table_chart .table_layout.table td:nth-child(2) {
+  .table_chart .table_layout.table th:nth-child(2),
+  .table_chart .table_layout.table td:nth-child(2) {
     width: 34%;
   }
 
@@ -1971,7 +1974,6 @@ footer {
   .tabs_nav.navbar-nav .nav-link {
     line-height: 12px;
   }
-
 
   .table_chart .table_layout.table th:first-child {
     padding-right: 17px;
@@ -2339,3 +2341,26 @@ footer {
 }
 
 /* Media Query Ends */
+
+@media print {
+  body {
+    font-size: 12pt; /* Adjust font size for readability */
+    color: black; /* Change text color for print */
+  }
+
+  .no-print {
+    display: none; /* Hide elements that shouldn't appear in print */
+  }
+
+  /* Specific styles for tables, headers, etc. */
+  table {
+    width: 100%; /* Ensure tables use full width */
+    border-collapse: collapse; /* Better table layout */
+  }
+
+  th,
+  td {
+    border: 1px solid black; /* Add borders for clarity */
+    padding: 8px; /* Adjust padding */
+  }
+}

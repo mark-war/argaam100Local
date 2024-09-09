@@ -39,6 +39,29 @@ const argaamUrl = (companyID = "", lang) => {
   return baseUrl;
 };
 
+// Function to apply right-to-left properties for Arabic
+const applyArabicFormatting = (worksheet) => {
+  // Set the worksheet properties to indicate RTL
+  worksheet.properties.outline = { summaryBelow: false }; // Optional, adjust as needed
+  worksheet.properties.tabColor = { argb: "FF0000" }; // Optional, adjust color if needed
+
+  // Set alignment to right for all columns in the worksheet
+  worksheet.columns.forEach((column) => {
+    column.alignment = { horizontal: "right" }; // Align content to the right
+  });
+
+  worksheet.properties.rightToLeft = true; // Set worksheet direction to RTL
+  // Set the active cell to the last column in the first row
+  const lastColumnIndex = worksheet.columns.length; // Get the last column index
+  const lastCellAddress = `${String.fromCharCode(64 + lastColumnIndex)}1`; // Get the address of the last cell in the first row
+  worksheet.views = [
+    {
+      state: "normal",
+      activeCell: lastCellAddress, // Set the active cell to the last column in the first row
+    },
+  ];
+};
+
 export const exportToExcel = async (
   screenerData,
   fieldConfig,
@@ -71,8 +94,12 @@ export const exportToExcel = async (
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet(sanitizedSheetName);
 
+  // Reverse the columns order only if the current language is Arabic
+  const columnsToUse =
+    currentLanguage === LANGUAGES.AR ? columns.reverse() : columns;
+
   // Define headers based on your column definitions
-  const headers = columns
+  const headers = columnsToUse
     .filter((column) => !column.hidden)
     .map((column) => ({
       header: column.label || column.key,
@@ -81,6 +108,11 @@ export const exportToExcel = async (
     }));
 
   worksheet.columns = headers;
+
+  // Apply Arabic formatting if the current language is Arabic
+  if (currentLanguage === LANGUAGES.AR) {
+    applyArabicFormatting(worksheet);
+  }
 
   // Prepare a map to store rows by the company code
   const rowMap = new Map();
@@ -181,8 +213,12 @@ export const exportMultipleTabsToExcel = async (
 
     const worksheet = workbook.addWorksheet(sanitizedSheetName);
 
+    // Reverse the columns order only if the current language is Arabic
+    const columnsToUse =
+      currentLanguage === LANGUAGES.AR ? columns.reverse() : columns;
+
     // Define headers based on your column definitions
-    const headers = columns
+    const headers = columnsToUse
       .filter((column) => !column.hidden)
       .map((column) => ({
         header: column.label || column.key,
@@ -192,10 +228,14 @@ export const exportMultipleTabsToExcel = async (
 
     worksheet.columns = headers;
 
+    // Apply Arabic formatting if the current language is Arabic
+    if (currentLanguage === LANGUAGES.AR) {
+      applyArabicFormatting(worksheet);
+    }
+
     // Prepare a map to store rows by the company code
     const rowMap = new Map();
 
-    console.log("DATA: ", screenerData);
     screenerData
       .filter(
         (item) =>
@@ -204,7 +244,6 @@ export const exportMultipleTabsToExcel = async (
       )
       .forEach((item) => {
         const fieldId = item.identifier.split("-")[1];
-        console.log("ITEM: ", item);
         item.data.forEach((rowData) => {
           const fixedCode = rowData.Code.split(".")[0];
           if (!rowMap.has(fixedCode)) {

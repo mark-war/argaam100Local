@@ -2,11 +2,15 @@ import { createSelector } from "reselect";
 import { localized } from "../utils/localization";
 
 const currentLanguageState = (state) => state.language.currentLanguage;
-const fieldConfigurationsState = (state) => state.screener.fieldConfigurations;
+const fieldConfigurationsState = (state) =>
+  state.fieldConfig.fieldConfigurations;
 const screenerDataState = (state) => state.screener.screenerData;
+const toptenDataState = (state) => state.topten.toptenData;
+const toptenDataMultipleState = (state) =>
+  state.toptenMultiple.toptenDataMultiple;
 const argaamSectorsState = (state) => state.argaamSectors.sectors || [];
 
-export const selectPages = (state) => state.apiData.pages || [];
+export const selectPages = (state) => state.pages.pages || [];
 
 // Memoized selector for selected page
 const selectSelectedPage = createSelector(
@@ -102,6 +106,59 @@ export const selectScreenerDataOfSection = () =>
     };
   });
 
+// Selector to get sub-tab data from the store
+export const selectSubTabData = () =>
+  createSelector([toptenDataMultipleState], (toptenDataMultiple) => {
+    return (subTabIdentifier) => {
+      const subTab = toptenDataMultiple.find((item) =>
+        item.subTabs.some((sub) => sub.encryptedConfigJson === subTabIdentifier)
+      );
+      return (
+        subTab?.subTabs.find(
+          (sub) => sub.encryptedConfigJson === subTabIdentifier
+        ) || {}
+      );
+    };
+  });
+
+// Selector to get the data for a specific identifier
+export const selectDataByIdentifier = (identifier) =>
+  createSelector([toptenDataMultipleState], (toptenDataMultiple) => {
+    // Find the entry for the given identifier
+    const entry = toptenDataMultiple.find(
+      (item) => item.identifier === identifier
+    );
+
+    if (entry) {
+      // Transform data into a more usable format if needed
+      return entry.data.map((subTabData, index) => ({
+        displaySeq: index + 1, // Convert to 1-based displaySeq for convenience
+        data: subTabData,
+      }));
+    }
+
+    return [];
+  });
+
+// Selector to get data for a specific sub-tab and displaySeq
+export const selectDataForSubTab = (identifier, displaySeq) =>
+  createSelector([toptenDataMultipleState], (toptenDataMultiple) => {
+    // Find the entry for the given identifier
+    const entry = toptenDataMultiple.find(
+      (item) => item.identifier === identifier
+    );
+
+    if (entry) {
+      // Ensure displaySeq is zero-based
+      const zeroBasedSeq = displaySeq - 1;
+
+      // Return data for the specific displaySeq
+      return entry.data[zeroBasedSeq] || [];
+    }
+
+    return [];
+  });
+
 export const selectFieldConfigurations = createSelector(
   [fieldConfigurationsState],
   (fieldConfigurations) => {
@@ -114,6 +171,20 @@ export const selectScreenerData = createSelector(
   [screenerDataState],
   (screenerData) => {
     return screenerData;
+  }
+);
+
+export const selectTopTenData = createSelector(
+  [toptenDataState],
+  (toptenData) => {
+    return toptenData;
+  }
+);
+
+export const selectTopTenDataMultiple = createSelector(
+  [toptenDataMultipleState],
+  (toptenDataMultiple) => {
+    return toptenDataMultiple;
   }
 );
 

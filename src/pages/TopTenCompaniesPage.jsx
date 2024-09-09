@@ -3,20 +3,24 @@ import MainLayout from "../components/layout/MainLayout";
 import TopCompaniesSubHeader from "../components/topten/TopCompaniesSubHeader";
 import { useSelector } from "react-redux";
 import TopCompaniesTable from "../components/topten/TopCompaniesTable";
-import { PAGES } from "../utils/constants/localizedStrings";
+import { PAGES, TABS } from "../utils/constants/localizedStrings";
 import useTabDataFetch from "../hooks/useTabDataFetch";
 import { localized } from "../utils/localization";
 import config from "../utils/config.js";
+import {
+  selectFieldConfigurations,
+  selectTopTenData,
+  selectTopTenDataMultiple,
+} from "../redux/selectors.js";
 
 const TopTenCompaniesPage = () => {
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-  const fieldConfigurations = useSelector(
-    (state) => state.screener.fieldConfigurations
-  );
-  const screenerData = useSelector((state) => state.screener.screenerData);
-  const pages = useSelector((state) => state.apiData.pages);
+  const fieldConfigurations = useSelector(selectFieldConfigurations);
+  const topTenData = useSelector(selectTopTenData);
+  const topTenDataMultiple = useSelector(selectTopTenDataMultiple);
+  const pages = useSelector((state) => state.pages.pages);
 
   // Get the selected page and section
   const selectedPage = pages.find((page) => page.pageId === PAGES.TOPTEN);
@@ -66,9 +70,15 @@ const TopTenCompaniesPage = () => {
     return map;
   }, [fieldConfigurations]);
 
-  const getFilteredData = () => {
-    if (!activeTabLink || !screenerData) return [];
-    return screenerData
+  const getFilteredData = (isMultiple) => {
+    const data = isMultiple ? topTenDataMultiple : topTenData;
+    return filterAndMapData(data);
+  };
+
+  const filterAndMapData = (data) => {
+    if (!activeTabLink || !data) return [];
+
+    return data
       .filter(
         (item) =>
           item.identifier.startsWith(activeTabLink) &&
@@ -84,13 +94,45 @@ const TopTenCompaniesPage = () => {
       });
   };
 
+  const tabsWithRaceChart = [
+    TABS.T_RANKING,
+    TABS.T_ARR_MULTIPLE,
+    TABS.T_FINANCIAL_RATIO,
+  ];
+
+  const tabsWithMultipleSubTabs = [
+    TABS.T_STOCK_PERFORMANCE,
+    TABS.T_GROWTH_AND_DIVIDENDS,
+  ];
+
+  // Function to determine which data and flags to pass
+  const getDataAndFlags = (tabLink) => {
+    let data;
+    let isMultiple = false;
+
+    // Check if the activeTabLink is in the specified ranges
+    if (tabsWithRaceChart.includes(tabLink)) {
+      data = getFilteredData(false);
+    } else if (tabsWithMultipleSubTabs.includes(tabLink)) {
+      data = getFilteredData(true);
+
+      isMultiple = true;
+    }
+
+    return { data, isMultiple };
+  };
+
+  // Get data and flags based on activeTabLink
+  const { data, isMultiple } = getDataAndFlags(activeTabLink);
+
   const renderTabContent = useCallback(() => {
     return (
       <>
         {loading && <div className="spinner"></div>}
         <TopCompaniesTable
           selectedTab={activeTabLink}
-          data={getFilteredData()}
+          data={data}
+          isMultiple={isMultiple} // Pass isMultiple as true or false
         />
       </>
     );

@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import {
   fetchScreenerData,
   resetTabData,
-} from "../redux/features/fieldConfigurationSlice";
+} from "../redux/features/screenerDataSlice";
 import {
   selectFieldConfigurations,
   selectCurrentLanguage,
 } from "../redux/selectors";
+import { fetchTopTenData } from "../redux/features/topTenSingleTabSlice";
+import { fetchMultipleTabTopTenData } from "../redux/features/topTenMultiTabSlice";
 
 const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const dispatch = useDispatch();
@@ -62,18 +64,47 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
 
         setLoading(true); // Set loading to true when fetching starts
 
-        dispatch(
-          fetchScreenerData({ filteredConfigurations, currentLanguage })
-        ).then(() => {
-          console.log("Data fetch complete");
-          setLoading(false); // Set loading to false when fetching completes
+        if (tabId < 8) {
+          dispatch(
+            fetchScreenerData({ filteredConfigurations, currentLanguage })
+          ).then(() => {
+            console.log("Data fetch complete");
+            setLoading(false); // Set loading to false when fetching completes
 
-          // Update local cache after fetch
-          setLocalCache((prevCache) => ({
-            ...prevCache,
-            [cacheKey]: { needsFetch: false, timestamp: Date.now() },
-          }));
-        });
+            // Update local cache after fetch
+            setLocalCache((prevCache) => ({
+              ...prevCache,
+              [cacheKey]: { needsFetch: false, timestamp: Date.now() },
+            }));
+          });
+        } else if (tabId !== 9 && tabId !== 12) {
+          dispatch(
+            fetchTopTenData({ filteredConfigurations, currentLanguage })
+          ).then(() => {
+            setLoading(false); // Set loading to false when fetching completes
+
+            // Update local cache after fetch
+            setLocalCache((prevCache) => ({
+              ...prevCache,
+              [cacheKey]: { needsFetch: false, timestamp: Date.now() },
+            }));
+          });
+        } else {
+          dispatch(
+            fetchMultipleTabTopTenData({
+              filteredConfigurations,
+              currentLanguage,
+            })
+          ).then(() => {
+            setLoading(false); // Set loading to false when fetching completes
+
+            // Update local cache after fetch
+            setLocalCache((prevCache) => ({
+              ...prevCache,
+              [cacheKey]: { needsFetch: false, timestamp: Date.now() },
+            }));
+          });
+        }
 
         hasFetchedData.current = true; // Set the flag to prevent re-dispatch
       } else {

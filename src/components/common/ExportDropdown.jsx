@@ -4,7 +4,7 @@ import {
   exportMultipleTabsToExcel,
   exportToExcel,
 } from "../../utils/exportToExcel";
-import { fetchScreenerData } from "../../redux/features/fieldConfigurationSlice";
+import { fetchScreenerData } from "../../redux/features/screenerDataSlice";
 import {
   selectCurrentLanguage,
   selectFieldConfigurations,
@@ -39,8 +39,7 @@ const ExportDropdown = (activeTabLink = {}) => {
       handleAllTabsExport();
     }
   };
-  console.log("TAB ID: ", activeTabLink.activeTabLink);
-  console.log("TAB NAME: ", activeTabLink.activeTabName);
+
   const handleCurrentTabExport = () => {
     exportToExcel(
       dataForSelectedTab,

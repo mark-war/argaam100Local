@@ -34,7 +34,15 @@ const NumberFormatter = ({ value, isPEColumn = false }) => {
     [value, decimals, isPEColumn]
   );
 
-  return <span>{formattedValue}</span>;
+  return (
+    <span
+      style={{
+        color: Number(value) < 0 ? "red" : "inherit",
+      }}
+    >
+      {formattedValue}
+    </span>
+  );
 };
 
 NumberFormatter.propTypes = {

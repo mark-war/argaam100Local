@@ -1,12 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import languageReducer from "./features/languageSlice";
-import apiDataReducer from "./features/apiDataSlice"; // Import the new reducer
+import pagesReducer from "./features/pageSlice"; // Import the new reducer
 import { fieldConfigurationReducer } from "./features/fieldConfigurationSlice"; // Import the correct reducer
+import { screenerDataReducer } from "./features/screenerDataSlice"; // Import the correct reducer
+import { topTenSingleTabReducer } from "./features/topTenSingleTabSlice";
 import sectorReducer from "./features/sectorSlice";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import { combineReducers } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
+import { toptenMultipleTabReducer } from "./features/topTenMultiTabSlice";
 
 const persistConfig = {
   key: "root",
@@ -17,9 +20,12 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   language: languageReducer,
-  apiData: apiDataReducer, // Add the new reducer
-  screener: fieldConfigurationReducer, // Use the correct reducer name
+  pages: pagesReducer, // Add the new reducer
+  fieldConfig: fieldConfigurationReducer,
+  screener: screenerDataReducer, // Use the correct reducer name
   argaamSectors: sectorReducer,
+  topten: topTenSingleTabReducer,
+  toptenMultiple: toptenMultipleTabReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

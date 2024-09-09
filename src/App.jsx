@@ -2,17 +2,16 @@ import "./App.css";
 import AppRoutes from "./components/routes/AppRoutes";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPageStructure } from "./services/screenerApi";
+import { fetchPageStructure, fetchArgaamSectors } from "./services/screenerApi";
 import { fetchFieldConfigurationData } from "./redux/features/fieldConfigurationSlice";
 import { selectDefaultTab } from "./redux/selectors";
 import { useParams } from "react-router-dom";
-import { setApiData } from "./redux/features/apiDataSlice.js";
+import { setPages } from "./redux/features/pageSlice.js";
 import { strings } from "./utils/constants/localizedStrings";
 import { setLanguage } from "./redux/features/languageSlice.js";
 import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
-import { resetState } from "./redux/features/fieldConfigurationSlice.js";
+import { resetState } from "./redux/features/screenerDataSlice.js";
 import config from "./utils/config.js";
-import { fetchArgaamSectors } from "./services/screenerApi";
 import { setArgaamSectors } from "./redux/features/sectorSlice.js"; // Adjust the path to your slice
 
 function App() {
@@ -71,7 +70,8 @@ function App() {
       try {
         const response = await fetchPageStructure();
         if (response && response.data && response.data.pages) {
-          dispatch(setApiData(response.data.pages));
+          console.log(response.data.pages);
+          dispatch(setPages(response.data.pages));
         } else {
           console.error("Unexpected API response structure");
         }
