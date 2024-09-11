@@ -152,7 +152,10 @@ const SubTabCard = ({
             </td>
             <td>
               <div className="charts_table_bg">
-                <span className="bg" style={{ width: chartWidth }}></span>
+                <span
+                  className="bg"
+                  style={{ width: chartWidth || "80%" }}
+                ></span>
                 <span>
                   {valueString !== null ? (
                     valueString

@@ -1,35 +1,119 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   exportMultipleTabsToExcel,
+  exportMultipleTabsToExcelTopTen,
   exportToExcel,
+  exportToExcelTopTen,
 } from "../../utils/exportToExcel";
 import { fetchScreenerData } from "../../redux/features/screenerDataSlice";
 import {
   selectCurrentLanguage,
   selectFieldConfigurations,
-  selectLocalizedTabNameById,
+  selectDefaultLocalizedTabNameById,
   selectScreenerDataOfSelectedTab,
   selectTabIdsAndNamesForSection,
+  selectTopTenData,
+  selectLocalizedTabNameById,
+  selectTopTenDataMultiple,
+  selectSubSectionsSubTabs,
 } from "../../redux/selectors";
-import { SECTIONS } from "../../utils/constants/localizedStrings";
+import {
+  PAGES,
+  SECTIONS,
+  strings,
+  TABS,
+} from "../../utils/constants/localizedStrings";
+import {
+  addNewTopTenItem,
+  fetchMultipleTabTopTenData,
+  fetchSubTabData,
+} from "../../redux/features/topTenMultiTabSlice";
 
 const ExportDropdown = (activeTabLink = {}) => {
+  const currentPageId = activeTabLink.pageId;
+  const selectedTab = activeTabLink.activeTabLink;
+
   const currentLanguage = useSelector(selectCurrentLanguage);
   const selectDataForTab = selectScreenerDataOfSelectedTab();
   const dataForSelectedTab = useSelector((state) =>
-    selectDataForTab(state)(activeTabLink.activeTabLink, currentLanguage)
+    selectDataForTab(state)(selectedTab, currentLanguage)
   );
   const fieldConfig = useSelector(selectFieldConfigurations);
   const activeTabName = useSelector(
-    selectLocalizedTabNameById(activeTabLink.activeTabLink)
+    selectDefaultLocalizedTabNameById(selectedTab)
   );
+
+  const activeTabNameTopTen = useSelector(
+    selectLocalizedTabNameById(
+      PAGES.TOPTEN,
+      SECTIONS.TOPTEN_COMPANIES,
+      selectedTab
+    )
+  );
+
   const tabIdsAndNames = useSelector(
-    selectTabIdsAndNamesForSection(SECTIONS.STOCK_SCREENER)
+    selectTabIdsAndNamesForSection(
+      currentPageId === PAGES.SCREENER
+        ? SECTIONS.STOCK_SCREENER
+        : SECTIONS.TOPTEN_COMPANIES
+    )
+  );
+  const topTenData = useSelector(selectTopTenData);
+  const topTenDataMultiple = useSelector(selectTopTenDataMultiple);
+
+  const mappedTopTenData = useSelector(
+    selectSubSectionsSubTabs(selectedTab, currentLanguage)
   );
 
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // Create a ref for the dropdown
+
+  const fieldConfigMap = useMemo(() => {
+    const map = {};
+    fieldConfig.forEach((field) => {
+      map[field.Pkey] = {
+        nameEn: field.FieldNameEn,
+        nameAr: field.FieldNameAr,
+        unitEn: field.UnitNameEn,
+        unitAr: field.UnitNameAr,
+      };
+    });
+    return map;
+  }, [fieldConfig]);
+
+  const isMultiple =
+    selectedTab === TABS.T_STOCK_PERFORMANCE ||
+    selectedTab === TABS.T_GROWTH_AND_DIVIDENDS;
+
+  const filterAndMapData = (data) => {
+    if (!activeTabLink) return [];
+
+    return data
+      .filter(
+        (item) =>
+          item.identifier.startsWith(selectedTab) &&
+          item.identifier.endsWith(`-${currentLanguage}`)
+      )
+      .map((item) => {
+        const fieldId = item.identifier.split("-")[1];
+        return {
+          ...item,
+          fieldNameEn: fieldConfigMap[fieldId]?.nameEn || fieldId,
+          fieldNameAr: fieldConfigMap[fieldId]?.nameAr || fieldId,
+          unitNameEn: fieldConfigMap[fieldId]?.unitEn || "",
+          unitNameAr: fieldConfigMap[fieldId]?.unitAr || "",
+        };
+      });
+  };
+
+  const getFilteredData = (isMultiple) => {
+    const data = isMultiple ? topTenDataMultiple : topTenData;
+    return filterAndMapData(data);
+  };
+
+  const structuredTopTenData = getFilteredData(isMultiple);
 
   const handleExport = (option) => {
     setDropdownOpen(false); // Close dropdown after selection
@@ -41,41 +125,119 @@ const ExportDropdown = (activeTabLink = {}) => {
   };
 
   const handleCurrentTabExport = () => {
-    exportToExcel(
-      dataForSelectedTab,
-      fieldConfig,
-      activeTabLink.activeTabLink,
+    if (currentPageId === PAGES.SCREENER) {
+      exportToExcel(
+        dataForSelectedTab,
+        fieldConfig,
+        selectedTab,
+        currentLanguage,
+        "ArgaamScreener",
+        activeTabName
+      );
+    } else {
+      exportToExcelTopTen(
+        structuredTopTenData,
+        currentLanguage,
+        "ArgaamScreener_TopTen",
+        activeTabNameTopTen,
+        isMultiple
+      );
+
+      //fetchMissingTopTenMultiple(mappedTopTenData); //TODO: if required, should refactor this for isMultiple true
+    }
+  };
+
+  const fetchMissingTopTenMultiple = (mappedTopTenData) => {
+    mappedTopTenData.map((subSection) => {
+      subSection.mappedData.map((subTabItem, subTabIndex) => {
+        if (subTabItem.data === undefined) {
+          const encryptedConfigJson = subTabItem.subTab.encryptedConfigJson;
+          dispatch(fetchSubTabData({ encryptedConfigJson }))
+            .unwrap()
+            .then((newData) => {
+              // Dispatch action to add new data at the specific index
+              dispatch(
+                addNewTopTenItem({
+                  sectionId: subSection.sectionId,
+                  index: subTabIndex,
+                  newItem: newData,
+                })
+              );
+            })
+            .catch((error) => {
+              console.error("Failed to fetch sub-tab data:", error);
+            });
+        }
+      });
+      const filteredConfigurations = fieldConfig.filter(
+        (config) => config.TabID === subSection.sectionId.split("-")[0]
+      );
+      dispatch(
+        fetchMultipleTabTopTenData(filteredConfigurations, currentLanguage)
+      )
+        .unwrap()
+        .then((latestTopTenData) => {
+          exportToExcelTopTen(
+            latestTopTenData,
+            currentLanguage,
+            "ArgaamScreener_TopTen",
+            activeTabNameTopTen
+          );
+        });
+    });
+
+    exportToExcelTopTen(
+      updatedDataForSectionTopTen,
       currentLanguage,
-      "ArgaamScreener",
-      activeTabName
+      "ArgaamScreener_TopTen",
+      activeTabNameTopTen
     );
   };
 
   const handleAllTabsExport = () => {
-    const sectionTabs = tabIdsAndNames.map((tab) => tab.tabId);
+    if (currentPageId === PAGES.SCREENER) {
+      const sectionTabs = tabIdsAndNames.map((tab) => tab.tabId);
 
-    const filteredConfigurations = fieldConfig.filter((config) =>
-      sectionTabs.includes(config.TabID)
-    );
-
-    dispatch(
-      fetchScreenerData({ filteredConfigurations, currentLanguage })
-    ).then((action) => {
-      const updatedDataForSection = action.payload;
-      exportMultipleTabsToExcel(
-        updatedDataForSection,
-        filteredConfigurations,
-        tabIdsAndNames,
-        currentLanguage,
-        "ArgaamScreener_Multiple"
+      const filteredConfigurations = fieldConfig.filter((config) =>
+        sectionTabs.includes(config.TabID)
       );
-    });
+
+      dispatch(
+        fetchScreenerData({ filteredConfigurations, currentLanguage })
+      ).then((action) => {
+        const updatedDataForSection = action.payload;
+        exportMultipleTabsToExcel(
+          updatedDataForSection,
+          filteredConfigurations,
+          tabIdsAndNames,
+          currentLanguage,
+          "ArgaamScreener_Multiple"
+        );
+      });
+    } else exportMultipleTabsToExcelTopTen();
   };
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
+  // Use useEffect to handle clicks outside the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    // Bind the event listener to the document
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Clean up the event listener on component unmount
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
   return (
-    <div className="export-dropdown">
+    <div className="export-dropdown" ref={dropdownRef}>
       <a className="screen_icons" href="#" onClick={toggleDropdown}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -118,9 +280,14 @@ const ExportDropdown = (activeTabLink = {}) => {
       {dropdownOpen && (
         <div className="export-dropdown-menu">
           <button onClick={() => handleExport("current")}>
-            Export Current Tab
+            {strings.exportCurrent}
           </button>
-          <button onClick={() => handleExport("all")}>Export All Tabs</button>
+          <button
+            className={currentPageId === PAGES.TOPTEN ? "disabled" : ""}
+            onClick={() => handleExport("all")}
+          >
+            {strings.exportAllTabs}
+          </button>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { strings, TABS } from "../../utils/constants/localizedStrings";
+import { PAGES, strings, TABS } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import { localized } from "../../utils/localization";
@@ -147,7 +147,10 @@ const PageSubHeader = ({
                 </g>
               </svg>
             </a>
-            <ExportDropdown activeTabLink={activeTabLink} />
+            <ExportDropdown
+              activeTabLink={activeTabLink}
+              pageId={PAGES.SCREENER}
+            />
           </div>
         </div>
       </div>

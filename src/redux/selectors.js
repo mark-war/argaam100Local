@@ -13,14 +13,14 @@ const argaamSectorsState = (state) => state.argaamSectors.sectors || [];
 export const selectPages = (state) => state.pages.pages || [];
 
 // Memoized selector for selected page
-const selectSelectedPage = createSelector(
+const selectDefaultPage = createSelector(
   [selectPages],
   (pages) => pages.find((page) => page.isSelected) || {}
 );
 
 // Memoized selector for selected section
-const selectSelectedSection = createSelector(
-  [selectSelectedPage],
+const selectDefaultSection = createSelector(
+  [selectDefaultPage],
   (selectedPage) =>
     (selectedPage.sections || []).find((section) => section.isSelected) || {}
 );
@@ -42,20 +42,33 @@ const selectSectionById = (sectionId) =>
 
 // Memoized selector for selected tab
 export const selectDefaultTab = createSelector(
-  [selectSelectedSection],
+  [selectDefaultSection],
   (selectedSection) =>
     (selectedSection.tabs || []).find((tab) => tab.isSelected) || {}
 );
 
 // New selector to get localized tab name by tabId
-export const selectLocalizedTabNameById = (tabId) =>
+export const selectDefaultLocalizedTabNameById = (tabId) =>
   createSelector(
-    [selectSelectedSection, currentLanguageState],
-    (selectedSection, currentLanguage) => {
+    [selectDefaultSection, currentLanguageState],
+    (defaultSection, currentLanguage) => {
       // Find the tab that matches the provided tabId
       const tab =
-        (selectedSection.tabs || []).find((t) => t.tabId === tabId) || {};
+        (defaultSection.tabs || []).find((t) => t.tabId === tabId) || {};
       return localized(tab, "tabName", currentLanguage);
+    }
+  );
+
+export const selectLocalizedTabNameById = (pageId, sectionId, tabId) =>
+  createSelector(
+    [selectPages, currentLanguageState],
+    (pages, currentLanguage) => {
+      const page = pages.find((page) => page.pageId === pageId);
+      const section = page.sections.find(
+        (section) => section.sectionId === sectionId
+      );
+      const tab = section.tabs.find((tab) => tab.tabId === tabId);
+      return !tab ? "" : localized(tab, "tabName", currentLanguage);
     }
   );
 
@@ -132,7 +145,7 @@ export const selectDataByIdentifier = (identifier) =>
     if (entry) {
       // Transform data into a more usable format if needed
       return entry.data.map((subTabData, index) => ({
-        displaySeq: index + 1, // Convert to 1-based displaySeq for convenience
+        originalIndex: index,
         data: subTabData,
       }));
     }
@@ -140,21 +153,27 @@ export const selectDataByIdentifier = (identifier) =>
     return [];
   });
 
-// Selector to get data for a specific sub-tab and displaySeq
-export const selectDataForSubTab = (identifier, displaySeq) =>
+// Selector to get data for a specific sub-tab
+export const selectDataForSubTab = (identifier, tabIndex) =>
   createSelector([toptenDataMultipleState], (toptenDataMultiple) => {
     // Find the entry for the given identifier
     const entry = toptenDataMultiple.find(
       (item) => item.identifier === identifier
     );
 
-    if (entry) {
-      // Ensure displaySeq is zero-based
-      const zeroBasedSeq = displaySeq - 1;
+    // Return data for the specific tab
+    if (entry) return entry.data[tabIndex] || [];
 
-      // Return data for the specific displaySeq
-      return entry.data[zeroBasedSeq] || [];
-    }
+    return [];
+  });
+
+export const selectDataForSingleSubTab = (identifier) =>
+  createSelector([toptenDataState], (toptenData) => {
+    // Find the entry for the given identifier
+    const entry = toptenData.find((item) => item.identifier === identifier);
+
+    // Return data for the specific tab
+    if (entry) return entry.data[0] || [];
 
     return [];
   });
@@ -204,3 +223,30 @@ export const selectCurrentLanguage = createSelector(
     return currentLanguage;
   }
 );
+
+export const selectSubSectionsSubTabs = (tabId, lang) =>
+  createSelector([toptenDataMultipleState], (topTenMultipleData) => {
+    const sectionTabData = topTenMultipleData.filter(
+      (tabData) =>
+        tabData.identifier.startsWith(tabId) &&
+        tabData.identifier.endsWith(lang)
+    );
+
+    // Iterate through sectionTabData (expecting 4 items)
+    const results = sectionTabData.map((item) => {
+      const sectionId = item.identifier;
+      const subTabs = item.subTabs; // Array of subTabs
+      const data = item.data; // Array of data, matching length of subTabs
+
+      // Return the mapped result
+      return {
+        sectionId,
+        mappedData: subTabs.map((subTab, index) => ({
+          subTab,
+          data: data[index],
+        })),
+      };
+    });
+
+    return results;
+  });

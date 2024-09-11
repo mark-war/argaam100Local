@@ -70,7 +70,6 @@ function App() {
       try {
         const response = await fetchPageStructure();
         if (response && response.data && response.data.pages) {
-          console.log(response.data.pages);
           dispatch(setPages(response.data.pages));
         } else {
           console.error("Unexpected API response structure");

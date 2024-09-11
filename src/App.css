@@ -311,6 +311,12 @@ div {
   cursor: not-allowed;
 }
 
+button.disabled {
+  color: gray;
+  pointer-events: none; /* Disable click */
+  cursor: not-allowed;
+}
+
 /* Navbar Ends */
 
 /* Screener CSS Starts */
@@ -2362,5 +2368,26 @@ footer {
   td {
     border: 1px solid black; /* Add borders for clarity */
     padding: 8px; /* Adjust padding */
+  }
+
+  /* Ensure bars are visible in print */
+  .charts_table_bg {
+    display: flex; /* Use flex to align items within the cell */
+    align-items: center; /* Center vertically */
+    padding: 4px; /* Add padding to create space around the content */
+  }
+
+  .bg {
+    height: 20px;
+    color: blue;
+    background-color: blue;
+    margin-right: 8px;
+    width: 100px; /* Set fixed width for testing */
+    display: inline-block; /* Ensure it's treated as a block element for visibility */
+  }
+
+  /* Optional: adjust the width for printing, if needed */
+  .bg {
+    width: auto; /* Use auto for responsive adjustments */
   }
 }

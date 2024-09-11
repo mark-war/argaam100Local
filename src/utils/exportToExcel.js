@@ -1,7 +1,6 @@
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
-import { LANGUAGES } from "./constants/localizedStrings";
-import { strings } from "./constants/localizedStrings";
+import { LANGUAGES, strings } from "./constants/localizedStrings";
 import { localized } from "../utils/localization";
 import config from "./config";
 
@@ -58,8 +57,83 @@ const applyArabicFormatting = (worksheet) => {
     {
       state: "normal",
       activeCell: lastCellAddress, // Set the active cell to the last column in the first row
+      rightToLeft: true,
     },
   ];
+};
+
+const customSort = (data, key, direction) => {
+  // Define the group for each value
+  const getGroup = (value) => {
+    if (value === "-" || value === undefined || value === null) return 3; // Dash values (last group)
+    if (value === strings.neg) return 2; // Negatives (last group)
+    if (value === strings.moreThan100) return 1; // Positives >= 100 (second group)
+    return 0; // Positives < 100 (first group)
+  };
+
+  // Define the fixed group order
+  const groupOrder = [0, 1, 2, 3]; // Fixed order: positives < 100, positives >= 100, negatives
+
+  // Separate data into groups
+  const groups = groupOrder.reduce((acc, group) => {
+    acc[group] = [];
+    return acc;
+  }, {});
+
+  data.forEach((item) => {
+    const group = getGroup(item[key]);
+    groups[group].push(item);
+  });
+
+  // Sort each group based on the direction
+  Object.keys(groups).forEach((group) => {
+    groups[group].sort((a, b) => {
+      // Treat dash values as equal within their group
+      if (a[key] === "-" || b[key] === "-") return 0;
+      return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
+    });
+  });
+
+  // Combine the groups into a single array
+  return groupOrder.flatMap((group) => groups[group]);
+};
+
+const sortData = (unSortedData, sortConfig) => {
+  if (sortConfig.key) {
+    if (config.peFieldIds.has(sortConfig.key)) {
+      return customSort(unSortedData, sortConfig.key, sortConfig.direction);
+    }
+
+    const dataArray = Array.from(unSortedData.values());
+
+    // Sort the array based on the sortConfig key
+    const sortedArray = dataArray.sort((a, b) => {
+      const aValue =
+        a[sortConfig.key] === "-" ||
+        a[sortConfig.key] === null ||
+        a[sortConfig.key] === undefined
+          ? null
+          : parseFloat(a[sortConfig.key].replace(/,/g, ""));
+
+      const bValue =
+        b[sortConfig.key] === "-" ||
+        b[sortConfig.key] === null ||
+        b[sortConfig.key] === undefined
+          ? null
+          : parseFloat(b[sortConfig.key].replace(/,/g, ""));
+
+      if (aValue === null) return 1; // Place null, undefined, or "-" at the bottom
+      if (bValue === null) return -1; // Place null, undefined, or "-" at the bottom
+
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+
+      return 0;
+    });
+
+    // Return the sorted array in the same format as `customSort`
+    return sortedArray;
+  }
 };
 
 export const exportToExcel = async (
@@ -94,12 +168,8 @@ export const exportToExcel = async (
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet(sanitizedSheetName);
 
-  // Reverse the columns order only if the current language is Arabic
-  const columnsToUse =
-    currentLanguage === LANGUAGES.AR ? columns.reverse() : columns;
-
   // Define headers based on your column definitions
-  const headers = columnsToUse
+  const headers = columns
     .filter((column) => !column.hidden)
     .map((column) => ({
       header: column.label || column.key,
@@ -151,8 +221,23 @@ export const exportToExcel = async (
       });
     });
 
+  const getFirstDynamicColumn = () =>
+    columns.find((col) => typeof col.key === "number" && !col.hidden);
+
+  const firstDynamicColumn = getFirstDynamicColumn();
+
+  const sortDirection = config.peFieldIds.has(firstDynamicColumn.key)
+    ? `asc`
+    : `desc`;
+
+  const sortConfig = {
+    key: firstDynamicColumn.key,
+    direction: sortDirection,
+  };
+  const sortedRowMap = sortData(rowMap, sortConfig);
+
   // Add rows to the worksheet
-  rowMap.forEach((rowData) => {
+  sortedRowMap.forEach((rowData) => {
     const newRow = worksheet.addRow(rowData);
 
     // Apply hyperlink to the 'fixed_company' cell
@@ -213,12 +298,8 @@ export const exportMultipleTabsToExcel = async (
 
     const worksheet = workbook.addWorksheet(sanitizedSheetName);
 
-    // Reverse the columns order only if the current language is Arabic
-    const columnsToUse =
-      currentLanguage === LANGUAGES.AR ? columns.reverse() : columns;
-
     // Define headers based on your column definitions
-    const headers = columnsToUse
+    const headers = columns
       .filter((column) => !column.hidden)
       .map((column) => ({
         header: column.label || column.key,
@@ -269,8 +350,23 @@ export const exportMultipleTabsToExcel = async (
         });
       });
 
+    const getFirstDynamicColumn = () =>
+      columns.find((col) => typeof col.key === "number" && !col.hidden);
+
+    const firstDynamicColumn = getFirstDynamicColumn();
+
+    const sortDirection = config.peFieldIds.has(firstDynamicColumn.key)
+      ? `asc`
+      : `desc`;
+
+    const sortConfig = {
+      key: firstDynamicColumn.key,
+      direction: sortDirection,
+    };
+    const sortedRowMap = sortData(rowMap, sortConfig);
+
     // Add rows to the worksheet
-    rowMap.forEach((rowData) => {
+    sortedRowMap.forEach((rowData) => {
       const newRow = worksheet.addRow(rowData);
 
       // Apply hyperlink to the 'fixed_company' cell
@@ -297,3 +393,152 @@ export const exportMultipleTabsToExcel = async (
   });
   saveAs(blob, fileName);
 };
+
+export const exportToExcelTopTen = async (
+  topTenTabData,
+  currentLanguage,
+  fileName,
+  sheetName,
+  isMultiple
+) => {
+  exportDataToExcel(
+    fileName,
+    sheetName,
+    topTenTabData,
+    currentLanguage,
+    isMultiple
+  );
+};
+
+const createMappedTable = (dataObject, currentLanguage) => {
+  if (dataObject.data === undefined) {
+    return dataObject[0].map((company) => {
+      const keys = Object.keys(company);
+
+      const thirdToLastKey = keys[keys.length - 3]; // Get the third-to-last key dynamically
+      const secondToLastKey = keys[keys.length - 2]; // Get the second-to-last key dynamically
+
+      const valueString =
+        company[thirdToLastKey] !== null &&
+        company[secondToLastKey] !== null &&
+        typeof company[thirdToLastKey] === "number" &&
+        typeof company[secondToLastKey] === "number"
+          ? `${company[thirdToLastKey]}/${company[secondToLastKey]}`
+          : null;
+
+      // Create a mapped object for each company with the desired properties
+      return {
+        Rank: company.Rank,
+        Company: localized(company, "ShortName", currentLanguage),
+        Value: valueString !== null ? valueString : company[secondToLastKey], // Dynamically get the value of the second-to-last property
+      };
+    });
+  }
+  return dataObject.data.map((company) => {
+    const keys = Object.keys(company);
+    const thirdToLastKey = keys[keys.length - 3]; // Get the third-to-last key dynamically
+    const secondToLastKey = keys[keys.length - 2]; // Get the second-to-last key dynamically
+
+    const valueString =
+      keys[thirdToLastKey] !== null &&
+      keys[secondToLastKey] !== null &&
+      typeof keys[thirdToLastKey] === "number" &&
+      typeof keys[secondToLastKey] === "number"
+        ? `${keys[thirdToLastKey]}/${keys[secondToLastKey]}`
+        : null;
+
+    // Create a mapped object for each company with the desired properties
+    return {
+      Rank: company.Rank,
+      Company: localized(company, "ShortName", currentLanguage),
+      Value: valueString !== null ? valueString : company[secondToLastKey], // Dynamically get the value of the second-to-last property
+    };
+  });
+};
+
+const exportDataToExcel = async (
+  fileName,
+  sheetName,
+  dataObjects,
+  currentLanguage,
+  isMultiple
+) => {
+  const workbook = new ExcelJS.Workbook();
+
+  if (!isMultiple) {
+    dataObjects.forEach((dataObject) => {
+      // Get the mapped table
+      const mappedTable = createMappedTable(dataObject, currentLanguage);
+
+      const sanitizedSheetName = sanitizeSheetName(sheetName);
+      const sanitizedTabName = sanitizeSheetName(
+        localized(dataObject, "fieldName", currentLanguage)
+      );
+
+      // Create a new worksheet named after the fieldNameEn (which is the sheet name)
+      const worksheet = workbook.addWorksheet(
+        sanitizedSheetName + "_" + sanitizedTabName
+      );
+
+      // Add the headers
+      worksheet.columns = [
+        { header: "Rank", key: "Rank", width: 10 },
+        { header: "Company", key: "Company", width: 30 },
+        { header: "Value", key: "Value", width: 15 },
+      ];
+
+      // Add rows from mappedTable
+      worksheet.addRows(mappedTable);
+      // Apply bold styling to header row
+      worksheet.getRow(1).font = { bold: true };
+
+      // Apply Arabic formatting if the current language is Arabic
+      if (currentLanguage === LANGUAGES.AR) {
+        applyArabicFormatting(worksheet);
+      }
+    });
+  } else {
+    dataObjects.forEach((dataObject) => {
+      // Get the mapped table
+      const mappedTable = createMappedTable(dataObject.data, currentLanguage);
+
+      const sanitizedSheetName = sanitizeSheetName(sheetName);
+      const sanitizedTabName = sanitizeSheetName(
+        localized(dataObject, "fieldName", currentLanguage)
+      );
+
+      // Create a new worksheet named after the fieldNameEn (which is the sheet name)
+      const worksheet = workbook.addWorksheet(
+        sanitizedSheetName + "_" + sanitizedTabName
+      );
+
+      // Add the headers
+      worksheet.columns = [
+        { header: "Rank", key: "Rank", width: 10 },
+        { header: "Company", key: "Company", width: 30 },
+        { header: "Value", key: "Value", width: 15 },
+      ];
+
+      // Add rows from mappedTable
+      worksheet.addRows(mappedTable);
+      // Apply bold styling to header row
+      worksheet.getRow(1).font = { bold: true };
+
+      // Apply Arabic formatting if the current language is Arabic
+      if (currentLanguage === LANGUAGES.AR) {
+        applyArabicFormatting(worksheet);
+      }
+    });
+  }
+
+  // Generate Excel file buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  // Download the Excel file
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+  saveAs(blob, fileName);
+};
+
+export const exportMultipleTabsToExcelTopTen = async () => {};

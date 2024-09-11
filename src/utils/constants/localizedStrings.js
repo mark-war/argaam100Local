@@ -42,6 +42,8 @@ export const strings = new LocalizedStrings({
     title: "Argaam Screener",
     errorPage: "Something went wrong...",
     reset: "Reset",
+    exportCurrent: "Export Current Tab",
+    exportAllTabs: "Export All Tabs",
   },
   ar: {
     topTen: "أعلى 10",
@@ -83,6 +85,8 @@ export const strings = new LocalizedStrings({
     title: "تحليل الأسهم",
     errorPage: "حدث خطأ ما...",
     reset: "إعادة تعيين",
+    exportCurrent: "تصدير علامة التبويب الحالية",
+    exportAllTabs: "تصدير كافة علامات التبويب",
   },
 });
 

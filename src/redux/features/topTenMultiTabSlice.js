@@ -197,7 +197,7 @@ const topTenMultipleTabSlice = createSlice({
         ];
 
         console.log(
-          "STORAGE FOR TOPTEN MULTIPLE: ",
+          "TopTen Multiple Data current state: ",
           JSON.parse(JSON.stringify(state.toptenDataMultiple))
         );
 
@@ -229,7 +229,10 @@ const topTenMultipleTabSlice = createSlice({
           ];
         }
 
-        console.log("STORAGE FOR TOPTEN MULTIPLE: ", state.toptenDataMultiple);
+        console.log(
+          "TopTen Multiple Data current state: ",
+          state.toptenDataMultiple
+        );
       });
   },
 });

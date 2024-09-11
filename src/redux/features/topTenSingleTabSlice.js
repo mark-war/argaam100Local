@@ -131,8 +131,6 @@ const topTenSingleTabSlice = createSlice({
           ),
         ];
 
-        console.log("STORAGE FOR TOPTEN: ", state.toptenData);
-
         // Extract and store subTabs
         const allSubTabs = action.payload.reduce((acc, item) => {
           if (item && item.subTabs) {

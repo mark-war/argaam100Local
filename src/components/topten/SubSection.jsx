@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
-import { SUBSECTIONS } from "../../utils/constants/localizedStrings";
 import SubTab from "./SubTab";
 import SubTabCard from "./SubTabCard";
 import { localized } from "../../utils/localization";
@@ -10,7 +9,12 @@ import {
   fetchSubTabData,
 } from "../../redux/features/topTenMultiTabSlice";
 
-const SubSection = ({ section, currentLanguage, isMultiple }) => {
+const SubSection = ({
+  section,
+  selectedTabKey,
+  currentLanguage,
+  isMultiple,
+}) => {
   const dispatch = useDispatch();
   const [activeSubTab, setActiveSubTab] = useState(() => {
     const activeTab = section.subTabs.find((tab) => tab.isSelected === "1");
@@ -22,19 +26,9 @@ const SubSection = ({ section, currentLanguage, isMultiple }) => {
   );
   const [loading, setLoading] = useState({});
 
-  const withPercentageLabels = [
-    SUBSECTIONS.THE_HIGHEST,
-    SUBSECTIONS.THE_LOWEST,
-    SUBSECTIONS.RET_SH,
-    SUBSECTIONS.IND_OVER_SH,
-    SUBSECTIONS.NET_PROF_MARGIN,
-    SUBSECTIONS.TOT_PROF_MARGIN,
-    SUBSECTIONS.HIGHEST_RET,
-  ];
-
   useEffect(() => {
     setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes
-  }, [section.identifier.split("-")[0]]);
+  }, [selectedTabKey]);
 
   const fetchAndUpdateData = (encryptedConfigJson, identifier, index) => {
     setLoading((prevLoading) => ({
@@ -85,16 +79,16 @@ const SubSection = ({ section, currentLanguage, isMultiple }) => {
     [section.data]
   );
 
+  const sectionKey = Number(section.identifier.split("-")[1]);
+
   // Render the sub-section's content based on whether it has multiple tabs
   return (
-    <Col lg={6} key={section.key}>
+    <Col lg={6} key={sectionKey}>
       <div className="tabs_inner_nav row px-3">
         <div className="col-6">
           <p className="sub_heading">
             {localized(section, "fieldName", currentLanguage)}{" "}
-            <span>
-              {withPercentageLabels.includes(Number(section.key)) ? "%" : ""}
-            </span>
+            <span>{section.unitNameEn}</span>
           </p>
         </div>
         <div className="col-6">

@@ -117,7 +117,7 @@ const screenerDataSlice = createSlice({
           ),
         ];
 
-        console.log("STORAGE FOR SCREENER: ", state.screenerData);
+        console.log("Current State of Screener Data: ", state.screenerData);
       })
       .addCase(fetchScreenerData.rejected, (state, action) => {
         state.loading = false;
