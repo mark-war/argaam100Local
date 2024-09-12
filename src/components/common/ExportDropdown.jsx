@@ -33,6 +33,7 @@ import {
 const ExportDropdown = (activeTabLink = {}) => {
   const currentPageId = activeTabLink.pageId;
   const selectedTab = activeTabLink.activeTabLink;
+  const activeSubTabs = activeTabLink.activeSubTabs;
 
   const currentLanguage = useSelector(selectCurrentLanguage);
   const selectDataForTab = selectScreenerDataOfSelectedTab();
@@ -140,7 +141,8 @@ const ExportDropdown = (activeTabLink = {}) => {
         currentLanguage,
         "ArgaamScreener_TopTen",
         activeTabNameTopTen,
-        isMultiple
+        isMultiple,
+        activeSubTabs
       );
 
       //fetchMissingTopTenMultiple(mappedTopTenData); //TODO: if required, should refactor this for isMultiple true

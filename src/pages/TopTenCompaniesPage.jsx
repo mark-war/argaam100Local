@@ -31,6 +31,21 @@ const TopTenCompaniesPage = () => {
   //defaultActiveTab
   const [activeTabLink, setActiveTabLink] = useState(8);
 
+  const [activeSubTabs, setActiveSubTabs] = useState({
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+  });
+
+  // Handle updating the specific sub-section's active tab
+  const handleSubTabsChange = (subSectionIndex, newSubTabIndex) => {
+    setActiveSubTabs((prevActiveSubTabs) => ({
+      ...prevActiveSubTabs, // Keep the previous state
+      [subSectionIndex]: newSubTabIndex, // Update the specific sub-section index
+    }));
+  };
+
   //hook to fetch data by active tab
   const { loading } = useTabDataFetch(
     activeTabLink,
@@ -39,6 +54,7 @@ const TopTenCompaniesPage = () => {
 
   const handleActiveTabLink = (tab) => {
     setActiveTabLink(tab);
+    setActiveSubTabs({ 0: 0, 1: 0, 2: 0, 3: 0 });
   };
 
   // Memoize tabLinksArray to avoid recalculating it unnecessarily
@@ -137,6 +153,7 @@ const TopTenCompaniesPage = () => {
           selectedTab={activeTabLink}
           data={data}
           isMultiple={isMultiple} // Pass isMultiple as true or false
+          onSubTabsChange={handleSubTabsChange}
         />
       </>
     );
@@ -150,6 +167,7 @@ const TopTenCompaniesPage = () => {
           tabLinksArray={tabLinksArray}
           activeTabLink={activeTabLink}
           handleActiveTabLink={handleActiveTabLink}
+          activeSubTabs={activeSubTabs}
         />
 
         {renderTabContent()}

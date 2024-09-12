@@ -399,20 +399,22 @@ export const exportToExcelTopTen = async (
   currentLanguage,
   fileName,
   sheetName,
-  isMultiple
+  isMultiple,
+  subTabIds
 ) => {
   exportDataToExcel(
     fileName,
     sheetName,
     topTenTabData,
     currentLanguage,
-    isMultiple
+    isMultiple,
+    subTabIds
   );
 };
 
 const createMappedTable = (dataObject, currentLanguage) => {
   if (dataObject.data === undefined) {
-    return dataObject[0].map((company) => {
+    return dataObject.map((company) => {
       const keys = Object.keys(company);
 
       const thirdToLastKey = keys[keys.length - 3]; // Get the third-to-last key dynamically
@@ -430,28 +432,23 @@ const createMappedTable = (dataObject, currentLanguage) => {
       return {
         Rank: company.Rank,
         Company: localized(company, "ShortName", currentLanguage),
-        Value: valueString !== null ? valueString : company[secondToLastKey], // Dynamically get the value of the second-to-last property
+        Value:
+          valueString !== null
+            ? valueString
+            : formatValue(company[secondToLastKey], 2, false), // Dynamically get the value of the second-to-last property
       };
     });
   }
   return dataObject.data.map((company) => {
     const keys = Object.keys(company);
-    const thirdToLastKey = keys[keys.length - 3]; // Get the third-to-last key dynamically
-    const secondToLastKey = keys[keys.length - 2]; // Get the second-to-last key dynamically
 
-    const valueString =
-      keys[thirdToLastKey] !== null &&
-      keys[secondToLastKey] !== null &&
-      typeof keys[thirdToLastKey] === "number" &&
-      typeof keys[secondToLastKey] === "number"
-        ? `${keys[thirdToLastKey]}/${keys[secondToLastKey]}`
-        : null;
+    const secondToLastKey = keys[keys.length - 2]; // Get the second-to-last key dynamically
 
     // Create a mapped object for each company with the desired properties
     return {
       Rank: company.Rank,
       Company: localized(company, "ShortName", currentLanguage),
-      Value: valueString !== null ? valueString : company[secondToLastKey], // Dynamically get the value of the second-to-last property
+      Value: formatValue(company[secondToLastKey], 2, false), // Dynamically get the value of the second-to-last property
     };
   });
 };
@@ -461,10 +458,11 @@ const exportDataToExcel = async (
   sheetName,
   dataObjects,
   currentLanguage,
-  isMultiple
+  isMultiple,
+  subTabIds
 ) => {
   const workbook = new ExcelJS.Workbook();
-
+  console.log("SUBTAB IDs: ", subTabIds);
   if (!isMultiple) {
     dataObjects.forEach((dataObject) => {
       // Get the mapped table
@@ -498,9 +496,13 @@ const exportDataToExcel = async (
       }
     });
   } else {
-    dataObjects.forEach((dataObject) => {
+    dataObjects.map((dataObject, index) => {
+      const activeSubTabId = subTabIds[index];
       // Get the mapped table
-      const mappedTable = createMappedTable(dataObject.data, currentLanguage);
+      const mappedTable = createMappedTable(
+        dataObject.data[activeSubTabId],
+        currentLanguage
+      );
 
       const sanitizedSheetName = sanitizeSheetName(sheetName);
       const sanitizedTabName = sanitizeSheetName(

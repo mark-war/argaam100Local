@@ -10,11 +10,12 @@ const TopCompaniesSubHeader = ({
   tabLinksArray,
   activeTabLink,
   handleActiveTabLink,
+  activeSubTabs,
 }) => {
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-
+  console.log("ACTIVE SUB TABS: ", activeSubTabs);
   return (
     <div className="shadow_btm sub_header top_companies">
       {/* Info Starts */}
@@ -71,7 +72,11 @@ const TopCompaniesSubHeader = ({
               </g>
             </svg>
           </a>
-          <ExportDropdown activeTabLink={activeTabLink} pageId={PAGES.TOPTEN} />
+          <ExportDropdown
+            activeTabLink={activeTabLink}
+            pageId={PAGES.TOPTEN}
+            activeSubTabs={activeSubTabs}
+          />
         </div>
       </div>
       {/* Info Ends */}

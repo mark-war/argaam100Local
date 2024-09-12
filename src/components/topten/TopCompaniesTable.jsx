@@ -1,11 +1,16 @@
 import React, { useMemo, useCallback } from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import { Row } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import SubSection from "./SubSection";
 
-const TopCompaniesTable = ({ selectedTab, data, isMultiple }) => {
+const TopCompaniesTable = ({
+  selectedTab,
+  data,
+  isMultiple,
+  onSubTabsChange,
+}) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
 
   const filterDataBySelectedTab = useCallback(
@@ -34,6 +39,8 @@ const TopCompaniesTable = ({ selectedTab, data, isMultiple }) => {
             selectedTabKey={selectedTab}
             currentLanguage={currentLanguage}
             isMultiple={isMultiple}
+            onSubTabsChange={onSubTabsChange}
+            subSectionIndex={index} // Pass the index as subSectionIndex
           />
         ))}
       </Row>

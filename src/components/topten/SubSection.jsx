@@ -14,6 +14,8 @@ const SubSection = ({
   selectedTabKey,
   currentLanguage,
   isMultiple,
+  onSubTabsChange,
+  subSectionIndex,
 }) => {
   const dispatch = useDispatch();
   const [activeSubTab, setActiveSubTab] = useState(() => {
@@ -65,9 +67,14 @@ const SubSection = ({
       });
   };
 
+  const sectionKey = Number(section.identifier.split("-")[1]);
+
   const handleSubTabClick = useCallback(
     (newSubTabIndex) => {
       setActiveSubTab(newSubTabIndex);
+      console.log("SUBSECTION INDEX: ", subSectionIndex);
+      console.log("NEW SUB TAB INDEX: ", newSubTabIndex);
+      onSubTabsChange(subSectionIndex, newSubTabIndex);
 
       if (isMultiple && !section.data[newSubTabIndex]) {
         const encryptedConfigJson =
@@ -78,8 +85,6 @@ const SubSection = ({
     },
     [section.data]
   );
-
-  const sectionKey = Number(section.identifier.split("-")[1]);
 
   // Render the sub-section's content based on whether it has multiple tabs
   return (
