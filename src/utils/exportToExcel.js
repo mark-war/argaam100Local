@@ -4,6 +4,8 @@ import { LANGUAGES, strings } from "./constants/localizedStrings";
 import { localized } from "../utils/localization";
 import config from "./config";
 
+// COMMON FUNTIONS START
+
 // Extract the formatting logic
 const formatNumber = (number, decimals) => {
   const formattedValue = new Intl.NumberFormat("en-US", {
@@ -24,43 +26,56 @@ const formatValue = (value, decimals = 2, isPEColumn = false) => {
 };
 
 // Function to sanitize sheet names
-const sanitizeSheetName = (name) => {
-  // Replace forbidden characters with an underscore or any other preferred character
-  return name.replace(/[*?:\/\\[\]]/g, "_");
-};
+const sanitizeSheetName = (name) => name.replace(/[*?:\/\\[\]]/g, "_");
 
 const argaamUrl = (companyID = "", lang) => {
-  const baseUrl =
-    lang === LANGUAGES.AR
-      ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
-      : `https://www.argaam.com/en/tadawul/tasi/`;
-
-  return baseUrl;
+  return lang === LANGUAGES.AR
+    ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
+    : `https://www.argaam.com/en/tadawul/tasi/`;
 };
 
 // Function to apply right-to-left properties for Arabic
 const applyArabicFormatting = (worksheet) => {
   // Set the worksheet properties to indicate RTL
-  worksheet.properties.outline = { summaryBelow: false }; // Optional, adjust as needed
-  worksheet.properties.tabColor = { argb: "FF0000" }; // Optional, adjust color if needed
+  //worksheet.properties.outline = { summaryBelow: false }; // Optional, adjust as needed
+  //worksheet.properties.tabColor = { argb: "FF0000" }; // Optional, adjust color if needed
 
   // Set alignment to right for all columns in the worksheet
-  worksheet.columns.forEach((column) => {
-    column.alignment = { horizontal: "right" }; // Align content to the right
-  });
+  // worksheet.columns.forEach((column) => {
+  //   column.alignment = { horizontal: "right" }; // Align content to the right
+  // });
 
-  worksheet.properties.rightToLeft = true; // Set worksheet direction to RTL
   // Set the active cell to the last column in the first row
   const lastColumnIndex = worksheet.columns.length; // Get the last column index
   const lastCellAddress = `${String.fromCharCode(64 + lastColumnIndex)}1`; // Get the address of the last cell in the first row
+
+  const firstColumnIndex = 1; // The index of the first column
+  const firstCellAddress = `A1`; // The address of the first cell in the first row
   worksheet.views = [
     {
       state: "normal",
-      activeCell: lastCellAddress, // Set the active cell to the last column in the first row
+      activeCell: firstCellAddress, // Set the active cell to the last column in the first row
       rightToLeft: true,
     },
   ];
 };
+
+// Dynamic column creation
+const createColumns = (fieldConfig, activeTabId, currentLanguage) => [
+  { key: "fixed_code", label: strings.code },
+  { key: "fixed_company", label: strings.companies },
+  { key: "fixed_sector", label: strings.sector },
+  { key: "CompanyID", label: "CompanyID", hidden: true },
+  { key: "SectorID", label: "SectorID", hidden: true },
+  ...fieldConfig
+    .filter((item) => item.TabID === activeTabId)
+    .map((item) => {
+      const unitName = localized(item, "UnitName", currentLanguage);
+      const fieldName = localized(item, "FieldName", currentLanguage);
+      const optionalUnitName = unitName ? ` ${unitName}` : "";
+      return { key: item.Pkey, label: `${fieldName}${optionalUnitName}` };
+    }),
+];
 
 const customSort = (data, key, direction) => {
   // Define the group for each value
@@ -136,6 +151,10 @@ const sortData = (unSortedData, sortConfig) => {
   }
 };
 
+//COMMON FUNCTIONS END
+
+// SCREENER PAGE EXPORT START
+
 export const exportToExcel = async (
   screenerData,
   fieldConfig,
@@ -146,24 +165,7 @@ export const exportToExcel = async (
 ) => {
   const sanitizedSheetName = sanitizeSheetName(sheetName);
 
-  const columns = [
-    { key: "fixed_code", label: `${strings.code}` },
-    { key: "fixed_company", label: `${strings.companies}` },
-    { key: "fixed_sector", label: `${strings.sector}` },
-    { key: "CompanyID", label: "CompanyID", hidden: true },
-    { key: "SectorID", label: "SectorID", hidden: true },
-    ...fieldConfig
-      .filter((item) => item.TabID === activeTabId)
-      .map((item) => {
-        const unitName = localized(item, "UnitName", currentLanguage);
-        const fieldName = localized(item, "FieldName", currentLanguage);
-        const optionalUnitName = unitName ? ` ${unitName}` : "";
-        return {
-          key: item.Pkey,
-          label: `${fieldName}${optionalUnitName}`,
-        };
-      }),
-  ];
+  const columns = createColumns(fieldConfig, activeTabId, currentLanguage);
 
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet(sanitizedSheetName);
@@ -277,24 +279,7 @@ export const exportMultipleTabsToExcel = async (
   for (const { tabId, tabName } of tabIdsAndNames) {
     const sanitizedSheetName = sanitizeSheetName(tabName);
 
-    const columns = [
-      { key: "fixed_code", label: `${strings.code}` },
-      { key: "fixed_company", label: `${strings.companies}` },
-      { key: "fixed_sector", label: `${strings.sector}` },
-      { key: "CompanyID", label: "CompanyID", hidden: true },
-      { key: "SectorID", label: "SectorID", hidden: true },
-      ...fieldConfig
-        .filter((item) => item.TabID === tabId)
-        .map((item) => {
-          const unitName = localized(item, "UnitName", currentLanguage);
-          const fieldName = localized(item, "FieldName", currentLanguage);
-          const optionalUnitName = unitName ? ` ${unitName}` : "";
-          return {
-            key: item.Pkey,
-            label: `${fieldName}${optionalUnitName}`,
-          };
-        }),
-    ];
+    const columns = createColumns(fieldConfig, tabId, currentLanguage);
 
     const worksheet = workbook.addWorksheet(sanitizedSheetName);
 
@@ -394,6 +379,10 @@ export const exportMultipleTabsToExcel = async (
   saveAs(blob, fileName);
 };
 
+// SCREENER PAGE EXPORT END
+
+// TOP TEN PAGE EXPORT START
+
 export const exportToExcelTopTen = async (
   topTenTabData,
   currentLanguage,
@@ -462,7 +451,6 @@ const exportDataToExcel = async (
   subTabIds
 ) => {
   const workbook = new ExcelJS.Workbook();
-  console.log("SUBTAB IDs: ", subTabIds);
   if (!isMultiple) {
     dataObjects.forEach((dataObject) => {
       // Get the mapped table
@@ -480,9 +468,9 @@ const exportDataToExcel = async (
 
       // Add the headers
       worksheet.columns = [
-        { header: "Rank", key: "Rank", width: 10 },
-        { header: "Company", key: "Company", width: 30 },
-        { header: "Value", key: "Value", width: 15 },
+        { header: strings.rank, key: "Rank", width: 10 },
+        { header: strings.companies, key: "Company", width: 30 },
+        { header: strings.charts, key: "Value", width: 15 },
       ];
 
       // Add rows from mappedTable
@@ -491,9 +479,7 @@ const exportDataToExcel = async (
       worksheet.getRow(1).font = { bold: true };
 
       // Apply Arabic formatting if the current language is Arabic
-      if (currentLanguage === LANGUAGES.AR) {
-        applyArabicFormatting(worksheet);
-      }
+      if (currentLanguage === LANGUAGES.AR) applyArabicFormatting(worksheet);
     });
   } else {
     dataObjects.map((dataObject, index) => {
@@ -516,9 +502,9 @@ const exportDataToExcel = async (
 
       // Add the headers
       worksheet.columns = [
-        { header: "Rank", key: "Rank", width: 10 },
-        { header: "Company", key: "Company", width: 30 },
-        { header: "Value", key: "Value", width: 15 },
+        { header: strings.rank, key: "Rank", width: 10 },
+        { header: strings.companies, key: "Company", width: 30 },
+        { header: strings.charts, key: "Value", width: 15 },
       ];
 
       // Add rows from mappedTable
@@ -544,3 +530,5 @@ const exportDataToExcel = async (
 };
 
 export const exportMultipleTabsToExcelTopTen = async () => {};
+
+// TOP TEN PAGE EXPORT END

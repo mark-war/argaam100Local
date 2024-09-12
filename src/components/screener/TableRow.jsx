@@ -12,7 +12,8 @@ const argaamUrl = (companyID = "") => {
   return baseUrl;
 };
 
-const renderFixedCompanyColumn = (row, column, argaamUrl) => (
+// Function to render the company link
+const renderFixedCompanyColumn = (row, column) => (
   <a
     target="_blank"
     rel="noreferrer"
@@ -24,19 +25,27 @@ const renderFixedCompanyColumn = (row, column, argaamUrl) => (
   </a>
 );
 
-const renderFixedCodeColumn = (row, column) => (
-  <span className="bg_tag">{row[column.key]}</span>
-);
-
-const renderFixedSectorColumn = (row, column, handleSectorClick) => (
-  <a
-    href="#"
-    onClick={() => handleSectorClick(row.SectorID)}
-    className="sector-link"
-  >
-    {row[column.key]}
-  </a>
-);
+// Function to render fixed columns based on type
+const renderFixedColumn = (row, column, handleSectorClick) => {
+  switch (column.key) {
+    case "fixed_company":
+      return renderFixedCompanyColumn(row, column);
+    case "fixed_code":
+      return <span className="bg_tag">{row[column.key]}</span>;
+    case "fixed_sector":
+      return (
+        <a
+          href="#"
+          onClick={() => handleSectorClick(row.SectorID)}
+          className="sector-link"
+        >
+          {row[column.key]}
+        </a>
+      );
+    default:
+      return null;
+  }
+};
 
 const TableRow = ({ row, columns, handleSectorClick, config }) => (
   <tr>
@@ -54,19 +63,9 @@ const TableRow = ({ row, columns, handleSectorClick, config }) => (
       return (
         <td key={column.key} className={tdClassName}>
           {isFixedColumn ? (
-            column.key === "fixed_company" ? (
-              renderFixedCompanyColumn(row, column, argaamUrl)
-            ) : column.key === "fixed_code" ? (
-              renderFixedCodeColumn(row, column)
-            ) : column.key === "fixed_sector" ? (
-              renderFixedSectorColumn(row, column, handleSectorClick)
-            ) : null
+            renderFixedColumn(row, column, handleSectorClick)
           ) : (
-            <span
-              style={{
-                color: row[column.key] < 0 ? "red" : "inherit",
-              }}
-            >
+            <span style={{ color: row[column.key] < 0 ? "red" : "inherit" }}>
               <NumberFormatter
                 value={row[column.key]}
                 isPEColumn={config.peFieldIds.has(column.key)}

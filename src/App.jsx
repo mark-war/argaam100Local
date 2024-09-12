@@ -1,6 +1,6 @@
 import "./App.css";
 import AppRoutes from "./components/routes/AppRoutes";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPageStructure, fetchArgaamSectors } from "./services/screenerApi";
 import { fetchFieldConfigurationData } from "./redux/features/fieldConfigurationSlice";
@@ -21,81 +21,156 @@ function App() {
   const { lang } = useParams();
 
   // Set dynamic page title
-  useEffect(() => {
-    const title = strings.title;
-    document.title = title;
-  }, [currentLanguage, selectedTab]);
+  // useEffect(() => {
+  //   const title = strings.title;
+  //   document.title = title;
+  // }, [currentLanguage, selectedTab]);
+
+  // Update language and page title without useEffect
+  if (lang && lang !== currentLanguage) {
+    dispatch(setLanguage(lang));
+    strings.setLanguage(lang);
+  }
+
+  // Set dynamic page title based on language and selected tab
+  document.title = strings.title;
 
   // Add event listener for key combination to reset state
-  useEffect(() => {
-    const handleKeyDown = (event) => {
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     if (event.ctrlKey && event.key === "/") {
+  //       // Check for Ctrl+R combination
+  //       event.preventDefault(); // Prevent the default browser refresh action
+  //       dispatch(resetState()); // Dispatch the resetState action
+  //       window.location.reload(); // Reload the page to re-initialize the app
+  //     }
+  //   };
+
+  //   window.addEventListener("keydown", handleKeyDown);
+
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [dispatch]);
+
+  // Keydown event handler (no need for a separate useEffect for listener management)
+  const handleKeyDown = useCallback(
+    (event) => {
       if (event.ctrlKey && event.key === "/") {
-        // Check for Ctrl+R combination
-        event.preventDefault(); // Prevent the default browser refresh action
-        dispatch(resetState()); // Dispatch the resetState action
-        window.location.reload(); // Reload the page to re-initialize the app
+        event.preventDefault();
+        dispatch(resetState());
+        window.location.reload();
       }
-    };
+    },
+    [dispatch]
+  );
 
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [dispatch]);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   //for refreshing data fetch
-  useEffect(() => {
-    if (config.refreshOnReload === 1) {
-      const handleResetState = () => {
-        dispatch(resetState());
-      };
-      window.addEventListener("beforeunload", handleResetState());
+  // useEffect(() => {
+  //   if (config.refreshOnReload === 1) {
+  //     const handleResetState = () => {
+  //       dispatch(resetState());
+  //     };
+  //     window.addEventListener("beforeunload", handleResetState());
 
-      return () => {
-        window.removeEventListener("beforeunload", handleResetState());
-      };
-    }
-  }, [dispatch]);
+  //     return () => {
+  //       window.removeEventListener("beforeunload", handleResetState());
+  //     };
+  //   }
+  // }, [dispatch]);
 
-  useEffect(() => {
-    if (lang && lang !== currentLanguage) {
-      dispatch(setLanguage(lang));
-      strings.setLanguage(lang);
-    }
-  }, [lang, currentLanguage, dispatch]);
+  // Reset state on reload based on config
+  const handleResetState = useCallback(
+    () => dispatch(resetState()),
+    [dispatch]
+  );
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetchPageStructure();
-        if (response && response.data && response.data.pages) {
-          dispatch(setPages(response.data.pages));
-        } else {
-          console.error("Unexpected API response structure");
-        }
-        await dispatch(fetchFieldConfigurationData()).unwrap();
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  if (config.refreshOnReload === 1) {
+    window.addEventListener("beforeunload", handleResetState);
+    React.useEffect(
+      () => () => {
+        window.removeEventListener("beforeunload", handleResetState);
+      },
+      [handleResetState]
+    );
+  }
+
+  // useEffect(() => {
+  //   if (lang && lang !== currentLanguage) {
+  //     dispatch(setLanguage(lang));
+  //     strings.setLanguage(lang);
+  //   }
+  // }, [lang, currentLanguage, dispatch]);
+
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     try {
+  //       const response = await fetchPageStructure();
+  //       if (response && response.data && response.data.pages) {
+  //         dispatch(setPages(response.data.pages));
+  //       } else {
+  //         console.error("Unexpected API response structure");
+  //       }
+  //       await dispatch(fetchFieldConfigurationData()).unwrap();
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   loadData();
+  // }, [dispatch]);
+
+  // Fetch page structure and field configuration only when component loads
+  const loadData = useCallback(async () => {
+    try {
+      const response = await fetchPageStructure();
+      if (response?.data?.pages) {
+        dispatch(setPages(response.data.pages));
+      } else {
+        console.error("Unexpected API response structure");
       }
-    };
-
-    loadData();
+      await dispatch(fetchFieldConfigurationData()).unwrap();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Fetch Argaam sectors data
-  useEffect(() => {
-    const fetchSectors = async () => {
-      try {
-        const fetchedSectors = await fetchArgaamSectors();
-        dispatch(setArgaamSectors(fetchedSectors));
-      } catch (error) {
-        console.error("Error fetching Argaam sectors:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchSectors = async () => {
+  //     try {
+  //       const fetchedSectors = await fetchArgaamSectors();
+  //       dispatch(setArgaamSectors(fetchedSectors));
+  //     } catch (error) {
+  //       console.error("Error fetching Argaam sectors:", error);
+  //     }
+  //   };
 
-    fetchSectors();
+  //   fetchSectors();
+  // }, [dispatch]);
+
+  // Fetch Argaam sectors data on component mount
+  const fetchSectors = useCallback(async () => {
+    try {
+      const fetchedSectors = await fetchArgaamSectors();
+      dispatch(setArgaamSectors(fetchedSectors));
+    } catch (error) {
+      console.error("Error fetching Argaam sectors:", error);
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchSectors();
+  }, [fetchSectors]);
 
   // Use the custom hook to handle tab data fetching
   const { loading } = useTabDataFetch(

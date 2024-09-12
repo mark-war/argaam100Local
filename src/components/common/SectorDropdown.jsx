@@ -8,8 +8,6 @@ import { selectLocalizedSectors } from "../../redux/selectors.js";
 const SectorDropdown = ({ selectedSectors, onChange }) => {
   const { lang, status, error } = useSelector((state) => ({
     lang: state.language.currentLanguage,
-    // langSectors: state.screener.sectors[state.language.currentLanguage],
-    // sectors: state.screener.sectors,
     status: state.screener.loading,
     error: state.screener.error,
   }));

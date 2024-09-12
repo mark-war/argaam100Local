@@ -15,10 +15,8 @@ const TopCompaniesSubHeader = ({
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
   );
-  console.log("ACTIVE SUB TABS: ", activeSubTabs);
   return (
     <div className="shadow_btm sub_header top_companies">
-      {/* Info Starts */}
       <div className="d-flex mt-4 mb-2 border_gray px-layout">
         <div className="flex-fill heading_lg">
           <strong>{title}</strong>
@@ -79,23 +77,13 @@ const TopCompaniesSubHeader = ({
           />
         </div>
       </div>
-      {/* Info Ends */}
-
-      {/* Tab Filter Starts */}
-
-      {/* <ul className="tabs_nav navbar-nav align-items-center flex-row">
-                  <li className="nav-item"><a href="/pe" className="nav-link active"><span>P/E</span></a></li>
-                  <li className="nav-item"><a href="/financial-ratios" className="nav-link"><span>Financial Ratios</span></a></li>
-                  <li className="nav-item"><a href="/performance-and-size" className="nav-link"><span>Performance And Size</span></a></li>
-             </ul> */}
-
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
         <div className="sub_heading_tabs">
           <div className="tabs_nav navbar-nav align-items-center flex-row">
             {tabLinksArray?.map((tabItem, index) => (
               <li className="nav-item mb-2" key={index}>
                 <Link
-                  to="" // For P/E
+                  to=""
                   className={`nav-link ${
                     activeTabLink === tabItem.tabLinkId ? "active" : ""
                   }`}
@@ -113,8 +101,6 @@ const TopCompaniesSubHeader = ({
           </div>
         </div>
       </div>
-
-      {/* Tab Filter Ends */}
     </div>
   );
 };

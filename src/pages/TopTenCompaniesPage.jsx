@@ -29,7 +29,7 @@ const TopTenCompaniesPage = () => {
   );
 
   //defaultActiveTab
-  const [activeTabLink, setActiveTabLink] = useState(8);
+  const [activeTabLink, setActiveTabLink] = useState(TABS.T_RANKING);
 
   const [activeSubTabs, setActiveSubTabs] = useState({
     0: 0,
@@ -54,7 +54,7 @@ const TopTenCompaniesPage = () => {
 
   const handleActiveTabLink = (tab) => {
     setActiveTabLink(tab);
-    setActiveSubTabs({ 0: 0, 1: 0, 2: 0, 3: 0 });
+    setActiveSubTabs({ 0: 0, 1: 0, 2: 0, 3: 0 }); //reset subtabs to default selected
   };
 
   // Memoize tabLinksArray to avoid recalculating it unnecessarily
