@@ -957,6 +957,27 @@ button.disabled {
   margin-right: 0; /* Remove right margin in RTL */
 }
 
+/* AR mode for Export to Excel dropdown */
+[lang="ar"] .export-dropdown-menu {
+  position: absolute;
+  right: auto; /* Remove the right positioning */
+  left: 0; /* Position it on the left side */
+}
+
+[lang="ar"] .export-dropdown-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: none;
+  text-align: right;
+  cursor: pointer;
+}
+
+[lang="ar"] .export-dropdown-menu button:hover {
+  background: #f0f0f0;
+}
+
 .spinner {
   position: absolute;
   top: 50%;

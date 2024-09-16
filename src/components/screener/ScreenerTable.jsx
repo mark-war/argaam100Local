@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import PropTypes from "prop-types";
 import { Table, Row, Col, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
@@ -162,11 +168,31 @@ const ScreenerTable = ({
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
 
+  const getCurrentDateFormatted = useCallback(() => {
+    const today = new Date();
+    return today.toLocaleDateString(lang === "ar" ? "ar-SA" : "en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      calendar: "gregory", // Ensure the Gregorian calendar is used
+      numberingSystem: "latn", // Use Western Arabic numerals (0-9)
+    });
+  }, [lang]);
+
+  const dateNow = getCurrentDateFormatted();
+
   return (
     <Row>
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
+            {selectedTab !== TABS.S_FINANCIAL_RATIO && (
+              <div className="flex-fill text_right mt-2">
+                <p className="font-20 mb-0 date">
+                  {strings.date} {dateNow}
+                </p>
+              </div>
+            )}
             <div className="table-responsive">
               <Table
                 className="table_layout table_full"

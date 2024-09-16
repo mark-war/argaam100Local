@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   fetchScreenerData,
   resetTabData,
@@ -37,6 +37,10 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
 
   //ADDED TO SEEMLESSLY WORK ON THE ADDED TAB(S) IN THE SCREENER PAGE
   const screenerTabs = useMemo(() => {
+    if (!pages || pages.length === 0) {
+      console.log("Pages data is not available yet.");
+      return [];
+    }
     const screenerPage = pages.find((page) => page.pageId === PAGES.SCREENER);
     const screenerSection = screenerPage.sections.find(
       (section) => section.sectionId === SECTIONS.STOCK_SCREENER
@@ -77,7 +81,7 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
 
         setLoading(true); // Set loading to true when fetching starts
 
-        if (screenerTabs().includes(tabId)) {
+        if (screenerTabs.includes(tabId)) {
           dispatch(
             fetchScreenerData({ filteredConfigurations, currentLanguage })
           ).then(() => {
