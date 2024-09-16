@@ -7,12 +7,15 @@ import {
 import {
   selectFieldConfigurations,
   selectCurrentLanguage,
+  selectPages,
 } from "../redux/selectors";
 import { fetchTopTenData } from "../redux/features/topTenSingleTabSlice";
 import { fetchMultipleTabTopTenData } from "../redux/features/topTenMultiTabSlice";
+import { PAGES, SECTIONS, TABS } from "../utils/constants/localizedStrings";
 
 const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const dispatch = useDispatch();
+  const pages = useSelector(selectPages);
   const fieldConfigurations = useSelector(selectFieldConfigurations);
   const currentLanguage = useSelector(selectCurrentLanguage);
 
@@ -31,6 +34,16 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
       previousLanguage.current = currentLanguage;
     }
   }, [currentLanguage]);
+
+  //ADDED TO SEEMLESSLY WORK ON THE ADDED TAB(S) IN THE SCREENER PAGE
+  const screenerTabs = useMemo(() => {
+    const screenerPage = pages.find((page) => page.pageId === PAGES.SCREENER);
+    const screenerSection = screenerPage.sections.find(
+      (section) => section.sectionId === SECTIONS.STOCK_SCREENER
+    );
+
+    return screenerSection.tabs.map((tab) => tab.tabId) || [];
+  }, [pages]);
 
   useEffect(() => {
     if (fieldConfigurations.length > 0 && tabId) {
@@ -64,7 +77,7 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
 
         setLoading(true); // Set loading to true when fetching starts
 
-        if (tabId < 8) {
+        if (screenerTabs().includes(tabId)) {
           dispatch(
             fetchScreenerData({ filteredConfigurations, currentLanguage })
           ).then(() => {
@@ -77,7 +90,11 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
               [cacheKey]: { needsFetch: false, timestamp: Date.now() },
             }));
           });
-        } else if (tabId !== 9 && tabId !== 12) {
+        } else if (
+          //FOR TOP TEN PAGE TABS WITH HISTORICAL EVOLUTION
+          tabId !== TABS.T_STOCK_PERFORMANCE &&
+          tabId !== TABS.T_GROWTH_AND_DIVIDENDS
+        ) {
           dispatch(
             fetchTopTenData({ filteredConfigurations, currentLanguage })
           ).then(() => {
@@ -90,6 +107,7 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
             }));
           });
         } else {
+          //REST OF THE TOP TEN PAGE TABS
           dispatch(
             fetchMultipleTabTopTenData({
               filteredConfigurations,
