@@ -250,6 +250,18 @@ div {
   display: none;
 }
 
+.top-ten-icons-container {
+  margin-left: auto; /* This pushes the container to the right */
+  display: flex; /* Make sure this container is also a flex container if you want to align items inside it */
+  position: inherit;
+}
+
+[lang="ar"] .top-ten-icons-container {
+  margin-right: auto; /* This pushes the container to the right */
+  display: flex; /* Make sure this container is also a flex container if you want to align items inside it */
+  position: inherit;
+}
+
 .export-dropdown-menu {
   position: absolute;
   top: 50px; /* Adjust based on your layout */
@@ -1081,6 +1093,12 @@ button.disabled {
 
 .date {
   font-weight: 500;
+  margin-left: 5px;
+}
+
+[lang="ar"] .date {
+  font-weight: 500;
+  margin-right: 5px;
 }
 
 .col_space .row {
@@ -2370,7 +2388,14 @@ footer {
 /* Media Query Ends */
 
 @media print {
+  @page {
+    size: A4 landscape; /* Set the page size */
+    margin: 10mm; /* Adjust margins as needed */
+  }
+
   body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact; /* Enable background graphics */
     font-size: 12pt; /* Adjust font size for readability */
     color: black; /* Change text color for print */
   }
@@ -2410,5 +2435,9 @@ footer {
   /* Optional: adjust the width for printing, if needed */
   .bg {
     width: auto; /* Use auto for responsive adjustments */
+  }
+
+  li {
+    display: inline-flex;
   }
 }

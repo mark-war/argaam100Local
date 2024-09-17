@@ -6,11 +6,9 @@ import PropTypes from "prop-types";
 import { selectLocalizedSectors } from "../../redux/selectors.js";
 
 const SectorDropdown = ({ selectedSectors, onChange }) => {
-  const { lang, status, error } = useSelector((state) => ({
-    lang: state.language.currentLanguage,
-    status: state.screener.loading,
-    error: state.screener.error,
-  }));
+  const lang = useSelector((state) => state.language.currentLanguage);
+  const status = useSelector((state) => state.screener.loading);
+  const error = useSelector((state) => state.screener.error);
 
   const argaamSectors = useSelector(selectLocalizedSectors);
 

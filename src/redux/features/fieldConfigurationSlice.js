@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createChartParams } from "../../utils/queryParamHelpers";
-import {
-  fetchFieldConfiguration,
-  fetchScreenerTableData,
-} from "../../services/screenerApi.js";
+import { fetchFieldConfiguration } from "../../services/screenerApi.js";
 
 // Fetch Field Configuration Data Thunk
 export const fetchFieldConfigurationData = createAsyncThunk(

@@ -1,5 +1,7 @@
 import { createSelector } from "reselect";
 import { localized } from "../utils/localization";
+import config from "../utils/config";
+import memoize from "lodash.memoize";
 
 const currentLanguageState = (state) => state.language.currentLanguage;
 const fieldConfigurationsState = (state) =>
@@ -11,6 +13,7 @@ const toptenDataMultipleState = (state) =>
 const argaamSectorsState = (state) => state.argaamSectors.sectors || [];
 
 export const selectPages = (state) => state.pages.pages || [];
+export const selectCurrentLanguage = (state) => state.language.currentLanguage;
 
 // Memoized selector for selected page
 const selectDefaultPage = createSelector(
@@ -63,11 +66,15 @@ export const selectLocalizedTabNameById = (pageId, sectionId, tabId) =>
   createSelector(
     [selectPages, currentLanguageState],
     (pages, currentLanguage) => {
-      const page = pages.find((page) => page.pageId === pageId);
-      const section = page.sections.find(
-        (section) => section.sectionId === sectionId
-      );
-      const tab = section.tabs.find((tab) => tab.tabId === tabId);
+      const page = pages ? pages.find((page) => page.pageId === pageId) : null;
+      if (!page) return "";
+      const section = page.sections
+        ? page.sections.find((section) => section.sectionId === sectionId)
+        : null;
+      if (!section) return "";
+      const tab = section.tabs
+        ? section.tabs.find((tab) => tab.tabId === tabId)
+        : null;
       return !tab ? "" : localized(tab, "tabName", currentLanguage);
     }
   );
@@ -87,13 +94,13 @@ export const selectTabIdsAndNamesForSection = (sectionId) =>
 // Create a memoized selector that takes the selected tab ID as an argument for screener data
 export const selectScreenerDataOfSelectedTab = () =>
   createSelector([screenerDataState], (screenerData) => {
-    return (selectedTabId, currentLanguage) => {
+    return memoize((selectedTabId, currentLanguage) => {
       return screenerData.filter(
         (data) =>
           data.identifier.startsWith(`${selectedTabId}-`) &&
           data.identifier.endsWith(`-${currentLanguage}`)
       );
-    };
+    });
   });
 
 // Create a memoized selector that takes the section ID as an argument for screener data
@@ -173,7 +180,7 @@ export const selectDataForSingleSubTab = (identifier) =>
     const entry = toptenData.find((item) => item.identifier === identifier);
 
     // Return data for the specific tab
-    if (entry) return entry.data[0] || [];
+    if (entry) return [...entry.data[0]];
 
     return [];
   });
@@ -181,29 +188,28 @@ export const selectDataForSingleSubTab = (identifier) =>
 export const selectFieldConfigurations = createSelector(
   [fieldConfigurationsState],
   (fieldConfigurations) => {
-    // Return a copy or perform minimal transformation if needed
-    return fieldConfigurations;
+    return [...fieldConfigurations];
   }
 );
 
 export const selectScreenerData = createSelector(
   [screenerDataState],
   (screenerData) => {
-    return screenerData;
+    return [...screenerData];
   }
 );
 
 export const selectTopTenData = createSelector(
   [toptenDataState],
   (toptenData) => {
-    return toptenData;
+    return [...toptenData];
   }
 );
 
 export const selectTopTenDataMultiple = createSelector(
   [toptenDataMultipleState],
   (toptenDataMultiple) => {
-    return toptenDataMultiple;
+    return [...toptenDataMultiple];
   }
 );
 
@@ -217,10 +223,10 @@ export const selectLocalizedSectors = createSelector(
   }
 );
 
-export const selectCurrentLanguage = createSelector(
+export const selectCurrentLanguage_ = createSelector(
   [currentLanguageState],
   (currentLanguage) => {
-    return currentLanguage;
+    return currentLanguage ? currentLanguage : config.defaultLanguage;
   }
 );
 

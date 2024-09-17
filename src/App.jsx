@@ -20,12 +20,6 @@ function App() {
   const selectedTab = useSelector(selectDefaultTab);
   const { lang } = useParams();
 
-  // Set dynamic page title
-  // useEffect(() => {
-  //   const title = strings.title;
-  //   document.title = title;
-  // }, [currentLanguage, selectedTab]);
-
   // Update language and page title without useEffect
   if (lang && lang !== currentLanguage) {
     dispatch(setLanguage(lang));
@@ -34,24 +28,6 @@ function App() {
 
   // Set dynamic page title based on language and selected tab
   document.title = strings.title;
-
-  // Add event listener for key combination to reset state
-  // useEffect(() => {
-  //   const handleKeyDown = (event) => {
-  //     if (event.ctrlKey && event.key === "/") {
-  //       // Check for Ctrl+R combination
-  //       event.preventDefault(); // Prevent the default browser refresh action
-  //       dispatch(resetState()); // Dispatch the resetState action
-  //       window.location.reload(); // Reload the page to re-initialize the app
-  //     }
-  //   };
-
-  //   window.addEventListener("keydown", handleKeyDown);
-
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, [dispatch]);
 
   // Keydown event handler (no need for a separate useEffect for listener management)
   const handleKeyDown = useCallback(
@@ -70,20 +46,6 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
-  //for refreshing data fetch
-  // useEffect(() => {
-  //   if (config.refreshOnReload === 1) {
-  //     const handleResetState = () => {
-  //       dispatch(resetState());
-  //     };
-  //     window.addEventListener("beforeunload", handleResetState());
-
-  //     return () => {
-  //       window.removeEventListener("beforeunload", handleResetState());
-  //     };
-  //   }
-  // }, [dispatch]);
-
   // Reset state on reload based on config
   const handleResetState = useCallback(
     () => dispatch(resetState()),
@@ -99,31 +61,6 @@ function App() {
       [handleResetState]
     );
   }
-
-  // useEffect(() => {
-  //   if (lang && lang !== currentLanguage) {
-  //     dispatch(setLanguage(lang));
-  //     strings.setLanguage(lang);
-  //   }
-  // }, [lang, currentLanguage, dispatch]);
-
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     try {
-  //       const response = await fetchPageStructure();
-  //       if (response && response.data && response.data.pages) {
-  //         dispatch(setPages(response.data.pages));
-  //       } else {
-  //         console.error("Unexpected API response structure");
-  //       }
-  //       await dispatch(fetchFieldConfigurationData()).unwrap();
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   loadData();
-  // }, [dispatch]);
 
   // Fetch page structure and field configuration only when component loads
   const loadData = useCallback(async () => {
@@ -143,20 +80,6 @@ function App() {
   useEffect(() => {
     loadData();
   }, [loadData]);
-
-  // Fetch Argaam sectors data
-  // useEffect(() => {
-  //   const fetchSectors = async () => {
-  //     try {
-  //       const fetchedSectors = await fetchArgaamSectors();
-  //       dispatch(setArgaamSectors(fetchedSectors));
-  //     } catch (error) {
-  //       console.error("Error fetching Argaam sectors:", error);
-  //     }
-  //   };
-
-  //   fetchSectors();
-  // }, [dispatch]);
 
   // Fetch Argaam sectors data on component mount
   const fetchSectors = useCallback(async () => {

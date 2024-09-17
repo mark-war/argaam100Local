@@ -16,7 +16,7 @@ import {
   selectTopTenData,
   selectLocalizedTabNameById,
   selectTopTenDataMultiple,
-  selectSubSectionsSubTabs,
+  // selectSubSectionsSubTabs,
 } from "../../redux/selectors";
 import {
   PAGES,
@@ -24,11 +24,11 @@ import {
   strings,
   TABS,
 } from "../../utils/constants/localizedStrings";
-import {
-  addNewTopTenItem,
-  fetchMultipleTabTopTenData,
-  fetchSubTabData,
-} from "../../redux/features/topTenMultiTabSlice";
+// import {
+//   addNewTopTenItem,
+//   fetchMultipleTabTopTenData,
+//   fetchSubTabData,
+// } from "../../redux/features/topTenMultiTabSlice";
 
 const ExportDropdown = (activeTabLink = {}) => {
   const currentPageId = activeTabLink.pageId;
@@ -63,9 +63,9 @@ const ExportDropdown = (activeTabLink = {}) => {
   const topTenData = useSelector(selectTopTenData);
   const topTenDataMultiple = useSelector(selectTopTenDataMultiple);
 
-  const mappedTopTenData = useSelector(
-    selectSubSectionsSubTabs(selectedTab, currentLanguage)
-  );
+  // const mappedTopTenData = useSelector(
+  //   selectSubSectionsSubTabs(selectedTab, currentLanguage)
+  // );
 
   const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -149,52 +149,52 @@ const ExportDropdown = (activeTabLink = {}) => {
     }
   };
 
-  const fetchMissingTopTenMultiple = (mappedTopTenData) => {
-    mappedTopTenData.map((subSection) => {
-      subSection.mappedData.map((subTabItem, subTabIndex) => {
-        if (subTabItem.data === undefined) {
-          const encryptedConfigJson = subTabItem.subTab.encryptedConfigJson;
-          dispatch(fetchSubTabData({ encryptedConfigJson }))
-            .unwrap()
-            .then((newData) => {
-              // Dispatch action to add new data at the specific index
-              dispatch(
-                addNewTopTenItem({
-                  sectionId: subSection.sectionId,
-                  index: subTabIndex,
-                  newItem: newData,
-                })
-              );
-            })
-            .catch((error) => {
-              console.error("Failed to fetch sub-tab data:", error);
-            });
-        }
-      });
-      const filteredConfigurations = fieldConfig.filter(
-        (config) => config.TabID === subSection.sectionId.split("-")[0]
-      );
-      dispatch(
-        fetchMultipleTabTopTenData(filteredConfigurations, currentLanguage)
-      )
-        .unwrap()
-        .then((latestTopTenData) => {
-          exportToExcelTopTen(
-            latestTopTenData,
-            currentLanguage,
-            "ArgaamScreener_TopTen",
-            activeTabNameTopTen
-          );
-        });
-    });
+  // const fetchMissingTopTenMultiple = (mappedTopTenData) => {
+  //   mappedTopTenData.map((subSection) => {
+  //     subSection.mappedData.map((subTabItem, subTabIndex) => {
+  //       if (subTabItem.data === undefined) {
+  //         const encryptedConfigJson = subTabItem.subTab.encryptedConfigJson;
+  //         dispatch(fetchSubTabData({ encryptedConfigJson }))
+  //           .unwrap()
+  //           .then((newData) => {
+  //             // Dispatch action to add new data at the specific index
+  //             dispatch(
+  //               addNewTopTenItem({
+  //                 sectionId: subSection.sectionId,
+  //                 index: subTabIndex,
+  //                 newItem: newData,
+  //               })
+  //             );
+  //           })
+  //           .catch((error) => {
+  //             console.error("Failed to fetch sub-tab data:", error);
+  //           });
+  //       }
+  //     });
+  //     const filteredConfigurations = fieldConfig.filter(
+  //       (config) => config.TabID === subSection.sectionId.split("-")[0]
+  //     );
+  //     dispatch(
+  //       fetchMultipleTabTopTenData(filteredConfigurations, currentLanguage)
+  //     )
+  //       .unwrap()
+  //       .then((latestTopTenData) => {
+  //         exportToExcelTopTen(
+  //           latestTopTenData,
+  //           currentLanguage,
+  //           "ArgaamScreener_TopTen",
+  //           activeTabNameTopTen
+  //         );
+  //       });
+  //   });
 
-    exportToExcelTopTen(
-      updatedDataForSectionTopTen,
-      currentLanguage,
-      "ArgaamScreener_TopTen",
-      activeTabNameTopTen
-    );
-  };
+  //   exportToExcelTopTen(
+  //     updatedDataForSectionTopTen,
+  //     currentLanguage,
+  //     "ArgaamScreener_TopTen",
+  //     activeTabNameTopTen
+  //   );
+  // };
 
   const handleAllTabsExport = () => {
     if (currentPageId === PAGES.SCREENER) {

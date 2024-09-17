@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   fetchScreenerData,
   resetTabData,
@@ -12,6 +12,8 @@ import {
 import { fetchTopTenData } from "../redux/features/topTenSingleTabSlice";
 import { fetchMultipleTabTopTenData } from "../redux/features/topTenMultiTabSlice";
 import { PAGES, SECTIONS, TABS } from "../utils/constants/localizedStrings";
+import { fetchPageStructure } from "../services/screenerApi";
+import { setPages } from "../redux/features/pageSlice";
 
 const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const dispatch = useDispatch();
@@ -23,6 +25,23 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const [localCache, setLocalCache] = useState({});
   const hasFetchedData = useRef(false);
   const previousLanguage = useRef(currentLanguage);
+
+  const loadData = useCallback(async () => {
+    try {
+      const response = await fetchPageStructure();
+      if (response?.data?.pages) {
+        dispatch(setPages(response.data.pages));
+      } else {
+        console.error("Unexpected API response structure");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!pages || pages.length === 0) loadData();
+  }, [dispatch, pages]);
 
   useEffect(() => {
     hasFetchedData.current = false;

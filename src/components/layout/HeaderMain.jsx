@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../redux/features/languageSlice.js";
@@ -17,8 +17,7 @@ const HeaderMain = () => {
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
 
-  // temporary logic to disable top-10
-  const [disabledLink, setDisabledLink] = useState();
+  const ScreenerLogo = lazy(() => import("../common/LazyImage.jsx"));
 
   const toggleDropdown = () => setIsOpen((prevState) => !prevState);
 
@@ -88,11 +87,6 @@ const HeaderMain = () => {
   if (!pages) {
     return <LoadingScreen />; // Optional: Show loading screen if pages data is not available
   }
-
-  // useEffect(() => {
-  //   // Set the disabled link whenever the component mounts or updates
-  //   setDisabledLink(`/${lang}/top-10`);
-  // }, [lang]); // Dependency on lang to ensure it updates accordingly
 
   return (
     <>
@@ -165,7 +159,7 @@ const HeaderMain = () => {
         <div className="container-fluid px-layout">
           <div className="d-flex container_inner w-100 align-items-center">
             <div className="flex-fill justify-content-center">
-              <NavLink
+              {/* <NavLink
                 className="navbar-brand"
                 to={`/${lang}/screener`}
                 onClick={() => (window.location.href = `/${lang}/screener`)}
@@ -181,20 +175,16 @@ const HeaderMain = () => {
                     src="/assets/images/argaam_screener_logo_en.svg"
                   />
                 )}
-              </NavLink>
+              </NavLink> */}
+              <Suspense fallback={<LoadingScreen />}>
+                <ScreenerLogo />
+              </Suspense>
             </div>
             <div className="flex-fill justify_content_center sub_nav">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                 {navLinks.map((link, index) => (
                   <li key={index} className="nav-item">
-                    <NavLink
-                      to={link.path}
-                      className={({ isActive }) =>
-                        `nav-link ${isActive ? "active" : ""} ${
-                          link.path === disabledLink ? "disabled" : ""
-                        }`
-                      }
-                    >
+                    <NavLink to={link.path} className="nav-link">
                       {link.name}
                     </NavLink>
                   </li>
@@ -208,7 +198,7 @@ const HeaderMain = () => {
                     <ul className="right_nav navbar-nav align-items-center">
                       <li className="nav-item">
                         <a
-                          target="_blank" // This will open the link in a new tab
+                          target="_blank"
                           rel="noreferrer"
                           href="https://www.argaam.com/"
                           className="nav-link"
@@ -221,7 +211,7 @@ const HeaderMain = () => {
                           {strings.navLinkAbout}
                         </a>
                       </li>
-                      <LanguageSwitcher /> {/* Add the new component */}
+                      <LanguageSwitcher /> {/* language switcher component */}
                     </ul>
                     <div
                       className="nav-item position-relative user_toggle"
