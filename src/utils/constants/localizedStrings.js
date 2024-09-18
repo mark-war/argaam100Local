@@ -124,36 +124,37 @@ export const TABS = {
 
 export const SUBTABS = {
   HISTORICAL_EVOLUTION: 1,
-  LAST_CLOSE: 0,
-  LAST_FISCAL_PERIOD: 0,
-  TTM: 0,
+  LAST_CLOSE: 2,
+  LAST_FISCAL_PERIOD: 3,
+  TTM: 4,
 
-  SP_DAY: 0,
-  SP_MONTH: 1,
-  SP_3_MONTHS: 2,
-  SP_5_YEARS: 3,
-  SP_FROM_BEGINNING_OF_THE_YEAR: 4,
+  SP_DAY: 5,
+  SP_MONTH: 6,
+  SP_3_MONTHS: 7,
+  SP_5_YEARS: 8,
+  SP_FROM_BEGINNING_OF_THE_YEAR: 9,
 
-  GD_3_YEARS: 0,
-  GD_5_YEARS: 1,
-  GD_7_YEARS: 2,
-  GD_10_YEARS: 3,
+  GD_3_YEARS: 10,
+  GD_5_YEARS: 11,
+  GD_7_YEARS: 12,
+  GD_10_YEARS: 13,
 
+  //arabic subtabs (TODO: need to find a different approach handling these subtabs)
   التطور_التاريخي: 1,
-  آخر_إغلاق: 0,
-  القيمة_الدفترية: 0,
-  آخر_12_شهرا: 0,
+  آخر_إغلاق: 2,
+  القيمة_الدفترية: 3,
+  آخر_12_شهرا: 4,
 
-  SP_1_يوم: 0,
-  SP_شهر: 1,
-  SP_3_أشهر: 2,
-  SP_5_سنوات: 3,
-  SP_منذ_بداية_العام: 4,
+  SP_1_يوم: 5,
+  SP_شهر: 6,
+  SP_3_أشهر: 7,
+  SP_5_سنوات: 8,
+  SP_منذ_بداية_العام: 9,
 
-  GD_3_سنوات: 0,
-  GD_5_سنوات: 1,
-  GD_7_سنوات: 2,
-  GD_10_سنوات: 3,
+  GD_3_سنوات: 10,
+  GD_5_سنوات: 11,
+  GD_7_سنوات: 12,
+  GD_10_سنوات: 13,
 };
 
 export const SUBSECTIONS = {

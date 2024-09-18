@@ -15,14 +15,14 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["language", "apiData", "screener", "topten", "toptenMultiple"],
+  whitelist: ["language", "apiData", "screener"],
 };
 
 const rootReducer = combineReducers({
   language: languageReducer,
-  pages: pagesReducer,
+  pages: pagesReducer, // Add the new reducer
   fieldConfig: fieldConfigurationReducer,
-  screener: screenerDataReducer,
+  screener: screenerDataReducer, // Use the correct reducer name
   argaamSectors: sectorReducer,
   topten: topTenSingleTabReducer,
   toptenMultiple: toptenMultipleTabReducer,

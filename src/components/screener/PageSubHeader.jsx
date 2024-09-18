@@ -60,9 +60,21 @@ const PageSubHeader = ({
 
   return (
     <div className="shadow_btm sub_header">
+      <div className="d-flex mt-4 mb-2 border_gray section_heading px-layout">
+        <div className="flex-fill heading_lg">
+          <strong>{title}</strong>
+        </div>
+        {activeTabLink !== TABS.S_FINANCIAL_RATIO && (
+          <div className="flex-fill text_right mt-2">
+            <p className="font-20 mb-0 date">
+              {strings.date} {dateNow}
+            </p>
+          </div>
+        )}
+      </div>
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
         <div className="sub_heading_tabs">
-          <ul className="tabs_nav navbar-nav align-items-center flex-row">
+          <div className="tabs_nav navbar-nav align-items-center flex-row">
             {tabLinksArray?.map((tabItem) => (
               <li className="nav-item" key={tabItem.tabLinkId}>
                 <Link
@@ -76,15 +88,16 @@ const PageSubHeader = ({
                 </Link>
               </li>
             ))}
-          </ul>
+          </div>
         </div>
         <div className="d-flex justify-content-end select_container flex-fill text_right">
+          {/* Sector Dropdown */}
           <SectorDropdown
             selectedSectors={selectedOptions}
             onChange={handleSelectedOptionsChange}
           />
 
-          <div className="d_flex">
+          {/* <div className="d_flex">
             <a className="screen_icons" href="#" onClick={printScreen}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -137,14 +150,7 @@ const PageSubHeader = ({
               activeTabLink={activeTabLink}
               pageId={PAGES.SCREENER}
             />
-            {activeTabLink !== TABS.S_FINANCIAL_RATIO && (
-              <div className="flex-fill text_right mt-2">
-                <p className="font-20 mb-0 date">
-                  {strings.date} {dateNow}
-                </p>
-              </div>
-            )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

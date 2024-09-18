@@ -39,7 +39,7 @@ const SubTabCard = ({
       );
 
       // Generate rank to bar width based on the values
-      const rankToBarWidth = generateRankToBarWidth(values, 85, 5);
+      const rankToBarWidth = generateRankToBarWidth(values, 60, 5);
       if (!data === null) return null;
       return data.map((item, index) => {
         const chartValue = secondToLastProperty
@@ -107,6 +107,7 @@ const SubTabCard = ({
 
       // Extract values to base the rank-to-bar width on
       const values = subSection.map((item) => {
+        console.log("ITEM VALUE: ", item);
         // Handle cases where properties might be undefined
         const thirdToLastValue =
           typeof item[thirdToLastProperty] === "number"
@@ -120,7 +121,7 @@ const SubTabCard = ({
       });
 
       // Generate rank to bar width based on the values
-      const rankToBarWidth = generateRankToBarWidth(values, 85, 5);
+      const rankToBarWidth = generateRankToBarWidth(values, 60, 5);
 
       // Map over subSection to create rows
       return subSection.map((item, index) => {
@@ -130,6 +131,7 @@ const SubTabCard = ({
             : 0;
         const rank = item.Rank ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "0%";
+        console.log("CHART WIDTH: ", chartWidth);
 
         const valueString =
           item[thirdToLastProperty] !== null &&
