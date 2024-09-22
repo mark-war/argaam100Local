@@ -8,9 +8,27 @@ const axiosInstance = axios.create({
   },
 });
 
+// export const fetchPageStructure = async () => {
+//   try {
+//     const response = await axiosInstance.get("/get-structure-data");
+//     return response;
+//   } catch (error) {
+//     console.error("Error fetching page structures:", error);
+//     return null;
+//   }
+// };
+
 export const fetchPageStructure = async () => {
   try {
-    const response = await axiosInstance.get("/get-structure-data");
+    const response = await axiosInstance.get("/get-structure-data", {
+      params: {
+        nocache: new Date().getTime(), // Add a timestamp to prevent caching
+      },
+      headers: {
+        "Cache-Control": "no-cache", // Disable cache explicitly
+        Pragma: "no-cache",
+      },
+    });
     return response;
   } catch (error) {
     console.error("Error fetching page structures:", error);

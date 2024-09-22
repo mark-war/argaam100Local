@@ -163,7 +163,11 @@ const TopTenCompaniesPage = () => {
     <MainLayout>
       <div className="pb-5 min__height">
         <TopCompaniesSubHeader
-          title={localized(selectedSection, "sectionName", currentLanguage)}
+          title={
+            selectedSection
+              ? localized(selectedSection, "sectionName", currentLanguage)
+              : ""
+          }
           tabLinksArray={tabLinksArray}
           activeTabLink={activeTabLink}
           handleActiveTabLink={handleActiveTabLink}

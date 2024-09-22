@@ -27,17 +27,35 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   const previousLanguage = useRef(currentLanguage);
 
   const loadData = useCallback(async () => {
+    // Check if we've already reloaded
+    const hasReloaded = localStorage.getItem("hasReloaded");
+
     try {
-      const response = await fetchPageStructure();
-      if (response?.data?.pages) {
-        dispatch(setPages(response.data.pages));
-      } else {
-        console.error("Unexpected API response structure");
-        window.location.reload();
+      if (!hasReloaded) {
+        console.log("Attempting to reload.");
+
+        // Add log before the API call
+        console.log("Fetching page structure from API...");
+        const response = await fetchPageStructure();
+
+        // Add log after getting the response
+        console.log("API Response:", response);
+
+        if (response?.data?.pages) {
+          console.log(
+            "Successfully received pages from API:",
+            response.data.pages
+          );
+          dispatch(setPages(response.data.pages));
+          localStorage.setItem("hasReloaded", "true"); // Set the flag after successful fetch
+        } else {
+          console.error("Unexpected API response structure, reloading...");
+          window.location.reload(); // Reload without nocache
+        }
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      window.location.reload();
+      window.location.reload(); // Reload on error
     }
   }, [dispatch]);
 
@@ -59,18 +77,31 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
     }
   }, [currentLanguage]);
 
-  //ADDED TO SEEMLESSLY WORK ON THE ADDED TAB(S) IN THE SCREENER PAGE
   const screenerTabs = useMemo(() => {
     if (!pages || pages.length === 0) {
       console.log("Pages data is not available yet.");
       return [];
     }
     const screenerPage = pages.find((page) => page.pageId === PAGES.SCREENER);
+
+    if (!screenerPage) {
+      console.log("Screener page not found.");
+      return [];
+    }
+
     const screenerSection = screenerPage.sections.find(
       (section) => section.sectionId === SECTIONS.STOCK_SCREENER
     );
 
-    return screenerSection.tabs.map((tab) => tab.tabId) || [];
+    if (!screenerSection) {
+      console.log("Screener section not found.");
+      return [];
+    }
+
+    const tabIds = screenerSection.tabs.map((tab) => tab.tabId);
+    console.log("Screener tabs:", tabIds); // Log tabIds for debugging
+
+    return tabIds;
   }, [pages]);
 
   useEffect(() => {
@@ -160,6 +191,17 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
       }
     }
   }, [dispatch, currentLanguage, tabId, expirationTimeInMinutes]);
+
+  useEffect(() => {
+    const handleRefresh = () => {
+      loadData(); // Fetch data again
+    };
+
+    window.addEventListener("popstate", handleRefresh); // Listen for back/forward navigation
+    return () => {
+      window.removeEventListener("popstate", handleRefresh);
+    };
+  }, []);
 
   return { loading }; // Return the loading state
 };
