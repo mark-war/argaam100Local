@@ -40,8 +40,11 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!pages || pages.length === 0) loadData();
-  }, [dispatch, pages]);
+    if (!pages || pages.length === 0) {
+      console.log("Pages are empty or not loaded yet, attempting to load.");
+      loadData(); // Call the loadData function to fetch the pages again.
+    }
+  }, [pages, loadData]);
 
   useEffect(() => {
     hasFetchedData.current = false;

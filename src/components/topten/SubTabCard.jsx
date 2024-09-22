@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { Card, Table } from "react-bootstrap";
 import RaceChart from "../common/RaceChart";
-import { strings } from "../../utils/constants/localizedStrings";
+import { strings, TABS } from "../../utils/constants/localizedStrings";
 import { localized } from "../../utils/localization";
 import NumberFormatter from "../common/NumberFormatter";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
@@ -15,6 +15,8 @@ const SubTabCard = ({
   loadingState,
   activeSubTab,
 }) => {
+  console.log("SELECTED SECTION: ", section);
+  const selectedTab = Number(section.identifier.split("-")[0]);
   const processSubSection = useCallback(
     (data) => {
       if (
@@ -39,7 +41,7 @@ const SubTabCard = ({
       );
 
       // Generate rank to bar width based on the values
-      const rankToBarWidth = generateRankToBarWidth(values, 60, 5);
+      const rankToBarWidth = generateRankToBarWidth(values, 75, 5, selectedTab);
       if (!data === null) return null;
       return data.map((item, index) => {
         const chartValue = secondToLastProperty
@@ -70,15 +72,22 @@ const SubTabCard = ({
             <td>
               <div className="charts_table_bg">
                 <span className="bg" style={{ width: chartWidth }}></span>
-                <span>
-                  {valueString !== null ? (
-                    valueString
-                  ) : (
-                    <NumberFormatter value={chartValue || 0} />
-                  )}
-                </span>
+                {valueString !== null ? (
+                  valueString
+                ) : (
+                  <NumberFormatter value={chartValue || 0} />
+                )}
               </div>
             </td>
+            {/* <td>
+              <span className="bg_val">
+                {valueString !== null ? (
+                  valueString
+                ) : (
+                  <NumberFormatter value={chartValue || 0} />
+                )}
+              </span>
+            </td> */}
           </tr>
         );
       });
@@ -121,7 +130,7 @@ const SubTabCard = ({
       });
 
       // Generate rank to bar width based on the values
-      const rankToBarWidth = generateRankToBarWidth(values, 60, 5);
+      const rankToBarWidth = generateRankToBarWidth(values, 75, 5, selectedTab);
 
       // Map over subSection to create rows
       return subSection.map((item, index) => {
@@ -156,17 +165,27 @@ const SubTabCard = ({
               <div className="charts_table_bg">
                 <span
                   className="bg"
-                  style={{ width: chartWidth || "80%" }}
+                  style={{
+                    width: chartWidth,
+                    //backgroundColor: chartValue < 0 ? "red" : "#9ac6e6", // Set background to red if chartValue is negative
+                  }}
                 ></span>
-                <span>
-                  {valueString !== null ? (
-                    valueString
-                  ) : (
-                    <NumberFormatter value={chartValue || 0} />
-                  )}
-                </span>
+                {valueString !== null ? (
+                  valueString
+                ) : (
+                  <NumberFormatter value={chartValue || 0} />
+                )}
               </div>
             </td>
+            {/* <td>
+              <span>
+                {valueString !== null ? (
+                  valueString
+                ) : (
+                  <NumberFormatter value={chartValue || 0} />
+                )}
+              </span>
+            </td> */}
           </tr>
         );
       });

@@ -900,6 +900,7 @@ button.disabled {
 
 .charts_table_bg {
   display: flex;
+  width: 80%;
 }
 
 .charts_table_bg span.bg {
@@ -908,6 +909,7 @@ button.disabled {
   width: 100%;
   display: block;
   margin-right: 15px;
+  flex-shrink: 0.05;
 }
 
 .table_chart tbody td:first-child,
