@@ -33,9 +33,11 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
         dispatch(setPages(response.data.pages));
       } else {
         console.error("Unexpected API response structure");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      window.location.reload();
     }
   }, [dispatch]);
 
