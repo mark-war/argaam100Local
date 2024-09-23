@@ -72,8 +72,7 @@ const SubSection = ({
   const handleSubTabClick = useCallback(
     (newSubTabIndex) => {
       setActiveSubTab(newSubTabIndex);
-      console.log("SUBSECTION INDEX: ", subSectionIndex);
-      console.log("NEW SUB TAB INDEX: ", newSubTabIndex);
+
       onSubTabsChange(subSectionIndex, newSubTabIndex);
 
       if (isMultiple && !section.data[newSubTabIndex]) {

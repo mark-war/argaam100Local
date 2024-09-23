@@ -8,16 +8,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// export const fetchPageStructure = async () => {
-//   try {
-//     const response = await axiosInstance.get("/get-structure-data");
-//     return response;
-//   } catch (error) {
-//     console.error("Error fetching page structures:", error);
-//     return null;
-//   }
-// };
-
 export const fetchPageStructure = async () => {
   try {
     const response = await axiosInstance.get("/get-structure-data", {

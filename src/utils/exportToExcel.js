@@ -462,7 +462,6 @@ const exportDataToExcel = async (
   subTabIds
 ) => {
   const workbook = new ExcelJS.Workbook();
-  console.log("SUBTAB IDs: ", subTabIds);
   if (!isMultiple) {
     dataObjects.forEach((dataObject) => {
       // Get the mapped table

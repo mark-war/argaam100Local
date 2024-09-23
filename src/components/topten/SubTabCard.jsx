@@ -15,7 +15,6 @@ const SubTabCard = ({
   loadingState,
   activeSubTab,
 }) => {
-  console.log("SELECTED SECTION: ", section);
   const selectedTab = Number(section.identifier.split("-")[0]);
   const processSubSection = useCallback(
     (data) => {
@@ -116,7 +115,6 @@ const SubTabCard = ({
 
       // Extract values to base the rank-to-bar width on
       const values = subSection.map((item) => {
-        console.log("ITEM VALUE: ", item);
         // Handle cases where properties might be undefined
         const thirdToLastValue =
           typeof item[thirdToLastProperty] === "number"
@@ -140,7 +138,6 @@ const SubTabCard = ({
             : 0;
         const rank = item.Rank ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "0%";
-        console.log("CHART WIDTH: ", chartWidth);
 
         const valueString =
           item[thirdToLastProperty] !== null &&

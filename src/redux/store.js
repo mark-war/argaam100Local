@@ -15,7 +15,14 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["language", "apiData", "screener"],
+  whitelist: [
+    "language",
+    "pages",
+    "fieldConfig",
+    "screener",
+    "topten",
+    "toptenMultiple",
+  ],
 };
 
 const rootReducer = combineReducers({
