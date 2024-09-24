@@ -1513,15 +1513,15 @@ button.disabled {
 }
 
 .table_layout.table td:nth-child(2) {
-  width: 14%;
+  width: 10%;
 }
 
 .table_layout.table-striped td:nth-child(3) {
-  width: 14%;
+  width: max-content;
 }
 
 .table_layout.table-striped td {
-  max-width: 14%;
+  max-width: max-content;
 }
 
 [lang="ar"] .sub_heading_tabs_container {
@@ -2447,4 +2447,12 @@ footer {
 .ratio_msg {
   font-weight: bold;
   cursor: pointer;
+}
+
+[lang="ar"] .sub_heading_tabs_container .tabs_nav.navbar-nav .nav-item:nth-child(4) a {
+  border-left: 0 !important;
+}
+
+.sub_heading_tabs_container .tabs_nav.navbar-nav .nav-item:nth-child(4) a {
+  border-right: 0;
 }
