@@ -1513,15 +1513,15 @@ button.disabled {
 }
 
 .table_layout.table td:nth-child(2) {
-  width: 10%;
+  width: 12%;
 }
 
 .table_layout.table-striped td:nth-child(3) {
-  width: max-content;
+  width: 10%;
 }
 
 .table_layout.table-striped td {
-  max-width: max-content;
+  max-width: 14%;
 }
 
 [lang="ar"] .sub_heading_tabs_container {
