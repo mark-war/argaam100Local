@@ -44,6 +44,12 @@ export const strings = new LocalizedStrings({
     reset: "Reset",
     exportCurrent: "Export Current Tab",
     exportAllTabs: "Export All Tabs",
+    finRatioMsg: "Some Ratios are not applicable",
+    banks: "Banks",
+    insurance: "Insurance",
+    reits: "Reits",
+    financing: "Financing",
+    and: "and",
   },
   ar: {
     topTen: "أعلى 10",
@@ -87,8 +93,21 @@ export const strings = new LocalizedStrings({
     reset: "إعادة تعيين",
     exportCurrent: "تصدير علامة التبويب الحالية",
     exportAllTabs: "تصدير كافة علامات التبويب",
+    finRatioMsg: "بعض المؤشرات لا تنطبق على",
+    banks: "البنوك",
+    insurance: "التأمين",
+    reits: "الريت",
+    financing: "التمويل",
+    and: "و",
   },
 });
+
+export const SECTORS = {
+  BANKING: 8,
+  INSURANCE: 15,
+  REITS: 238,
+  FINANCING: 240,
+};
 
 export const LANGUAGES = {
   EN: "en",

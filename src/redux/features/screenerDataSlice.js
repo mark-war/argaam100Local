@@ -5,54 +5,63 @@ import { fetchScreenerTableData } from "../../services/screenerApi.js";
 export const fetchScreenerData = createAsyncThunk(
   "screener/fetchScreenerData",
   async (
-    { filteredConfigurations, currentLanguage },
+    { filteredConfigurations, currentLanguage, selectedSectorId = null },
     { rejectWithValue, getState }
   ) => {
     try {
       const currentState = getState();
       console.log("Current State in Thunk: ", currentState);
 
-      const processedData = filteredConfigurations.map((item) => {
-        const configJson = JSON.parse(item.ConfigJson);
-        const args = item.Args;
+      const processedData = filteredConfigurations
+        .filter((item) => item.SectorID === selectedSectorId)
+        .map((item) => {
+          const configJson = JSON.parse(item.ConfigJson);
+          const args = item.Args;
+          const sectorId = item.SectorID;
 
-        // Generate encrypted configuration JSON
-        const encryptedConfigJsons = createChartParams(
-          configJson,
-          args,
-          currentLanguage
-        );
+          // Generate encrypted configuration JSON
+          const encryptedConfigJsons = createChartParams(
+            configJson,
+            args,
+            currentLanguage
+          );
 
-        const identifier = `${item.TabID}-${item.Pkey}-${currentLanguage}`;
+          const identifier = `${item.TabID}-${item.Pkey}-${currentLanguage}`;
 
-        return {
-          ...item,
-          encryptedConfigJsons,
-          identifier, // Add the unique identifier
-        };
-      });
+          return {
+            ...item,
+            encryptedConfigJsons,
+            identifier, // Add the unique identifier
+            sectorId,
+          };
+        });
       // Example of making multiple requests or processing multiple encrypted params
       const results = await Promise.all(
-        processedData.map(async (data) => {
-          try {
-            // process the default subtab
-            const encryptedConfig = data.encryptedConfigJsons[0];
-            const response = await fetchScreenerTableData(encryptedConfig);
+        processedData
+          .filter((data) => data.sectorId === selectedSectorId)
+          .map(async (data) => {
+            try {
+              // process the default subtab
+              const encryptedConfig = data.encryptedConfigJsons[0];
+              console.log("ID: ", data.identifier);
+              console.log("ENC: ", encryptedConfig);
+              const response = await fetchScreenerTableData(encryptedConfig);
 
-            // Extract only the serializable parts of the response
-            const { data: responseData } = response;
+              // Extract only the serializable parts of the response
+              const { data: responseData } = response;
 
-            // Combine responses if necessary or handle separately
-            return {
-              identifier: data.identifier,
-              data: responseData || {}, // Include primary response
-              timestamp: Date.now(), // Add timestamp here
-            };
-          } catch (error) {
-            console.error("Error in processing data:", error);
-            return null; // Handle errors gracefully
-          }
-        })
+              // Combine responses if necessary or handle separately
+              return {
+                identifier: data.identifier,
+                data: responseData || {}, // Include primary response
+                timestamp: Date.now(), // Add timestamp here
+                sectorId: data.SectorID,
+              };
+            } catch (error) {
+              console.error("Error in processing data:", error);
+              return null; // Handle errors gracefully
+            }
+          })
       );
 
       // Handle the aggregated results if needed

@@ -15,7 +15,11 @@ import { PAGES, SECTIONS, TABS } from "../utils/constants/localizedStrings";
 import { fetchPageStructure } from "../services/screenerApi";
 import { setPages } from "../redux/features/pageSlice";
 
-const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
+const useTabDataFetch = (
+  tabId,
+  expirationTimeInMinutes = 0,
+  selectedSectorId = null
+) => {
   const dispatch = useDispatch();
   const pages = useSelector(selectPages);
   const fieldConfigurations = useSelector(selectFieldConfigurations);
@@ -106,7 +110,9 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
 
   useEffect(() => {
     if (fieldConfigurations.length > 0 && tabId) {
-      const cacheKey = `${tabId}_${currentLanguage}`;
+      const cacheKey = `${tabId}_${currentLanguage}${
+        selectedSectorId ? `_${selectedSectorId}` : ""
+      }`;
 
       // Check if we need to fetch data based on local cache
       const cacheEntry = localCache[cacheKey] || {
@@ -122,8 +128,12 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
       };
 
       if (
-        (cacheEntry.needsFetch || isExpired(cacheEntry)) &&
-        !hasFetchedData.current
+        ((cacheEntry.needsFetch || isExpired(cacheEntry)) &&
+          !hasFetchedData.current) ||
+        (selectedSectorId &&
+          (!localCache[`${tabId}_${currentLanguage}_${selectedSectorId}`] ||
+            localCache[`${tabId}_${currentLanguage}_${selectedSectorId}`]
+              .needsFetch))
       ) {
         console.log("Fetching data...");
 
@@ -138,7 +148,11 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
 
         if (screenerTabs.includes(tabId)) {
           dispatch(
-            fetchScreenerData({ filteredConfigurations, currentLanguage })
+            fetchScreenerData({
+              filteredConfigurations,
+              currentLanguage,
+              selectedSectorId,
+            })
           ).then(() => {
             console.log("Data fetch complete");
             setLoading(false); // Set loading to false when fetching completes
@@ -190,7 +204,13 @@ const useTabDataFetch = (tabId, expirationTimeInMinutes = 0) => {
         );
       }
     }
-  }, [dispatch, currentLanguage, tabId, expirationTimeInMinutes]);
+  }, [
+    dispatch,
+    currentLanguage,
+    tabId,
+    expirationTimeInMinutes,
+    selectedSectorId,
+  ]);
 
   useEffect(() => {
     const handleRefresh = () => {

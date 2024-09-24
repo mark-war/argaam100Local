@@ -2443,3 +2443,8 @@ footer {
     display: inline-flex;
   }
 }
+
+.ratio_msg {
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -8,6 +8,7 @@ import { setLanguage } from "../../redux/features/languageSlice";
 import { useEffect, useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
 import { printScreen } from "../../utils/printPage";
+import FinancialRatioMessage from "./FinancialRationMessage";
 
 const PageSubHeader = ({
   title,
@@ -50,10 +51,12 @@ const PageSubHeader = ({
 
   const handleSelectedOptionsChange = useCallback(
     (newSelectedOptions) => {
+      console.log("NEW SELECTED: ", newSelectedOptions);
       setSelectedOptions(newSelectedOptions);
       if (onSelectedOptionsChange) {
         onSelectedOptionsChange(newSelectedOptions);
       }
+      console.log("SELECTED OPTIONS: ", selectedOptions);
     },
     [setSelectedOptions, onSelectedOptionsChange]
   );
@@ -75,19 +78,26 @@ const PageSubHeader = ({
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
         <div className="sub_heading_tabs">
           <div className="tabs_nav navbar-nav align-items-center flex-row">
-            {tabLinksArray?.map((tabItem) => (
-              <li className="nav-item" key={tabItem.tabLinkId}>
-                <Link
-                  to="" // TODO: add a route for each tab on this...
-                  className={`nav-link ${
-                    activeTabLink === tabItem.tabLinkId ? "active" : ""
-                  }`}
-                  onClick={() => handleActiveTabLink(tabItem.tabLinkId)}
-                >
-                  <span>{localized(tabItem, "name", currentLanguage)}</span>
-                </Link>
-              </li>
-            ))}
+            {tabLinksArray
+              ?.sort((a, b) => a.displaySeq - b.displaySeq)
+              .map((tabItem) => (
+                <li className="nav-item" key={tabItem.tabLinkId}>
+                  <Link
+                    to="" // TODO: add a route for each tab on this...
+                    className={`nav-link ${
+                      activeTabLink === tabItem.tabLinkId ? "active" : ""
+                    }`}
+                    onClick={() => handleActiveTabLink(tabItem.tabLinkId)}
+                  >
+                    <span>{localized(tabItem, "name", currentLanguage)}</span>
+                  </Link>
+                </li>
+              ))}
+            {activeTabLink === TABS.S_FINANCIAL_RATIO && (
+              <FinancialRatioMessage
+                onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
+              />
+            )}
           </div>
         </div>
         <div className="d-flex justify-content-end select_container flex-fill text_right">
@@ -97,7 +107,7 @@ const PageSubHeader = ({
             onChange={handleSelectedOptionsChange}
           />
 
-          {/* <div className="d_flex">
+          <div className="d_flex">
             <a className="screen_icons" href="#" onClick={printScreen}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -150,7 +160,14 @@ const PageSubHeader = ({
               activeTabLink={activeTabLink}
               pageId={PAGES.SCREENER}
             />
-          </div> */}
+            {/* {activeTabLink !== TABS.S_FINANCIAL_RATIO && (
+              <div className="flex-fill text_right mt-2">
+                <p className="font-20 mb-0 date">
+                  {strings.date} {dateNow}
+                </p>
+              </div>
+            )} */}
+          </div>
         </div>
       </div>
     </div>

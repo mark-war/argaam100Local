@@ -1,11 +1,12 @@
 import { localized } from "./localization.js";
-import { strings } from "./constants/localizedStrings.js";
+import { strings, TABS } from "./constants/localizedStrings.js";
 
 export const transformDataForTable = (
   screenerData,
   fieldConfigurations,
   activeTabId,
-  currentLanguage
+  currentLanguage,
+  selectedSectorId = null
 ) => {
   const columns = [
     { key: "fixed_code", label: `${strings.code}` },
@@ -14,7 +15,17 @@ export const transformDataForTable = (
     { key: "CompanyID", label: "CompanyID", hidden: true },
     { key: "SectorID", label: "SectorID", hidden: true },
     ...fieldConfigurations
-      .filter((item) => item.TabID === activeTabId)
+      .filter((item) => {
+        // Check if the active tab is S_FINANCIAL_RATIO
+        if (activeTabId === TABS.S_FINANCIAL_RATIO) {
+          // Only check selectedSectorId when activeTabId is S_FINANCIAL_RATIO
+          return (
+            item.TabID === activeTabId && item.SectorID === selectedSectorId
+          );
+        }
+        // If the tab is not S_FINANCIAL_RATIO, just check TabID
+        return item.TabID === activeTabId;
+      })
       .map((item) => {
         const unitName = localized(item, "UnitName", currentLanguage);
         const fieldName = localized(item, "FieldName", currentLanguage);
@@ -63,11 +74,21 @@ export const transformDataForTable = (
   const formattedDataMap = new Map();
 
   screenerData
-    .filter(
-      (item) =>
+    .filter((item) => {
+      if (activeTabId === TABS.S_FINANCIAL_RATIO) {
+        // Only include items with the selectedSectorId when the activeTabId is S_FINANCIAL_RATIO
+        return (
+          item.identifier.startsWith(`${activeTabId}-`) &&
+          item.identifier.endsWith(`-${currentLanguage}`) &&
+          item.sectorId === selectedSectorId
+        );
+      }
+      // If the tab is not S_FINANCIAL_RATIO, just check the identifier
+      return (
         item.identifier.startsWith(`${activeTabId}-`) &&
         item.identifier.endsWith(`-${currentLanguage}`)
-    )
+      );
+    })
     .forEach((item) => {
       const fieldId = item.identifier.split("-")[1];
       columnKeysSet.add(fieldId);
