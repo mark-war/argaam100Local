@@ -147,6 +147,9 @@ const useTabDataFetch = (
         setLoading(true); // Set loading to true when fetching starts
 
         if (screenerTabs.includes(tabId)) {
+          // to make sure that the dispatch of screener data with specific selectedSectorId only happens when the tabId is Financial Ratio
+          selectedSectorId =
+            tabId === TABS.S_FINANCIAL_RATIO ? selectedSectorId : null;
           dispatch(
             fetchScreenerData({
               filteredConfigurations,

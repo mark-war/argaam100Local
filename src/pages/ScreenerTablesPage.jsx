@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import MainLayout from "../components/layout/MainLayout";
 import PageSubHeader from "../components/screener/PageSubHeader.jsx";
 import ScreenerTable from "../components/screener/ScreenerTable.jsx";
-import { PAGES } from "../utils/constants/localizedStrings.js";
+import { PAGES, SECTORS } from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
 import useTabDataFetch from "../hooks/useTabDataFetch";
 import {
@@ -25,10 +25,10 @@ const ScreenerTablesPage = () => {
   const [activeTabLink, setActiveTabLink] = useState(null);
 
   const sectorIdForFilter =
-    (selectedOptions.includes(8) ||
-      selectedOptions.includes(15) ||
-      selectedOptions.includes(238) ||
-      selectedOptions.includes(240)) &&
+    (selectedOptions.includes(SECTORS.BANKING) ||
+      selectedOptions.includes(SECTORS.INSURANCE) ||
+      selectedOptions.includes(SECTORS.REITS) ||
+      selectedOptions.includes(SECTORS.FINANCING)) &&
     selectedOptions.length === 1
       ? selectedOptions[0]
       : null;
