@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { PAGES, strings, TABS } from "../../utils/constants/localizedStrings";
+import { PAGES, TABS } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import { localized } from "../../utils/localization";
@@ -9,6 +9,7 @@ import { useEffect, useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
 import { printScreen } from "../../utils/printPage";
 import FinancialRatioMessage from "./FinancialRationMessage";
+import LastUpdate from "./LastUpdate";
 
 const PageSubHeader = ({
   title,
@@ -33,30 +34,12 @@ const PageSubHeader = ({
     }
   }, [location.search, currentLanguage, dispatch]);
 
-  const getCurrentDateFormatted = useCallback(() => {
-    const today = new Date();
-    return today.toLocaleDateString(
-      currentLanguage === "ar" ? "ar-SA" : "en-GB",
-      {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        calendar: "gregory", // Ensure the Gregorian calendar is used
-        numberingSystem: "latn", // Use Western Arabic numerals (0-9)
-      }
-    );
-  }, [currentLanguage]);
-
-  const dateNow = getCurrentDateFormatted();
-
   const handleSelectedOptionsChange = useCallback(
     (newSelectedOptions) => {
-      console.log("NEW SELECTED: ", newSelectedOptions);
       setSelectedOptions(newSelectedOptions);
       if (onSelectedOptionsChange) {
         onSelectedOptionsChange(newSelectedOptions);
       }
-      console.log("SELECTED OPTIONS: ", selectedOptions);
     },
     [setSelectedOptions, onSelectedOptionsChange]
   );
@@ -68,11 +51,7 @@ const PageSubHeader = ({
           <strong>{title}</strong>
         </div>
         {activeTabLink !== TABS.S_FINANCIAL_RATIO && (
-          <div className="flex-fill text_right mt-2">
-            <p className="font-20 mb-0 date">
-              {strings.date} {dateNow}
-            </p>
-          </div>
+          <LastUpdate currentLanguage={currentLanguage} />
         )}
       </div>
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">

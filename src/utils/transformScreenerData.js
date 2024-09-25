@@ -37,6 +37,7 @@ export const transformDataForTable = (
       }),
   ];
 
+  const pinnedRow = null;
   //   const pinnedRow = {
   //     fixed_code: "",
   //     fixed_img: "/assets/images/tasi.svg",
@@ -129,6 +130,6 @@ export const transformDataForTable = (
   return {
     columns,
     data: formattedData,
-    //pinnedRow,
+    pinnedRow,
   };
 };

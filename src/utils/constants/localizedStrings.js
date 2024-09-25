@@ -80,7 +80,7 @@ export const strings = new LocalizedStrings({
     shareholder: "(اخر فترة مالية) حقوق المساهمين",
     revenue: "(اخر 12) الايردات",
     profit: "(اخر 12) الأرباح",
-    rank: "رتبة",
+    rank: "الترتيب",
     charts: "الرسوم البيانية",
     neg: "سالب",
     moreThan100: "أكبر من 100",

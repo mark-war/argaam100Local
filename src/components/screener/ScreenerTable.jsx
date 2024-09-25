@@ -9,6 +9,7 @@ import TableRow from "./TableRow.jsx";
 import { setLanguage } from "../../redux/features/languageSlice.js";
 import { TABS, strings } from "../../utils/constants/localizedStrings";
 import config from "../../utils/config.js";
+import PinnedRow from "./PinnedRow.jsx";
 
 const ScreenerTable = ({
   data,
@@ -179,56 +180,7 @@ const ScreenerTable = ({
                   sortConfig={sortConfig}
                 />
                 <tbody>
-                  {/* HIDE THE PINNED ROW FOR NOW */}
-                  {/* {pinnedRow && (
-                    <tr>
-                      {columns.map((column) => {
-                        if (column.hidden) return null; // Skip rendering this column
-                        const isFixedColumn = column.key.startsWith("fixed_");
-                        const tdClassName = isFixedColumn
-                          ? column.key === "fixed_company"
-                            ? "td_img"
-                            : column.className // Apply td_img for fixed_company
-                          : `text-center ${column.className}`;
-                        return (
-                          <td key={column.key} className={tdClassName}>
-                            {isFixedColumn ? (
-                              column.key === "fixed_company" ? (
-                                // Handle fixed company column with image and company name
-                                <>
-                                  <img
-                                    alt="Company Logo"
-                                    src={pinnedRow.fixed_img} // Get the src from fixed_img
-                                    className="logo_image"
-                                  />
-                                  <span>{pinnedRow[column.key]}</span>
-                                </>
-                              ) : column.key === "fixed_sector" ? (
-                                // Handle fixed sector column without additional styling
-                                pinnedRow[column.key]
-                              ) : null
-                            ) : (
-                              // Handle dynamic columns
-                              <span
-                                style={{
-                                  color:
-                                    pinnedRow[column.key] < 0
-                                      ? "red"
-                                      : "inherit",
-                                }}
-                              >
-                                <NumberFormatter
-                                  value={pinnedRow[column.key]}
-                                  isPEColumn={column.key
-                                    .includes(strings.pe)}
-                                />
-                              </span>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  )} */}
+                  {pinnedRow && <PinnedRow row={pinnedRow} columns={columns} />}
                   {currentRows.map((row, index) => (
                     <TableRow
                       key={index}

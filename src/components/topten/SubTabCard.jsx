@@ -78,15 +78,6 @@ const SubTabCard = ({
                 )}
               </div>
             </td>
-            {/* <td>
-              <span className="bg_val">
-                {valueString !== null ? (
-                  valueString
-                ) : (
-                  <NumberFormatter value={chartValue || 0} />
-                )}
-              </span>
-            </td> */}
           </tr>
         );
       });
@@ -194,7 +185,7 @@ const SubTabCard = ({
     () => [
       { label: strings.rank },
       { label: strings.companies },
-      { label: strings.charts },
+      { label: "" }, //TODO: made empty to remove the charts header, because when removed the alignment of the Companies is getting wrong...(need to fix on design)
     ],
     [currentLanguage]
   );

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import config from "../../utils/config";
 import { LANGUAGEID } from "../../utils/constants/localizedStrings";
 import { Table } from "react-bootstrap";
+import { strings } from "../../utils/constants/localizedStrings";
 
 const RaceChart = ({ chartData, currentLanguage, direction = "" }) => {
   const [loading, setLoading] = useState(true); // Add loading state
@@ -33,8 +34,10 @@ const RaceChart = ({ chartData, currentLanguage, direction = "" }) => {
       >
         <thead>
           <tr>
-            <th style={{ width: "100px", textAlign: "center" }}>Rank</th>
-            <th style={{ width: "100%", textAlign: "left" }}>Charts</th>
+            <th style={{ width: "100px", textAlign: "center" }}>
+              {strings.rank}
+            </th>
+            {/* <th style={{ width: "100%", textAlign: "left" }}></th> */}
           </tr>
         </thead>
         <tbody style={{ marginTop: "0", marginBottom: "0" }}>
