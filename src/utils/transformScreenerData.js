@@ -29,10 +29,10 @@ export const transformDataForTable = (
       .map((item) => {
         const unitName = localized(item, "UnitName", currentLanguage);
         const fieldName = localized(item, "FieldName", currentLanguage);
-        const optionalUnitName = unitName ? ` ${unitName}` : "";
         return {
           key: item.Pkey,
-          label: `${fieldName}${optionalUnitName}`, // Combine fieldName and optionalUnitName into a single string
+          label: fieldName,
+          unit: unitName,
         };
       }),
   ];

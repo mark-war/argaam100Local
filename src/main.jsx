@@ -9,6 +9,23 @@ import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./redux/store";
 import LoadingScreen from "./components/common/LoadingScreen";
 
+// Function to detect if it's the first load
+const isInitialLoad = () => {
+  const firstLoadFlag = localStorage.getItem("isFirstLoad");
+  if (!firstLoadFlag) {
+    localStorage.setItem("isFirstLoad", "true");
+    return true;
+  }
+  return false;
+};
+
+// Clear the persisted store if it's the first load
+if (isInitialLoad()) {
+  persistor.purge().then(() => {
+    console.log("Persisted store has been purged on initial load.");
+  });
+}
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

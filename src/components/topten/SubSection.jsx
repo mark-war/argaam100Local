@@ -29,8 +29,8 @@ const SubSection = ({
   const [loading, setLoading] = useState({});
 
   useEffect(() => {
-    setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes
-  }, [selectedTabKey]);
+    setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
+  }, [selectedTabKey, currentLanguage]);
 
   const fetchAndUpdateData = (encryptedConfigJson, identifier, index) => {
     setLoading((prevLoading) => ({
