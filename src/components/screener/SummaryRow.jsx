@@ -5,7 +5,7 @@ import config from "../../utils/config";
 
 const SummaryRow = ({ row = {}, columns }) => {
   return (
-    <tr>
+    <tr className="total_row">
       {columns.map((column) => {
         // Skip rendering if the column is hidden
         if (column.hidden) {

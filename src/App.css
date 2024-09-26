@@ -2456,3 +2456,9 @@ footer {
 .sub_heading_tabs_container .tabs_nav.navbar-nav .nav-item:nth-child(4) a {
   border-right: 0;
 }
+
+
+.table_layout.table_full tr.total_row:last-child td {
+  border-bottom: 1px solid #e0e0e0 !important;
+  font-weight: 500;
+}
