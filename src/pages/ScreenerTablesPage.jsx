@@ -33,6 +33,9 @@ const ScreenerTablesPage = () => {
       ? selectedOptions[0]
       : null;
 
+  const sectorIdForSummary =
+    selectedOptions.length === 1 ? selectedOptions[0] : null;
+
   //hook to fetch data by active tab
   const { loading } = useTabDataFetch(
     activeTabLink,
@@ -112,6 +115,32 @@ const ScreenerTablesPage = () => {
       </>
     );
   };
+
+  // // Function to compute average/total based on selectedOptions
+  // const computeTotalOrAverage = (columnKey) => {
+  //   if (selectedOptions.length === 1) {
+  //     const filteredData = data.filter((row) =>
+  //       selectedOptions.includes(row.SectorID)
+  //     );
+
+  //     if (filteredData.length === 0) return 0;
+
+  //     const total = filteredData.reduce(
+  //       (sum, row) => sum + (row[columnKey] || 0),
+  //       0
+  //     );
+  //     const average = total / filteredData.length;
+
+  //     return { total, average };
+  //   }
+  //   return { total: 0, average: 0 }; // Default when no sector is selected or more than one is selected
+  // };
+
+  // // Memoize the result to avoid unnecessary recalculations
+  // const { total, average } = useMemo(() => {
+  //   const columnKey = columns[0].key; // Use the appropriate column key
+  //   return computeTotalOrAverage(columnKey);
+  // }, [data, selectedOptions]);
 
   return (
     <MainLayout>

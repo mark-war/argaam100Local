@@ -33,6 +33,7 @@ export const transformDataForTable = (
           key: item.Pkey,
           label: fieldName,
           unit: unitName,
+          indicator: item.IndicatorID,
         };
       }),
   ];

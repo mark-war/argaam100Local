@@ -276,3 +276,8 @@ export const SUBSECTION_TO_SUBTABS_MAP = {
     SUBTABS.GD_10_YEARS,
   ],
 };
+
+export const INDICATOR = {
+  AVERAGE: 1,
+  TOTAL: 2,
+};

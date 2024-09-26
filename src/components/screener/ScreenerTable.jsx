@@ -1,15 +1,26 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import PropTypes from "prop-types";
 import { Table, Row, Col, Card } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ScreenerPagination from "./ScreenerPagination";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow.jsx";
-import { setLanguage } from "../../redux/features/languageSlice.js";
-import { TABS, strings } from "../../utils/constants/localizedStrings";
+import { TABS } from "../../utils/constants/localizedStrings";
 import config from "../../utils/config.js";
 import PinnedRow from "./PinnedRow.jsx";
+import SummaryRow from "./SummaryRow.jsx";
+import useLanguage from "../../hooks/useLanguage.jsx";
+import {
+  getFirstDynamicColumn,
+  computeTotalOrAverage,
+  customSort,
+} from "../../utils/screenerTableHelpers.js";
 
 const ScreenerTable = ({
   data,
@@ -20,8 +31,6 @@ const ScreenerTable = ({
   selectedOptions, // selected sectors
   setSelectedOptions, // to control selected options
 }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { lang } = useParams(); // Access the current language from URL parameters
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,29 +38,11 @@ const ScreenerTable = ({
   const initialSortSet = useRef(false);
 
   // Set up language on component mount and language change
-  useEffect(() => {
-    if (config.supportedLanguages.includes(lang)) {
-      if (!lang) {
-        dispatch(setLanguage(lang));
-      }
-      strings.setLanguage(lang);
-    } else {
-      const defaultLanguage = config.defaultLanguage; // Fallback to default language
-      dispatch(setLanguage(defaultLanguage));
-      strings.setLanguage(defaultLanguage);
-      navigate(`/${defaultLanguage}` + window.location.pathname.slice(3));
-    }
-
-    document.documentElement.lang = lang;
-  }, [lang, dispatch, navigate]);
-
-  // Find the first dynamic column
-  const getFirstDynamicColumn = () =>
-    columns.find((col) => typeof col.key === "number" && !col.hidden);
+  useLanguage(lang);
 
   // Initialize sorting configuration for the first dynamic column
   useEffect(() => {
-    const firstDynamicColumn = getFirstDynamicColumn();
+    const firstDynamicColumn = getFirstDynamicColumn(columns);
     if (firstDynamicColumn) {
       if (selectedTab === TABS.S_PE)
         setSortConfig({ key: firstDynamicColumn.key, direction: "asc" });
@@ -75,75 +66,46 @@ const ScreenerTable = ({
   }, [selectedTab, selectedOptions]);
 
   // Handle page change
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Custom sorting function
-  const customSort = (data, key, direction) => {
-    // Define the group for each value
-    const getGroup = (value) => {
-      if (value === "-" || value === undefined || value === null) return 3; // Dash values (last group)
-      if (value < 0) return 2; // Negatives (last group)
-      if (value >= 100) return 1; // Positives >= 100 (second group)
-      return 0; // Positives < 100 (first group)
-    };
-
-    // Define the fixed group order
-    const groupOrder = [0, 1, 2, 3]; // Fixed order: positives < 100, positives >= 100, negatives
-
-    // Separate data into groups
-    const groups = groupOrder.reduce((acc, group) => {
-      acc[group] = [];
-      return acc;
-    }, {});
-
-    data.forEach((item) => {
-      const group = getGroup(item[key]);
-      groups[group].push(item);
-    });
-
-    // Sort each group based on the direction
-    Object.keys(groups).forEach((group) => {
-      groups[group].sort((a, b) => {
-        // Treat dash values as equal within their group
-        if (a[key] === "-" || b[key] === "-") return 0;
-        return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
-      });
-    });
-
-    // Combine the groups into a single array
-    return groupOrder.flatMap((group) => groups[group]);
-  };
+  const handlePageChange = useCallback((pageNumber) => {
+    setCurrentPage(pageNumber);
+  }, []);
 
   // Handle sort action
-  const handleSort = (columnKey) => {
-    const direction =
-      sortConfig.key === columnKey && sortConfig.direction === "asc"
-        ? "desc"
-        : "asc";
-    setSortConfig({ key: columnKey, direction });
-  };
+  const handleSort = useCallback(
+    (columnKey) => {
+      const direction =
+        sortConfig.key === columnKey && sortConfig.direction === "asc"
+          ? "desc"
+          : "asc";
+      setSortConfig({ key: columnKey, direction });
+    },
+    [sortConfig]
+  );
 
-  // Sort the filtered data based on the current sort configuration
-  const sortedData = useMemo(() => {
+  const getSortedData = (data, sortConfig) => {
     if (sortConfig.key) {
       if (config.peFieldIds.has(sortConfig.key)) {
-        return customSort(filteredData, sortConfig.key, sortConfig.direction);
+        return customSort(data, sortConfig.key, sortConfig.direction);
       }
-      return [...filteredData].sort((a, b) => {
+      return [...data].sort((a, b) => {
         const aValue = a[sortConfig.key] === "-" ? null : a[sortConfig.key];
         const bValue = b[sortConfig.key] === "-" ? null : b[sortConfig.key];
 
         if (aValue === null) return 1; // Place dash at the bottom
         if (bValue === null) return -1; // Place dash at the bottom
 
-        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-
-        return 0;
+        return sortConfig.direction === "asc"
+          ? aValue - bValue
+          : bValue - aValue;
       });
     }
-    return filteredData;
-  }, [filteredData, sortConfig]);
+    return data;
+  };
+
+  const sortedData = useMemo(
+    () => getSortedData(filteredData, sortConfig),
+    [filteredData, sortConfig]
+  );
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const validCurrentPage = Math.min(Math.max(currentPage, 1), totalPages);
@@ -162,6 +124,31 @@ const ScreenerTable = ({
     validCurrentPage - Math.floor(paginationRange / 2)
   );
   const endPage = Math.min(totalPages, startPage + paginationRange - 1);
+
+  // Prepare summary data based on all columns, ensuring fixed columns are included with empty strings
+  const summaryData = useMemo(() => {
+    return columns.reduce((acc, column) => {
+      if (column.fixed) {
+        acc[column.key] = "";
+      } else if (!column.hidden && typeof column.key === "number") {
+        const value = computeTotalOrAverage(
+          filteredData,
+          column.key,
+          column.indicator
+        );
+        acc[column.key] = value !== null ? value : "";
+      }
+      return acc;
+    }, {});
+  }, [columns, selectedOptions]); // Add dependencies here
+
+  // to control the show and hide of the summary row
+  const showSummaryRow = () => {
+    return (
+      selectedOptions.length === 1 &&
+      Object.values(summaryData).some((value) => value !== "")
+    );
+  };
 
   return (
     <Row>
@@ -190,6 +177,9 @@ const ScreenerTable = ({
                       config={config}
                     />
                   ))}
+                  {showSummaryRow() && (
+                    <SummaryRow row={summaryData} columns={columns} />
+                  )}
                 </tbody>
               </Table>
             </div>
