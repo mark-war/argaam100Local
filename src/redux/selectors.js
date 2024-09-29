@@ -223,13 +223,6 @@ export const selectLocalizedSectors = createSelector(
   }
 );
 
-export const selectCurrentLanguage_ = createSelector(
-  [currentLanguageState],
-  (currentLanguage) => {
-    return currentLanguage ? currentLanguage : config.defaultLanguage;
-  }
-);
-
 export const selectSubSectionsSubTabs = (tabId, lang) =>
   createSelector([toptenDataMultipleState], (topTenMultipleData) => {
     const sectionTabData = topTenMultipleData.filter(

@@ -31,6 +31,7 @@ const TopTenCompaniesPage = () => {
   //defaultActiveTab
   const [activeTabLink, setActiveTabLink] = useState(8);
 
+  // default active subtabs will be index 0 for each subsection
   const [activeSubTabs, setActiveSubTabs] = useState({
     0: 0,
     1: 0,
@@ -54,7 +55,7 @@ const TopTenCompaniesPage = () => {
 
   const handleActiveTabLink = (tab) => {
     setActiveTabLink(tab);
-    setActiveSubTabs({ 0: 0, 1: 0, 2: 0, 3: 0 });
+    setActiveSubTabs({ 0: 0, 1: 0, 2: 0, 3: 0 }); // reset to default when active tab is changed
   };
 
   // Memoize tabLinksArray to avoid recalculating it unnecessarily
@@ -88,11 +89,13 @@ const TopTenCompaniesPage = () => {
     return map;
   }, [fieldConfigurations]);
 
+  // switch data source
   const getFilteredData = (isMultiple) => {
     const data = isMultiple ? topTenDataMultiple : topTenData;
     return filterAndMapData(data);
   };
 
+  // filter data using the identifier and map using the field id (second index of the identifier)
   const filterAndMapData = (data) => {
     if (!activeTabLink || !data) return [];
 

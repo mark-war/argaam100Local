@@ -1,74 +1,63 @@
 import { INDICATOR } from "./constants/localizedStrings";
 
-// Extracted function to get the first dynamic column
+// get the first dynamic column
 export const getFirstDynamicColumn = (columns) => {
   return columns.find((col) => typeof col.key === "number" && !col.hidden);
 };
 
-export const computeTotalOrAverage_ = (data, columnKey, indicator) => {
-  const validData = data.filter((row) => typeof row[columnKey] === "number");
-  if (validData.length === 0) return "-"; // Return "-" when all values are dashes
-
-  const total = validData.reduce((sum, row) => sum + row[columnKey], 0);
-  const average = total / validData.length;
-
-  return indicator === INDICATOR.AVERAGE ? average : total;
-};
-
-// Extracted function to compute total or average
+// to compute total or average for the summary row
 export const computeTotalOrAverage = (data, columnKey, indicator) => {
-  // Check if all values in the column are "-"
-  const allNonNumeric = data.every(
-    (row) => row[columnKey] === "-" || typeof row[columnKey] !== "number"
-  );
+  let total = 0;
+  let nonNumericCount = 0;
 
-  if (allNonNumeric) {
+  for (let i = 0; i < data.length; i++) {
+    const value = data[i][columnKey];
+    if (typeof value === "number") {
+      total += value;
+    } else if (value === "-") {
+      nonNumericCount++;
+    }
+  }
+
+  // If all values are non-numeric, return "-"
+  if (nonNumericCount === data.length) {
     return "-";
   }
 
-  const total = data.reduce(
-    (sum, row) =>
-      typeof row[columnKey] === "number" ? sum + row[columnKey] : sum,
-    0
-  );
-  const average = total / data.length;
-
+  const average = total / (data.length - nonNumericCount); // Avoid counting non-numeric rows
   return indicator === INDICATOR.AVERAGE ? average : total;
 };
 
-// Extracted function for custom sorting
+// custom sorting for P/E columns
 export const customSort = (data, key, direction) => {
   // Define the group for each value
   const getGroup = (value) => {
-    if (value === "-" || value === undefined || value === null) return 3; // Dash values (last group)
-    if (value < 0) return 2; // Negatives (last group)
-    if (value >= 100) return 1; // Positives >= 100 (second group)
-    return 0; // Positives < 100 (first group)
+    if (value === "-" || value === undefined || value === null) return 3; // Dash values group
+    if (value < 0) return 2; // Negative values group
+    if (value >= 100) return 1; // Positives >= 100 group
+    return 0; // Positives < 100 group
   };
 
-  // Define the fixed group order
-  const groupOrder = [0, 1, 2, 3]; // Fixed order: positives < 100, positives >= 100, negatives
+  // Preallocate the groups array for efficiency
+  const groups = [[], [], [], []];
 
-  // Separate data into groups
-  const groups = groupOrder.reduce((acc, group) => {
-    acc[group] = [];
-    return acc;
-  }, {});
-
+  // Assign each data item to the correct group
   data.forEach((item) => {
     const group = getGroup(item[key]);
     groups[group].push(item);
   });
 
-  // Sort each group based on the direction
-  Object.keys(groups).forEach((group) => {
-    groups[group].sort((a, b) => {
-      // Treat dash values as equal within their group
-      if (a[key] === "-" || b[key] === "-") return 0;
-      return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
-    });
+  // Sort only non-dash groups
+  groups.forEach((group, index) => {
+    if (group.length > 1 && index !== 3) {
+      // Skip the dash group (index 3)
+      group.sort((a, b) => {
+        if (a[key] === "-" || b[key] === "-") return 0;
+        return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
+      });
+    }
   });
 
-  // Combine the groups into a single array
-  return groupOrder.flatMap((group) => groups[group]);
+  // Flatten the groups into a single array
+  return groups.flat();
 };
