@@ -5,8 +5,27 @@ export const getFirstDynamicColumn = (columns) => {
   return columns.find((col) => typeof col.key === "number" && !col.hidden);
 };
 
+export const computeTotalOrAverage_ = (data, columnKey, indicator) => {
+  const validData = data.filter((row) => typeof row[columnKey] === "number");
+  if (validData.length === 0) return "-"; // Return "-" when all values are dashes
+
+  const total = validData.reduce((sum, row) => sum + row[columnKey], 0);
+  const average = total / validData.length;
+
+  return indicator === INDICATOR.AVERAGE ? average : total;
+};
+
 // Extracted function to compute total or average
 export const computeTotalOrAverage = (data, columnKey, indicator) => {
+  // Check if all values in the column are "-"
+  const allNonNumeric = data.every(
+    (row) => row[columnKey] === "-" || typeof row[columnKey] !== "number"
+  );
+
+  if (allNonNumeric) {
+    return "-";
+  }
+
   const total = data.reduce(
     (sum, row) =>
       typeof row[columnKey] === "number" ? sum + row[columnKey] : sum,
