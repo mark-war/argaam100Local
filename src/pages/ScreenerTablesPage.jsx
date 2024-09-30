@@ -77,15 +77,7 @@ const ScreenerTablesPage = () => {
       return null; // Or some placeholder indicating no data is available
     }
 
-    const { columns, data } = transformDataForTable(
-      screenerData,
-      fieldConfigurations,
-      activeTabLink,
-      currentLanguage,
-      sectorIdForFilter
-    );
-
-    const { pinnedRow } = transformDataForTable(
+    const { columns, data, pinnedRow } = transformDataForTable(
       screenerData,
       fieldConfigurations,
       activeTabLink,
@@ -101,12 +93,10 @@ const ScreenerTablesPage = () => {
           <ScreenerTable
             data={data}
             columns={columns}
-            itemsPerPage={config.screenerTableItemPerPage}
             pinnedRow={pinnedRow}
             selectedTab={activeTabLink}
             selectedOptions={selectedOptions}
             setSelectedOptions={setSelectedOptions}
-            decimals={config.decimals}
           />
         )}
       </>

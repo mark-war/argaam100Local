@@ -198,8 +198,9 @@ const ExportDropdown = (activeTabLink = {}) => {
 
   const handleAllTabsExport = () => {
     if (currentPageId === PAGES.SCREENER) {
-      const sectionTabs = tabIdsAndNames.map((tab) => tab.tabId);
-
+      const sectionTabs = tabIdsAndNames
+        ?.sort((a, b) => a.displaySeq - b.displaySeq)
+        .map((tab) => tab.tabId);
       const filteredConfigurations = fieldConfig.filter((config) =>
         sectionTabs.includes(config.TabID)
       );

@@ -3,30 +3,21 @@ import AppRoutes from "./components/routes/AppRoutes";
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { strings } from "./utils/constants/localizedStrings";
 import { resetState } from "./redux/features/screenerDataSlice.js";
 import config from "./utils/config.js";
 import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
 import usePageStructure from "./hooks/usePageStructure"; // New custom hook
 import useFetchSectors from "./hooks/useFetchSectors"; // New custom hook
 import { selectDefaultTab } from "./redux/selectors.js";
+import useLanguage from "./hooks/useLanguage.jsx";
 
 function App() {
   const dispatch = useDispatch();
   const { lang } = useParams();
   const selectedTab = useSelector(selectDefaultTab);
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
 
-  // Update language and page title (Combined logic inside useEffect)
-  useEffect(() => {
-    if (lang && lang !== currentLanguage) {
-      dispatch(setLanguage(lang));
-      strings.setLanguage(lang);
-    }
-    document.title = strings.title;
-  }, [lang, currentLanguage, dispatch]);
+  // Use the custom hook to manage language setting
+  useLanguage(lang, true);
 
   // Custom hook to handle page structure and configuration loading
   usePageStructure();

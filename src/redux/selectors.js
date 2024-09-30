@@ -1,6 +1,5 @@
 import { createSelector } from "reselect";
 import { localized } from "../utils/localization";
-import config from "../utils/config";
 import memoize from "lodash.memoize";
 
 const currentLanguageState = (state) => state.language.currentLanguage;
@@ -87,6 +86,7 @@ export const selectTabIdsAndNamesForSection = (sectionId) =>
       return (selectedSection.tabs || []).map((tab) => ({
         tabId: tab.tabId,
         tabName: localized(tab, "tabName", currentLanguage),
+        displaySeq: tab.displaySeq,
       }));
     }
   );

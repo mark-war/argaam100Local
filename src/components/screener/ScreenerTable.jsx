@@ -25,7 +25,6 @@ import {
 const ScreenerTable = ({
   data,
   columns,
-  itemsPerPage,
   pinnedRow,
   selectedTab,
   selectedOptions, // selected sectors
@@ -36,6 +35,7 @@ const ScreenerTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const initialSortSet = useRef(false);
+  const itemsPerPage = config.screenerTableItemPerPage;
 
   // Set up language on component mount and language change
   useLanguage(lang);
@@ -207,7 +207,6 @@ ScreenerTable.propTypes = {
       className: PropTypes.string,
     })
   ).isRequired,
-  itemsPerPage: PropTypes.number.isRequired,
   pinnedRow: PropTypes.object, // Add this line to accept pinnedRow prop
   selectedTab: PropTypes.number.isRequired, // Add this line to accept selectedTab prop
   selectedOptions: PropTypes.array, // Define prop type for selectedOptions

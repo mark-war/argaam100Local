@@ -102,10 +102,7 @@ const useTabDataFetch = (
       return [];
     }
 
-    const tabIds = screenerSection.tabs.map((tab) => tab.tabId);
-    console.log("Screener tabs:", tabIds); // Log tabIds for debugging
-
-    return tabIds;
+    return screenerSection.tabs.map((tab) => tab.tabId);
   }, [pages]);
 
   useEffect(() => {

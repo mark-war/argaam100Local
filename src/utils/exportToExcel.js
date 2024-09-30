@@ -65,37 +65,34 @@ const applyArabicFormatting = (worksheet) => {
 const customSort = (data, key, direction) => {
   // Define the group for each value
   const getGroup = (value) => {
-    if (value === "-" || value === undefined || value === null) return 3; // Dash values (last group)
-    if (value === strings.neg) return 2; // Negatives (last group)
-    if (value === strings.moreThan100) return 1; // Positives >= 100 (second group)
-    return 0; // Positives < 100 (first group)
+    if (value === "-" || value === undefined || value === null) return 3; // Dash values group
+    if (value < 0) return 2; // Negative values group
+    if (value >= 100) return 1; // Positives >= 100 group
+    return 0; // Positives < 100 group
   };
 
-  // Define the fixed group order
-  const groupOrder = [0, 1, 2, 3]; // Fixed order: positives < 100, positives >= 100, negatives
+  // Preallocate the groups array for efficiency
+  const groups = [[], [], [], []];
 
-  // Separate data into groups
-  const groups = groupOrder.reduce((acc, group) => {
-    acc[group] = [];
-    return acc;
-  }, {});
-
+  // Assign each data item to the correct group
   data.forEach((item) => {
     const group = getGroup(item[key]);
     groups[group].push(item);
   });
 
-  // Sort each group based on the direction
-  Object.keys(groups).forEach((group) => {
-    groups[group].sort((a, b) => {
-      // Treat dash values as equal within their group
-      if (a[key] === "-" || b[key] === "-") return 0;
-      return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
-    });
+  // Sort only non-dash groups
+  groups.forEach((group, index) => {
+    if (group.length > 1 && index !== 3) {
+      // Skip the dash group (index 3)
+      group.sort((a, b) => {
+        if (a[key] === "-" || b[key] === "-") return 0;
+        return direction === "asc" ? a[key] - b[key] : b[key] - a[key];
+      });
+    }
   });
 
-  // Combine the groups into a single array
-  return groupOrder.flatMap((group) => groups[group]);
+  // Flatten the groups into a single array
+  return groups.flat();
 };
 
 const sortData = (unSortedData, sortConfig) => {
@@ -113,14 +110,18 @@ const sortData = (unSortedData, sortConfig) => {
         a[sortConfig.key] === null ||
         a[sortConfig.key] === undefined
           ? null
-          : parseFloat(a[sortConfig.key].replace(/,/g, ""));
+          : typeof a[sortConfig.key] === "string"
+          ? parseFloat(a[sortConfig.key].replace(/,/g, "")) // Remove commas from strings
+          : a[sortConfig.key]; // If it's a number, use it directly
 
       const bValue =
         b[sortConfig.key] === "-" ||
         b[sortConfig.key] === null ||
         b[sortConfig.key] === undefined
           ? null
-          : parseFloat(b[sortConfig.key].replace(/,/g, ""));
+          : typeof a[sortConfig.key] === "string"
+          ? parseFloat(a[sortConfig.key].replace(/,/g, "")) // Remove commas from strings
+          : a[sortConfig.key]; // If it's a number, use it directly
 
       if (aValue === null) return 1; // Place null, undefined, or "-" at the bottom
       if (bValue === null) return -1; // Place null, undefined, or "-" at the bottom
@@ -134,6 +135,32 @@ const sortData = (unSortedData, sortConfig) => {
     // Return the sorted array in the same format as `customSort`
     return sortedArray;
   }
+};
+
+const processRowData = (rowData) => {
+  const formattedRow = {};
+
+  // Iterate through the rowData keys
+  Object.keys(rowData).forEach((key) => {
+    // Check if the key is a numeric string and not one of the fixed keys
+    if (!isNaN(key)) {
+      const value = rowData[key];
+
+      // Check if the key (as a number) is in peFieldIds
+      if (config.peFieldIds.has(Number(key))) {
+        // Format using custom logic for PE fields
+        formattedRow[key] = formatValue(value, 2, true); // PE formatting
+      } else {
+        // General formatting for other fields
+        formattedRow[key] = formatValue(value);
+      }
+    } else {
+      // For fixed fields like company, sector, etc., add them directly to the formattedRow
+      formattedRow[key] = rowData[key];
+    }
+  });
+
+  return formattedRow;
 };
 
 export const exportToExcel = async (
@@ -213,9 +240,10 @@ export const exportToExcel = async (
         const secondToLastKey = keys[keys.length - 2];
 
         // Use the value from the second-to-last key or fallback to "-"
-        const value = config.peFieldIds.has(Number(fieldId))
-          ? formatValue(rowData[secondToLastKey], 2, true)
-          : formatValue(rowData[secondToLastKey]);
+        const value = rowData[secondToLastKey];
+        // config.peFieldIds.has(Number(fieldId))
+        //   ? formatValue(rowData[secondToLastKey], 2, true)
+        //   : formatValue(rowData[secondToLastKey]);
 
         existingCompany[fieldId] = value ?? "-";
       });
@@ -238,14 +266,16 @@ export const exportToExcel = async (
 
   // Add rows to the worksheet
   sortedRowMap.forEach((rowData) => {
-    const newRow = worksheet.addRow(rowData);
+    const formattedRow = processRowData(rowData);
+
+    const newRow = worksheet.addRow(formattedRow);
 
     // Apply hyperlink to the 'fixed_company' cell
-    if (rowData.fixed_company) {
+    if (formattedRow.fixed_company) {
       const cell = newRow.getCell("fixed_company");
       cell.value = {
-        text: rowData.fixed_company,
-        hyperlink: argaamUrl(rowData.CompanyID, currentLanguage),
+        text: formattedRow.fixed_company,
+        hyperlink: argaamUrl(formattedRow.CompanyID, currentLanguage),
       };
       cell.font = { color: { argb: "FF0000FF" }, underline: true };
     }
@@ -342,9 +372,10 @@ export const exportMultipleTabsToExcel = async (
           const secondToLastKey = keys[keys.length - 2];
 
           // Use the value from the second-to-last key or fallback to "-"
-          const value = config.peFieldIds.has(Number(fieldId))
-            ? formatValue(rowData[secondToLastKey], 2, true)
-            : formatValue(rowData[secondToLastKey]);
+          const value = rowData[secondToLastKey];
+          // config.peFieldIds.has(Number(fieldId))
+          //   ? formatValue(rowData[secondToLastKey], 2, true)
+          //   : formatValue(rowData[secondToLastKey]);
 
           existingCompany[fieldId] = value ?? "-";
         });
@@ -367,14 +398,16 @@ export const exportMultipleTabsToExcel = async (
 
     // Add rows to the worksheet
     sortedRowMap.forEach((rowData) => {
-      const newRow = worksheet.addRow(rowData);
+      const formattedRow = processRowData(rowData);
+
+      const newRow = worksheet.addRow(formattedRow);
 
       // Apply hyperlink to the 'fixed_company' cell
-      if (rowData.fixed_company) {
+      if (formattedRow.fixed_company) {
         const cell = newRow.getCell("fixed_company");
         cell.value = {
-          text: rowData.fixed_company,
-          hyperlink: argaamUrl(rowData.CompanyID, currentLanguage),
+          text: formattedRow.fixed_company,
+          hyperlink: argaamUrl(formattedRow.CompanyID, currentLanguage),
         };
         cell.font = { color: { argb: "FF0000FF" }, underline: true };
       }

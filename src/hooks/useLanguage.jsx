@@ -1,21 +1,27 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setLanguage } from "../redux/features/languageSlice.js";
 import { strings } from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
 
-const useLanguage = (lang) => {
+const useLanguage = (lang, setDocumentTitle = false) => {
   const dispatch = useDispatch();
+  const currentLanguage = useSelector(
+    (state) => state.language.currentLanguage
+  );
 
   useEffect(() => {
-    if (config.supportedLanguages.includes(lang)) {
-      strings.setLanguage(lang);
-    } else {
-      const defaultLanguage = config.defaultLanguage;
-      strings.setLanguage(defaultLanguage);
-      dispatch(setLanguage(defaultLanguage));
+    const validLang = config.supportedLanguages.includes(lang)
+      ? lang
+      : config.defaultLanguage;
+
+    if (currentLanguage !== validLang) {
+      strings.setLanguage(validLang);
+      dispatch(setLanguage(validLang));
+      document.documentElement.lang = validLang;
+
+      if (setDocumentTitle) document.title = strings.title;
     }
-    document.documentElement.lang = lang;
   }, [lang, dispatch]);
 };
 
