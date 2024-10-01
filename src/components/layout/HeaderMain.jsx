@@ -98,13 +98,6 @@ const HeaderMain = () => {
           ref={dropdownMobileRef}
         >
           <ul>
-            {/* {navLinks.map((link, index) => (
-              <li key={index} className="nav-item">
-                <NavLink to={link.path} className="nav-link">
-                  {link.name}
-                </NavLink>
-              </li>
-            ))} */}
             <li>
               <a href="#" className="dropdown-item">
                 <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
@@ -159,23 +152,6 @@ const HeaderMain = () => {
         <div className="container-fluid px-layout">
           <div className="d-flex container_inner w-100 align-items-center">
             <div className="flex-fill justify-content-center">
-              {/* <NavLink
-                className="navbar-brand"
-                to={`/${lang}/screener`}
-                onClick={() => (window.location.href = `/${lang}/screener`)}
-              >
-                {lang === LANGUAGES.AR ? (
-                  <img
-                    alt="Argaam Screener Logo"
-                    src="/assets/images/argaam_screener_logo_ar.svg"
-                  />
-                ) : (
-                  <img
-                    alt="Argaam Screener Logo"
-                    src="/assets/images/argaam_screener_logo_en.svg"
-                  />
-                )}
-              </NavLink> */}
               <Suspense fallback={<LoadingScreen />}>
                 <ScreenerLogo />
               </Suspense>

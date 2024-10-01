@@ -178,7 +178,11 @@ const ScreenerTable = ({
                     />
                   ))}
                   {showSummaryRow() && (
-                    <SummaryRow row={summaryData} columns={columns} />
+                    <SummaryRow
+                      row={summaryData}
+                      columns={columns}
+                      tabId={selectedTab}
+                    />
                   )}
                 </tbody>
               </Table>

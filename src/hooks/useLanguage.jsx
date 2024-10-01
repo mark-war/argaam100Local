@@ -4,7 +4,7 @@ import { setLanguage } from "../redux/features/languageSlice.js";
 import { strings } from "../utils/constants/localizedStrings.js";
 import config from "../utils/config.js";
 
-const useLanguage = (lang, setDocumentTitle = false) => {
+const useLanguage = (lang) => {
   const dispatch = useDispatch();
   const currentLanguage = useSelector(
     (state) => state.language.currentLanguage
@@ -19,9 +19,9 @@ const useLanguage = (lang, setDocumentTitle = false) => {
       strings.setLanguage(validLang);
       dispatch(setLanguage(validLang));
       document.documentElement.lang = validLang;
-
-      if (setDocumentTitle) document.title = strings.title;
     }
+
+    document.title = strings.title;
   }, [lang, dispatch]);
 };
 

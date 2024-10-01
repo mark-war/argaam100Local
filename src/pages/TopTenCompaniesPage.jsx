@@ -8,19 +8,20 @@ import useTabDataFetch from "../hooks/useTabDataFetch";
 import { localized } from "../utils/localization";
 import config from "../utils/config.js";
 import {
+  selectCurrentLanguage,
   selectFieldConfigurations,
+  selectPages,
   selectTopTenData,
   selectTopTenDataMultiple,
 } from "../redux/selectors.js";
 
 const TopTenCompaniesPage = () => {
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
+  const pages = useSelector(selectPages);
+  const currentLanguage = useSelector(selectCurrentLanguage);
   const fieldConfigurations = useSelector(selectFieldConfigurations);
+
   const topTenData = useSelector(selectTopTenData);
   const topTenDataMultiple = useSelector(selectTopTenDataMultiple);
-  const pages = useSelector((state) => state.pages.pages);
 
   // Get the selected page and section
   const selectedPage = pages.find((page) => page.pageId === PAGES.TOPTEN);
@@ -29,7 +30,7 @@ const TopTenCompaniesPage = () => {
   );
 
   //defaultActiveTab
-  const [activeTabLink, setActiveTabLink] = useState(8);
+  const [activeTabLink, setActiveTabLink] = useState(TABS.T_RANKING);
 
   // default active subtabs will be index 0 for each subsection
   const [activeSubTabs, setActiveSubTabs] = useState({
@@ -67,13 +68,13 @@ const TopTenCompaniesPage = () => {
       nameEn: tab.tabNameEn,
       nameAr: tab.tabNameAr,
     }));
-  }, [selectedSection?.tabs]);
+  }, [selectedSection, currentLanguage]);
 
   useEffect(() => {
     if (tabLinksArray.length > 0) {
       setActiveTabLink(tabLinksArray[0].tabLinkId);
     }
-  }, [tabLinksArray]);
+  }, [tabLinksArray, currentLanguage]);
 
   // Create a map of field configurations for easier lookup
   const fieldConfigMap = useMemo(() => {

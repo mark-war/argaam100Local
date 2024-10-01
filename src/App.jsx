@@ -1,6 +1,6 @@
 import "./App.css";
 import AppRoutes from "./components/routes/AppRoutes";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { resetState } from "./redux/features/screenerDataSlice.js";
@@ -10,6 +10,7 @@ import usePageStructure from "./hooks/usePageStructure"; // New custom hook
 import useFetchSectors from "./hooks/useFetchSectors"; // New custom hook
 import { selectDefaultTab } from "./redux/selectors.js";
 import useLanguage from "./hooks/useLanguage.jsx";
+import { strings } from "./utils/constants/localizedStrings.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function App() {
   const selectedTab = useSelector(selectDefaultTab);
 
   // Use the custom hook to manage language setting
-  useLanguage(lang, true);
+  useLanguage(lang);
 
   // Custom hook to handle page structure and configuration loading
   usePageStructure();
@@ -61,10 +62,20 @@ function App() {
   }, [handleKeyDown, dispatch]);
 
   // Use the custom hook to handle tab data fetching
-  const { loading } = useTabDataFetch(
+  const { loading: hookLoading } = useTabDataFetch(
     selectedTab?.tabId,
     config.expirationInMinutes
   );
+
+  const [loading, setLoading] = useState(true);
+
+  // Track selectedTab changes and sync loading state
+  useEffect(() => {
+    if (selectedTab?.tabId) {
+      // Sync the local loading state with the hook's loading state
+      setLoading(hookLoading);
+    }
+  }, [selectedTab, hookLoading]); // Re-run when selectedTab or hookLoading changes
 
   return (
     <div className="App">

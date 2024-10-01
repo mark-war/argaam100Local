@@ -50,6 +50,8 @@ export const strings = new LocalizedStrings({
     reits: "Reits",
     financing: "Financing",
     and: "and",
+    total: "Total",
+    average: "Average",
   },
   ar: {
     topTen: "أعلى 10",
@@ -99,6 +101,8 @@ export const strings = new LocalizedStrings({
     reits: "الريت",
     financing: "التمويل",
     and: "و",
+    total: "المجموع",
+    average: "متوسط",
   },
 });
 

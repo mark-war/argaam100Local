@@ -512,9 +512,9 @@ const exportDataToExcel = async (
 
       // Add the headers
       worksheet.columns = [
-        { header: "Rank", key: "Rank", width: 10 },
-        { header: "Company", key: "Company", width: 30 },
-        { header: "Value", key: "Value", width: 15 },
+        { header: strings.rank, key: "Rank", width: 10 },
+        { header: strings.companies, key: "Company", width: 30 },
+        { header: "", key: "Value", width: 15 },
       ];
 
       // Add rows from mappedTable
@@ -548,9 +548,9 @@ const exportDataToExcel = async (
 
       // Add the headers
       worksheet.columns = [
-        { header: "Rank", key: "Rank", width: 10 },
-        { header: "Company", key: "Company", width: 30 },
-        { header: "Value", key: "Value", width: 15 },
+        { header: strings.rank, key: "Rank", width: 10 },
+        { header: strings.companies, key: "Company", width: 30 },
+        { header: "", key: "Value", width: 15 },
       ];
 
       // Add rows from mappedTable

@@ -2,34 +2,60 @@ import React from "react";
 import PropTypes from "prop-types";
 import NumberFormatter from "../common/NumberFormatter";
 import config from "../../utils/config";
+import { strings, TABS } from "../../utils/constants/localizedStrings";
 
-const SummaryRow = ({ row = {}, columns }) => {
+// Helper function to get value for the cell
+const getValue = (row, columnKey, tabId) => {
+  if (row[columnKey] !== undefined) {
+    return row[columnKey];
+  }
+
+  if (columnKey === "fixed_sector") {
+    return tabId === TABS.S_PERFORMANCE_AND_SIZE
+      ? strings.total
+      : strings.average;
+  }
+
+  if (columnKey === "fixed_company") {
+    return strings.sector;
+  }
+
+  return ""; // Default to empty string if no condition is met
+};
+
+// Helper function to determine the CSS class for the table cell
+const getTdClassName = (value, columnClassName) => {
+  return typeof value === "number" || value === "-"
+    ? `text-center ${columnClassName}`
+    : columnClassName || "";
+};
+
+// Helper function to render individual columns
+const renderColumn = (column, value, row) => (
+  <td key={column.key} className={getTdClassName(value, column.className)}>
+    <span
+      style={{
+        color: value < 0 ? "red" : "inherit",
+      }}
+    >
+      <NumberFormatter
+        value={value}
+        isPEColumn={config.peFieldIds.has(column.key)}
+      />
+    </span>
+  </td>
+);
+
+const SummaryRow = ({ row = {}, columns, tabId }) => {
   return (
     <tr className="total_row">
       {columns.map((column) => {
-        // Skip rendering if the column is hidden
         if (column.hidden) {
-          return null; // Skip this column
+          return null; // Skip hidden columns
         }
 
-        // Safely access summaryData[column.key], default to "" if undefined
-        const value = row[column.key] !== undefined ? row[column.key] : "";
-
-        // Render the column
-        return (
-          <td key={column.key} className={`text-center ${column.className}`}>
-            <span
-              style={{
-                color: row[column.key] < 0 ? "red" : "inherit",
-              }}
-            >
-              <NumberFormatter
-                value={value}
-                isPEColumn={config.peFieldIds.has(column.key)}
-              />
-            </span>
-          </td>
-        );
+        const value = getValue(row, column.key, tabId);
+        return renderColumn(column, value, row);
       })}
     </tr>
   );
@@ -47,6 +73,7 @@ SummaryRow.propTypes = {
       type: PropTypes.string, // Indicates the type of data in the column
     })
   ).isRequired,
+  tabId: PropTypes.number.isRequired, // Tab ID to determine whether to show "Total" or "Average"
 };
 
 export default SummaryRow;

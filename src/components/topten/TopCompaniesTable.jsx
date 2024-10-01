@@ -1,9 +1,9 @@
 import React, { useMemo, useCallback } from "react";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 import { Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { selectCurrentLanguage } from "../../redux/selectors";
 import SubSection from "./SubSection";
+import useLanguage from "../../hooks/useLanguage";
+import { useParams } from "react-router-dom";
 
 const TopCompaniesTable = ({
   selectedTab,
@@ -11,17 +11,18 @@ const TopCompaniesTable = ({
   isMultiple,
   onSubTabsChange,
 }) => {
-  const currentLanguage = useSelector(selectCurrentLanguage);
+  const { lang } = useParams(); // Access the current language from URL parameters
+
+  useLanguage(lang);
 
   const filterDataBySelectedTab = useCallback(
     (tab) => {
       return data.filter(
         (item) =>
-          item.identifier.startsWith(tab) &&
-          item.identifier.endsWith(currentLanguage)
+          item.identifier.startsWith(tab) && item.identifier.endsWith(lang)
       );
     },
-    [data, currentLanguage]
+    [data, lang]
   );
 
   const filteredData = useMemo(
@@ -37,7 +38,7 @@ const TopCompaniesTable = ({
             key={index}
             section={subSection}
             selectedTabKey={selectedTab}
-            currentLanguage={currentLanguage}
+            currentLanguage={lang}
             isMultiple={isMultiple}
             onSubTabsChange={onSubTabsChange}
             subSectionIndex={index} // Pass the index as subSectionIndex
