@@ -2462,3 +2462,9 @@ footer {
   border-bottom: 1px solid #e0e0e0 !important;
   font-weight: 500;
 }
+
+
+.table.table_layout.table_full tr.total_row td {
+  background: #f1f1f1 !important;
+  border-top: 1px solid #ccc;
+}
