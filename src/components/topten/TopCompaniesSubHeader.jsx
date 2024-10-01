@@ -4,6 +4,7 @@ import { localized } from "../../utils/localization";
 import { PAGES } from "../../utils/constants/localizedStrings";
 import ExportDropdown from "../common/ExportDropdown";
 import PrintButton from "../common/PrintButton";
+import { selectCurrentLanguage } from "../../redux/selectors";
 
 const TopCompaniesSubHeader = ({
   title,
@@ -12,9 +13,7 @@ const TopCompaniesSubHeader = ({
   handleActiveTabLink,
   activeSubTabs,
 }) => {
-  const currentLanguage = useSelector(
-    (state) => state.language.currentLanguage
-  );
+  const currentLanguage = useSelector(selectCurrentLanguage);
   return (
     <div className="shadow_btm sub_header top_companies">
       <div className="d-flex mt-4 mb-2 border_gray px-layout">

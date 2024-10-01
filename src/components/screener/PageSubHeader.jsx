@@ -1,15 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import { PAGES, TABS } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
-import { selectCurrentLanguage } from "../../redux/selectors";
 import { localized } from "../../utils/localization";
-import { setLanguage } from "../../redux/features/languageSlice";
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
 import FinancialRatioMessage from "./FinancialRationMessage";
 import LastUpdate from "./LastUpdate";
 import PrintButton from "../common/PrintButton";
+import useLanguage from "../../hooks/useLanguage";
 
 const PageSubHeader = ({
   title,
@@ -20,19 +18,8 @@ const PageSubHeader = ({
   selectedOptions, // Pass selectedOptions here
   setSelectedOptions, // Receive setSelectedOptions here
 }) => {
-  const currentLanguage = useSelector(selectCurrentLanguage);
-
-  const dispatch = useDispatch();
-  const location = useLocation();
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const langParam = params.get("lang");
-
-    if (langParam && langParam !== currentLanguage) {
-      dispatch(setLanguage(langParam));
-    }
-  }, [location.search, currentLanguage, dispatch]);
+  const { lang } = useParams();
+  const currentLanguage = useLanguage(lang);
 
   const handleSelectedOptionsChange = useCallback(
     (newSelectedOptions) => {

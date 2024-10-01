@@ -10,14 +10,10 @@ const getValue = (row, columnKey, tabId) => {
     return row[columnKey];
   }
 
-  if (columnKey === "fixed_sector") {
+  if (columnKey === "fixed_code") {
     return tabId === TABS.S_PERFORMANCE_AND_SIZE
       ? strings.total
       : strings.average;
-  }
-
-  if (columnKey === "fixed_company") {
-    return strings.sector;
   }
 
   return ""; // Default to empty string if no condition is met
@@ -27,7 +23,7 @@ const getValue = (row, columnKey, tabId) => {
 const getTdClassName = (value, columnClassName) => {
   return typeof value === "number" || value === "-"
     ? `text-center ${columnClassName}`
-    : columnClassName || "";
+    : `${columnClassName}` || "";
 };
 
 // Helper function to render individual columns

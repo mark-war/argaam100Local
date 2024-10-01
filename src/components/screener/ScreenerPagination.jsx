@@ -12,14 +12,6 @@ const ScreenerPagination = ({
   return (
     <div className="pagination px-layout justify-content-end">
       <Pagination>
-        {/* First Page */}
-        {/* <Pagination.First
-          disabled={validCurrentPage === 1}
-          onClick={() => handlePageChange(1)}
-          className="custom-first-btn"
-        >
-          First
-        </Pagination.First> */}
         <Pagination.Prev
           disabled={validCurrentPage === 1}
           onClick={() => handlePageChange(validCurrentPage - 1)}
@@ -73,14 +65,6 @@ const ScreenerPagination = ({
             </g>
           </svg>
         </Pagination.Next>
-        {/* Last Page */}
-        {/* <Pagination.Last
-          disabled={validCurrentPage === totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className="custom-last-btn"
-        >
-          Last
-        </Pagination.Last> */}
       </Pagination>
     </div>
   );
