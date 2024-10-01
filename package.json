@@ -9,8 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "serve": "vite preview",
-    "postbuild": "node postbuild.js",
-    "start": "node your-script.js"
+    "postbuild": "node postbuild.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.6",
