@@ -42,7 +42,7 @@ const argaamUrl = (companyID = "", lang) => {
 const applyArabicFormatting = (worksheet) => {
   // Set the worksheet properties to indicate RTL
   worksheet.properties.outline = { summaryBelow: false }; // Optional, adjust as needed
-  worksheet.properties.tabColor = { argb: "FF0000" }; // Optional, adjust color if needed
+  //worksheet.properties.tabColor = { argb: "FF0000" }; // Optional, adjust color if needed
 
   // Set alignment to right for all columns in the worksheet
   worksheet.columns.forEach((column) => {
