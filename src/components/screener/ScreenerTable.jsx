@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import ScreenerPagination from "./ScreenerPagination";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow.jsx";
-import { TABS } from "../../utils/constants/localizedStrings";
+import { strings, TABS } from "../../utils/constants/localizedStrings";
 import config from "../../utils/config.js";
 import PinnedRow from "./PinnedRow.jsx";
 import SummaryRow from "./SummaryRow.jsx";
@@ -158,6 +158,7 @@ const ScreenerTable = ({
 
           <div class="flex-fill text_right"><p class="font-20 mb-0 date">Last Update : 15/10/2024</p></div>
             <div className="table-responsive">
+              <span>{strings.tableComment}</span>
               <Table
                 className="table_layout table_full"
                 striped

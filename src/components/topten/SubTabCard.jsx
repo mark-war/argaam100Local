@@ -5,6 +5,7 @@ import { strings, TABS } from "../../utils/constants/localizedStrings";
 import { localized } from "../../utils/localization";
 import NumberFormatter from "../common/NumberFormatter";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
+import useArgaamUrl from "../../hooks/useArgaamUrl";
 
 const SubTabCard = ({
   section,
@@ -16,6 +17,20 @@ const SubTabCard = ({
   activeSubTab,
 }) => {
   const selectedTab = Number(section.identifier.split("-")[0]);
+  const argaamUrl = useArgaamUrl();
+
+  const renderCompanyColumn = (item) => (
+    <a
+      target="_blank"
+      rel="noreferrer"
+      href={`${argaamUrl(item.Code.split(".")[0])}`}
+      className="company-link"
+    >
+      <img alt="Image" src={item.LogoUrl} className="logo_image" />
+      <span>{localized(item, "ShortName", currentLanguage)}</span>
+    </a>
+  );
+
   const processSubSection = useCallback(
     (data) => {
       if (
@@ -40,7 +55,39 @@ const SubTabCard = ({
       );
 
       // Generate rank to bar width based on the values
-      const rankToBarWidth = generateRankToBarWidth(values, 75, 5, selectedTab);
+      const rankToBarWidth = generateRankToBarWidth(values, selectedTab);
+
+      // Determine the max value from the second to last property
+      const maxValue = Math.max(
+        ...data.map((item) => item[secondToLastProperty] || 0)
+      );
+
+      // Function to check if there is a significant drop in rank
+      const hasSignificantDrop = (prev, curr) => {
+        if (curr !== 0) {
+          const percentageChange = (prev / curr) * 100;
+          return percentageChange > 200; // More than 200% drop
+        }
+        return false;
+      };
+
+      // Store the ellipsis visibility for each item
+      const ellipsisVisibility = new Array(data.length).fill(false);
+
+      // Compute ellipsis visibility
+      for (let i = 1; i < data.length; i++) {
+        const prevItem = data[i - 1];
+        const currItem = data[i];
+        if (
+          hasSignificantDrop(
+            prevItem[secondToLastProperty],
+            currItem[secondToLastProperty]
+          )
+        ) {
+          ellipsisVisibility[i - 1] = true; // Show ellipsis on the previous rank
+        }
+      }
+
       if (!data === null) return null;
       return data.map((item, index) => {
         const chartValue = secondToLastProperty
@@ -48,6 +95,14 @@ const SubTabCard = ({
           : 0;
         const rank = item.Rank ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "0%";
+
+        // Determine row width based on the max value
+        const getRowWidth = (maxValue) => {
+          if (maxValue > 1_000_000) return "82%"; // More than 1 million
+          if (maxValue > 100000) return "85%"; // More than 100
+          return "90%"; // Default case
+        };
+        const rowWidth = getRowWidth(maxValue);
 
         const valueString =
           item[thirdToLastProperty] !== null &&
@@ -57,6 +112,18 @@ const SubTabCard = ({
             ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
             : null;
 
+        // Show ellipsis if the next rank exists and there's a significant drop
+        const showEllipsis =
+          index < data.length - 1 && // Ensure not the last item
+          hasSignificantDrop(
+            item[secondToLastProperty],
+            data[index + 1][secondToLastProperty]
+          );
+
+        const adjustedChartWidth = showEllipsis
+          ? `${Math.max(0, parseFloat(chartWidth) - 5)}%`
+          : chartWidth;
+
         return (
           <tr key={index}>
             <td>
@@ -64,13 +131,21 @@ const SubTabCard = ({
             </td>
             <td className="td_img">
               <span className="d-flex align-items-center">
-                <img alt="Image" src={item.LogoUrl} className="logo_image" />
-                <span>{localized(item, "ShortName", currentLanguage)}</span>
+                {renderCompanyColumn(item)}
               </span>
             </td>
             <td>
-              <div className="charts_table_bg">
-                <span className="bg" style={{ width: chartWidth }}></span>
+              <div className="charts_table_bg" style={{ width: rowWidth }}>
+                <span
+                  className="bg"
+                  style={{ width: adjustedChartWidth }}
+                ></span>
+                {showEllipsis && (
+                  <>
+                    <div className="ellipsis">......</div>
+                    <div className="ellipsis">......</div>
+                  </>
+                )}
                 {valueString !== null ? (
                   valueString
                 ) : (
@@ -119,7 +194,12 @@ const SubTabCard = ({
       });
 
       // Generate rank to bar width based on the values
-      const rankToBarWidth = generateRankToBarWidth(values, 75, 5, selectedTab);
+      const rankToBarWidth = generateRankToBarWidth(values, selectedTab);
+
+      // Determine the max value from the second to last property
+      const maxValue = Math.max(
+        ...subSection.map((item) => item[secondToLastProperty] || 0)
+      );
 
       // Map over subSection to create rows
       return subSection.map((item, index) => {
@@ -129,6 +209,14 @@ const SubTabCard = ({
             : 0;
         const rank = item.Rank ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "0%";
+
+        // Determine row width based on the max value
+        const getRowWidth = (maxValue) => {
+          if (maxValue > 1_000_000) return "82%"; // More than 1 million
+          if (maxValue > 100000) return "85%"; // More than 100
+          return "90%"; // Default case
+        };
+        const rowWidth = getRowWidth(maxValue);
 
         const valueString =
           item[thirdToLastProperty] !== null &&
@@ -150,7 +238,7 @@ const SubTabCard = ({
               </span>
             </td>
             <td>
-              <div className="charts_table_bg">
+              <div className="charts_table_bg" style={{ width: rowWidth }}>
                 <span
                   className="bg"
                   style={{
@@ -165,15 +253,6 @@ const SubTabCard = ({
                 )}
               </div>
             </td>
-            {/* <td>
-              <span>
-                {valueString !== null ? (
-                  valueString
-                ) : (
-                  <NumberFormatter value={chartValue || 0} />
-                )}
-              </span>
-            </td> */}
           </tr>
         );
       });

@@ -156,7 +156,7 @@ const HeaderMain = () => {
                 <ScreenerLogo />
               </Suspense>
             </div>
-            <div className="flex-fill justify_content_center sub_nav">
+            <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                 {navLinks.map((link, index) => (
                   <li key={index} className="nav-item">
@@ -167,7 +167,7 @@ const HeaderMain = () => {
                 ))}
               </ul>
             </div>
-            <div className="flex-fill justify-content-end">
+            <div className="flex-fill justify-content-end no-print">
               <div className="justify_content_end w-100">
                 <div className="d_flex justify_content_end">
                   <div className="d_flex nav_toggle_container">

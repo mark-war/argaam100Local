@@ -19,6 +19,7 @@ import {
   // selectSubSectionsSubTabs,
 } from "../../redux/selectors";
 import {
+  LANGUAGES,
   PAGES,
   SECTIONS,
   strings,
@@ -43,6 +44,14 @@ const ExportDropdown = (activeTabLink = {}) => {
   const fieldConfig = useSelector(selectFieldConfigurations);
   const activeTabName = useSelector(
     selectDefaultLocalizedTabNameById(selectedTab)
+  );
+
+  const activeTabNameScreener = useSelector(
+    selectLocalizedTabNameById(
+      PAGES.SCREENER,
+      SECTIONS.STOCK_SCREENER,
+      selectedTab
+    )
   );
 
   const activeTabNameTopTen = useSelector(
@@ -132,14 +141,14 @@ const ExportDropdown = (activeTabLink = {}) => {
         fieldConfig,
         selectedTab,
         currentLanguage,
-        "ArgaamScreener",
+        activeTabNameScreener,
         activeTabName
       );
     } else {
       exportToExcelTopTen(
         structuredTopTenData,
         currentLanguage,
-        "ArgaamScreener_TopTen",
+        activeTabNameTopTen,
         activeTabNameTopTen,
         isMultiple,
         activeSubTabs
@@ -214,7 +223,7 @@ const ExportDropdown = (activeTabLink = {}) => {
           filteredConfigurations,
           tabIdsAndNames,
           currentLanguage,
-          "ArgaamScreener_Multiple"
+          "Screener"
         );
       });
     } else exportMultipleTabsToExcelTopTen();
@@ -240,7 +249,7 @@ const ExportDropdown = (activeTabLink = {}) => {
   }, [dropdownRef]);
 
   return (
-    <div className="export-dropdown" ref={dropdownRef}>
+    <div className="export-dropdown no-print" ref={dropdownRef}>
       <a className="screen_icons" href="#" onClick={toggleDropdown}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -281,16 +290,31 @@ const ExportDropdown = (activeTabLink = {}) => {
         </svg>
       </a>
       {dropdownOpen && (
-        <div className="export-dropdown-menu">
+        <div
+          className="export-dropdown-menu"
+          style={
+            currentPageId === PAGES.TOPTEN && currentLanguage === LANGUAGES.EN
+              ? { top: "50px" }
+              : currentPageId === PAGES.TOPTEN &&
+                currentLanguage === LANGUAGES.AR
+              ? { top: "65px" }
+              : {}
+          }
+        >
           <button onClick={() => handleExport("current")}>
             {strings.exportCurrent}
           </button>
-          <button
+          {/* <button
             className={currentPageId === PAGES.TOPTEN ? "disabled" : ""}
             onClick={() => handleExport("all")}
           >
             {strings.exportAllTabs}
-          </button>
+          </button> */}
+          {currentPageId !== PAGES.TOPTEN && (
+            <button onClick={() => handleExport("all")}>
+              {strings.exportAllTabs}
+            </button>
+          )}
         </div>
       )}
     </div>

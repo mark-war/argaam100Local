@@ -264,7 +264,7 @@ div {
 
 .export-dropdown-menu {
   position: absolute;
-  top: 50px; /* Adjust based on your layout */
+  top: 70px; /* Adjust based on your layout */
   right: 0;
   background-color: white;
   border: 1px solid #ccc;
@@ -900,16 +900,27 @@ button.disabled {
 
 .charts_table_bg {
   display: flex;
-  width: 83%;
+  width: 82%; /* Set the base width */
 }
 
 .charts_table_bg span.bg {
   background: #9ac6e6;
   height: 25px;
   width: 100%;
-  display: block;
-  margin-right: 15px;
+  display: flex;
+  margin-right: 10px;
   flex-shrink: 0.05;
+}
+
+.ellipsis {
+  position: relative; /* Positioning ellipsis */
+  width: 100%; /* Width of the ellipsis */
+  height: 25px; /* Height of the ellipsis */
+  background-color: #9ac6e6; /* Color of the ellipsis */
+  color: #9ac6e6;
+  border-radius: 50%; /* Make it circular */
+  margin-right: 10px;
+  margin-left: -8px;
 }
 
 .table_chart tbody td:first-child,
@@ -976,6 +987,7 @@ button.disabled {
   position: absolute;
   right: auto; /* Remove the right positioning */
   left: 0; /* Position it on the left side */
+  top: 80px;
 }
 
 [lang="ar"] .export-dropdown-menu button {
@@ -1397,7 +1409,12 @@ button.disabled {
 
 [lang="ar"] .charts_table_bg span.bg {
   margin-right: 0;
-  margin-left: 15px;
+  margin-left: 10px;
+}
+
+[lang="ar"] .ellipsis {
+  margin-right: -8px;
+  margin-left: 10px;
 }
 
 [lang="ar"] .multi_select_toggle {
@@ -2118,8 +2135,6 @@ footer {
     left: 0;
   }
 
- 
-
   .reset__button {
     margin-right: 0;
     margin-left: 10px;
@@ -2144,11 +2159,6 @@ footer {
   .table_layout.table td {
     font-size: 0.938rem;
   }
-
-  
-
-
-
 
   .tabs_nav.navbar-nav .nav-item .nav-link.active span {
     padding-bottom: 6px;
@@ -2309,7 +2319,6 @@ footer {
     padding-left: 1rem !important;
   }
 
-
   .table_chart th:nth-child(3) {
     padding-right: 10px;
     padding-left: 5px;
@@ -2318,10 +2327,6 @@ footer {
   /* .table_chart tbody td:nth-child(2), .table_chart th:nth-child(2) {
     width: 33%;
   } */
-
-
-
-
 
   .border_gray.section_heading {
     align-items: flex-end;
@@ -2436,21 +2441,27 @@ footer {
   }
 
   .bg {
-    height: 20px;
     color: blue;
     background-color: blue;
     margin-right: 8px;
-    width: 100px; /* Set fixed width for testing */
-    display: inline-block; /* Ensure it's treated as a block element for visibility */
-  }
-
-  /* Optional: adjust the width for printing, if needed */
-  .bg {
     width: auto; /* Use auto for responsive adjustments */
+    flex: 1; /* Allow it to grow and fill available space */
   }
 
   li {
     display: inline-flex;
+    flex-wrap: wrap; /* Allow items to wrap if needed */
+  }
+
+  @media print and (max-width: 800px) {
+    body {
+      font-size: 10pt; /* Smaller font size for smaller prints */
+    }
+
+    th,
+    td {
+      padding: 4px; /* Reduce padding for smaller prints */
+    }
   }
 }
 
@@ -2459,7 +2470,11 @@ footer {
   cursor: pointer;
 }
 
-[lang="ar"] .sub_heading_tabs_container .tabs_nav.navbar-nav .nav-item:nth-child(4) a {
+[lang="ar"]
+  .sub_heading_tabs_container
+  .tabs_nav.navbar-nav
+  .nav-item:nth-child(4)
+  a {
   border-left: 0 !important;
 }
 
@@ -2467,12 +2482,10 @@ footer {
   border-right: 0;
 }
 
-
 .table_layout.table_full tr.total_row:last-child td {
   border-bottom: 1px solid #e0e0e0 !important;
   font-weight: 500;
 }
-
 
 .table.table_layout.table_full tr.total_row td {
   background: #f1f1f1 !important;

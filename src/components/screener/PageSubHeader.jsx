@@ -73,7 +73,7 @@ const PageSubHeader = ({
             onChange={handleSelectedOptionsChange}
           />
 
-          <div className="d_flex">
+          <div className="d_flex no-print">
             <PrintButton />
             <ExportDropdown
               activeTabLink={activeTabLink}
