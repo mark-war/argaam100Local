@@ -43,8 +43,8 @@ export const fetchScreenerData = createAsyncThunk(
             try {
               // process the default subtab
               const encryptedConfig = data.encryptedConfigJsons[0];
-              console.log("ID: ", data.identifier);
-              console.log("ENC: ", encryptedConfig);
+              console.log("Identifier: ", data.identifier);
+              console.log("Encrypted Configuration: ", encryptedConfig);
               const response = await fetchScreenerTableData(encryptedConfig);
 
               // Extract only the serializable parts of the response

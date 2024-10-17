@@ -21,6 +21,7 @@ import {
   computeTotalOrAverage,
   customSort,
 } from "../../utils/screenerTableHelpers.js";
+import LastUpdate from "./LastUpdate.jsx";
 
 const ScreenerTable = ({
   data,
@@ -155,10 +156,17 @@ const ScreenerTable = ({
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
-
-          <div class="flex-fill text_right"><p class="font-20 mb-0 date">Last Update : 15/10/2024</p></div>
+            <div class="flex-fill text_right">
+              {selectedTab === TABS.S_PE && (
+                <LastUpdate currentLanguage={lang} />
+              )}
+              {selectedTab === TABS.S_PERFORMANCE_AND_SIZE && (
+                <div className="flex-fill text_right mt-2 no-print">
+                  <p className="font-20 mb-0 date">{strings.tableComment}</p>
+                </div>
+              )}
+            </div>
             <div className="table-responsive">
-              <span>{strings.tableComment}</span>
               <Table
                 className="table_layout table_full"
                 striped

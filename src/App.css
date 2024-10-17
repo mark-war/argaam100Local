@@ -2044,10 +2044,9 @@ footer {
 @media screen and (max-width: 767px) {
   /* Chart CSS Starts */
 
-  .charts_table_bg span.bg{
-    flex-shrink: 0.50;
+  .charts_table_bg span.bg {
+    flex-shrink: 0.5;
   }
-
 
   .race_chart_container {
     overflow-x: auto;
