@@ -92,14 +92,15 @@ const SubTabCard = ({
       return data.map((item, index) => {
         const chartValue = secondToLastProperty
           ? item[secondToLastProperty]
-          : 0;
+          : "";
         const rank = item.Rank ?? item.rankno ?? null;
-        const chartWidth = rankToBarWidth[rank] || "0%";
+        const chartWidth = rankToBarWidth[rank] || "";
 
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
           if (maxValue > 1_000_000) return "82%"; // More than 1 million
           if (maxValue > 100000) return "85%"; // More than 100
+          if (maxValue > 1000) return "89%"; // More than 100
           return "90%"; // Default case
         };
         const rowWidth = getRowWidth(maxValue);
@@ -149,7 +150,7 @@ const SubTabCard = ({
                 {valueString !== null ? (
                   valueString
                 ) : (
-                  <NumberFormatter value={chartValue || 0} />
+                  <NumberFormatter value={chartValue || ""} />
                 )}
               </div>
             </td>
@@ -185,11 +186,11 @@ const SubTabCard = ({
         const thirdToLastValue =
           typeof item[thirdToLastProperty] === "number"
             ? item[thirdToLastProperty]
-            : 0;
+            : "";
         const secondToLastValue =
           typeof item[secondToLastProperty] === "number"
             ? item[secondToLastProperty]
-            : 0;
+            : "";
         return thirdToLastValue || secondToLastValue;
       });
 
@@ -206,14 +207,15 @@ const SubTabCard = ({
         const chartValue =
           typeof item[secondToLastProperty] === "number"
             ? item[secondToLastProperty]
-            : 0;
+            : "";
         const rank = item.Rank ?? item.rankno ?? null;
-        const chartWidth = rankToBarWidth[rank] || "0%";
+        const chartWidth = rankToBarWidth[rank] || "";
 
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
           if (maxValue > 1_000_000) return "82%"; // More than 1 million
           if (maxValue > 100000) return "85%"; // More than 100
+          if (maxValue > 1000) return "88%"; // More than 100
           return "90%"; // Default case
         };
         const rowWidth = getRowWidth(maxValue);
@@ -249,7 +251,7 @@ const SubTabCard = ({
                 {valueString !== null ? (
                   valueString
                 ) : (
-                  <NumberFormatter value={chartValue || 0} />
+                  <NumberFormatter value={chartValue || ""} />
                 )}
               </div>
             </td>

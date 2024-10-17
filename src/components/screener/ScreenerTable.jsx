@@ -24,6 +24,7 @@ import {
   computeTotalOrAverage,
   customSort,
 } from "../../utils/screenerTableHelpers.js";
+import LastUpdate from "./LastUpdate.jsx";
 
 const ScreenerTable = ({
   data,
@@ -158,21 +159,17 @@ const ScreenerTable = ({
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
-          {/* {activeTabLink === TABS.S_FINANCIAL_RATIO && (
-              <FinancialRatioMessage
-                onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
-              />
-            )} */}
-            <div className="row">
-              <div className="col-6 col-sm-12">
-              <div>Some Ratios are not applicable<span class="ratio_msg"> Banks</span>,<span class="ratio_msg"> Insurance</span>,<span class="ratio_msg"> Reits</span>, and<span class="ratio_msg"> Financing</span>.</div>
+            <div class="flex-fill text_right">
+              {selectedTab === TABS.S_PE && (
+                <LastUpdate currentLanguage={lang} />
+              )}
+              {selectedTab === TABS.S_PERFORMANCE_AND_SIZE && (
+                <div className="flex-fill text_right mt-2 no-print">
+                  <p className="font-20 mb-0 date">{strings.tableComment}</p>
+                </div>
+              )}
             </div>
-          <div class="flex-fill text_right col-6 col-sm-12">            
-            <p class="font-20 mb-0 date">Last Update : 15/10/2024</p>
-          </div>
-          </div>
             <div className="table-responsive">
-              <span className="million_value font-20">{strings.tableComment}</span>
               <Table
                 className="table_layout table_full"
                 striped

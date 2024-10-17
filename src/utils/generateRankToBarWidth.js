@@ -12,6 +12,21 @@ export const generateRankToBarWidth = (values = [], selectedTab) => {
       ? 0.95
       : 0.5;
 
+  // Check if all values are null or undefined
+  const allValuesNullOrUndefined = values.every(
+    (value) =>
+      value === null || value === undefined || value === 0 || value === ""
+  );
+
+  // If all values are null or undefined, set 100% width for all ranks
+  if (allValuesNullOrUndefined) {
+    values.forEach((_, index) => {
+      const rank = index + 1;
+      rankToBarWidth[rank] = "100%";
+    });
+    return rankToBarWidth;
+  }
+
   // Determine scale start rank based on significant drops
   let scaleStartRank = 2;
   for (let i = 1; i < absoluteValues.length; i++) {
