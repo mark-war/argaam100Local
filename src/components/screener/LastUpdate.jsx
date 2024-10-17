@@ -20,7 +20,7 @@ const LastUpdate = ({ currentLanguage }) => {
   const dateNow = getCurrentDateFormatted();
 
   return (
-    <div className="flex-fill text_right mt-2">
+    <div className="flex-fill text_right mt-2 no-print">
       <p className="font-20 mb-0 date">
         {strings.date} {dateNow}
       </p>

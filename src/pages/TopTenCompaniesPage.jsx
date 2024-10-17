@@ -85,6 +85,8 @@ const TopTenCompaniesPage = () => {
         nameAr: field.FieldNameAr,
         unitEn: field.UnitNameEn,
         unitAr: field.UnitNameAr,
+        notesEn: field.NotesEn,
+        notesAr: field.NotesAr,
       };
     });
     return map;
@@ -114,6 +116,8 @@ const TopTenCompaniesPage = () => {
           fieldNameAr: fieldConfigMap[fieldId]?.nameAr || fieldId,
           unitNameEn: fieldConfigMap[fieldId]?.unitEn || "",
           unitNameAr: fieldConfigMap[fieldId]?.unitAr || "",
+          notesEn: fieldConfigMap[fieldId]?.notesEn || "",
+          notesAr: fieldConfigMap[fieldId]?.notesAr || "",
         };
       });
   };

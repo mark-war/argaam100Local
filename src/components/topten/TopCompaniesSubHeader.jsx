@@ -20,7 +20,7 @@ const TopCompaniesSubHeader = ({
         <div className="flex-fill heading_lg">
           <strong>{title}</strong>
         </div>
-        <div className="d-flex">
+        <div className="d-flex no-print">
           <PrintButton />
           <ExportDropdown
             activeTabLink={activeTabLink}

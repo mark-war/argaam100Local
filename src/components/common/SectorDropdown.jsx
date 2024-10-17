@@ -61,7 +61,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
 
   return (
     <>
-      <div className="sector_dropdown" ref={dropdownRef}>
+      <div className="sector_dropdown no-print" ref={dropdownRef}>
         <div onClick={handleSelect} className="multi_select">
           <div
             className={`multi_select_toggle ${isSelect ? "hover-class" : ""}`}
@@ -85,7 +85,7 @@ const SectorDropdown = ({ selectedSectors, onChange }) => {
       {selectedOptions.length > 0 && (
         <button
           onClick={handleRefresh} // Handle refresh click
-          className="clear-button reset__button"
+          className="clear-button reset__button no-print"
         >
           <span>{strings.reset}</span>
           <img

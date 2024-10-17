@@ -56,7 +56,6 @@ export const fetchScreenerData = createAsyncThunk(
                 data: responseData || {}, // Include primary response
                 timestamp: Date.now(), // Add timestamp here
                 sectorId: data.SectorID,
-                indicatorId: data.indicatorId,
               };
             } catch (error) {
               console.error("Error in processing data:", error);

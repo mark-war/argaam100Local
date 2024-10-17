@@ -29,13 +29,13 @@ const sanitizeSheetName = (name) => {
   return name.replace(/[*?:\/\\[\]]/g, "_");
 };
 
-const argaamUrl = (companyID = "", lang) => {
+const argaamUrl = (symbol, lang) => {
   const baseUrl =
     lang === LANGUAGES.AR
-      ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
-      : `https://www.argaam.com/en/tadawul/tasi/`;
+      ? "https://www.argaamcharts.com/ar/"
+      : "https://www.argaamcharts.com/en/";
 
-  return baseUrl;
+  return `${baseUrl}${symbol}`; // Ensure the symbol is URL-safe
 };
 
 // Function to apply right-to-left properties for Arabic
@@ -275,11 +275,14 @@ export const exportToExcel = async (
       const cell = newRow.getCell("fixed_company");
       cell.value = {
         text: formattedRow.fixed_company,
-        hyperlink: argaamUrl(formattedRow.CompanyID, currentLanguage),
+        hyperlink: argaamUrl(formattedRow.fixed_code, currentLanguage),
       };
       cell.font = { color: { argb: "FF0000FF" }, underline: true };
     }
   });
+
+  // Iterate over all rows and ensure numeric columns are correctly formatted as numbers
+  formatNumberCells(worksheet);
 
   // Apply bold styling to header row
   worksheet.getRow(1).font = { bold: true };
@@ -407,10 +410,12 @@ export const exportMultipleTabsToExcel = async (
         const cell = newRow.getCell("fixed_company");
         cell.value = {
           text: formattedRow.fixed_company,
-          hyperlink: argaamUrl(formattedRow.CompanyID, currentLanguage),
+          hyperlink: argaamUrl(formattedRow.fixed_code, currentLanguage),
         };
         cell.font = { color: { argb: "FF0000FF" }, underline: true };
       }
+
+      formatNumberCells(worksheet);
     });
 
     // Apply bold styling to header row
@@ -500,15 +505,12 @@ const exportDataToExcel = async (
       // Get the mapped table
       const mappedTable = createMappedTable(dataObject, currentLanguage);
 
-      const sanitizedSheetName = sanitizeSheetName(sheetName);
       const sanitizedTabName = sanitizeSheetName(
         localized(dataObject, "fieldName", currentLanguage)
       );
 
       // Create a new worksheet named after the fieldNameEn (which is the sheet name)
-      const worksheet = workbook.addWorksheet(
-        sanitizedSheetName + "_" + sanitizedTabName
-      );
+      const worksheet = workbook.addWorksheet(sanitizedTabName);
 
       // Add the headers
       worksheet.columns = [
@@ -519,6 +521,7 @@ const exportDataToExcel = async (
 
       // Add rows from mappedTable
       worksheet.addRows(mappedTable);
+      formatNumberCells(worksheet);
       // Apply bold styling to header row
       worksheet.getRow(1).font = { bold: true };
 
@@ -555,6 +558,7 @@ const exportDataToExcel = async (
 
       // Add rows from mappedTable
       worksheet.addRows(mappedTable);
+      formatNumberCells(worksheet);
       // Apply bold styling to header row
       worksheet.getRow(1).font = { bold: true };
 
@@ -576,3 +580,38 @@ const exportDataToExcel = async (
 };
 
 export const exportMultipleTabsToExcelTopTen = async () => {};
+
+function formatNumberCells(worksheet) {
+  worksheet.eachRow((row) => {
+    row.eachCell((cell, colNumber) => {
+      if (colNumber === 1 || colNumber === 2) return; //skip the symbol
+      if (typeof cell.value === "string" && cell.value.includes("/")) return; //skip the fraction
+
+      // If the cell value is a string, attempt to convert it to a number
+      if (typeof cell.value === "string") {
+        if (cell.value === strings.neg)
+          cell.font = { color: { argb: "FF0000" } };
+
+        // Remove commas and leading/trailing spaces
+        let stringValue = cell.value.replace(/,/g, "").trim();
+
+        // Check if the value is negative in parentheses format
+        if (stringValue.startsWith("(") && stringValue.endsWith(")")) {
+          stringValue = -parseFloat(stringValue.slice(1, -1));
+        } else {
+          stringValue = parseFloat(stringValue);
+        }
+
+        if (!isNaN(stringValue)) {
+          cell.value = stringValue; // Convert to float number
+          cell.numFmt = "#,##0.00;(#,##0.00)";
+
+          // Set the font color to red if the value is negative
+          if (stringValue < 0) {
+            cell.font = { color: { argb: "FF0000" } }; // Red color
+          }
+        }
+      }
+    });
+  });
+}

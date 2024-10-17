@@ -52,6 +52,7 @@ export const strings = new LocalizedStrings({
     and: "and",
     total: "Total",
     average: "Average",
+    tableComment: "(*Values in Million SAR)",
   },
   ar: {
     topTen: "أعلى 10",
@@ -93,8 +94,8 @@ export const strings = new LocalizedStrings({
     title: "تحليل الأسهم",
     errorPage: "حدث خطأ ما...",
     reset: "إعادة تعيين",
-    exportCurrent: "تصدير علامة التبويب الحالية",
-    exportAllTabs: "تصدير كافة علامات التبويب",
+    exportCurrent: "تحميل الصفحة الحالية",
+    exportAllTabs: "تحميل جميع الصفحات",
     finRatioMsg: "بعض المؤشرات لا تنطبق على",
     banks: "البنوك",
     insurance: "التأمين",
@@ -103,6 +104,7 @@ export const strings = new LocalizedStrings({
     and: "و",
     total: "المجموع",
     average: "متوسط",
+    tableComment: "(القيم بالمليون ريال*)",
   },
 });
 

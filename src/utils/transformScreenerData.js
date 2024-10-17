@@ -34,6 +34,7 @@ export const transformDataForTable = (
           label: fieldName,
           unit: unitName,
           indicator: item.IndicatorID,
+          showPercentage: item.ShowPercentage,
         };
       }),
   ];

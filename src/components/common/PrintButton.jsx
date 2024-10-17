@@ -3,7 +3,7 @@ import { printScreen } from "../../utils/printPage";
 
 const PrintButton = () => {
   return (
-    <a className="screen_icons" href="#" onClick={printScreen}>
+    <a className="screen_icons no-print" href="#" onClick={printScreen}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="39"

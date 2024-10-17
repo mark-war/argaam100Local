@@ -1,22 +1,11 @@
-import { useParams } from "react-router-dom";
 import NumberFormatter from "../common/NumberFormatter";
-import { LANGUAGES } from "../../utils/constants/localizedStrings";
-
-const argaamUrl = (companyID = "") => {
-  const { lang } = useParams(); // Access the current language from URL parameters
-  const baseUrl =
-    lang === LANGUAGES.AR
-      ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/${companyID}/`
-      : `https://www.argaam.com/en/tadawul/tasi/`;
-
-  return baseUrl;
-};
+import useArgaamUrl from "../../hooks/useArgaamUrl";
 
 const renderFixedCompanyColumn = (row, column, argaamUrl) => (
   <a
     target="_blank"
     rel="noreferrer"
-    href={`${argaamUrl(row.CompanyID)}${row[column.key]}`}
+    href={`${argaamUrl(row.fixed_code)}`}
     className="company-link"
   >
     <img alt="" src={row.fixed_img} className="logo_image" />
@@ -38,45 +27,51 @@ const renderFixedSectorColumn = (row, column, handleSectorClick) => (
   </a>
 );
 
-const TableRow = ({ row, columns, handleSectorClick, config }) => (
-  <tr>
-    {columns.map((column) => {
-      if (column.hidden) return null;
+const TableRow = ({ row, columns, handleSectorClick, config }) => {
+  const argaamUrl = useArgaamUrl();
+  return (
+    <tr>
+      {columns.map((column) => {
+        if (column.hidden) return null;
 
-      const isFixedColumn =
-        typeof column.key === "string" && column.key.startsWith("fixed_");
-      const tdClassName = isFixedColumn
-        ? column.key === "fixed_company"
-          ? "td_img"
-          : column.className
-        : `text-center ${column.className}`;
+        const isFixedColumn =
+          typeof column.key === "string" && column.key.startsWith("fixed_");
+        const tdClassName = isFixedColumn
+          ? column.key === "fixed_company"
+            ? "td_img"
+            : column.className
+          : `text-center ${column.className}`;
 
-      return (
-        <td key={column.key} className={tdClassName}>
-          {isFixedColumn ? (
-            column.key === "fixed_company" ? (
-              renderFixedCompanyColumn(row, column, argaamUrl)
-            ) : column.key === "fixed_code" ? (
-              renderFixedCodeColumn(row, column)
-            ) : column.key === "fixed_sector" ? (
-              renderFixedSectorColumn(row, column, handleSectorClick)
-            ) : null
-          ) : (
-            <span
-              style={{
-                color: row[column.key] < 0 ? "red" : "inherit",
-              }}
-            >
-              <NumberFormatter
-                value={row[column.key]}
-                isPEColumn={config.peFieldIds.has(column.key)}
-              />
-            </span>
-          )}
-        </td>
-      );
-    })}
-  </tr>
-);
+        return (
+          <td key={column.key} className={tdClassName}>
+            {isFixedColumn ? (
+              column.key === "fixed_company" ? (
+                renderFixedCompanyColumn(row, column, argaamUrl)
+              ) : column.key === "fixed_code" ? (
+                renderFixedCodeColumn(row, column)
+              ) : column.key === "fixed_sector" ? (
+                renderFixedSectorColumn(row, column, handleSectorClick)
+              ) : null
+            ) : (
+              <span
+                style={{
+                  color: row[column.key] < 0 ? "red" : "inherit",
+                }}
+              >
+                <NumberFormatter
+                  value={row[column.key]}
+                  isPEColumn={config.peFieldIds.has(column.key)}
+                />
+                {column.showPercentage && column.showPercentage === 1
+                  ? " %"
+                  : ""}
+              </span>
+            )}
+          </td>
+        );
+      })}
+    </tr>
+  );
+};
 
 export default TableRow;
