@@ -4,7 +4,7 @@ import SectorDropdown from "../common/SectorDropdown";
 import { localized } from "../../utils/localization";
 import { useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
-import FinancialRatioMessage from "./FinancialRationMessage";
+
 import LastUpdate from "./LastUpdate";
 import PrintButton from "../common/PrintButton";
 import useLanguage from "../../hooks/useLanguage";
@@ -59,11 +59,7 @@ const PageSubHeader = ({
                   </Link>
                 </li>
               ))}
-            {activeTabLink === TABS.S_FINANCIAL_RATIO && (
-              <FinancialRatioMessage
-                onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
-              />
-            )}
+            
           </div>
         </div>
         <div className="d-flex justify-content-end select_container flex-fill text_right">

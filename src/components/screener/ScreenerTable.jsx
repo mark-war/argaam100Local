@@ -16,7 +16,7 @@ import config from "../../utils/config.js";
 import PinnedRow from "./PinnedRow.jsx";
 import SummaryRow from "./SummaryRow.jsx";
 import useLanguage from "../../hooks/useLanguage.jsx";
-
+import FinancialRatioMessage from "./FinancialRationMessage";
 
 
 import {
@@ -159,6 +159,17 @@ const ScreenerTable = ({
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
+
+          {/* <div class="flex-fill text_right">
+              {selectedTab === TABS.S_PE && (
+                <LastUpdate currentLanguage={lang} />
+              )}
+            {selectedTab === TABS.S_FINANCIAL_RATIO && (
+              <FinancialRatioMessage
+                onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
+              />
+            )}
+            </div> */}
             <div class="flex-fill text_right">
               {selectedTab === TABS.S_PE && (
                 <LastUpdate currentLanguage={lang} />
