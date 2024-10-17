@@ -1736,6 +1736,10 @@ footer {
 .million_value{
   padding-bottom: 5px;;
 }
+
+.table-responsive th.cursor_pointer.text-center {
+  width: 220px;
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
