@@ -97,6 +97,7 @@ const ScreenerTablesPage = () => {
             selectedTab={activeTabLink}
             selectedOptions={selectedOptions}
             setSelectedOptions={setSelectedOptions}
+            onSelectedOptionsChange={handleSelectedOptionsChange} // Pass the handler here
           />
         )}
       </>
@@ -115,7 +116,6 @@ const ScreenerTablesPage = () => {
           tabLinksArray={tabLinksArray}
           activeTabLink={activeTabLink}
           handleActiveTabLink={handleActiveTabLink}
-          onSelectedOptionsChange={handleSelectedOptionsChange} // Pass the handler here
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions} // Pass setSelectedOptions here
         />

@@ -572,7 +572,7 @@ button.disabled {
   cursor: default;
   white-space: normal;
 
-  & span{
+  & span {
     padding-top: 2px;
   }
 }
@@ -1733,8 +1733,8 @@ footer {
 }
 
 /* Media Query Starts */
-.million_value{
-  padding-bottom: 5px;;
+.million_value {
+  padding-bottom: 5px;
 }
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
@@ -1892,21 +1892,19 @@ footer {
     font-weight: 500;
   }
 }
-@media screen and (max-width: 1300px) and (min-width: 1025px){
-  .charts_table_bg span.bg{
+@media screen and (max-width: 1300px) and (min-width: 1025px) {
+  .charts_table_bg span.bg {
     flex-shrink: 0.06;
-  }    
+  }
 }
 @media screen and (max-width: 1250px) {
-  .col_space .col-lg-6{
+  .col_space .col-lg-6 {
     width: 100%;
-  }    
+  }
 }
 
-
 @media screen and (max-width: 1024px) {
-
-  .col-sm-12{
+  .col-sm-12 {
     width: 100% !important;
   }
   .navbar .navbar-brand img {
@@ -2024,7 +2022,6 @@ footer {
 }
 
 @media screen and (max-width: 1024px) {
-
   .tabs_nav.navbar-nav .nav-item .nav-link.active span {
     padding-bottom: 6px !important;
   }
@@ -2068,11 +2065,11 @@ footer {
 }
 @media screen and (max-width: 767px) {
   /* Chart CSS Starts */
-  .export-dropdown-menu{
+  .export-dropdown-menu {
     top: 70px !important;
   }
-  .charts_table_bg span.bg{
-    flex-shrink: 0.50;
+  .charts_table_bg span.bg {
+    flex-shrink: 0.5;
   }
 
   .race_chart_container {
@@ -2185,8 +2182,6 @@ footer {
   .table_layout.table td {
     font-size: 0.938rem;
   }
-
- 
 
   .table_chart tbody td:nth-child(3),
   .table_chart th:nth-child(3) {
@@ -2454,7 +2449,8 @@ footer {
   th,
   td {
     border: 1px solid black; /* Add borders for clarity */
-    padding: 8px; /* Adjust padding */
+    padding: 6px; /* Adjust padding for better spacing */
+    font-size: 10pt; /* Adjust font size to ensure it fits on page */
   }
 
   /* Ensure bars are visible in print */
@@ -2464,12 +2460,17 @@ footer {
     padding: 4px; /* Add padding to create space around the content */
   }
 
-  .bg {
+  .bg .ellipsis {
     color: blue;
     background-color: blue;
     margin-right: 8px;
     width: auto; /* Use auto for responsive adjustments */
     flex: 1; /* Allow it to grow and fill available space */
+  }
+
+  span {
+    font-size: 10pt; /* Ensure span elements adjust in size */
+    word-wrap: break-word; /* Break long text if necessary */
   }
 
   li {
@@ -2485,6 +2486,11 @@ footer {
     th,
     td {
       padding: 4px; /* Reduce padding for smaller prints */
+      font-size: 8pt; /* Scale down text */
+    }
+
+    span {
+      font-size: 8pt; /* Adjust span text size */
     }
   }
 }

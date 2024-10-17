@@ -94,6 +94,12 @@ const screenerDataSlice = createSlice({
       }
       // can reset other related states if required
     },
+    setExportData: (state, action) => {
+      state.exportData = action.payload;
+    },
+    clearExportData: (state) => {
+      state.exportData = [];
+    },
     resetState: () => initialState,
   },
   extraReducers: (builder) => {
@@ -135,6 +141,7 @@ const screenerDataSlice = createSlice({
   },
 });
 
-export const { resetTabData, resetState } = screenerDataSlice.actions;
+export const { resetTabData, resetState, setExportData, clearExportData } =
+  screenerDataSlice.actions;
 
 export const screenerDataReducer = screenerDataSlice.reducer;

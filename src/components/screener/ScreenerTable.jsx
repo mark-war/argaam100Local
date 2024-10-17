@@ -18,7 +18,6 @@ import SummaryRow from "./SummaryRow.jsx";
 import useLanguage from "../../hooks/useLanguage.jsx";
 import FinancialRatioMessage from "./FinancialRationMessage";
 
-
 import {
   getFirstDynamicColumn,
   computeTotalOrAverage,
@@ -33,6 +32,7 @@ const ScreenerTable = ({
   selectedTab,
   selectedOptions, // selected sectors
   setSelectedOptions, // to control selected options
+  onSelectedOptionsChange, // Pass this as a prop to handle changes in parent
 }) => {
   const { lang } = useParams(); // Access the current language from URL parameters
 
@@ -154,25 +154,31 @@ const ScreenerTable = ({
     );
   };
 
+  const handleSelectedOptionsChange = useCallback(
+    (newSelectedOptions) => {
+      setSelectedOptions(newSelectedOptions);
+      if (onSelectedOptionsChange) {
+        onSelectedOptionsChange(newSelectedOptions);
+      }
+    },
+    [setSelectedOptions, onSelectedOptionsChange]
+  );
+
   return (
     <Row>
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
-
-          {/* <div class="flex-fill text_right">
-              {selectedTab === TABS.S_PE && (
-                <LastUpdate currentLanguage={lang} />
-              )}
-            {selectedTab === TABS.S_FINANCIAL_RATIO && (
-              <FinancialRatioMessage
-                onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
-              />
-            )}
-            </div> */}
             <div class="flex-fill text_right">
               {selectedTab === TABS.S_PE && (
                 <LastUpdate currentLanguage={lang} />
+              )}
+              {selectedTab === TABS.S_FINANCIAL_RATIO && (
+                <div className="flex-fill text_right mt-2 no-print">
+                  <FinancialRatioMessage
+                    onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
+                  />
+                </div>
               )}
               {selectedTab === TABS.S_PERFORMANCE_AND_SIZE && (
                 <div className="flex-fill text_right mt-2 no-print">
