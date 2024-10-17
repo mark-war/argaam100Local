@@ -162,8 +162,8 @@ div {
 /* .Navbar Starts */
 
 .navbar.bg-light {
-  padding-top: 1.2rem;
-  padding-bottom: 1.3rem;
+  padding-top: 0.95rem;
+  padding-bottom: 0.95rem;
 }
 
 .mobile_nav {
@@ -796,7 +796,7 @@ button.disabled {
 
 .table.table_layout td.text-center {
   font-weight: normal;
-  color: #000000;
+  color: #4b4b4b;
   font-size: 1rem;
 }
 
@@ -1321,8 +1321,8 @@ button.disabled {
 }
 
 [lang="ar"] .navbar.bg-light {
-  padding-top: 1.2rem;
-  padding-bottom: 1.3rem;
+  padding-top: 0.95rem;
+  padding-bottom: 0.95rem;
 }
 
 [lang="ar"] .tabs_nav.navbar-nav .nav-item .nav-link.active span {
@@ -1733,7 +1733,9 @@ footer {
 }
 
 /* Media Query Starts */
-
+.million_value{
+  padding-bottom: 5px;;
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
@@ -1890,8 +1892,23 @@ footer {
     font-weight: 500;
   }
 }
+@media screen and (max-width: 1300px) and (min-width: 1025px){
+  .charts_table_bg span.bg{
+    flex-shrink: 0.06;
+  }    
+}
+@media screen and (max-width: 1250px) {
+  .col_space .col-lg-6{
+    width: 100%;
+  }    
+}
+
 
 @media screen and (max-width: 1024px) {
+
+  .col-sm-12{
+    width: 100% !important;
+  }
   .navbar .navbar-brand img {
     max-width: 230px;
   }
@@ -2051,7 +2068,9 @@ footer {
 }
 @media screen and (max-width: 767px) {
   /* Chart CSS Starts */
-
+  .export-dropdown-menu{
+    top: 70px !important;
+  }
   .charts_table_bg span.bg{
     flex-shrink: 0.50;
   }

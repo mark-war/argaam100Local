@@ -16,6 +16,9 @@ import config from "../../utils/config.js";
 import PinnedRow from "./PinnedRow.jsx";
 import SummaryRow from "./SummaryRow.jsx";
 import useLanguage from "../../hooks/useLanguage.jsx";
+
+
+
 import {
   getFirstDynamicColumn,
   computeTotalOrAverage,
@@ -155,10 +158,21 @@ const ScreenerTable = ({
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
-
-          <div class="flex-fill text_right"><p class="font-20 mb-0 date">Last Update : 15/10/2024</p></div>
+          {/* {activeTabLink === TABS.S_FINANCIAL_RATIO && (
+              <FinancialRatioMessage
+                onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
+              />
+            )} */}
+            <div className="row">
+              <div className="col-6 col-sm-12">
+              <div>Some Ratios are not applicable<span class="ratio_msg"> Banks</span>,<span class="ratio_msg"> Insurance</span>,<span class="ratio_msg"> Reits</span>, and<span class="ratio_msg"> Financing</span>.</div>
+            </div>
+          <div class="flex-fill text_right col-6 col-sm-12">            
+            <p class="font-20 mb-0 date">Last Update : 15/10/2024</p>
+          </div>
+          </div>
             <div className="table-responsive">
-              <span>{strings.tableComment}</span>
+              <span className="million_value font-20">{strings.tableComment}</span>
               <Table
                 className="table_layout table_full"
                 striped
