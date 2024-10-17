@@ -1123,7 +1123,7 @@ button.disabled {
 }
 
 .sub_heading_tabs_container {
-  margin-bottom: 1.8rem !important;
+  margin-bottom: 1.2rem !important;
   margin-top: 0.7rem !important;
 }
 
@@ -2026,6 +2026,11 @@ footer {
 }
 @media screen and (max-width: 767px) {
   /* Chart CSS Starts */
+
+  .charts_table_bg span.bg{
+    flex-shrink: 0.50;
+  }
+
 
   .race_chart_container {
     overflow-x: auto;

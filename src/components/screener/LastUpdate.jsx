@@ -21,7 +21,7 @@ const LastUpdate = ({ currentLanguage }) => {
 
   return (
     <div className="flex-fill text_right mt-2">
-      <p className="font-20 mb-0 date">
+      <p className="font-20 date">
         {strings.date} {dateNow}
       </p>
     </div>

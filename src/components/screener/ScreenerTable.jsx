@@ -155,6 +155,8 @@ const ScreenerTable = ({
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
+
+          <div class="flex-fill text_right"><p class="font-20 mb-0 date">Last Update : 15/10/2024</p></div>
             <div className="table-responsive">
               <Table
                 className="table_layout table_full"
