@@ -264,7 +264,7 @@ div {
 
 .export-dropdown-menu {
   position: absolute;
-  top: 70px; /* Adjust based on your layout */
+  top: auto !important; /* Adjust based on your layout */
   right: 0;
   background-color: white;
   border: 1px solid #ccc;
@@ -991,7 +991,7 @@ button.disabled {
   position: absolute;
   right: auto; /* Remove the right positioning */
   left: 0; /* Position it on the left side */
-  top: 80px;
+  /* top: 80px; */
 }
 
 [lang="ar"] .export-dropdown-menu button {
@@ -1745,6 +1745,9 @@ footer {
 .table-responsive th.cursor_pointer.text-center {
   width: 220px;
 }
+.P_relative{
+  position: relative;
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
@@ -1913,9 +1916,19 @@ footer {
 }
 
 @media screen and (max-width: 1024px) {
-
+  .charts_table_bg{
+    margin-left: -15px;
+  }
+  [lang="ar"] .charts_table_bg {
+    margin-right: -15px;
+    margin-left: 0px;
+}
+  .charts_table_bg span.bg{
+    flex-shrink: 0.02;
+  }
   .export-dropdown-menu{
-    top: 32px !important;
+    top: auto !important;
+    bottom: 44px;
   }
   .col-sm-12 {
     width: 100% !important;
@@ -2071,19 +2084,30 @@ footer {
   .d-flex.select_container {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    justify-content: space-between !important;
+
     width: 100%;
     display: flex !important;
+
+    
   }
 }
 @media screen and (max-width: 767px) {
+
+  .charts_table_bg{
+    margin-left: -25px;
+    width: 50% !important;
+  }
+  [lang="ar"] .charts_table_bg {
+    margin-right: -25px;
+    margin-left: 0px;
+}
   /* Chart CSS Starts */
-  .export-dropdown-menu {
+  /* .export-dropdown-menu {
     top: 70px !important;
-  }
-  .charts_table_bg span.bg {
+  } */
+  /* .charts_table_bg span.bg {
     flex-shrink: 0.5;
-  }
+  } */
 
   .race_chart_container {
     overflow-x: auto;
