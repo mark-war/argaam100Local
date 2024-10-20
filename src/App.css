@@ -1926,10 +1926,10 @@ footer {
   .charts_table_bg span.bg{
     flex-shrink: 0.02;
   }
-  .export-dropdown-menu{
+  /* .export-dropdown-menu{
     top: auto !important;
     bottom: 44px;
-  }
+  } */
   .col-sm-12 {
     width: 100% !important;
   }
