@@ -1066,10 +1066,10 @@ button.disabled {
   padding-left: 5px;
 }
 
-.notes{
+.notes {
   font-size: 14px;
   padding: 5px 13px;
-  opacity: 0.85; 
+  opacity: 0.85;
 }
 /* Tabs Chart Ends */
 
@@ -1745,7 +1745,7 @@ footer {
 .table-responsive th.cursor_pointer.text-center {
   width: 220px;
 }
-.P_relative{
+.P_relative {
   position: relative;
 }
 @media screen and (min-width: 1700px) {
@@ -1916,17 +1916,17 @@ footer {
 }
 
 @media screen and (max-width: 1024px) {
-  .charts_table_bg{
+  .charts_table_bg {
     margin-left: -15px;
   }
   [lang="ar"] .charts_table_bg {
     margin-right: -15px;
     margin-left: 0px;
-}
-  .charts_table_bg span.bg{
+  }
+  .charts_table_bg span.bg {
     flex-shrink: 0.02;
   }
-  .export-dropdown-menu{
+  .export-dropdown-menu {
     top: auto !important;
     bottom: 44px;
   }
@@ -2087,20 +2087,17 @@ footer {
 
     width: 100%;
     display: flex !important;
-
-    
   }
 }
 @media screen and (max-width: 767px) {
-
-  .charts_table_bg{
+  .charts_table_bg {
     margin-left: -25px;
     width: 50% !important;
   }
   [lang="ar"] .charts_table_bg {
     margin-right: -25px;
     margin-left: 0px;
-}
+  }
   /* Chart CSS Starts */
   /* .export-dropdown-menu {
     top: 70px !important;
@@ -2462,80 +2459,99 @@ footer {
 
 @media print {
   @page {
-    size: A4 landscape; /* Set the page size */
-    margin: 10mm; /* Adjust margins as needed */
+    size: A4 landscape;
+    margin: 10mm;
   }
 
   body {
     print-color-adjust: exact;
-    -webkit-print-color-adjust: exact; /* Enable background graphics */
-    font-size: 10pt; /* Adjust font size for readability */
-    color: black; /* Change text color for print */
+    -webkit-print-color-adjust: exact;
+    font-size: 10pt;
+    color: black;
   }
 
   .no-print {
-    display: none; /* Hide elements that shouldn't appear in print */
+    display: none;
   }
 
-  /* Specific styles for tables, headers, etc. */
   table {
-    width: 100%; /* Ensure tables use full width */
-    border-collapse: collapse; /* Better table layout */
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* Let the table adjust based on content */
+    word-wrap: break-word; /* Allow table content to wrap inside cells */
   }
 
   th,
   td {
-    border: 1px solid black; /* Add borders for clarity */
-    padding: 6px; /* Adjust padding for better spacing */
-    font-size: 10pt; /* Adjust font size to ensure it fits on page */
+    border: 1px solid black;
+    padding: 6px;
+    font-size: 10pt;
+    max-width: 150px; /* Add a max width to prevent overly wide columns */
+    word-wrap: break-word; /* Break text that is too long */
+    overflow: hidden; /* Hide overflowing text */
   }
 
-  /* Ensure bars are visible in print */
+  /* Make sure tables adjust based on content */
+  .responsive-table th,
+  .responsive-table td {
+    width: auto; /* Let the cells adjust their width based on content */
+    word-break: break-word; /* Ensure words can break and wrap */
+  }
+
   .charts_table_bg {
-    display: flex; /* Use flex to align items within the cell */
-    align-items: center; /* Center vertically */
-    padding: 4px; /* Add padding to create space around the content */
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    width: 100%;
   }
 
   .bg .ellipsis {
     color: blue;
     background-color: blue;
     margin-right: 8px;
-    width: auto; /* Use auto for responsive adjustments */
-    flex: 1; /* Allow it to grow and fill available space */
+    width: 100%;
+    max-width: 100%;
+    min-width: 50px;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   span {
-    font-size: 10pt; /* Ensure span elements adjust in size */
-    word-wrap: break-word; /* Break long text if necessary */
+    font-size: 10pt;
+    word-wrap: break-word;
   }
 
   li {
     display: inline-flex;
-    flex-wrap: wrap; /* Allow items to wrap if needed */
+    flex-wrap: wrap;
   }
 
+  /* Smaller prints or smaller paper sizes */
   @media print and (max-width: 800px) {
     body {
-      font-size: 10pt; /* Smaller font size for smaller prints */
+      font-size: 10pt;
     }
 
     th,
     td {
-      padding: 4px; /* Reduce padding for smaller prints */
-      font-size: 8pt; /* Scale down text */
+      padding: 4px;
+      font-size: 8pt;
     }
 
     .bg .ellipsis {
       color: blue;
       background-color: blue;
       margin-right: 6px;
-      width: auto; /* Use auto for responsive adjustments */
-      flex: 1; /* Allow it to grow and fill available space */
+      width: 100%;
+      max-width: 100%;
+      min-width: 30px;
+      flex-grow: 1;
     }
 
     span {
-      font-size: 8pt; /* Adjust span text size */
+      font-size: 8pt;
     }
   }
 }

@@ -17,6 +17,8 @@ const SubTabCard = ({
   activeSubTab,
 }) => {
   const selectedTab = Number(section.identifier.split("-")[0]);
+  const activeSection = Number(section.identifier.split("-")[1]);
+
   const argaamUrl = useArgaamUrl();
 
   const renderCompanyColumn = (item) => (
@@ -98,7 +100,13 @@ const SubTabCard = ({
 
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
-          if (maxValue > 1_000_000) return "82%"; // More than 1 million
+          if (maxValue > 1_000_000) {
+            // Check if selectedTab is T_RANKING specifically for this case
+            if (selectedTab === TABS.T_RANKING) {
+              return "90%"; // Special case for T_RANKING tab with more than 1 million
+            }
+            return "82%"; // More than 1 million (other cases)
+          }
           if (maxValue > 100000) return "85%"; // More than 100
           if (maxValue > 1000) return "89%"; // More than 100
           return "90%"; // Default case
@@ -150,7 +158,11 @@ const SubTabCard = ({
                 {valueString !== null ? (
                   valueString
                 ) : (
-                  <NumberFormatter value={chartValue || ""} />
+                  <NumberFormatter
+                    value={chartValue || ""}
+                    selectedTab={selectedTab}
+                    activeSection={activeSection}
+                  />
                 )}
               </div>
             </td>
@@ -214,7 +226,13 @@ const SubTabCard = ({
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
           if (maxValue > 10_000_000) return "80%"; // More than 1 million
-          if (maxValue > 1_000_000) return "82%"; // More than 1 million
+          if (maxValue > 1_000_000) {
+            // Check if selectedTab is T_RANKING specifically for this case
+            if (selectedTab === TABS.T_RANKING) {
+              return "90%"; // Special case for T_RANKING tab with more than 1 million
+            }
+            return "82%"; // More than 1 million (other cases)
+          }
           if (maxValue > 100000) return "85%"; // More than 100
           if (maxValue > 1000) return "88%"; // More than 100
           return "90%"; // Default case
@@ -261,7 +279,11 @@ const SubTabCard = ({
                 {valueString !== null ? (
                   valueString
                 ) : (
-                  <NumberFormatter value={chartValue || ""} />
+                  <NumberFormatter
+                    value={chartValue || ""}
+                    selectedTab={selectedTab}
+                    activeSection={activeSection}
+                  />
                 )}
               </div>
             </td>

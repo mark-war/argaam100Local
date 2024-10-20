@@ -54,6 +54,8 @@ export const strings = new LocalizedStrings({
     average: "Average",
     tableComment: "(*Values in Million SAR)",
     tableCommentTopTen: "",
+    anyQuestions: "Any Questions",
+    signOut: "Sign Out",
   },
   ar: {
     topTen: "أعلى 10",
@@ -107,6 +109,8 @@ export const strings = new LocalizedStrings({
     average: "متوسط",
     tableComment: "(القيم بالمليون ريال*)",
     tableCommentTopTen: "تُحدث ربعياً حسب آخر 12 شهرا",
+    anyQuestions: "اسأل",
+    signOut: "تسجيل خروج",
   },
 });
 
