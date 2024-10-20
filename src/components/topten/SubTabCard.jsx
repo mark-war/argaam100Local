@@ -225,7 +225,10 @@ const SubTabCard = ({
 
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
-          if (maxValue > 10_000_000) return "80%"; // More than 1 million
+          if (maxValue > 10_000_000) {
+            if (activeSection === 32 || activeSection === 33) return "85%";
+            return "80%";
+          }
           if (maxValue > 1_000_000) {
             // Check if selectedTab is T_RANKING specifically for this case
             if (selectedTab === TABS.T_RANKING) {
