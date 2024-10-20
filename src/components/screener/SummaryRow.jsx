@@ -38,6 +38,11 @@ const renderColumn = (column, value, row) => (
         value={value}
         isPEColumn={config.peFieldIds.has(column.key)}
       />
+      {column.showPercentage &&
+      column.showPercentage === 1 &&
+      typeof row[column.key] === "number"
+        ? " %"
+        : ""}
     </span>
   </td>
 );

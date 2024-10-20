@@ -14,6 +14,7 @@ import {
   selectTopTenData,
   selectTopTenDataMultiple,
 } from "../redux/selectors.js";
+import { strings } from "../utils/constants/localizedStrings";
 
 const TopTenCompaniesPage = () => {
   const pages = useSelector(selectPages);
@@ -157,6 +158,11 @@ const TopTenCompaniesPage = () => {
     return (
       <>
         {loading && <div className="spinner"></div>}
+        {activeTabLink === TABS.T_FINANCIAL_RATIO && (
+          <div className="flex-fill text_right mt-2 no-print">
+            <p className="font-20 mb-0 date">{strings.tableCommentTopTen}</p>
+          </div>
+        )}
         <TopCompaniesTable
           selectedTab={activeTabLink}
           data={data}

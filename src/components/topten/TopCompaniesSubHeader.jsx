@@ -16,7 +16,7 @@ const TopCompaniesSubHeader = ({
   const currentLanguage = useSelector(selectCurrentLanguage);
   return (
     <div className="shadow_btm sub_header top_companies">
-      <div className="d-flex mt-4 mb-2 border_gray px-layout">
+      {/* <div className="d-flex mt-4 mb-2 border_gray px-layout">
         <div className="flex-fill heading_lg">
           <strong>{title}</strong>
         </div>
@@ -28,7 +28,7 @@ const TopCompaniesSubHeader = ({
             activeSubTabs={activeSubTabs}
           />
         </div>
-      </div>
+      </div> */}
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
         <div className="sub_heading_tabs">
           <div className="tabs_nav navbar-nav align-items-center flex-row">
@@ -50,6 +50,16 @@ const TopCompaniesSubHeader = ({
                 </Link>
               </li>
             ))}
+          </div>
+        </div>
+        <div className="d-flex justify-content-end flex-fill text_right">
+          <div className="d-flex no-print">
+            <PrintButton />
+            <ExportDropdown
+              activeTabLink={activeTabLink}
+              pageId={PAGES.TOPTEN}
+              activeSubTabs={activeSubTabs}
+            />
           </div>
         </div>
       </div>
