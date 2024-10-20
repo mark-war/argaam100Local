@@ -2436,7 +2436,7 @@ footer {
   body {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact; /* Enable background graphics */
-    font-size: 12pt; /* Adjust font size for readability */
+    font-size: 10pt; /* Adjust font size for readability */
     color: black; /* Change text color for print */
   }
 
@@ -2491,6 +2491,14 @@ footer {
     td {
       padding: 4px; /* Reduce padding for smaller prints */
       font-size: 8pt; /* Scale down text */
+    }
+
+    .bg .ellipsis {
+      color: blue;
+      background-color: blue;
+      margin-right: 6px;
+      width: auto; /* Use auto for responsive adjustments */
+      flex: 1; /* Allow it to grow and fill available space */
     }
 
     span {
