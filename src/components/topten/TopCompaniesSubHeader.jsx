@@ -52,7 +52,7 @@ const TopCompaniesSubHeader = ({
             ))}
           </div>
         </div>
-        <div className="d-flex justify-content-end flex-fill text_right">
+        <div className="d-flex justify-content-end flex-fill text_right select_container P_relative">
           <div className="d-flex no-print">
             <PrintButton />
             <ExportDropdown

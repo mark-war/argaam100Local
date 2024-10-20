@@ -58,7 +58,7 @@ const PageSubHeader = ({
               ))}
           </div>
         </div>
-        <div className="d-flex justify-content-end select_container flex-fill text_right">
+        <div className="d-flex justify-content-end select_container flex-fill text_right P_relative">
           {/* Sector Dropdown */}
           <SectorDropdown
             selectedSectors={selectedOptions}
