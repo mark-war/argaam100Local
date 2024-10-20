@@ -92,7 +92,9 @@ const SubSection = ({
         <div className="col-6">
           <p className="sub_heading">
             {localized(section, "fieldName", currentLanguage)}{" "}
-            <span className="unit">{section.unitNameEn}</span>{" "}
+            <span className="unit">
+              {localized(section, "unitName", currentLanguage)}
+            </span>{" "}
             <span className="notes">
               {localized(section, "notes", currentLanguage)}
             </span>

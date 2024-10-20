@@ -17,6 +17,8 @@ import PinnedRow from "./PinnedRow.jsx";
 import SummaryRow from "./SummaryRow.jsx";
 import useLanguage from "../../hooks/useLanguage.jsx";
 import FinancialRatioMessage from "./FinancialRationMessage";
+import { setExportData } from "../../redux/features/screenerDataSlice.js";
+import { useDispatch } from "react-redux";
 
 import {
   getFirstDynamicColumn,
@@ -34,6 +36,7 @@ const ScreenerTable = ({
   setSelectedOptions, // to control selected options
   onSelectedOptionsChange, // Pass this as a prop to handle changes in parent
 }) => {
+  const dispatch = useDispatch();
   const { lang } = useParams(); // Access the current language from URL parameters
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -163,6 +166,10 @@ const ScreenerTable = ({
     },
     [setSelectedOptions, onSelectedOptionsChange]
   );
+
+  useEffect(() => {
+    dispatch(setExportData(currentRows)); // Save sorted data for export
+  }, [currentRows, dispatch]);
 
   return (
     <Row>

@@ -213,6 +213,7 @@ const SubTabCard = ({
 
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
+          if (maxValue > 10_000_000) return "80%"; // More than 1 million
           if (maxValue > 1_000_000) return "82%"; // More than 1 million
           if (maxValue > 100000) return "85%"; // More than 100
           if (maxValue > 1000) return "88%"; // More than 100
@@ -235,8 +236,17 @@ const SubTabCard = ({
             </td>
             <td className="td_img">
               <span className="d-flex align-items-center">
-                <img alt="Image" src={item.LogoUrl} className="logo_image" />
-                <span>{localized(item, "ShortName", currentLanguage)}</span>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${argaamUrl(
+                    item.Code ? item.Code.split(".")[0] : ""
+                  )}`}
+                  className="company-link"
+                >
+                  <img alt="Image" src={item.LogoUrl} className="logo_image" />
+                  <span>{localized(item, "ShortName", currentLanguage)}</span>
+                </a>
               </span>
             </td>
             <td>

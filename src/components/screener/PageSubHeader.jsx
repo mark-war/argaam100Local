@@ -1,16 +1,13 @@
 import { Link, useParams } from "react-router-dom";
-import { PAGES, TABS } from "../../utils/constants/localizedStrings";
+import { PAGES } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
 import { localized } from "../../utils/localization";
 import { useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
-
-import LastUpdate from "./LastUpdate";
 import PrintButton from "../common/PrintButton";
 import useLanguage from "../../hooks/useLanguage";
 
 const PageSubHeader = ({
-  title,
   tabLinksArray,
   activeTabLink,
   handleActiveTabLink,
@@ -59,7 +56,6 @@ const PageSubHeader = ({
                   </Link>
                 </li>
               ))}
-            
           </div>
         </div>
         <div className="d-flex justify-content-end select_container flex-fill text_right">

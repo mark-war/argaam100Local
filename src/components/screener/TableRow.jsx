@@ -62,7 +62,9 @@ const TableRow = ({ row, columns, handleSectorClick, config }) => {
                   value={row[column.key]}
                   isPEColumn={config.peFieldIds.has(column.key)}
                 />
-                {column.showPercentage && column.showPercentage === 1
+                {column.showPercentage &&
+                column.showPercentage === 1 &&
+                typeof row[column.key] === "number"
                   ? " %"
                   : ""}
               </span>
