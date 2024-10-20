@@ -1066,6 +1066,11 @@ button.disabled {
   padding-left: 5px;
 }
 
+.notes{
+  font-size: 14px;
+  padding: 5px 13px;
+  opacity: 0.85; 
+}
 /* Tabs Chart Ends */
 
 /* Pagination Starts */
@@ -1908,6 +1913,10 @@ footer {
 }
 
 @media screen and (max-width: 1024px) {
+
+  .export-dropdown-menu{
+    top: 32px !important;
+  }
   .col-sm-12 {
     width: 100% !important;
   }
@@ -2501,7 +2510,9 @@ footer {
 
 .ratio_msg {
   font-weight: bold;
+  color: blue;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 [lang="ar"]
