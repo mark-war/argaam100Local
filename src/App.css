@@ -272,6 +272,7 @@ div {
   z-index: 1000; /* Ensure it appears above other elements */
 }
 
+
 .export-dropdown-menu button {
   display: block;
   width: 100%;
@@ -1069,7 +1070,11 @@ button.disabled {
 .notes {
   font-size: 14px;
   padding: 5px 13px;
-  opacity: 0.85;
+
+  border: 1px solid #ccccccad;
+  background: #9ac6e66e;
+  color: #000;
+  border-radius: 3px;
 }
 /* Tabs Chart Ends */
 
@@ -1748,6 +1753,28 @@ footer {
 .P_relative {
   position: relative;
 }
+.notesPane{
+  position: relative;
+  padding: 0 12px;
+}
+.textComment_icon {
+  background: url(./assets/images/textComment_icon.svg) no-repeat;
+  width: 20px;
+  height: 24px;
+  display: inline-block;
+  z-index: 9;
+  position: absolute;
+left: 3px;
+  z-index: 1;
+  background-position: bottom;
+  margin-top: 0;  
+  top: 2px;
+}
+[lang="ar"] .textComment_icon{
+  left: auto;
+  right: 3px;
+}
+
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
@@ -1904,6 +1931,14 @@ footer {
     font-weight: 500;
   }
 }
+
+@media screen and (max-width: 1600px) and (min-width: 1025px)  {
+.navbar.navbar-expand-md{
+  height: 60px;
+}
+
+}
+
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
   .charts_table_bg span.bg {
     flex-shrink: 0.06;
@@ -1928,7 +1963,7 @@ footer {
   }
   .export-dropdown-menu {
     top: auto !important;
-    bottom: 44px;
+    
   }
   .col-sm-12 {
     width: 100% !important;
