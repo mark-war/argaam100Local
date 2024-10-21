@@ -2507,22 +2507,30 @@ left: 3px;
 @media print {
   @page {
     size: A4 landscape;
-    margin: 10mm;
+    margin-left: 10mm;
+    margin-right: 10mm;
+    margin-top: 10mm;
+    margin-bottom: 10mm;
   }
 
   body {
+    font-size: 80%;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
-    font-size: 80%;
-    color: black;
+    transform: scale(0.95); /* Scale down the whole content */
+    transform-origin: top left; /* Ensure scaling starts from top-left corner */
   }
 
   .container {
+    margin: 0 auto; /* Center container horizontally */
     width: 80%; /* Reduce the container size to simulate scale */
+    transform: scale(0.9); /* Adjust this value as needed */
+    transform-origin: top left; /* Optional: Set origin if you need specific scaling behavior */
   }
 
   img {
     max-width: 80%; /* Scale images accordingly */
+    height: auto; /* Ensure aspect ratio is maintained */
   }
 
   .no-print {
