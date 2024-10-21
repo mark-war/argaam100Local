@@ -1354,12 +1354,12 @@ button.disabled {
 [lang="ar"] .valuetext .font-20.mb-0.date{
 direction: ltr;
 }
-[lang="ar"]  .table-responsive td.text-center{
+/* [lang="ar"]  .table-responsive td.text-center{
   text-align: left !important;
-}
+} */
 
 [lang="ar"]  .colTH{
-  text-align: left;
+  justify-content: flex-start;
 }
 [lang="ar"] .screen_icons {
   margin-right: 8px;
@@ -1967,8 +1967,15 @@ left: 3px;
   .charts_table_bg span.bg {
     flex-shrink: 0.06;
   }
+  .table-responsive th.cursor_pointer.text-center {
+    & .col_arrow {
+        width: 38px;
+    }
+}
 }
 @media screen and (max-width: 1250px) {
+
+ 
   .col_space .col-lg-6 {
     width: 100%;
   }
