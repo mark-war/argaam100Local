@@ -95,11 +95,12 @@ const SubSection = ({
             <span className="unit">
               {localized(section, "unitName", currentLanguage)}
             </span>{" "}
-            <span className="notesPane">
+            {/* <span className="notesPane">
             <i className="textComment_icon"></i>            
+            
+            </span> */}
             <span className="notes">              
               {localized(section, "notes", currentLanguage)}
-            </span>
             </span>
           </p>
         </div>

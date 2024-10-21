@@ -792,7 +792,7 @@ button.disabled {
 }
 
 .table.table_layout th span {
-  font-size: 15px;
+  font-size: 14.8px;
 }
 
 .table.table_layout td.text-center {
@@ -1070,11 +1070,11 @@ button.disabled {
 .notes {
   font-size: 14px;
   padding: 5px 13px;
-
-  border: 1px solid #ccccccad;
+  color: rgb(141, 137, 137);
+  /* border: 1px solid #ccccccad;
   background: #9ac6e66e;
   color: #000;
-  border-radius: 3px;
+  border-radius: 3px; */
 }
 /* Tabs Chart Ends */
 
@@ -1749,6 +1749,18 @@ footer {
 
 .table-responsive th.cursor_pointer.text-center {
   width: 220px;
+  text-align: right !important;
+ & .col_arrow{
+    width: 28px;
+  }
+}
+.table-responsive td.text-center { 
+  text-align: right !important;
+}
+.colTH{
+  display: flex;
+    justify-content: flex-end;
+    color: #fff;
 }
 .P_relative {
   position: relative;
