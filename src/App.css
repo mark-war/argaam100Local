@@ -1604,9 +1604,12 @@ footer {
   width: 100%;
   background-color: #193168;
 }
-
+.valuetext{
+  margin-right: 2.9rem;
+  margin-left: 2.9rem;
+}
 .min__height {
-  min-height: 800px;
+  min-height: 900px;
 }
 
 .px-layout.bg-white {
@@ -2409,12 +2412,13 @@ left: 3px;
   }
 
   .container-fluid.px-layout,
-  .px-layout {
+  .px-layout,
+  .valuetext {
     margin-right: 0;
     margin-left: 0;
   }
 
-  div.px-layout {
+  div.px-layout, .valuetext {
     padding-right: 1rem !important;
     padding-left: 1rem !important;
   }
