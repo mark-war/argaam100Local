@@ -113,7 +113,7 @@ const HeaderMain = () => {
                   className="mr_10"
                   src="/assets/images/qmark.svg"
                 />{" "}
-                Any Questions
+                {strings.anyQuestions}
               </a>
             </li>
             <li>
@@ -123,7 +123,7 @@ const HeaderMain = () => {
                   className="mr_10"
                   src="/assets/images/logout.svg"
                 />{" "}
-                Sign Out
+                {strings.signOut}
               </a>
             </li>
             <li className="nav-item">

@@ -189,7 +189,9 @@ const ScreenerTable = ({
               )}
               {selectedTab === TABS.S_PERFORMANCE_AND_SIZE && (
                 <div className="flex-fill text_right mt-2 no-print">
-                  <p className="font-20 mb-0 date">{strings.tableComment}</p>
+                  <p className="font-20 mb-0 date">
+                    <b>{strings.tableComment}</b>
+                  </p>
                 </div>
               )}
             </div>

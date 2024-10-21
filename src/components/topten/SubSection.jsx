@@ -95,9 +95,13 @@ const SubSection = ({
             <span className="unit">
               {localized(section, "unitName", currentLanguage)}
             </span>{" "}
-            <span className="notes">
-              {localized(section, "notes", currentLanguage)}
-            </span>
+            {!isMultiple && activeSubTab === 1 ? (
+              <span className="notes">
+                {localized(section, "notes", currentLanguage)}
+              </span>
+            ) : (
+              ""
+            )}
           </p>
         </div>
         <div className="col-6">

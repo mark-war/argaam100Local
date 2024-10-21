@@ -163,6 +163,13 @@ const TopTenCompaniesPage = () => {
             <p className="font-20 mb-0 date">{strings.tableCommentTopTen}</p>
           </div>
         )}
+        {activeTabLink === TABS.T_RANKING && (
+          <div className="flex-fill text_right mt-2 no-print">
+            <p className="font-20 mb-0 date">
+              <b>{strings.tableComment}</b>
+            </p>
+          </div>
+        )}
         <TopCompaniesTable
           selectedTab={activeTabLink}
           data={data}
