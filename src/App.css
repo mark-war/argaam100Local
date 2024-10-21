@@ -1070,7 +1070,11 @@ button.disabled {
 .notes {
   font-size: 14px;
   padding: 5px 13px;
-  opacity: 0.85;
+
+  border: 1px solid #ccccccad;
+  background: #9ac6e66e;
+  color: #000;
+  border-radius: 3px;
 }
 /* Tabs Chart Ends */
 
