@@ -15,21 +15,21 @@ const FinancialRatioMessage = ({ onChange }) => {
       >
         {/* 8 */} {strings.banks}
       </span>
-      ,
+      {strings.comma}
       <span
         className="ratio_msg"
         onClick={() => handleFinancialRatioClick([SECTORS.INSURANCE])}
       >
         {/* 15 */} {strings.insurance}
       </span>
-      ,
+      {strings.comma}
       <span
         className="ratio_msg"
         onClick={() => handleFinancialRatioClick([SECTORS.REITS])}
       >
         {/* 238 */} {strings.reits}
       </span>
-      , {strings.and}
+      {strings.comma} {strings.and}
       <span
         className="ratio_msg"
         onClick={() => handleFinancialRatioClick([SECTORS.FINANCING])}

@@ -56,6 +56,7 @@ export const strings = new LocalizedStrings({
     tableCommentTopTen: "",
     anyQuestions: "Any Questions",
     signOut: "Sign Out",
+    comma: ",",
   },
   ar: {
     topTen: "أعلى 10",
@@ -111,6 +112,7 @@ export const strings = new LocalizedStrings({
     tableCommentTopTen: "تُحدث ربعياً حسب آخر 12 شهرا",
     anyQuestions: "اسأل",
     signOut: "تسجيل خروج",
+    comma: "،",
   },
 });
 

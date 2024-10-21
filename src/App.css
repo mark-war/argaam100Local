@@ -2466,8 +2466,16 @@ footer {
   body {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
-    font-size: 10pt;
+    font-size: 80%;
     color: black;
+  }
+
+  .container {
+    width: 80%; /* Reduce the container size to simulate scale */
+  }
+
+  img {
+    max-width: 80%; /* Scale images accordingly */
   }
 
   .no-print {
@@ -2531,7 +2539,7 @@ footer {
   /* Smaller prints or smaller paper sizes */
   @media print and (max-width: 800px) {
     body {
-      font-size: 10pt;
+      font-size: 80%;
     }
 
     th,
@@ -2543,7 +2551,7 @@ footer {
     .bg .ellipsis {
       color: blue;
       background-color: blue;
-      margin-right: 6px;
+      margin-right: 4px;
       width: 100%;
       max-width: 100%;
       min-width: 30px;
