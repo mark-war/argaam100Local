@@ -176,7 +176,7 @@ const ScreenerTable = ({
       <Col lg={12} className="mx-auto">
         <Card className="rounded border-0">
           <Card.Body className="px-layout bg-white rounded">
-            <div class="flex-fill text_right">
+            <div className="flex-fill text_right">
               {selectedTab === TABS.S_PE && (
                 <LastUpdate currentLanguage={lang} />
               )}

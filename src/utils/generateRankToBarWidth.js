@@ -5,12 +5,15 @@ export const generateRankToBarWidth = (values = [], selectedTab) => {
   const absoluteValues = values.map((value) => Math.abs(value));
   const maxValue = Math.max(...absoluteValues);
   const minWidth = 15;
-  const scalingFactor =
-    selectedTab === TABS.T_RANKING
-      ? 0.1
-      : selectedTab === TABS.T_ARR_MULTIPLE
-      ? 0.95
-      : 0.5;
+
+  const scalingFactors = {
+    [TABS.T_RANKING]: 0.1,
+    [TABS.T_ARR_MULTIPLE]: 0.95,
+    [TABS.T_STOCK_PERFORMANCE]: 0.4, // New scaling factor for NEW_TAB
+    // Add more mappings as needed
+  };
+
+  const scalingFactor = scalingFactors[selectedTab] || 0.5;
 
   // Check if all values are null or undefined
   const allValuesNullOrUndefined = values.every(

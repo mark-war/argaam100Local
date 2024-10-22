@@ -103,7 +103,7 @@ const SubTabCard = ({
           if (maxValue > 1_000_000) {
             // Check if selectedTab is T_RANKING specifically for this case
             if (selectedTab === TABS.T_RANKING) {
-              return "90%"; // Special case for T_RANKING tab with more than 1 million
+              return "88%"; // Special case for T_RANKING tab with more than 1 million
             }
             return "82%"; // More than 1 million (other cases)
           }
@@ -226,7 +226,7 @@ const SubTabCard = ({
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
           if (maxValue > 10_000_000) {
-            if (activeSection === 32 || activeSection === 33) return "85%";
+            if (activeSection === 32 || activeSection === 33) return "82%";
             return "80%";
           }
           if (maxValue > 1_000_000) {
