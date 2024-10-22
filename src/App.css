@@ -1761,14 +1761,14 @@ footer {
 
 .table-responsive th.cursor_pointer.text-center {
   width: 220px;
-  text-align: right !important;
+  /* text-align: right !important; */
  & .col_arrow{
     width: 28px;
   }
 }
-.table-responsive td.text-center { 
+/* .table-responsive td.text-center { 
   text-align: right !important;
-}
+} */
 .colTH{
   display: flex;
     justify-content: flex-end;
