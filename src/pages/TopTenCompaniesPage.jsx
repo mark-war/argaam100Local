@@ -158,11 +158,11 @@ const TopTenCompaniesPage = () => {
     return (
       <>
         {loading && <div className="spinner"></div>}
-        {activeTabLink === TABS.T_FINANCIAL_RATIO && (
+        {/* {activeTabLink === TABS.T_FINANCIAL_RATIO && (
           <div className="flex-fill text_right mt-2 no-print mb-2 valuetext">
             <p className="font-20 mb-0 date">{strings.tableCommentTopTen}</p>
           </div>
-        )}
+        )} */}
         {activeTabLink === TABS.T_RANKING && (
           <div className="flex-fill text_right mt-2 no-print valuetext">
             <p className="font-20 mb-0 date">

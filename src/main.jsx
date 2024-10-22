@@ -20,21 +20,26 @@ const isInitialLoad = () => {
 };
 
 // Clear the persisted store if it's the first load
-if (isInitialLoad()) {
-  persistor.purge().then(() => {
+const clearPersistedStoreIfFirstLoad = async () => {
+  if (isInitialLoad()) {
+    await persistor.purge();
     console.log("Persisted store has been purged on initial load.");
-  });
-}
+  }
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
-);
+
+// Call the function to clear the store
+clearPersistedStoreIfFirstLoad().then(() => {
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </React.StrictMode>
+  );
+});
 
 reportWebVitals();

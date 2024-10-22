@@ -51,13 +51,14 @@ const TableHeader = ({ columns, onSort, sortConfig }) => {
               onClick={() => onSort(column.key)}
             >
               <div className="colTH">
-              <span className="col_arrow">{getSortIcon(column.key)}</span>
-              <span>{column.label}
-              <br /> {/* to put the unit name below the field */}
-              {column.unit && (
-                <span className="thead_title">{column.unit}</span>
-              )}
-              </span>
+                <span className="col_arrow">{getSortIcon(column.key)}</span>
+                <span>
+                  {column.label}
+                  <br /> {/* to put the unit name below the field */}
+                  {column.unit && (
+                    <span className="thead_title">{column.unit}</span>
+                  )}
+                </span>
               </div>
             </th>
           );
