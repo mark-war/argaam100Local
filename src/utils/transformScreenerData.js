@@ -96,7 +96,12 @@ export const transformDataForTable = (
       const fieldId = item.identifier.split("-")[1];
       columnKeysSet.add(fieldId);
 
-      if (!item.data) return;
+      if (
+        !item.data ||
+        typeof item.data !== "object" ||
+        Object.keys(item.data).length === 0
+      )
+        return;
       item.data.forEach((row) => {
         const fixedCode = row.Code.split(".")[0] || "";
         if (!formattedDataMap.has(fixedCode)) {

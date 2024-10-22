@@ -206,7 +206,9 @@ const useTabDataFetch = (
     }
   }, [
     dispatch,
+    pages,
     currentLanguage,
+    fieldConfigurations,
     tabId,
     expirationTimeInMinutes,
     selectedSectorId,

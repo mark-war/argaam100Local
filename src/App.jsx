@@ -11,12 +11,13 @@ import useFetchSectors from "./hooks/useFetchSectors"; // New custom hook
 import { selectDefaultTab } from "./redux/selectors.js";
 import useLanguage from "./hooks/useLanguage.jsx";
 import { strings } from "./utils/constants/localizedStrings.js";
+import { persistor } from "./redux/store.js";
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { lang } = useParams();
-  const selectedTab = useSelector(selectDefaultTab);
-
+  // const selectedTab = useSelector(selectDefaultTab);
+  console.log("APP RENDERED");
   // Use the custom hook to manage language setting
   useLanguage(lang);
 
@@ -26,62 +27,16 @@ function App() {
   // Custom hook to fetch Argaam sectors on mount
   useFetchSectors();
 
-  // Combined keydown and reload logic into a single effect
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (event.ctrlKey && event.key === "/") {
-        event.preventDefault();
-        dispatch(resetState());
-        window.location.reload();
-      }
-    },
-    [dispatch]
-  );
-
   useEffect(() => {
-    const handleResetState = () => {
-      dispatch(resetState());
-      window.location.reload();
+    const purgePersistedStore = async () => {
+      await persistor.purge(); // Purge the store on every load
+      console.log("Persisted store purged.");
     };
 
-    // Add keydown listener
-    window.addEventListener("keydown", handleKeyDown);
+    purgePersistedStore();
+  }, []); // Empty dependency array ensures it only runs once on mount
 
-    // Conditionally add beforeunload listener
-    if (config.refreshOnReload === 1) {
-      window.addEventListener("beforeunload", handleResetState);
-    }
-
-    // Cleanup on unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      if (config.refreshOnReload === 1) {
-        window.removeEventListener("beforeunload", handleResetState);
-      }
-    };
-  }, [handleKeyDown, dispatch]);
-
-  // Use the custom hook to handle tab data fetching
-  const { loading: hookLoading } = useTabDataFetch(
-    selectedTab?.tabId,
-    config.expirationInMinutes
-  );
-
-  const [loading, setLoading] = useState(true);
-
-  // Track selectedTab changes and sync loading state
-  useEffect(() => {
-    if (selectedTab?.tabId) {
-      // Sync the local loading state with the hook's loading state
-      setLoading(hookLoading);
-    }
-  }, [selectedTab, hookLoading]); // Re-run when selectedTab or hookLoading changes
-
-  return (
-    <div className="App">
-      {loading ? <div className="spinner"></div> : <AppRoutes />}
-    </div>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

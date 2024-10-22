@@ -152,9 +152,26 @@ const HeaderMain = () => {
         <div className="container-fluid px-layout">
           <div className="d-flex container_inner w-100 align-items-center">
             <div className="flex-fill justify-content-center">
-              <Suspense fallback={<LoadingScreen />}>
+              {/* <Suspense fallback={<LoadingScreen />}>
                 <ScreenerLogo />
-              </Suspense>
+              </Suspense> */}
+              <NavLink
+                className="navbar-brand"
+                to={`/${lang}/screener`}
+                onClick={() => (window.location.href = `/${lang}/screener`)}
+              >
+                {lang === LANGUAGES.AR ? (
+                  <img
+                    alt="Argaam Screener Logo"
+                    src="/assets/images/argaam_screener_logo_ar.svg"
+                  />
+                ) : (
+                  <img
+                    alt="Argaam Screener Logo"
+                    src="/assets/images/argaam_screener_logo_en.svg"
+                  />
+                )}
+              </NavLink>
             </div>
             <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
