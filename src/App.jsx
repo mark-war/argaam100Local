@@ -17,7 +17,7 @@ function App() {
   // const dispatch = useDispatch();
   const { lang } = useParams();
   // const selectedTab = useSelector(selectDefaultTab);
-  console.log("APP RENDERED");
+
   // Use the custom hook to manage language setting
   useLanguage(lang);
 
