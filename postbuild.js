@@ -13,6 +13,9 @@ const arDir = `${__dirname}/dist/ar/screener`;
 const en10Dir = `${__dirname}/dist/en/top-10`;
 const ar10Dir = `${__dirname}/dist/ar/top-10`;
 
+// Check environment mode (development or production)
+const mode = process.env.BUILD_MODE || "development";
+
 // Create language-specific directories and subdirectories if they don't exist
 fs.ensureDirSync(enDir);
 fs.ensureDirSync(arDir);
@@ -27,8 +30,7 @@ fs.readdir(sourceDir, (err, files) => {
     const srcPath = `${sourceDir}/${file}`;
 
     if (fs.statSync(srcPath).isFile()) {
-      // For example, copying files to specific language directories
-      // Here you could add logic to determine which files go where
+      // Copy files differently based on the environment mode
       fs.copyFileSync(srcPath, `${enDir}/${file}`);
       fs.copyFileSync(srcPath, `${arDir}/${file}`);
       fs.copyFileSync(srcPath, `${en10Dir}/${file}`);

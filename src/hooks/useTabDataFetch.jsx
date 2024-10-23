@@ -15,6 +15,8 @@ import { PAGES, SECTIONS, TABS } from "../utils/constants/localizedStrings";
 import { fetchPageStructure } from "../services/screenerApi";
 import { setPages } from "../redux/features/pageSlice";
 
+const globalCache = {};
+
 const useTabDataFetch = (
   tabId,
   expirationTimeInMinutes = 0,
@@ -124,6 +126,13 @@ const useTabDataFetch = (
         return currentTime - cacheEntry.timestamp > expirationTime;
       };
 
+      // Check global cache first
+      if (globalCache[cacheKey] && !isExpired(globalCache[cacheKey])) {
+        console.log("Using cached data from global cache.");
+        // Here, you can set the data to your state or context as needed
+        return; // Skip fetching since we have fresh data in globalCache
+      }
+
       if (
         ((cacheEntry.needsFetch || isExpired(cacheEntry)) &&
           !hasFetchedData.current) ||
@@ -162,6 +171,10 @@ const useTabDataFetch = (
               ...prevCache,
               [cacheKey]: { needsFetch: false, timestamp: Date.now() },
             }));
+            globalCache[cacheKey] = {
+              needsFetch: false,
+              timestamp: Date.now(),
+            };
           });
         } else if (
           //FOR TOP TEN PAGE TABS WITH HISTORICAL EVOLUTION
@@ -178,6 +191,10 @@ const useTabDataFetch = (
               ...prevCache,
               [cacheKey]: { needsFetch: false, timestamp: Date.now() },
             }));
+            globalCache[cacheKey] = {
+              needsFetch: false,
+              timestamp: Date.now(),
+            };
           });
         } else {
           //REST OF THE TOP TEN PAGE TABS
@@ -194,6 +211,10 @@ const useTabDataFetch = (
               ...prevCache,
               [cacheKey]: { needsFetch: false, timestamp: Date.now() },
             }));
+            globalCache[cacheKey] = {
+              needsFetch: false,
+              timestamp: Date.now(),
+            };
           });
         }
 
