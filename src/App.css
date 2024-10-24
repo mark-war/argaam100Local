@@ -898,7 +898,12 @@ button.disabled {
   margin-top: 7px !important;
   border-top: 2px solid #adb1b6;
 }
-
+.unit{
+  font-size: 13px;
+  padding: 5px 13px;
+  color: rgb(141, 137, 137);
+  font-weight: normal;
+}
 .table_chart .table.table_layout tbody tr:last-child {
   border-bottom: 1px solid transparent;
 }
