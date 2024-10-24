@@ -217,14 +217,14 @@ const ScreenerTable = ({
                 <LastUpdate currentLanguage={lang} />
               )}
               {selectedTab === TABS.S_FINANCIAL_RATIO && (
-                <div className="flex-fill text_right mt-2 no-print mb-2 ">
+                <div className="flex-fill text_right  no-print mb-2 ">
                   <FinancialRatioMessage
                     onChange={handleSelectedOptionsChange} // Pass the handler to update selected sectors
                   />
                 </div>
               )}
               {selectedTab === TABS.S_PERFORMANCE_AND_SIZE && (
-                <div className="flex-fill text_right mt-2 no-print mb-2 ">
+                <div className="flex-fill text_right  no-print mb-2 ">
                   <p className="font-20 mb-0 date">
                     <b>{strings.tableComment}</b>
                   </p>
