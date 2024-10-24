@@ -673,9 +673,9 @@ button.disabled {
   padding-left: 0;
 }
 
-.top_companies .sub_heading_tabs {
+/* .top_companies .sub_heading_tabs {
   padding-bottom: 6px;
-}
+} */
 
 .sub_heading_tabs_container {
   align-items: center;
@@ -1068,9 +1068,10 @@ button.disabled {
 }
 
 .notes {
-  font-size: 14px;
+  font-size: 13px;
   padding: 5px 13px;
   color: rgb(141, 137, 137);
+  font-weight: normal;
   /* border: 1px solid #ccccccad;
   background: #9ac6e66e;
   color: #000;
@@ -1238,10 +1239,10 @@ button.disabled {
   background-color: #eae9e9;
 }
 
-[lang="ar"] .top_companies .sub_heading_tabs_container,
+/* [lang="ar"] .top_companies .sub_heading_tabs_container,
 .top_companies .sub_heading_tabs_container {
   margin-top: 30px !important;
-}
+} */
 
 .table_chart .table.table_layout tbody tr:first-child td,
 .table_chart .table.table_layout tbody tr:last-child td {
@@ -1283,7 +1284,7 @@ button.disabled {
 }
 
 [lang="ar"] .navbar-brand img {
-  width: 305px;
+  width: 275px;
 }
 
 [lang="ar"] .mobile_nav .dropdown-toggle {
@@ -1308,6 +1309,12 @@ button.disabled {
 
 [lang="ar"] .select_container {
   margin-bottom: 8px;
+}
+.d-flex.no-print{
+  padding-bottom: 6px;
+}
+[lang="ar"] .d-flex.no-print{
+  padding-bottom: 7px;
 }
 
 [lang="ar"] .tabs_inner.tabs_nav.navbar-nav .nav-item:last-child button {
@@ -1553,7 +1560,7 @@ direction: ltr;
 }
 
 .table_layout.table td:nth-child(2) {
-  width: 12%;
+  width: 13%;
 }
 
 .table_layout.table-striped td:nth-child(3) {
@@ -1669,9 +1676,6 @@ footer {
   border-top-left-radius: 10px;
 }
 
-.top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-  padding-bottom: 8px;
-}
 
 /* .table_layout.table-striped tbody tr:first-child {
   outline: 1px solid #e0e0e0;
@@ -1804,9 +1808,7 @@ left: 3px;
     width: 22%;
   }
 
-  .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
-    padding-bottom: 10px;
-  }
+  
 
   .table_layout.table th:nth-child(2) {
     padding-left: 7px;
@@ -1834,9 +1836,8 @@ left: 3px;
     padding-right: 0;
   }
 
-  .top_companies .sub_heading_tabs {
-    padding-bottom: 10px;
-  }
+
+  
 
   .tabs_nav.navbar-nav .nav-link {
     font-size: 1.313rem;
@@ -1850,7 +1851,7 @@ left: 3px;
     padding-bottom: 14px;
   }
 
-  [lang="ar"]
+  /* [lang="ar"]
     body
     .top_companies
     .tabs_nav.navbar-nav
@@ -1858,7 +1859,7 @@ left: 3px;
     .nav-link.active
     span {
     padding-bottom: 10px;
-  }
+  } */
 
   .table.table_layout th,
   .table.table_layout td {
@@ -1964,6 +1965,9 @@ left: 3px;
 }
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
+  body{
+    zoom: 0.8; 
+  }
   .charts_table_bg span.bg {
     flex-shrink: 0.06;
   }
@@ -2646,17 +2650,17 @@ left: 3px;
   text-decoration: underline;
 }
 
-[lang="ar"]
+/* [lang="ar"]
   .sub_heading_tabs_container
   .tabs_nav.navbar-nav
   .nav-item:nth-child(4)
   a {
   border-left: 0 !important;
-}
+} */
 
-.sub_heading_tabs_container .tabs_nav.navbar-nav .nav-item:nth-child(4) a {
+/* .sub_heading_tabs_container .tabs_nav.navbar-nav .nav-item:nth-child(4) a {
   border-right: 0;
-}
+} */
 
 .table_layout.table_full tr.total_row:last-child td {
   border-bottom: 1px solid #e0e0e0 !important;

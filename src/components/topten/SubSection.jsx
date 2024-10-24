@@ -89,7 +89,7 @@ const SubSection = ({
   return (
     <Col lg={6} key={sectionKey}>
       <div className="tabs_inner_nav row px-3">
-        <div className="col-6">
+        <div className="col-6 col-sm-7">
           <p className="sub_heading">
             {localized(section, "fieldName", currentLanguage)}{" "}
             <span className="unit">
@@ -104,7 +104,7 @@ const SubSection = ({
             )}
           </p>
         </div>
-        <div className="col-6">
+        <div className="col-6 col-sm-5">
           <div className="flex-fill justify-content-end">
             <ul className="tabs_nav tabs_inner navbar-nav align-items-center flex-row justify-content-end">
               {sortedSubTabs.map((subTab) => {
