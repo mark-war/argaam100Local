@@ -13,7 +13,7 @@ import {
   selectScreenerData,
 } from "../redux/selectors.js";
 import { localized } from "../utils/localization.js";
-import { transformDataForTable } from "../utils/transformScreenerData.js";
+import { transformDataForTable } from "../utils/transformScreenerData.jsx";
 
 const ScreenerTablesPage = () => {
   const pages = useSelector(selectPages);

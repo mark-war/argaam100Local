@@ -25,7 +25,7 @@ const persistConfig = {
   ],
 };
 
-const rootReducer = combineReducers({
+const combinedReducers = combineReducers({
   language: languageReducer,
   pages: pagesReducer, // Add the new reducer
   fieldConfig: fieldConfigurationReducer,
@@ -34,6 +34,17 @@ const rootReducer = combineReducers({
   topten: topTenSingleTabReducer,
   toptenMultiple: toptenMultipleTabReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "RESET_ALL_STATE") {
+    console.log("Resetting state..."); // Log when resetting
+    // Reset the state of the entire store
+    state = undefined;
+  }
+
+  // Pass the updated or reset state to the actual reducers
+  return combinedReducers(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

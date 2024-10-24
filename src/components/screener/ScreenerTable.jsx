@@ -149,6 +149,29 @@ const ScreenerTable = ({
     }, {});
   }, [columns, selectedOptions]); // Add dependencies here
 
+  // Combine pinnedRow and summaryData
+  const combinedRow = useMemo(() => {
+    if (!pinnedRow) return summaryData; // If no pinnedRow, return just summaryData
+
+    // Filter out fixed columns from summaryData before merging
+    const nonFixedSummaryData = Object.fromEntries(
+      Object.entries(summaryData).filter(
+        ([key]) => !columns.find((col) => col.key === key && col.fixed)
+      )
+    );
+
+    // Merge pinnedRow and non-fixed summaryData
+    return { ...pinnedRow, ...nonFixedSummaryData };
+  }, [pinnedRow, summaryData, columns]);
+
+  // to control the show and hide of the summary row
+  const showTasiRow = () => {
+    return (
+      selectedOptions.length === 0 &&
+      Object.values(summaryData).some((value) => value !== "")
+    );
+  };
+
   // to control the show and hide of the summary row
   const showSummaryRow = () => {
     return (
@@ -207,7 +230,9 @@ const ScreenerTable = ({
                   sortConfig={sortConfig}
                 />
                 <tbody>
-                  {pinnedRow && <PinnedRow row={pinnedRow} columns={columns} />}
+                  {pinnedRow && showTasiRow() && (
+                    <PinnedRow row={combinedRow} columns={columns} />
+                  )}
                   {currentRows.map((row, index) => (
                     <TableRow
                       key={index}

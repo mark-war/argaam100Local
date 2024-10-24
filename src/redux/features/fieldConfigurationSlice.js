@@ -25,6 +25,9 @@ const initialState = {
 const fieldConfigurationSlice = createSlice({
   name: "fieldConfig",
   initialState,
+  reducers: {
+    resetState: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       // Field Configuration Data
@@ -42,6 +45,8 @@ const fieldConfigurationSlice = createSlice({
       });
   },
 });
+
+export const { resetState } = fieldConfigurationSlice.actions;
 
 // Export actions and reducer
 export const fieldConfigurationReducer = fieldConfigurationSlice.reducer;

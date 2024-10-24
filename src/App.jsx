@@ -1,35 +1,29 @@
 import "./App.css";
 import AppRoutes from "./components/routes/AppRoutes";
-import React, { useEffect, useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { resetState } from "./redux/features/screenerDataSlice.js";
-import config from "./utils/config.js";
-import useTabDataFetch from "./hooks/useTabDataFetch.jsx";
 import usePageStructure from "./hooks/usePageStructure"; // New custom hook
 import useFetchSectors from "./hooks/useFetchSectors"; // New custom hook
-import { selectDefaultTab } from "./redux/selectors.js";
 import useLanguage from "./hooks/useLanguage.jsx";
-import { strings } from "./utils/constants/localizedStrings.js";
-import { persistor } from "./redux/store.js";
+import store, { persistor } from "./redux/store.js";
 
 function App() {
-  // const dispatch = useDispatch();
   const { lang } = useParams();
-  // const selectedTab = useSelector(selectDefaultTab);
 
   // Use the custom hook to manage language setting
   useLanguage(lang);
 
-  // Custom hook to handle page structure and configuration loading
+  // fetch page structure and configuration loading
   usePageStructure();
 
-  // Custom hook to fetch Argaam sectors on mount
+  // fetch Argaam sectors on mount
   useFetchSectors();
 
+  // ensures that the persisted data and local storage is cleared on initial mount
   useEffect(() => {
     const purgePersistedStore = async () => {
-      await persistor.purge(); // Purge the store on every load
+      store.dispatch({ type: "RESET_ALL_STATE" });
+      await persistor.purge(); // Purge the store on initial load or every reload/refresh
       console.log("Persisted store purged.");
     };
 

@@ -57,6 +57,7 @@ export const strings = new LocalizedStrings({
     anyQuestions: "Any Questions",
     signOut: "Sign Out",
     comma: ",",
+    tasi: "Tasi",
   },
   ar: {
     topTen: "أعلى 10",
@@ -113,6 +114,7 @@ export const strings = new LocalizedStrings({
     anyQuestions: "اسأل",
     signOut: "تسجيل خروج",
     comma: "،",
+    tasi: "تاسي",
   },
 });
 

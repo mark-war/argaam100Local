@@ -9,9 +9,10 @@ const pageSlice = createSlice({
     setPages: (state, action) => {
       state.pages = action.payload;
     },
+    resetState: () => initialState,
   },
 });
 
-export const { setPages } = pageSlice.actions;
+export const { setPages, resetState } = pageSlice.actions;
 
 export default pageSlice.reducer;
