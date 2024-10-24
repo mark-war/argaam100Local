@@ -33,7 +33,7 @@ const TopCompaniesSubHeader = ({
         <div className="sub_heading_tabs">
           <div className="tabs_nav navbar-nav align-items-center flex-row">
             {tabLinksArray?.map((tabItem, index) => (
-              <li className="nav-item mb-2" key={index}>
+              <li className="nav-item" key={index}>
                 <Link
                   to=""
                   className={`nav-link ${
