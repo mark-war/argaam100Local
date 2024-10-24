@@ -52,22 +52,28 @@ export const strings = new LocalizedStrings({
     and: "and",
     total: "Total",
     average: "Average",
-    tableComment: "(*Values in Million SAR)",
+    tableComment: "(Values in Million SAR)",
     tableCommentTopTen: "Daily evolution based on TTM",
     anyQuestions: "Any Questions",
     signOut: "Sign Out",
     comma: ",",
     tasi: "Tasi",
-    ned: 'NED*',
-    growthtooltiptext1: "Growth statistics are not reliable and volatile because of low ROAE over the specified period.",
+    ned: "NED*",
+    growthtooltiptext1:
+      "Growth statistics are not reliable and volatile because of low ROAE over the specified period.",
     growthtooltiptext2: "*NED :  Not Enough Data  to calculate the value.",
-    growthtooltiptext3: "*NM :  Not Meaningful  because of negative values at start of period.",
+    growthtooltiptext3:
+      "*NM :  Not Meaningful  because of negative values at start of period.",
     growthtooltiptext4: "*Which companies are appearing in the list? ",
-    growthtooltiptext5: "A company with 65 % or more of comparable quarterly (y/y) profitable growth for the selected period.",
-    growthtooltiptext6: "Comparisons are for earning per share ex unusual items.",
-    growthtooltiptext7: "A quarter with a net loss is not accounted for in the score.",
-    growthtooltiptext8: "Data are updated with every announced result (more than 800 times per year)",
-    definitions: 'Definitions'
+    growthtooltiptext5:
+      "A company with 65 % or more of comparable quarterly (y/y) profitable growth for the selected period.",
+    growthtooltiptext6:
+      "Comparisons are for earning per share ex unusual items.",
+    growthtooltiptext7:
+      "A quarter with a net loss is not accounted for in the score.",
+    growthtooltiptext8:
+      "Data are updated with every announced result (more than 800 times per year)",
+    definitions: "Definitions",
   },
   ar: {
     topTen: "أعلى 10",
@@ -119,22 +125,27 @@ export const strings = new LocalizedStrings({
     and: "و",
     total: "المجموع",
     average: "متوسط",
-    tableComment: "(القيم بالمليون ريال*)",
+    tableComment: "(القيم بالمليون ريال)",
     tableCommentTopTen: "التطور الربعي حسب آخر 12 شهرا",
     anyQuestions: "اسأل",
     signOut: "تسجيل خروج",
     comma: "،",
     tasi: "تاسي",
-    ned: 'غ م *',
-    growthtooltiptext1: "بيانات النمو متذبذبة وذات موثوقية غير عالية بسبب انخفاض العائد على حقوق المساهمين خلال الفترة.",
-    growthtooltiptext2: "غ م : البيانات اللازمة لحساب القيمة غير مكتملة للفترة المختارة.",
+    ned: "غ م *",
+    growthtooltiptext1:
+      "بيانات النمو متذبذبة وذات موثوقية غير عالية بسبب انخفاض العائد على حقوق المساهمين خلال الفترة.",
+    growthtooltiptext2:
+      "غ م : البيانات اللازمة لحساب القيمة غير مكتملة للفترة المختارة.",
     growthtooltiptext3: "*NM : لا معنى له بسبب القيم السلبية بداية الفترة",
     growthtooltiptext4: "ما الشركات التي تظهر في القائمة؟",
-    growthtooltiptext5: "الشركة التي حققت نموا مقارناَ في الربحية لـ 65% أو أكثر من الأرباع للفترة المختارة.",
-    growthtooltiptext6: "تتم المقارنة باستعمال ربح السهم قبل البنود الاستثنائية.",
+    growthtooltiptext5:
+      "الشركة التي حققت نموا مقارناَ في الربحية لـ 65% أو أكثر من الأرباع للفترة المختارة.",
+    growthtooltiptext6:
+      "تتم المقارنة باستعمال ربح السهم قبل البنود الاستثنائية.",
     growthtooltiptext7: "لايتم احتساب أي ربع تحقق فيه الشركة خسارة صافية.",
-    growthtooltiptext8: "يتم تحديث البيانات في كل مرة تعلن شركة بالسوق عن نتائجها (أكثر من 800 مرة سنويا)",
-    definitions: 'تعريفات'
+    growthtooltiptext8:
+      "يتم تحديث البيانات في كل مرة تعلن شركة بالسوق عن نتائجها (أكثر من 800 مرة سنويا)",
+    definitions: "تعريفات",
   },
 });
 
