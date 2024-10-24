@@ -243,9 +243,9 @@ const ScreenerTable = ({
                   sortConfig={sortConfig}
                 />
                 <tbody>
-                  {pinnedRow && showTasiRow() && (
+                  {/* {pinnedRow && showTasiRow() && (
                     <PinnedRow row={combinedRow} columns={columns} />
-                  )}
+                  )} */}
                   {currentRows.map((row, index) => (
                     <TableRow
                       key={index}
