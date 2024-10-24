@@ -229,7 +229,11 @@ const ExportDropdown = (activeTabLink = {}) => {
     } else exportMultipleTabsToExcelTopTen();
   };
 
-  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  // Function to handle the toggle of the dropdown
+  const toggleDropdown = (event) => {
+    event.stopPropagation(); // Prevent the click event from bubbling up
+    setDropdownOpen((prev) => !prev);
+  };
 
   // Use useEffect to handle clicks outside the dropdown
   useEffect(() => {

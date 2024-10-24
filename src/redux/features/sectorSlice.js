@@ -9,9 +9,10 @@ const sectorSlice = createSlice({
     setArgaamSectors: (state, action) => {
       state.sectors = action.payload;
     },
+    resetState: () => initialState,
   },
 });
 
-export const { setArgaamSectors } = sectorSlice.actions;
+export const { setArgaamSectors, resetState } = sectorSlice.actions;
 
 export default sectorSlice.reducer;

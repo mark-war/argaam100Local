@@ -3,11 +3,55 @@ import { Col } from "react-bootstrap";
 import SubTab from "./SubTab";
 import SubTabCard from "./SubTabCard";
 import { localized } from "../../utils/localization";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addNewTopTenItem,
   fetchSubTabData,
 } from "../../redux/features/topTenMultiTabSlice";
+import { strings } from "../../utils/constants/localizedStrings";
+import { selectCurrentLanguage } from "../../redux/selectors";
+import ReactModal from "react-modal";
+import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
+
+function PopupTooltip({ isOpen, onRequestClose }) {
+  const lang = useSelector(selectCurrentLanguage);
+  useScrollbarVisibility(isOpen);
+
+  return (
+    <ReactModal
+      isOpen={isOpen}
+      className={
+        lang == "EN" ? "copylinkltr growthcom" : "copylinkrtl growthcom"
+      }
+      onRequestClose={onRequestClose}
+      style={{
+        content: {
+          zIndex: 99999,
+          width: "30%",
+          height: "100px",
+          direction: lang == "EN" ? " ltr" : " rtl",
+          top: "50% !important",
+        },
+      }}
+    >
+      <a className="closeIcon closeIconfill" onClick={onRequestClose}></a>
+      <h2 className="growthHead">{strings.definitions}</h2>
+      <div className="topgrowthcompanies">
+        <span class="bar"></span>
+        <p>{strings.growthtooltiptext1}</p>
+        <p>{strings.growthtooltiptext2}</p>
+        <p>{strings.growthtooltiptext3}</p>
+        <h5>{strings.growthtooltiptext4}</h5>
+        <ul>
+          <li>{strings.growthtooltiptext5}</li>
+          <li>{strings.growthtooltiptext6}</li>
+          <li>{strings.growthtooltiptext7}</li>
+          <li>{strings.growthtooltiptext8}</li>
+        </ul>
+      </div>
+    </ReactModal>
+  );
+}
 
 const SubSection = ({
   section,
@@ -27,6 +71,7 @@ const SubSection = ({
     (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
   );
   const [loading, setLoading] = useState({});
+  const [modalOpen, setmodalOpen] = useState(false);
 
   useEffect(() => {
     setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
@@ -85,6 +130,8 @@ const SubSection = ({
     [section.data]
   );
 
+  const isTopGrowthChart = section?.fieldNameEn === "Top Growth Companies";
+
   // Render the sub-section's content based on whether it has multiple tabs
   return (
     <Col lg={6} key={sectionKey}>
@@ -95,6 +142,21 @@ const SubSection = ({
             <span className="unit">
               {localized(section, "unitName", currentLanguage)}
             </span>{" "}
+            {isTopGrowthChart && (
+              <>
+                <PopupTooltip
+                  isOpen={modalOpen}
+                  onRequestClose={() => setmodalOpen(false)}
+                />
+                <i
+                  data-tooltip-id={"tooltip"}
+                  className="textComment_icon"
+                  onClick={() => setmodalOpen(true)}
+                >
+                  asd
+                </i>
+              </>
+            )}
             {!isMultiple && activeSubTab === 1 ? (
               <span className="notes">
                 {localized(section, "notes", currentLanguage)}

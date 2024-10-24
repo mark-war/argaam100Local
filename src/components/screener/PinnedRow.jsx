@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import NumberFormatter from "../common/NumberFormatter";
-import { strings } from "../../utils/constants/localizedStrings";
+import config from "../../utils/config";
 
 const PinnedRow = ({ row, columns }) => {
   return (
@@ -9,7 +9,8 @@ const PinnedRow = ({ row, columns }) => {
       {columns.map((column) => {
         if (column.hidden) return null; // Skip rendering hidden columns
 
-        const isFixedColumn = column.key.startsWith("fixed_");
+        const isFixedColumn =
+          typeof column.key === "string" && column.key.startsWith("fixed_");
         const tdClassName = isFixedColumn
           ? column.key === "fixed_company"
             ? "td_img"
@@ -40,8 +41,13 @@ const PinnedRow = ({ row, columns }) => {
               >
                 <NumberFormatter
                   value={row[column.key]}
-                  isPEColumn={column.key.includes(strings.pe)}
+                  isPEColumn={config.peFieldIds.has(column.key)}
                 />
+                {column.showPercentage &&
+                column.showPercentage === 1 &&
+                typeof row[column.key] === "number"
+                  ? " %"
+                  : ""}
               </span>
             )}
           </td>
