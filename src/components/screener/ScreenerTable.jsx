@@ -153,9 +153,22 @@ const ScreenerTable = ({
   const combinedRow = useMemo(() => {
     if (!pinnedRow) return summaryData; // If no pinnedRow, return just summaryData
 
+    // Create a filtered summary data object
+    let filteredSummaryData = summaryData;
+
+    // If the selectedTab is S_FINANCIAL_RATIO, remove the 1st, 2nd, 5th, and 6th columns
+    if (selectedTab === TABS.S_FINANCIAL_RATIO) {
+      const columnsToRemove = [0, 1, 4, 5]; // Indices of the columns to hide (0-based)
+      filteredSummaryData = Object.fromEntries(
+        Object.entries(summaryData).filter(
+          ([key], index) => !columnsToRemove.includes(index)
+        )
+      );
+    }
+
     // Filter out fixed columns from summaryData before merging
     const nonFixedSummaryData = Object.fromEntries(
-      Object.entries(summaryData).filter(
+      Object.entries(filteredSummaryData).filter(
         ([key]) => !columns.find((col) => col.key === key && col.fixed)
       )
     );
