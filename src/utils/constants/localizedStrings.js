@@ -74,6 +74,10 @@ export const strings = new LocalizedStrings({
     growthtooltiptext8:
       "Data are updated with every announced result (more than 800 times per year)",
     definitions: "Definitions",
+    loosinggrowthtooltiptext5: 'A company with 60 % or more of recording quarterly losses for the selected period.',
+    loosinggrowthtooltiptext6: 'Earnings per share EX unusual items are used for comparison.',
+    loosinggrowthtooltiptext7: 'A quarter with a net loss is accounted for in the score.',
+    loosinggrowthtooltiptext8: 'Data are updated with every announced result (more than 800 times per year)',
   },
   ar: {
     topTen: "أعلى 10",
@@ -146,6 +150,10 @@ export const strings = new LocalizedStrings({
     growthtooltiptext8:
       "يتم تحديث البيانات في كل مرة تعلن شركة بالسوق عن نتائجها (أكثر من 800 مرة سنويا)",
     definitions: "تعريفات",
+    loosinggrowthtooltiptext5: 'الشركة التي حققت خسائر ربعية لـ 60% أو أكثر من الأرباع للفترة المختارة.',
+    loosinggrowthtooltiptext6: 'تتم المقارنة باستعمال ربح السهم قبل البنود الاستثنائية.',
+    loosinggrowthtooltiptext7: 'يتم احتساب أي ربع تحقق فيه الشركة خسارة صافية .',
+    loosinggrowthtooltiptext8: 'يتم تحديث البيانات في كل مرة تعلن شركة بالسوق عن نتائجها (أكثر من 800 مرة سنويا)',
   },
 });
 
