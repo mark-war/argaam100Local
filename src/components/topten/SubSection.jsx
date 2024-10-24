@@ -16,12 +16,12 @@ import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 function PopupTooltip({ isOpen, onRequestClose }) {
   const lang = useSelector(selectCurrentLanguage);
   useScrollbarVisibility(isOpen);
-
+  console.log(lang, 'XD')
   return (
     <ReactModal
       isOpen={isOpen}
       className={
-        lang == "EN" ? "copylinkltr growthcom" : "copylinkrtl growthcom"
+        lang == "en" ? "copylinkltr growthcom" : "copylinkrtl growthcom"
       }
       onRequestClose={onRequestClose}
       style={{
@@ -29,7 +29,7 @@ function PopupTooltip({ isOpen, onRequestClose }) {
           zIndex: 99999,
           width: "30%",
           height: "100px",
-          direction: lang == "EN" ? " ltr" : " rtl",
+          direction: lang == "en" ? " ltr" : " rtl",
           top: "50% !important",
         },
       }}
