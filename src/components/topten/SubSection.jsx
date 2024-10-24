@@ -153,7 +153,7 @@ const SubSection = ({
                   className="textComment_icon"
                   onClick={() => setmodalOpen(true)}
                 >
-                  asd
+                  
                 </i>
               </>
             )}

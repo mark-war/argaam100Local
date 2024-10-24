@@ -172,7 +172,7 @@ div {
   height: 100%;
   position: fixed !important;
   background-color: #1c1b1b59;
-  z-index: 1;
+  z-index: 2;
   overflow: auto;
 }
 
@@ -1060,6 +1060,7 @@ button.disabled {
   margin-bottom: 0;
   font-size: 1.125rem;
   font-weight: 600;
+  position: relative;
 }
 
 .tabs_inner.tabs_nav.navbar-nav .col-6 {
@@ -1792,17 +1793,88 @@ footer {
   display: inline-block;
   z-index: 9;
   position: absolute;
-left: 3px;
+  margin: 0 5px;
   z-index: 1;
   background-position: bottom;
   margin-top: 0;  
   top: 2px;
 }
-[lang="ar"] .textComment_icon{
-  left: auto;
-  right: 3px;
+
+.ReactModal__Overlay{
+  position: fixed !important;
+  inset: 0;
+  background-color: #ffffffbf;
+  
+  display: flex !important;
+  align-content: space-around !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  z-index: 10000;
+  background-color: #0000007f !important;
+}
+.growthcom{
+  outline: none !important;
+  word-wrap: break-word;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  width: 30% !important;
+  
+  padding: 20px !important;
+  height: auto !important;
+  border-radius: 5px;
+  width: 35% !important;
+  padding: 30px 20px !important;
+ background: #fff !important;
+  border-radius: 10px !important;
+}
+.growthHead {
+  background: #F5F5F6;
+  padding: 10px;
+  font-size: 1.55rem;
+  text-align: start;
+  margin-bottom: 1rem;
+}
+.bar {
+  width: 32px;
+  float: left;
+  height: 12px;
+  margin-right: 10px;
+  margin-top: 3px;
+  background: #919191;
+  position: relative;
+  &::after{
+    content: "";
+    height: 17px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(/src/assets/images/bar.png) repeat;
+  }
 }
 
+[lang="ar"] .growthcom .bar {
+  float: right;
+  margin-right: 0;
+  margin-left: 10px;
+}
+.closeIconfill {
+  position: absolute;
+    display: inline-block;
+    top: 8px;
+  background: url(/src/assets/images/closeIcon_fill.svg) no-repeat;
+  height: 20px;
+  width: 20px;
+  background-size: 100%;
+  cursor: pointer;
+  right: 8px;
+}
+[lang="ar"] .growthcom .closeIcon {
+  left: 8px;
+  right: auto;
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
@@ -1986,6 +2058,28 @@ left: 3px;
 }
 
 @media screen and (max-width: 1024px) {
+ 
+      .ReactModal__Content {
+        padding: 0 !important;
+        width: auto !important;
+        margin: 0 auto !important;
+        width: 96% !important;
+      
+        zoom: 0.82;
+        position: absolute;
+        background: #fff;
+        height: auto !important;
+        overflow: hidden;
+        border: 0px solid #000 !important;
+        border-radius: 0;
+        outline: none !important;
+        padding: 30px 10px !important;
+      }
+      .topgrowthcompanies {
+        p {
+            font-size: .9rem;
+        }
+    }
   .charts_table_bg {
     margin-left: -15px;
   }
