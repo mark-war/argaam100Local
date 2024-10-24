@@ -1565,10 +1565,13 @@ direction: ltr;
   font-weight: 500;
 }
 
-.table_layout.table td:nth-child(2) {
+.table-responsive .table_layout.table td:nth-child(2) {
   width: 17%;
   max-width: 17%;
 }
+
+
+
 
 .table_layout.table-striped td:nth-child(3) {
   width: 10%;
