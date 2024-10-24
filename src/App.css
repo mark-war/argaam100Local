@@ -900,7 +900,7 @@ button.disabled {
 }
 .unit{
   font-size: 13px;
-  padding: 5px 13px;
+  padding: 5px 5px;
   color: rgb(141, 137, 137);
   font-weight: normal;
 }
