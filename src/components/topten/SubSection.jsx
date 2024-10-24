@@ -18,6 +18,7 @@ function PopupTooltip({ isOpen, onRequestClose }) {
   useScrollbarVisibility(isOpen);
   return (
     <ReactModal
+      ariaHideApp={false}
       isOpen={isOpen}
       className={
         lang == "en" ? "copylinkltr growthcom" : "copylinkrtl growthcom"
@@ -36,7 +37,7 @@ function PopupTooltip({ isOpen, onRequestClose }) {
       <a className="closeIcon closeIconfill" onClick={onRequestClose}></a>
       <h2 className="growthHead">{strings.definitions}</h2>
       <div className="topgrowthcompanies">
-        <span class="bar"></span>
+        <span className="bar"></span>
         <p>{strings.growthtooltiptext1}</p>
         <p>{strings.growthtooltiptext2}</p>
         <p>{strings.growthtooltiptext3}</p>
@@ -141,7 +142,7 @@ const SubSection = ({
             <span className="unit">
               {localized(section, "unitName", currentLanguage)}
             </span>{" "}
-            {isTopGrowthChart && (
+            {/* {isTopGrowthChart && (
               <>
                 <PopupTooltip
                   isOpen={modalOpen}
@@ -151,11 +152,9 @@ const SubSection = ({
                   data-tooltip-id={"tooltip"}
                   className="textComment_icon"
                   onClick={() => setmodalOpen(true)}
-                >
-                  
-                </i>
+                ></i>
               </>
-            )}
+            )} */}
             {!isMultiple && activeSubTab === 1 ? (
               <span className="notes">
                 {localized(section, "notes", currentLanguage)}

@@ -68,7 +68,7 @@ const SubTabCard = ({
       const hasSignificantDrop = (prev, curr) => {
         if (curr !== 0) {
           const percentageChange = (prev / curr) * 100;
-          return percentageChange > 200; // More than 200% drop
+          return percentageChange > 800; // More than 200% drop
         }
         return false;
       };
