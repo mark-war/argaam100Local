@@ -1566,7 +1566,8 @@ direction: ltr;
 }
 
 .table_layout.table td:nth-child(2) {
-  width: 13%;
+  width: 17%;
+  max-width: 17%;
 }
 
 .table_layout.table-striped td:nth-child(3) {
@@ -1710,8 +1711,11 @@ footer {
 
 .font-20.date {
   color: #0000007d;
+  margin-top: -5px;
 }
-
+.text_right.no-print.mb-2 {
+  margin-top: -5px;
+}
 .tabs_nav.tabs_inner.navbar-nav .nav-link {
   padding-inline: 10px;
 }
@@ -2061,6 +2065,9 @@ footer {
     width: 100%;
   }
 }
+.topgrowthcompanies h5{
+  color: #254ba2; 
+}
 
 @media screen and (max-width: 1024px) {
  
@@ -2081,9 +2088,10 @@ footer {
         padding: 30px 10px !important;
       }
       .topgrowthcompanies {
-        p {
+       & p {
             font-size: .9rem;
         }
+       
     }
   .charts_table_bg {
     margin-left: -15px;
