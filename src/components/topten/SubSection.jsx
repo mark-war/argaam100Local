@@ -13,8 +13,27 @@ import { selectCurrentLanguage } from "../../redux/selectors";
 import ReactModal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 
-function PopupTooltip({ isOpen, onRequestClose }) {
+function PopupTooltip({ isOpen, onRequestClose, type }) {
   const lang = useSelector(selectCurrentLanguage);
+  const isTopGrowthChart = type === "Top Growth Companies";
+  const isTopLoosingChart = type === "Top Losing Companies";
+
+  const textList = isTopGrowthChart
+    ? [
+        strings.growthtooltiptext5,
+        strings.growthtooltiptext6,
+        strings.growthtooltiptext7,
+        strings.growthtooltiptext8,
+      ]
+    : isTopLoosingChart
+    ? [
+        strings.loosinggrowthtooltiptext5,
+        strings.loosinggrowthtooltiptext6,
+        strings.loosinggrowthtooltiptext7,
+        strings.loosinggrowthtooltiptext8,
+      ]
+    : [];
+
   useScrollbarVisibility(isOpen);
   return (
     <ReactModal
@@ -43,10 +62,9 @@ function PopupTooltip({ isOpen, onRequestClose }) {
         <p>{strings.growthtooltiptext3}</p>
         <h5>{strings.growthtooltiptext4}</h5>
         <ul>
-          <li>{strings.growthtooltiptext5}</li>
-          <li>{strings.growthtooltiptext6}</li>
-          <li>{strings.growthtooltiptext7}</li>
-          <li>{strings.growthtooltiptext8}</li>
+          {textList.map((text, index) => (
+            <li key={index}>{text}</li>
+          ))}
         </ul>
       </div>
     </ReactModal>
@@ -131,7 +149,7 @@ const SubSection = ({
   );
 
   const isTopGrowthChart = section?.fieldNameEn === "Top Growth Companies";
-  console.log("isTopGrowthChart: ", isTopGrowthChart);
+  const isTopLoosingChart = section?.fieldNameEn === "Top Losing Companies";
 
   // Render the sub-section's content based on whether it has multiple tabs
   return (
@@ -145,10 +163,11 @@ const SubSection = ({
                 {localized(section, "unitName", currentLanguage)}
               </span>
             )}
-            {isTopGrowthChart && (
+            {(isTopGrowthChart || isTopLoosingChart) && (
               <>
                 <PopupTooltip
                   isOpen={modalOpen}
+                  type={section?.fieldNameEn}
                   onRequestClose={() => setmodalOpen(false)}
                 />
                 <i
