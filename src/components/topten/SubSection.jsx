@@ -8,7 +8,7 @@ import {
   addNewTopTenItem,
   fetchSubTabData,
 } from "../../redux/features/topTenMultiTabSlice";
-import { strings } from "../../utils/constants/localizedStrings";
+import { strings, TABS } from "../../utils/constants/localizedStrings";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import ReactModal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
@@ -131,6 +131,7 @@ const SubSection = ({
   );
 
   const isTopGrowthChart = section?.fieldNameEn === "Top Growth Companies";
+  console.log("isTopGrowthChart: ", isTopGrowthChart);
 
   // Render the sub-section's content based on whether it has multiple tabs
   return (
@@ -139,10 +140,12 @@ const SubSection = ({
         <div className="col-6 col-sm-7">
           <p className="sub_heading">
             {localized(section, "fieldName", currentLanguage)}{" "}
-            <span className="unit">
-              {localized(section, "unitName", currentLanguage)}
-            </span>{" "}
-            {/* {isTopGrowthChart && (
+            {selectedTabKey === TABS.T_RANKING && activeSubTab === 1 ? null : (
+              <span className="unit">
+                {localized(section, "unitName", currentLanguage)}
+              </span>
+            )}
+            {isTopGrowthChart && (
               <>
                 <PopupTooltip
                   isOpen={modalOpen}
@@ -154,7 +157,7 @@ const SubSection = ({
                   onClick={() => setmodalOpen(true)}
                 ></i>
               </>
-            )} */}
+            )}
             {!isMultiple && activeSubTab === 1 ? (
               <span className="notes">
                 {localized(section, "notes", currentLanguage)}

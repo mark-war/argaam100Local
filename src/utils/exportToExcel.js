@@ -615,3 +615,92 @@ function formatNumberCells(worksheet) {
     });
   });
 }
+
+export const exportToExcelFiltered = async (
+  screenerData,
+  fieldConfig,
+  activeTabId,
+  currentLanguage,
+  fileName,
+  sheetName,
+  selectedSectorId = 0
+) => {
+  const sanitizedSheetName = sanitizeSheetName(sheetName);
+
+  const columns = [
+    { key: "fixed_code", label: `${strings.code}` },
+    { key: "fixed_company", label: `${strings.companies}` },
+    { key: "fixed_sector", label: `${strings.sector}` },
+    { key: "CompanyID", label: "CompanyID", hidden: true },
+    { key: "SectorID", label: "SectorID", hidden: true },
+    ...fieldConfig
+      .filter((item) => {
+        // Check if the active tab is S_FINANCIAL_RATIO
+        if (activeTabId === TABS.S_FINANCIAL_RATIO) {
+          // Only check selectedSectorId when activeTabId is S_FINANCIAL_RATIO
+          return (
+            item.TabID === activeTabId && item.SectorID === selectedSectorId
+          );
+        }
+        // If the tab is not S_FINANCIAL_RATIO, just check TabID
+        return item.TabID === activeTabId;
+      })
+      .map((item) => {
+        const unitName = localized(item, "UnitName", currentLanguage);
+        const fieldName = localized(item, "FieldName", currentLanguage);
+        const optionalUnitName = unitName ? ` ${unitName}` : "";
+        return {
+          key: item.Pkey,
+          label: `${fieldName}${optionalUnitName}`,
+        };
+      }),
+  ];
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet(sanitizedSheetName);
+
+  // Define headers based on your column definitions
+  const headers = columns
+    .filter((column) => !column.hidden)
+    .map((column) => ({
+      header: column.label || column.key,
+      key: column.key,
+      width: 30,
+    }));
+
+  worksheet.columns = headers;
+
+  // Apply Arabic formatting if the current language is Arabic
+  if (currentLanguage === LANGUAGES.AR) {
+    applyArabicFormatting(worksheet);
+  }
+
+  // Add rows to the worksheet
+  screenerData.forEach((rowData) => {
+    const formattedRow = processRowData(rowData);
+
+    const newRow = worksheet.addRow(formattedRow);
+
+    // Apply hyperlink to the 'fixed_company' cell
+    if (formattedRow.fixed_company) {
+      const cell = newRow.getCell("fixed_company");
+      cell.value = {
+        text: formattedRow.fixed_company,
+        hyperlink: argaamUrl(formattedRow.CompanyID, currentLanguage),
+      };
+      cell.font = { color: { argb: "FF0000FF" }, underline: true };
+    }
+  });
+
+  // Apply bold styling to header row
+  worksheet.getRow(1).font = { bold: true };
+
+  // Generate Excel file buffer
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  // Download the Excel file
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+  saveAs(blob, fileName);
+};
