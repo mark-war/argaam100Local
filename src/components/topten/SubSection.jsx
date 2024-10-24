@@ -16,7 +16,6 @@ import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 function PopupTooltip({ isOpen, onRequestClose }) {
   const lang = useSelector(selectCurrentLanguage);
   useScrollbarVisibility(isOpen);
-  console.log(lang, 'XD')
   return (
     <ReactModal
       isOpen={isOpen}
