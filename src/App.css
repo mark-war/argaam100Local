@@ -2293,7 +2293,7 @@ footer {
   [lang="ar"] .table_chart .td_img,
   [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
     right: 0;
-    left: unset;
+    left: auto;
   }
 
   [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
@@ -2357,7 +2357,7 @@ footer {
 
   .table_layout.table-striped th:nth-child(2),
   .table_layout.table-striped td:nth-child(2) {
-    position: sticky;
+    position: relative;
     left: 0;
   }
 
@@ -2374,7 +2374,7 @@ footer {
   [lang="ar"] .table_layout.table-striped th:nth-child(2),
   [lang="ar"] .table_layout.table-striped td:nth-child(2) {
     right: 0;
-    left: unset;
+    left: auto;
   }
 
   [lang="ar"] .tabs_inner_nav .tabs_nav {
