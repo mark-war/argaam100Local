@@ -54,13 +54,21 @@ function PopupTooltip({ isOpen, onRequestClose, type }) {
       }}
     >
       <a className="closeIcon closeIconfill" onClick={onRequestClose}></a>
-      <h2 className="growthHead">{strings.definitions}</h2>
+
+      {isTopGrowthChart && (
+        <h2 className="growthHead">{strings.definitions}</h2>
+      )}
       <div className="topgrowthcompanies">
-        <span className="bar"></span>
-        <p>{strings.growthtooltiptext1}</p>
-        <p>{strings.growthtooltiptext2}</p>
-        <p>{strings.growthtooltiptext3}</p>
-        <h5>{strings.growthtooltiptext4}</h5>
+        {isTopGrowthChart && (
+          <>
+            <span className="bar"></span>
+            <p>{strings.growthtooltiptext1}</p>
+            <p>{strings.growthtooltiptext2}</p>
+            <p>{strings.growthtooltiptext3}</p>
+           
+          </>
+        )}
+         <h5>{strings.growthtooltiptext4}</h5>{" "}
         <ul>
           {textList.map((text, index) => (
             <li key={index}>{text}</li>
