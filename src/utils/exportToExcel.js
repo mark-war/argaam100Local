@@ -501,22 +501,21 @@ const exportDataToExcel = async (
 ) => {
   const workbook = new ExcelJS.Workbook();
   if (!isMultiple) {
-    dataObjects.forEach((dataObject) => {
+    dataObjects.forEach((dataObject, index) => {
+      const activeSubTabId = subTabIds[index];
+      const selectedSubTabName = localized(
+        dataObject.subTabs[activeSubTabId],
+        "tabName",
+        currentLanguage
+      );
       // Get the mapped table
       const mappedTable = createMappedTable(dataObject, currentLanguage);
 
-      let sanitizedTabName = sanitizeSheetName(
-        localized(dataObject, "fieldName", currentLanguage)
+      const sanitizedTabName = sanitizeSheetName(
+        localized(dataObject, "fieldName", currentLanguage) +
+          "_" +
+          selectedSubTabName
       );
-
-      // append an index to avoid error, incase there is no unit to differentiate sheet names
-      let suffix = 1;
-
-      // Check if a worksheet with the same name already exists
-      while (workbook.getWorksheet(sanitizedTabName)) {
-        sanitizedTabName = `${sanitizedTabName}_${suffix}`; // Append suffix to avoid duplication
-        suffix++;
-      }
 
       // Create a new worksheet named after the fieldNameEn (which is the sheet name)
       const worksheet = workbook.addWorksheet(sanitizedTabName);
@@ -548,15 +547,20 @@ const exportDataToExcel = async (
         currentLanguage
       );
 
-      const sanitizedSheetName = sanitizeSheetName(sheetName);
+      const selectedSubTabName = localized(
+        dataObject.subTabs[activeSubTabId],
+        "tabName",
+        currentLanguage
+      );
+
       const sanitizedTabName = sanitizeSheetName(
-        localized(dataObject, "fieldName", currentLanguage)
+        localized(dataObject, "fieldName", currentLanguage) +
+          "_" +
+          selectedSubTabName
       );
 
       // Create a new worksheet named after the fieldNameEn (which is the sheet name)
-      const worksheet = workbook.addWorksheet(
-        sanitizedSheetName + "_" + sanitizedTabName
-      );
+      const worksheet = workbook.addWorksheet(sanitizedTabName);
 
       // Add the headers
       worksheet.columns = [

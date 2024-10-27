@@ -82,7 +82,6 @@ const ExportDropdown = (activeTabLink = {}) => {
   const dropdownRef = useRef(null); // Create a ref for the dropdown
 
   const [selectionOpen, setSelectionOpen] = useState(false);
-  const selectionRef = useRef(null); // Create a ref for the dropdown
 
   const fieldConfigMap = useMemo(() => {
     const map = {};
