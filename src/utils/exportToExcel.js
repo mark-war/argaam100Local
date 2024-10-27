@@ -501,10 +501,9 @@ const exportDataToExcel = async (
 ) => {
   const workbook = new ExcelJS.Workbook();
   if (!isMultiple) {
-    dataObjects.forEach((dataObject, index) => {
-      const activeSubTabId = subTabIds[index];
+    dataObjects.forEach((dataObject) => {
       const selectedSubTabName = localized(
-        dataObject.subTabs[activeSubTabId],
+        dataObject.subTabs[0],
         "tabName",
         currentLanguage
       );
