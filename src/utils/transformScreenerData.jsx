@@ -1,5 +1,6 @@
 import { localized } from "./localization.js";
 import { strings, TABS } from "./constants/localizedStrings.js";
+import TasiDash from "../components/screener/TasiDash.jsx";
 
 export const transformDataForTable = (
   screenerData,
@@ -44,25 +45,7 @@ export const transformDataForTable = (
     fixed_code: "",
     fixed_img: "/assets/images/tasi.svg",
     fixed_company: strings.tasi,
-    fixed_sector: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="30"
-        height="3"
-        viewBox="0 0 30 3"
-      >
-        <path
-          id="Path_95057"
-          data-name="Path 95057"
-          d="M27,0H0"
-          transform="translate(1.5 1.5)"
-          fill="none"
-          stroke="#e27922"
-          strokeLinecap="square"
-          strokeWidth="3"
-        />
-      </svg>
-    ),
+    fixed_sector: <TasiDash />,
     ...fieldConfigurations
       .filter((item) => {
         // Check if the active tab is S_FINANCIAL_RATIO

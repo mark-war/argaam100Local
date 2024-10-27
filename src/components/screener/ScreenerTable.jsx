@@ -26,6 +26,7 @@ import {
   customSort,
 } from "../../utils/screenerTableHelpers.js";
 import LastUpdate from "./LastUpdate.jsx";
+import TasiDash from "./TasiDash.jsx";
 
 const ScreenerTable = ({
   data,
@@ -159,10 +160,13 @@ const ScreenerTable = ({
     // If the selectedTab is S_FINANCIAL_RATIO, remove the 1st, 2nd, 5th, and 6th columns
     if (selectedTab === TABS.S_FINANCIAL_RATIO) {
       const columnsToRemove = [0, 1, 4, 5]; // Indices of the columns to hide (0-based)
+      // Set the removed columns to display LineIcon
       filteredSummaryData = Object.fromEntries(
-        Object.entries(summaryData).filter(
-          ([key], index) => !columnsToRemove.includes(index)
-        )
+        Object.entries(summaryData).map(([key], index) => {
+          return columnsToRemove.includes(index)
+            ? [key, <TasiDash />]
+            : [key, summaryData[key]];
+        })
       );
     }
 
@@ -243,9 +247,9 @@ const ScreenerTable = ({
                   sortConfig={sortConfig}
                 />
                 <tbody>
-                  {/* {pinnedRow && showTasiRow() && (
+                  {pinnedRow && showTasiRow() && (
                     <PinnedRow row={combinedRow} columns={columns} />
-                  )} */}
+                  )}
                   {currentRows.map((row, index) => (
                     <TableRow
                       key={index}
