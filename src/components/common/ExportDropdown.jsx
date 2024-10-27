@@ -262,26 +262,6 @@ const ExportDropdown = (activeTabLink = {}) => {
     setSelectionOpen((prev) => !prev);
   };
 
-  // Use useEffect to handle clicks outside the dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Check if the click is outside the dropdown
-      if (
-        selectionRef.current &&
-        !selectionRef.current.contains(event.target)
-      ) {
-        setSelectionOpen(false);
-      }
-    };
-
-    // Bind the event listener to the document
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Clean up the event listener on component unmount
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [selectionRef]);
-
   return (
     <div className="export-dropdown no-print" ref={dropdownRef}>
       <a className="screen_icons" href="#" onClick={toggleDropdown}>
@@ -390,7 +370,7 @@ const ExportDropdown = (activeTabLink = {}) => {
           </g>
         </svg>
       </a>
-      {selectionOpen && <ExportSelection />} */}
+      {selectionOpen && <ExportSelection show={selectionOpen} />} */}
     </div>
   );
 };

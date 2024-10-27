@@ -505,9 +505,18 @@ const exportDataToExcel = async (
       // Get the mapped table
       const mappedTable = createMappedTable(dataObject, currentLanguage);
 
-      const sanitizedTabName = sanitizeSheetName(
+      let sanitizedTabName = sanitizeSheetName(
         localized(dataObject, "fieldName", currentLanguage)
       );
+
+      // append an index to avoid error, incase there is no unit to differentiate sheet names
+      let suffix = 1;
+
+      // Check if a worksheet with the same name already exists
+      while (workbook.getWorksheet(sanitizedTabName)) {
+        sanitizedTabName = `${sanitizedTabName}_${suffix}`; // Append suffix to avoid duplication
+        suffix++;
+      }
 
       // Create a new worksheet named after the fieldNameEn (which is the sheet name)
       const worksheet = workbook.addWorksheet(sanitizedTabName);
