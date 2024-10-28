@@ -4,6 +4,7 @@ import pagesReducer from "./features/pageSlice"; // Import the new reducer
 import { fieldConfigurationReducer } from "./features/fieldConfigurationSlice"; // Import the correct reducer
 import { screenerDataReducer } from "./features/screenerDataSlice"; // Import the correct reducer
 import { topTenSingleTabReducer } from "./features/topTenSingleTabSlice";
+import userSlice from "./features/userSlice";
 import sectorReducer from "./features/sectorSlice";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
@@ -34,6 +35,7 @@ const combinedReducers = combineReducers({
   argaamSectors: sectorReducer,
   topten: topTenSingleTabReducer,
   toptenMultiple: toptenMultipleTabReducer,
+  user: userSlice,
 });
 
 const rootReducer = (state, action) => {

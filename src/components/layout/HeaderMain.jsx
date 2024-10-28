@@ -6,6 +6,7 @@ import { strings, LANGUAGES } from "../../utils/constants/localizedStrings.js";
 import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
+import { redirectLogin, resetUser } from "../../utils/authHelper.js";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const HeaderMain = () => {
   const dropdownRef = useRef(null); // Create a ref for the dropdown element
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
+  const user = useSelector((state) => state.user.user); // Access pages from Redux store
 
   const ScreenerLogo = lazy(() => import("../common/LazyImage.jsx"));
 
@@ -84,6 +86,10 @@ const HeaderMain = () => {
 
   const navLinks = getNavLinks();
 
+  const onLoginPress = () => {
+    redirectLogin();
+  };
+
   if (!pages) {
     return <LoadingScreen />; // Optional: Show loading screen if pages data is not available
   }
@@ -98,14 +104,29 @@ const HeaderMain = () => {
           ref={dropdownMobileRef}
         >
           <ul>
-            <li>
-              <a href="#" className="dropdown-item">
-                <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
-                  <img alt="Image" src="/assets/images/user.svg" />
-                </button>
-                <strong>Hager.Saeed@Argaam.com</strong>
-              </a>
-            </li>
+            {user ? (
+              <li>
+                <a href="#" className="dropdown-item">
+                  <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
+                    <img alt="Image" src="/assets/images/user.svg" />
+                  </button>
+                  <strong>{user?.Username}</strong>
+                </a>
+              </li>
+            ) : (
+              <li>
+                <a
+                  href="#"
+                  className="dropdown-item"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onLoginPress();
+                  }}
+                >
+                  Login
+                </a>
+              </li>
+            )}
             <li>
               <a href="#" className="dropdown-item">
                 <img
@@ -116,16 +137,18 @@ const HeaderMain = () => {
                 {strings.anyQuestions}
               </a>
             </li>
-            <li>
-              <a href="#" className="dropdown-item">
-                <img
-                  alt="Image"
-                  className="mr_10"
-                  src="/assets/images/logout.svg"
-                />{" "}
-                {strings.signOut}
-              </a>
-            </li>
+            {user ? (
+              <li onClick={()=>resetUser()}>
+                <a href="#" className="dropdown-item">
+                  <img
+                    alt="Image"
+                    className="mr_10"
+                    src="/assets/images/logout.svg"
+                  />{" "}
+                  {strings.signOut}
+                </a>
+              </li>
+            ) : null}
             <li className="nav-item">
               <a
                 target="_blank" // This will open the link in a new tab
@@ -218,11 +241,26 @@ const HeaderMain = () => {
                       </button>
                       {isOpen && (
                         <ul className="dropdown-menu show user_dropdown">
-                          <li>
-                            <a href="#" className="dropdown-item">
-                              <strong>Hager.Saeed@Argaam.com</strong>
-                            </a>
-                          </li>
+                          {user ? (
+                            <li>
+                              <a href="#" className="dropdown-item">
+                                <strong>{user?.Username}</strong>
+                              </a>
+                            </li>
+                          ) : (
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={(e) => {
+                                  // e.preventDefault();
+                                  onLoginPress();
+              
+                                }}
+                              >
+                                Login
+                              </a>
+                            </li>
+                          )}
                           <li>
                             <a href="#" className="dropdown-item">
                               <img
@@ -233,16 +271,18 @@ const HeaderMain = () => {
                               {strings.anyQuestions}
                             </a>
                           </li>
-                          <li>
-                            <a href="#" className="dropdown-item">
-                              <img
-                                alt="Image"
-                                className="mr_10"
-                                src="/assets/images/logout.svg"
-                              />{" "}
-                              {strings.signOut}
-                            </a>
-                          </li>
+                          {user ? (
+                            <li>
+                              <a className="dropdown-item" onClick={()=>resetUser()}>
+                                <img
+                                  alt="Image"
+                                  className="mr_10"
+                                  src="/assets/images/logout.svg"
+                                />{" "}
+                                {strings.signOut}
+                              </a>
+                            </li>
+                          ) : null}
                         </ul>
                       )}
                       {/* Toggle Button */}

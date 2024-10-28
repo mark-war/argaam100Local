@@ -11,6 +11,7 @@ import useLanguageSwitch from "../../hooks/useLanguageSwitch";
 import LoadingScreen from "../common/LoadingScreen";
 import ErrorBoundary from "../common/ErrorBoundary";
 import LanguageProvider from "../../components/common/LanguageProvider";
+import { RequestRedirect } from "../common/RequestRedirect";
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -52,6 +53,7 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <RequestRedirect />
       <AppRoutes />
     </BrowserRouter>
   );
