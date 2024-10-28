@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   requestRedirectModal: false,
+  trialStatus: {visible:false, status: 0},
+
 };
 
 export const userSlice = createSlice({
@@ -18,10 +20,13 @@ export const userSlice = createSlice({
     setrequestRedirectModal: (state, action) => {
       state.requestRedirectModal = action.payload;
     },
+    settrialStatusModal: (state, action) => {
+      state.trialStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setUser, clearUser, setrequestRedirectModal } = userSlice.actions;
+export const { setUser, clearUser, setrequestRedirectModal , settrialStatusModal} = userSlice.actions;
 
 export default userSlice.reducer;

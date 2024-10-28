@@ -59,3 +59,7 @@ export const fetchArgaamSectors = async () => {
     return [];
   }
 };
+
+export const SubmitRequest = ()=>{
+  return axiosInstance.post("/add-product-details-request");
+}

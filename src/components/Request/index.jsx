@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import RequestProductDetails from "./RequestProductDetails";
 // import RequestProductDetails from "./RequestProductDetails";
 
 export default function Request() {
@@ -8,7 +9,8 @@ export default function Request() {
   );
   return (
     <div className={`about ${selectedLanguage == "en" ? "" : "rtl"}`}>
-      {/* <RequestProductDetails /> */}
+        <h1>Request</h1>
+      <RequestProductDetails />
     </div>
   );
 }

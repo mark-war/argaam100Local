@@ -12,6 +12,8 @@ import LoadingScreen from "../common/LoadingScreen";
 import ErrorBoundary from "../common/ErrorBoundary";
 import LanguageProvider from "../../components/common/LanguageProvider";
 import { RequestRedirect } from "../common/RequestRedirect";
+import Request from "../Request";
+import { TrialStatus } from "../common/TrialStatus";
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -42,6 +44,7 @@ function AppRoutes() {
           <Route path="/:lang" element={<LanguageProvider />}>
             <Route path="screener" element={<ScreenerTablesPage />} />
             <Route path="top-10" element={<TopTenCompaniesPage />} />
+            <Route path="request" element={<Request />} />
           </Route>
           <Route path="*" element={<DefaultRedirect />} />
         </Routes>
@@ -54,6 +57,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <RequestRedirect />
+      <TrialStatus />
       <AppRoutes />
     </BrowserRouter>
   );

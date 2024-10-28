@@ -3,25 +3,25 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import ArrowRight from "../../../../assets/images/EN_img/arrow-right.svg";
-import { strings } from "../../../../constants/localizedStrings";
-import { redirectLogin, refreshToken } from "../../../../services/axios";
-import useAxios from "../../../../services/useAxios";
-import { ENDPOINTS } from "../../../../util/config";
-import { getLocaleFromURL, isEmpty } from "../../../../util/helper";
-import { showSuccess } from "../../../../util/toastutil";
-import {
-  setSignInModal,
-  settrialStatusModal,
-} from "../../../../store/authmodal/slice";
-import CustomButton from "../../../Common/CustomButton";
-import PhoneInput from "../../../Common/PhoneInput";
-import PrivacyPolicy from "../../../User/PrivacyPolicy";
+// import ArrowRight from "../../../../assets/images/EN_img/arrow-right.svg";
+import { Button } from "bootstrap";
+// import { strings } from "../../../../constants/localizedStrings";
+// import PrivacyPolicy from "../../../User/PrivacyPolicy";
+import { settrialStatusModal } from "../../redux/features/userSlice";
+import { SubmitRequest } from "../../services/screenerApi";
+import { redirectLogin, refreshToken } from "../../utils/authHelper";
+import { isEmpty } from "../../utils/helperFunctions";
+import PhoneInput from "../common/PhoneInput";
+import { strings } from "../../utils/constants/localizedStrings";
+import PrivacyPolicy from "../common/PrivacyPolicy";
 
 export default function RequestProductDetails() {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const selectedLanguage = useSelector(
+    (state) => state?.language?.currentLanguage
+  );
   const methods = useForm({
     defaultValues: {
       userEmail: user?.Email,
@@ -60,22 +60,23 @@ export default function RequestProductDetails() {
     }
   }, [user]);
 
-  const { fetchData: SubmitRequesst, loading } = useAxios({
-    url: ENDPOINTS.addProductRequest,
-    method: "post",
-    callback: (res) => {
-      reset();
-      showSuccess(strings.requestsubmitted);
-      refreshToken();
-      navigate(`/${getLocaleFromURL()}`);
-      if (res == 1) {
-        dispatch(settrialStatusModal({ visible: true, status: 1 }));
-      }
-      else if (res == 3) {
-        dispatch(settrialStatusModal({ visible: true, status: 3 }));
-      }
-    },
-  });
+  const Submit = (body) => {
+    SubmitRequest(body)
+      .then((res) => {
+        reset();
+        alert("strings.requestsubmitted");
+        refreshToken();
+        navigate(`/${selectedLanguage}`);
+        if (res == 1) {
+          dispatch(settrialStatusModal({ visible: true, status: 1 }));
+        } else if (res == 3) {
+          dispatch(settrialStatusModal({ visible: true, status: 3 }));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const Required = () => <span style={{ color: "red" }}>*</span>;
 
@@ -91,7 +92,7 @@ export default function RequestProductDetails() {
             data.contactNo.countryCode + "-" + data.contactNo.phoneNumber,
         }),
       };
-      SubmitRequesst(body);
+      Submit(body);
     }
   };
 
@@ -99,7 +100,7 @@ export default function RequestProductDetails() {
     <section className="product-details-form" id="product-details-form">
       <div className="container">
         <div className="sec-heading">
-          <h2>{strings.requestproductdetails}</h2>
+          <h2>{'strings.requestproductdetails'}</h2>
         </div>
         <div className="row">
           <div className="col-lg-7 offset-lg-1">
@@ -109,13 +110,13 @@ export default function RequestProductDetails() {
                   <div className="col-lg-6">
                     <Form.Group className="form-group" controlId="firstName">
                       <Form.Label>
-                        {strings.firstname}
+                        {'strings.firstname'}
                         <Required />
                       </Form.Label>
                       <Form.Control
                         type="text"
                         {...register("firstName", {
-                          required: strings.pleaseenterfirstname,
+                          required: 'strings.pleaseenterfirstname',
                         })}
                       />
 
@@ -127,13 +128,13 @@ export default function RequestProductDetails() {
                   <div className="col-lg-6">
                     <Form.Group className="form-group" controlId="lastName">
                       <Form.Label>
-                        {strings.lastname}
+                        {'strings.lastname'}
                         <Required />
                       </Form.Label>
                       <Form.Control
                         type="text"
                         {...register("lastName", {
-                          required: strings.pleaseenterlastname,
+                          required: 'strings.pleaseenterlastname',
                         })}
                       />
 
@@ -145,17 +146,17 @@ export default function RequestProductDetails() {
                   <div className="col-lg-6">
                     <Form.Group className="form-group" controlId="userEmail">
                       <Form.Label>
-                        {strings.emailaddress}
+                        {'strings.emailaddress'}
                         <Required />
                       </Form.Label>
                       <Form.Control
                         type="email"
                         disabled={!isEmpty(user)}
                         {...register("userEmail", {
-                          required: strings.pleaseenteremail,
+                          required: 'strings.pleaseenteremail',
                           pattern: {
                             value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-                            message: strings.pleaseentervalidemail,
+                            message: 'strings.pleaseentervalidemail',
                           },
                         })}
                       />{" "}
@@ -167,7 +168,7 @@ export default function RequestProductDetails() {
                   <div className={`col-lg-6 ${isEmpty(user) ? "phoneno" : ""}`}>
                     <Form.Group className="form-group" controlId="contactNo">
                       <Form.Label>
-                        {strings.phonenumber}
+                        {'strings.phonenumber'}
                         <Required />
                       </Form.Label>
                       {isEmpty(user) ? (
@@ -178,14 +179,14 @@ export default function RequestProductDetails() {
                             validate: (value) =>
                               value?.countryCode && value?.phoneNumber
                                 ? true
-                                : strings.entervalidphone,
+                                : 'strings.entervalidphone',
                           })}
                         />
                       ) : (
                         <Form.Control
                           disabled
                           {...register("contactNo", {
-                            required: strings.entervalidphone,
+                            required: 'strings.entervalidphone',
                           })}
                         />
                       )}
@@ -198,7 +199,7 @@ export default function RequestProductDetails() {
                   <div className="col-lg-6">
                     <Form.Group className="form-group" controlId="companyName">
                       <Form.Label>
-                        {strings.companyfield} <Required />
+                        {'strings.companyfield'} <Required />
                       </Form.Label>
                       <Form.Control
                         type="text"
@@ -214,7 +215,7 @@ export default function RequestProductDetails() {
                   </div>
                   <div className="col-lg-6">
                     <Form.Group className="form-group" controlId="jobTitle">
-                      <Form.Label>{strings.jobtitle}</Form.Label>
+                      <Form.Label>{'strings.jobtitle'}</Form.Label>
                       <Form.Control
                         type="text"
                         {...register("jobTitle", {
@@ -229,7 +230,7 @@ export default function RequestProductDetails() {
                   </div>
                   <div className="col-lg-12">
                     <Form.Group className="form-group" controlId="comments">
-                      <Form.Label>{strings.additionalcmmnts}</Form.Label>
+                      <Form.Label>{'strings.additionalcmmnts'}</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={3}
@@ -252,7 +253,7 @@ export default function RequestProductDetails() {
                     </div>
                   ))}
                   <p>
-                    {strings.requestconfirm}{" "}
+                    {'strings.requestconfirm'}{" "}
                     <PrivacyPolicy
                       visible={privacymodal}
                       onClose={(e) => {
@@ -262,17 +263,18 @@ export default function RequestProductDetails() {
                     />
                     <span>
                       <a onClick={() => setprivacymodal(true)}>
-                        {strings.requestconfirm2}
+                        {"strings.requestconfirm2"}
                       </a>
                     </span>
                   </p>
                 </div>
-                <CustomButton
+                <button
                   className="btn-normal submit"
-                  text={strings.submit}
                   type="submit"
-                  disabled={!checked || loading}
-                />
+                  disabled={!checked}
+                >
+                  Submit
+                </button> 
               </form>
             </FormProvider>
           </div>
@@ -281,15 +283,15 @@ export default function RequestProductDetails() {
               <div className="contact-detail-wrap">
                 {isEmpty(user) && (
                   <div>
-                    <h4>{strings.alreadycustomer}</h4>
+                    <h4>{"strings.alreadycustomer"}</h4>
                     <p onClick={() => redirectLogin()}>
-                      {strings.logintocharts}
-                      <img src={ArrowRight} />
+                      {"strings.logintocharts"}
+                      {/* <img src={ArrowRight} /> */}
                     </p>
                   </div>
                 )}
                 <div>
-                  <h4>{strings.contactus}</h4>
+                  <h4>{"strings.contactus"}</h4>
                   <p>+966 920007759</p>
                 </div>
               </div>
