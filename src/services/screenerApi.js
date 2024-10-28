@@ -60,6 +60,6 @@ export const fetchArgaamSectors = async () => {
   }
 };
 
-export const SubmitRequest = ()=>{
-  return axiosInstance.post("/add-product-details-request");
+export const SubmitRequest = (body)=>{
+  return axiosInstance.post("/add-product-details-request-screener", body);
 }

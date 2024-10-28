@@ -16,7 +16,7 @@ export function redirectLogin(autoLogin, email = null) {
     requestRedirect == "true" ? "&requestRedirect=true" : ""
   }&refferalSearch=${urlParams
     ?.toString()
-    ?.replace("&", "(rs)")}&requiredToken=true&app=screener`;
+    ?.replace("&", "(rs)")}&requiredToken=true&app=Screener`;
 
   window.open(url, "_self");
 }
@@ -67,7 +67,7 @@ export async function refreshToken() {
   const newToken = await axiosInstance.post(`${API_URL}${ENDPOINTS.refreshToken}`, {
     jwtToken,
     refreshToken,
-    tokenOption: "Tasi",
+    tokenOption: "Screener",
     uniqueIdentifier,
   });
   const { jwtToken: newjwtToken, refreshToken: newrefreshToken } =

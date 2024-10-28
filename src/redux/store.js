@@ -19,6 +19,7 @@ const persistConfig = {
   storage,
   whitelist: [
     "language",
+    "user",
     // "pages",
     // "fieldConfig",
     // "screener",
