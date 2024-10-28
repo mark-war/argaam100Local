@@ -10,6 +10,7 @@ import persistReducer from "redux-persist/es/persistReducer";
 import { combineReducers } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
 import { toptenMultipleTabReducer } from "./features/topTenMultiTabSlice";
+import logger from "redux-logger";
 
 const persistConfig = {
   key: "root",
@@ -17,11 +18,11 @@ const persistConfig = {
   storage,
   whitelist: [
     "language",
-    "pages",
-    "fieldConfig",
-    "screener",
-    "topten",
-    "toptenMultiple",
+    // "pages",
+    // "fieldConfig",
+    // "screener",
+    // "topten",
+    // "toptenMultiple",
   ],
 };
 
@@ -51,21 +52,14 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          "persist/PERSIST",
-          "persist/REHYDRATE",
-          "persist/FLUSH",
-          "persist/PAUSE",
-          "persist/PURGE",
-          "persist/REGISTER",
-        ],
-      },
-    }),
+    process.env.NODE_ENV !== "production"
+      ? getDefaultMiddleware({ serializableCheck: false }).concat(logger)
+      : getDefaultMiddleware({ serializableCheck: false }),
   devTools: process.env.NODE_ENV !== "production",
 });
 
 export const persistor = persistStore(store);
 
 export default store;
+
+

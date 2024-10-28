@@ -209,7 +209,7 @@ const ScreenerTable = ({
 
   useEffect(() => {
     dispatch(setExportData(currentRows)); // Save sorted data for export
-  }, [currentRows, dispatch]);
+  }, []);
 
   return (
     <Row>

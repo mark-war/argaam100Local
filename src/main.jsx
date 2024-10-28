@@ -12,13 +12,13 @@ import LoadingScreen from "./components/common/LoadingScreen";
 const renderApp = () => {
   const root = ReactDOM.createRoot(document.getElementById("root"));
   root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
       <Provider store={store}>
         <PersistGate loading={<LoadingScreen />} persistor={persistor}>
           <App />
         </PersistGate>
       </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
   );
 };
 
