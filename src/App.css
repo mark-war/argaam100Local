@@ -1887,6 +1887,77 @@ footer {
   left: 8px;
   right: auto;
 }
+
+body .askquestion{ 
+  padding: 1% !important ; 
+  border: 2px solid #f28021 !important;
+  width: 60% !important;
+  text-align: left;
+  background: #fff;
+  position: relative;
+height: auto !important;
+
+
+ & .closeIcon {
+    background: url(/src/assets/images/closeIcon.svg) no-repeat;
+    height: 33px;
+    width: 33px;
+    position: absolute;
+    display: inline-block;
+    right: 8px;
+    top: 8px;
+    background-size: 100%;
+}
+ & h1{
+      color: #193673; 
+     
+      font-size: 1.3rem;
+
+      margin-bottom: 1.2rem;
+  }
+ & textarea{
+      width: 100%;
+      resize: none;
+      border: 1px solid #f28021;
+      height: 250px;
+      margin-bottom: 1rem;
+      outline: none;
+      font-size: 1.3rem;
+      background: #fff;
+  }
+ & a.button{
+      display: inline-block;
+      padding: 5px 21px;
+      background: #193673;
+      font-size: 15px;
+      border-radius:5px ;
+      margin-right:0.8rem ;
+      color: #fff;
+      text-decoration: none;
+      &:hover{
+          opacity: 0.8;
+      }
+      &.disabled{
+          opacity: 0.7;
+          cursor: default;
+      }
+  }
+
+}
+
+[lang="ar"] .askquestion{
+  text-align: right;
+  & a.button{
+    margin-right: 0rem;
+    margin-left: 0.8rem;
+  }
+ & .closeIcon{
+  
+    left: 8px;
+    right: auto;
+  
+}
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
@@ -2073,7 +2144,22 @@ footer {
 }
 
 @media screen and (max-width: 1024px) {
- 
+  body .askquestion{
+    width: 90% !important;
+            padding: 10px !important;
+    a.button{
+        margin-bottom:0.5rem ;
+    }
+}
+ body .askquestion h1 {
+  padding-right: 3rem;
+  font-size: 1.4rem;
+}
+[lang="ar"] body .askquestion h1 {
+  padding-left: 3rem;
+  padding-right: 0;
+  font-size: 1.4rem;
+}
       .ReactModal__Content {
         padding: 0 !important;
         width: auto !important;
