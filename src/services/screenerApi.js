@@ -63,3 +63,9 @@ export const fetchArgaamSectors = async () => {
 export const SubmitRequest = (body)=>{
   return axiosInstance.post("/add-product-details-request-screener", body);
 }
+
+export const PostQuestionaierScreener = (body)=>{
+  return axiosInstance.post("/post-questionnaier-screener", body);
+}
+
+

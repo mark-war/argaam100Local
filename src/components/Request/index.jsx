@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import RequestProductDetails from "./RequestProductDetails";
+import { strings } from "../../utils/constants/localizedStrings";
+import MainLayout from "../layout/MainLayout";
 // import RequestProductDetails from "./RequestProductDetails";
 
 export default function Request() {
@@ -8,9 +10,15 @@ export default function Request() {
     (state) => state?.language?.currentLanguage
   );
   return (
-    <div className={`about ${selectedLanguage == "en" ? "" : "rtl"}`}>
-        <h1>Request</h1>
-      <RequestProductDetails />
-    </div>
+    <MainLayout>
+      <div className="pb-5 min__height">
+      
+
+        <div className={`about ${selectedLanguage == "en" ? "" : "rtl"}`}>
+       
+          <RequestProductDetails />
+        </div>
+      </div>
+    </MainLayout>
   );
 }

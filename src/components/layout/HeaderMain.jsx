@@ -7,6 +7,7 @@ import config from "../../utils/config.js";
 import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
 import { redirectLogin, resetUser } from "../../utils/authHelper.js";
+import AskQuestion from "./AskQuestion.jsx";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const HeaderMain = () => {
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
   const user = useSelector((state) => state.user.user); // Access pages from Redux store
+  const [visibleAskQuestion, setVisibleAskQuestion] = useState(false);
 
   const ScreenerLogo = lazy(() => import("../common/LazyImage.jsx"));
 
@@ -138,7 +140,7 @@ const HeaderMain = () => {
               </a>
             </li>
             {user ? (
-              <li onClick={()=>resetUser()}>
+              <li onClick={() => resetUser()}>
                 <a href="#" className="dropdown-item">
                   <img
                     alt="Image"
@@ -228,6 +230,11 @@ const HeaderMain = () => {
                         </a>
                       </li>
                       <LanguageSwitcher /> {/* language switcher component */}
+                      <li className="nav-item">
+                        <a href="#" className="nav-link">
+                          ASK
+                        </a>
+                      </li>
                     </ul>
                     <div
                       className="nav-item position-relative user_toggle"
@@ -254,26 +261,40 @@ const HeaderMain = () => {
                                 onClick={(e) => {
                                   // e.preventDefault();
                                   onLoginPress();
-              
                                 }}
                               >
                                 Login
                               </a>
                             </li>
                           )}
-                          <li>
-                            <a href="#" className="dropdown-item">
-                              <img
-                                alt="Image"
-                                className="mr_10"
-                                src="/assets/images/qmark.svg"
-                              />{" "}
-                              {strings.anyQuestions}
-                            </a>
-                          </li>
+
+                          {user != undefined && user != null && Object.keys(user).length !== 0 ? (
+                            <>
+                              <li>
+                                <a
+                                  href="#"
+                                  className="dropdown-item"
+                                  onClick={() => setVisibleAskQuestion(true)}
+                                >
+                                  <img
+                                    alt="Image"
+                                    className="mr_10"
+                                    src="/assets/images/qmark.svg"
+                                  />{" "}
+                                  {strings.anyQuestions}
+                                </a>
+                              </li>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+
                           {user ? (
                             <li>
-                              <a className="dropdown-item" onClick={()=>resetUser()}>
+                              <a
+                                className="dropdown-item"
+                                onClick={() => resetUser()}
+                              >
                                 <img
                                   alt="Image"
                                   className="mr_10"
@@ -324,6 +345,17 @@ const HeaderMain = () => {
           </div>
         </div>
       </nav>
+
+      {visibleAskQuestion != undefined && visibleAskQuestion == true ? (
+        <>
+          <AskQuestion
+            isOpen={visibleAskQuestion}
+            onRequestClose={() => setVisibleAskQuestion(false)}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

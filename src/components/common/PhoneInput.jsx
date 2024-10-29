@@ -20,11 +20,11 @@ const PhoneInput = ({ name, label }) => {
         const isValidPhoneNumber = /^\d+$/.test(value?.phoneNumber);
 
         if (!isValidCountryCode || !isValidPhoneNumber) {
-          return 'strings.entervalidphone';
+          return strings.entervalidphone;
         }
 
         if (value?.phoneNumber?.split("")[0] == '0'){
-          return 'strings.invalidphonenoerror'
+          return strings.invalidphonenoerror
         }
 
         return true;
@@ -60,7 +60,7 @@ const PhoneInput = ({ name, label }) => {
       <div className="dropdown_con">
         <Form.Control
           type="text"
-          placeholder={'strings.countrycode'}
+          placeholder={strings.countrycode}
           onFocus={() => setshow(true)}
           onBlur={() => setshow(false)}
           autoComplete="nope"
@@ -124,7 +124,7 @@ const PhoneInput = ({ name, label }) => {
         }}
         onChange={(e) => onChange({ ...value, phoneNumber: e.target.value })}
         onBlur={onBlur}
-        placeholder={'strings.phonenumber'}
+        placeholder={strings.phonenumber}
         maxLength={10}
         // autoComplete="off"
       />
