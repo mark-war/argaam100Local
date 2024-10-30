@@ -14,6 +14,7 @@ import {
 } from "../redux/selectors.js";
 import { localized } from "../utils/localization.js";
 import { transformDataForTable } from "../utils/transformScreenerData.jsx";
+import { isEmpty } from "../utils/helperFunctions.js";
 
 const ScreenerTablesPage = () => {
   const pages = useSelector(selectPages);
@@ -85,9 +86,10 @@ const ScreenerTablesPage = () => {
       sectorIdForFilter
     );
 
+
     return (
       <>
-        {loading ? (
+        {loading || isEmpty(data) ? (
           <div className="spinner"></div> // Your loading spinner
         ) : (
           <ScreenerTable

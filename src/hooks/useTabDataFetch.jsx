@@ -27,7 +27,7 @@ const useTabDataFetch = (
   const fieldConfigurations = useSelector(selectFieldConfigurations);
   const currentLanguage = useSelector(selectCurrentLanguage);
 
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(false); // Add loading state
   const [localCache, setLocalCache] = useState({});
   const hasFetchedData = useRef(false);
   const previousLanguage = useRef(currentLanguage);
