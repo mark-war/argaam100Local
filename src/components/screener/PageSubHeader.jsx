@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { PAGES } from "../../utils/constants/localizedStrings";
 import SectorDropdown from "../common/SectorDropdown";
 import { localized } from "../../utils/localization";
@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
 import PrintButton from "../common/PrintButton";
 import useLanguage from "../../hooks/useLanguage";
+import { useSelector } from "react-redux";
 
 const PageSubHeader = ({
   tabLinksArray,
@@ -17,6 +18,12 @@ const PageSubHeader = ({
 }) => {
   const { lang } = useParams();
   const currentLanguage = useLanguage(lang);
+  const user = useSelector((state) => state.user.user); // Access pages from Redux store
+  const hasAccess = user?.HasScreenerChartsAccess == "true";
+
+  const selectedLanguage = useSelector(
+    (state) => state?.language?.currentLanguage
+  );
 
   const handleSelectedOptionsChange = useCallback(
     (newSelectedOptions) => {
@@ -27,7 +34,7 @@ const PageSubHeader = ({
     },
     [setSelectedOptions, onSelectedOptionsChange]
   );
-
+  const navigate = useNavigate();
   return (
     <div className="shadow_btm sub_header">
       {/* <div className="d-flex mt-4 mb-2 border_gray section_heading px-layout">
@@ -50,7 +57,23 @@ const PageSubHeader = ({
                     className={`nav-link ${
                       activeTabLink === tabItem.tabLinkId ? "active" : ""
                     }`}
-                    onClick={() => handleActiveTabLink(tabItem.tabLinkId)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const isFreePage =
+                      tabItem.tabLinkId == import.meta.env.VITE_FREEPAGESUBID;
+                      if (hasAccess) {
+                        handleActiveTabLink(tabItem.tabLinkId);
+                      } else {
+                        if (isFreePage) {
+                          handleActiveTabLink(tabItem.tabLinkId);
+                        } else {
+                          e.preventDefault();
+                          navigate(`/${selectedLanguage}/request`);
+                        }
+                      }
+
+                      navigate("/en/request");
+                    }}
                   >
                     <span>{localized(tabItem, "name", currentLanguage)}</span>
                   </Link>

@@ -17,7 +17,7 @@ export const RequestRedirect = () => {
   );
   const onReqClose = () => {
     dispatch(setrequestRedirectModal(false));
-    navigate(`/${selectedLanguage}/Request`);
+    navigate(`/${selectedLanguage}/request`);
   };
   useScrollbarVisibility(visible);
 

@@ -19,6 +19,12 @@ const HeaderMain = () => {
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
   const user = useSelector((state) => state.user.user); // Access pages from Redux store
+  const hasAccess = user?.HasScreenerChartsAccess == "true";
+
+  const selectedLanguage = useSelector(
+    (state) => state?.language?.currentLanguage
+  );
+
   const [visibleAskQuestion, setVisibleAskQuestion] = useState(false);
 
   const ScreenerLogo = lazy(() => import("../common/LazyImage.jsx"));
@@ -79,6 +85,7 @@ const HeaderMain = () => {
             .replace(/\s+/g, "-")}`,
           name: lang === LANGUAGES.AR ? page.pageNameAr : page.pageNameEn,
           isSelected: page.isSelected, //index === 0
+          page,
         });
       });
     }
@@ -200,13 +207,30 @@ const HeaderMain = () => {
             </div>
             <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
-                {navLinks.map((link, index) => (
-                  <li key={index} className="nav-item">
-                    <NavLink to={link.path} className="nav-link">
-                      {link.name}
-                    </NavLink>
-                  </li>
-                ))}
+                {navLinks.map((link, index) => {
+                  const isFreePage =
+                    link?.page?.pageId == import.meta.env.VITE_FREEPAGEID;
+                  return (
+                    <li key={index} className="nav-item">
+                      <NavLink
+                        to={link.path}
+                        onClick={(e) => {
+                          if (hasAccess) return;
+                          else {
+                            if (isFreePage) return;
+                            else {
+                              e.preventDefault();
+                              navigate(`/${selectedLanguage}/request`);
+                            }
+                          }
+                        }}
+                        className="nav-link"
+                      >
+                        {link.name}
+                      </NavLink>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <div className="flex-fill justify-content-end no-print">
@@ -268,7 +292,9 @@ const HeaderMain = () => {
                             </li>
                           )}
 
-                          {user != undefined && user != null && Object.keys(user).length !== 0 ? (
+                          {user != undefined &&
+                          user != null &&
+                          Object.keys(user).length !== 0 ? (
                             <>
                               <li>
                                 <a
