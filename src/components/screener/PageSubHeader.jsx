@@ -72,7 +72,7 @@ const PageSubHeader = ({
                         }
                       }
 
-                      navigate("/en/request");
+                   
                     }}
                   >
                     <span>{localized(tabItem, "name", currentLanguage)}</span>
