@@ -254,11 +254,6 @@ const HeaderMain = () => {
                         </a>
                       </li>
                       <LanguageSwitcher /> {/* language switcher component */}
-                      <li className="nav-item">
-                        <a href="#" className="nav-link">
-                          ASK
-                        </a>
-                      </li>
                     </ul>
                     <div
                       className="nav-item position-relative user_toggle"

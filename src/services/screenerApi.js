@@ -68,4 +68,7 @@ export const PostQuestionaierScreener = (body)=>{
   return axiosInstance.post("/post-questionnaier-screener", body);
 }
 
+export const UpdateExcelCount = userId =>{
+  return axiosInstance.post(`/update-user-download-count-screener?userId=${userId}`)
+}
 

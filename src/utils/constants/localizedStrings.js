@@ -117,6 +117,9 @@ export const strings = new LocalizedStrings({
     passrequired: "Please enter a password",
     confirmpassrequired: "confirm password is required",
     submit: "Submit",
+    excelDownloadError:
+      "Sorry, you have exceeded the number of times for downloading ",
+
   },
   ar: {
     topTen: "أعلى 10",
@@ -231,6 +234,7 @@ export const strings = new LocalizedStrings({
     passrequired: "الرجاء إدخال كلمة المرور",
     confirmpassrequired: "الرجاء تأكيد كلمة المرور",
     submit: "إرسال",
+    excelDownloadError: "عفواً، لقد تخطيت عدد مرات التحميل المتاحة",
   },
 });
 

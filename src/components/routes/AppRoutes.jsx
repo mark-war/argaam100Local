@@ -14,6 +14,8 @@ import LanguageProvider from "../../components/common/LanguageProvider";
 import { RequestRedirect } from "../common/RequestRedirect";
 import Request from "../Request";
 import { TrialStatus } from "../common/TrialStatus";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -58,6 +60,7 @@ export default function App() {
     <BrowserRouter>
       <RequestRedirect />
       <TrialStatus />
+      <ToastContainer />
       <AppRoutes />
     </BrowserRouter>
   );
