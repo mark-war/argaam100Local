@@ -18,7 +18,7 @@ export const TrialStatus = () => {
 
   return (
     <Modal
-      isOpen={false}
+      isOpen={true}
       ariaHideApp={false}
       className={`${
         selectedLanguage == "en"
