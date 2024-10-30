@@ -11,7 +11,7 @@ export default function Request() {
   );
   return (
     <MainLayout>
-      <div className="pb-5 min__height">
+      <div className=" min__height">
       
 
         <div className={`about ${selectedLanguage == "en" ? "" : "rtl"}`}>
