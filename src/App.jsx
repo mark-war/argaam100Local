@@ -28,6 +28,7 @@ function App() {
   useFetchSectors();
 
   useEffect(() => {
+    debugger;
     if (!isEmpty(user)) {
       refreshToken()
         .then((hasExpired) => {
@@ -59,6 +60,7 @@ function App() {
         urlParams.delete("token");
         urlParams.delete("refreshToken");
         urlParams.delete("uniqueIdentifier");
+        
         // const splittokens = token.split(".");
         const parsedToken = parseJwt(token.replaceAll(" ", "+"));
         let parsedUser = {
@@ -67,6 +69,7 @@ function App() {
         dispatch(setUser(parsedUser));
 
         const requestRedirect = urlParams.get("requestRedirect");
+        window.history.replaceState(null, '', window.location.pathname);
         if (requestRedirect == "true") {
           dispatch(setrequestRedirectModal(true));
           return;
@@ -76,6 +79,7 @@ function App() {
         urlParams.delete("email");
 
         const requestRedirect = urlParams.get("requestRedirect");
+        window.history.replaceState(null, '', window.location.pathname);
         if (requestRedirect == "true") {
           dispatch(setrequestRedirectModal(true));
           return;
