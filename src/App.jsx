@@ -32,14 +32,17 @@ function App() {
     if (!isEmpty(user)) {
       refreshToken()
         .then((hasExpired) => {
+          debugger;
           // request redirect popup
           const urlParams = new URLSearchParams(window.location.search);
           const requestRedirect = urlParams.get("requestRedirect");
+          window.history.replaceState(null, '', window.location.pathname);
           if (requestRedirect == "true") {
             dispatch(setrequestRedirectModal(true));
           }
         })
         .catch((err) => {
+          debugger;
           resetUser(false);
           redirectLogin(true);
         });

@@ -1,7 +1,9 @@
+import axios from "axios";
 import { clearUser, setUser } from "../redux/features/userSlice";
 import store from "../redux/store";
 import { axiosInstance } from "../services/screenerApi";
 import { isEmpty, parseJwt } from "./helperFunctions";
+import config from "./config";
 
 export function redirectLogin(autoLogin, email = null) {
   const { VITE_APP_LOGIN_URL: loginUrl } = import.meta.env;
@@ -64,7 +66,7 @@ export async function refreshToken() {
   const refreshToken = localStorage.getItem("refreshToken");
   const uniqueIdentifier = localStorage.getItem("uniqueIdentifier");
 
-  const newToken = await axiosInstance.post(`${API_URL}${ENDPOINTS.refreshToken}`, {
+  const newToken = await axios.post(`${config.baseUrl}refresh-authenticate-for-charts`, {
     jwtToken,
     refreshToken,
     tokenOption: "Screener",

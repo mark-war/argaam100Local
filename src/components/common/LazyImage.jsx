@@ -9,7 +9,7 @@ const LazyImage = () => {
     <NavLink
       className="navbar-brand"
       to={`/${lang}/screener`}
-      onClick={() => (window.location.href = `/${lang}/screener`)}
+      // onClick={() => (window.location.href = `/${lang}/screener`)}
     >
       {lang === LANGUAGES.AR ? (
         <img
