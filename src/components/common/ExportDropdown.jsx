@@ -29,6 +29,7 @@ import ExportSelection from "./ExportSelection";
 import { UpdateExcelCount } from "../../services/screenerApi";
 import { showError, showSuccess } from "../../utils/toastutil";
 import { toast } from "react-toastify";
+import { isEmpty } from "../../utils/helperFunctions";
 // import {
 //   addNewTopTenItem,
 //   fetchMultipleTabTopTenData,
@@ -41,7 +42,15 @@ const ExportDropdown = (activeTabLink = {}) => {
   const activeSubTabs = activeTabLink.activeSubTabs;
 
   const currentLanguage = useSelector(selectCurrentLanguage);
+
   const user = useSelector((state) => state.user.user);
+  const hasAccess = user?.HasTASIChartsAccess === "true";
+  const isonTrial = user?.isOnFreeTrail !== "False";
+  const isExcelAllowed = user?.isExcelAllowed == "true";
+
+  const isPlusSubscriber = user?.IsArgaamSubscriber == "true";
+  const analystPkgwithoutTrial = isPlusSubscriber && !isonTrial;
+
   const selectDataForTab = selectScreenerDataOfSelectedTab();
   const dataForSelectedTab = useSelector((state) =>
     selectDataForTab(state)(selectedTab, currentLanguage)
@@ -142,12 +151,23 @@ const ExportDropdown = (activeTabLink = {}) => {
   };
 
   const handleCurrentTabExport = async () => {
+    if (!(!isEmpty(user) && hasAccess && isPlusSubscriber && isExcelAllowed)) {
+      showError(
+        strings[
+          analystPkgwithoutTrial
+            ? "analystuserexcelerror"
+            : "freeuserexcelerror"
+        ]
+      )
+      return
+    }
+
     const res = await UpdateExcelCount(user?.UserId);
     const { data: allowed } = res;
 
     if (!allowed) {
-      showError(strings.excelDownloadError)
-      return
+      showError(strings.excelDownloadError);
+      return;
     }
 
     if (currentPageId === PAGES.SCREENER) {
@@ -220,14 +240,25 @@ const ExportDropdown = (activeTabLink = {}) => {
   //   );
   // };
 
-  const handleAllTabsExport = async() => {
+  const handleAllTabsExport = async () => {
+
+    if (!(!isEmpty(user) && hasAccess && isPlusSubscriber && isExcelAllowed)) {
+      showError(
+        strings[
+          analystPkgwithoutTrial
+            ? "analystuserexcelerror"
+            : "freeuserexcelerror"
+        ]
+      )
+      return
+    }
 
     const res = await UpdateExcelCount(user?.UserId);
     const { data: allowed } = res;
 
     if (!allowed) {
-      showError(strings.excelDownloadError)
-      return
+      showError(strings.excelDownloadError);
+      return;
     }
 
     if (currentPageId === PAGES.SCREENER) {
