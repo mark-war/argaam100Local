@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import success from "../../assets/images/EN_img/successGreen.gif";
 import { settrialStatusModal } from "../../redux/features/userSlice";
 import { strings } from "../../utils/constants/localizedStrings";
-
+import bar from '../../assets/images/bar.png'
 export const TrialStatus = () => {
   const dispatch = useDispatch();
   const trialStatus = useSelector((state) => state?.user?.trialStatus);
@@ -18,7 +18,7 @@ export const TrialStatus = () => {
 
   return (
     <Modal
-      isOpen={visible}
+      isOpen={true}
       ariaHideApp={false}
       className={`${
         selectedLanguage == "en"
@@ -38,6 +38,7 @@ export const TrialStatus = () => {
     >
       <div className="cen_t mtb bnone free_trail_status">
         {/* <img className="" src={status == 1 || status == 3 ? success : error} /> */}
+        <img src={bar}/>
       </div>
       <h4 className="headText_tr mg_b2">
         {strings.formatString(
