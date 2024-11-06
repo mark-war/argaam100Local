@@ -3,16 +3,14 @@ import Form from "react-bootstrap/Form";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-// import ArrowRight from "../../../../assets/images/EN_img/arrow-right.svg";
-import { Button } from "bootstrap";
-// import { strings } from "../../../../constants/localizedStrings";
-// import PrivacyPolicy from "../../../User/PrivacyPolicy";
+import ArrowRight from "../../assets/images/arrow-right.svg";
 import { settrialStatusModal } from "../../redux/features/userSlice";
 import { SubmitRequest } from "../../services/screenerApi";
 import { redirectLogin, refreshToken } from "../../utils/authHelper";
-import { isEmpty } from "../../utils/helperFunctions";
-import PhoneInput from "../common/PhoneInput";
 import { strings } from "../../utils/constants/localizedStrings";
+import { isEmpty } from "../../utils/helperFunctions";
+import { showSuccess } from "../../utils/toastutil";
+import PhoneInput from "../common/PhoneInput";
 import PrivacyPolicy from "../common/PrivacyPolicy";
 
 export default function RequestProductDetails() {
@@ -65,7 +63,7 @@ export default function RequestProductDetails() {
     SubmitRequest(body)
       .then((res) => {
         reset();
-        alert(strings.requestsubmitted);
+        showSuccess(strings.requestsubmitted);
         refreshToken();
         navigate(`/${selectedLanguage}`);
         if (res == 1) {
@@ -288,7 +286,7 @@ export default function RequestProductDetails() {
                     <h4>{strings.alreadycustomer}</h4>
                     <p onClick={() => redirectLogin()}>
                       {strings.logintocharts}
-                      {/* <img src={ArrowRight} /> */}
+                      <img src={ArrowRight} />
                     </p>
                   </div>
                 )}

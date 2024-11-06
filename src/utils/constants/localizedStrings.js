@@ -123,7 +123,9 @@ export const strings = new LocalizedStrings({
       "Sorry, downloading files is available only for Free Trial or Full Package subscribers. For more information, please contact the Sales Team",
       freeuserexcelerror:
       "Sorry, downloading files is available for Argaam Plus subscribers only. For more information, please contact the Sales Team",
-   
+      requestconfirm:
+      "By submitting this form, I agree to the collection and use of my personal data by Argaam Investment in accordance with the",
+    requestconfirm2: "Privacy Policy.",
   },
   ar: {
     topTen: "أعلى 10",
@@ -243,7 +245,9 @@ export const strings = new LocalizedStrings({
     "عفواً، تحميل الملفات متاح فقط للمشتركين بالتجربة المجانية أو الباقة الكاملة، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
     freeuserexcelerror:
       "عذراً، تحميل الملفات متاح لمشتركي باقات أرقام بلس فقط، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
-    
+      requestconfirm:
+      "من خلال إرسال هذا النموذج، فإني أوافق على جمع واستخدام بياناتي الشخصية من قبل أرقام الاستثمارية وفقاً",
+    requestconfirm2: "لسياسة الخصوصية",
   },
 });
 

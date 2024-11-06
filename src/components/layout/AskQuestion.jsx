@@ -6,6 +6,7 @@ import { PostQuestionaierScreener } from "../../services/screenerApi";
 import getLangID, { isEmptyEntity } from "../../utils/helpers/GlobalHelper";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 import { strings } from "../../utils/constants/localizedStrings";
+import { showSuccess } from "../../utils/toastutil";
 
 
 export default function AskQuestion({ onRequestClose, isOpen }) {
@@ -27,7 +28,7 @@ export default function AskQuestion({ onRequestClose, isOpen }) {
     }
     PostQuestionaierScreener(body)
       .then((res) => {
-        alert(strings.susbmittedsuccess);
+        showSuccess(strings.susbmittedsuccess);
         settext("");
         onRequestClose();
       })

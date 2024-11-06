@@ -109,11 +109,11 @@ const HeaderMain = () => {
       <div className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}>
         <div
           className="mobile_menu"
-          onClick={handleMenuInnerClick}
+          onClick={user ?handleMenuInnerClick: ()=>onLoginPress()}
           ref={dropdownMobileRef}
         >
           <ul>
-            {user ? (
+            {/* {user ? ( */}
               <li>
                 <a href="#" className="dropdown-item">
                   <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
@@ -122,7 +122,7 @@ const HeaderMain = () => {
                   <strong>{user?.Username}</strong>
                 </a>
               </li>
-            ) : (
+            {/* ) : (
               <li>
                 <a
                   href="#"
@@ -135,7 +135,7 @@ const HeaderMain = () => {
                   Login
                 </a>
               </li>
-            )}
+            )} */}
             <li>
               <a href="#" className="dropdown-item">
                 <img
@@ -260,20 +260,21 @@ const HeaderMain = () => {
                       ref={dropdownRef}
                     >
                       <button
-                        onClick={toggleDropdown}
+                        onClick={user ?toggleDropdown: ()=> onLoginPress()}
                         className="btn borderless-transparent dropdown-toggle remove_after pr_0"
                       >
                         <img alt="Image" src="/assets/images/user.svg" />
                       </button>
                       {isOpen && (
                         <ul className="dropdown-menu show user_dropdown">
-                          {user ? (
+                          {/* {user ? ( */}
                             <li>
                               <a href="#" className="dropdown-item">
                                 <strong>{user?.Username}</strong>
                               </a>
                             </li>
-                          ) : (
+                          {/* ) : (
+                            
                             <li>
                               <a
                                 className="dropdown-item"
@@ -285,7 +286,7 @@ const HeaderMain = () => {
                                 Login
                               </a>
                             </li>
-                          )}
+                          )} */}
 
                           {user != undefined &&
                           user != null &&
