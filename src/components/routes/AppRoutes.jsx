@@ -5,6 +5,7 @@ import {
   Routes,
   useLocation,
   useParams,
+  Navigate,
 } from "react-router-dom";
 import DefaultRedirect from "../common/DefaultRedirect";
 import useLanguageSwitch from "../../hooks/useLanguageSwitch";
@@ -16,6 +17,7 @@ import Request from "../Request";
 import { TrialStatus } from "../common/TrialStatus";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -45,7 +47,14 @@ function AppRoutes() {
           <Route path="/:lang" element={<DefaultRedirect />} />
           <Route path="/:lang" element={<LanguageProvider />}>
             <Route path="screener" element={<ScreenerTablesPage />} />
-            <Route path="top-10" element={<TopTenCompaniesPage />} />
+            <Route
+              path="top-10"
+              element={
+                <LockedPages>
+                  <TopTenCompaniesPage />
+                </LockedPages>
+              }
+            />
             <Route path="request" element={<Request />} />
           </Route>
           <Route path="*" element={<DefaultRedirect />} />
@@ -53,6 +62,17 @@ function AppRoutes() {
       </Suspense>
     </ErrorBoundary>
   );
+}
+
+function LockedPages({ children }) {
+  const user = useSelector((state) => state.user.user);
+  const hasAccess = user?.HasTASIChartsAccess === "true";
+
+  if (!hasAccess) {
+    return <Navigate to={`/en/request`} replace />;
+  }
+
+  return children;
 }
 
 export default function App() {
@@ -65,3 +85,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
