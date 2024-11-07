@@ -127,6 +127,8 @@ export const strings = new LocalizedStrings({
       "By submitting this form, I agree to the collection and use of my personal data by Argaam Investment in accordance with the",
     requestconfirm2: "Privacy Policy.",
     ok: 'OK',
+    privacypolicy: "Privacy Policy",
+
   },
   ar: {
     topTen: "أعلى 10",
@@ -250,6 +252,8 @@ export const strings = new LocalizedStrings({
       "من خلال إرسال هذا النموذج، فإني أوافق على جمع واستخدام بياناتي الشخصية من قبل أرقام الاستثمارية وفقاً",
     requestconfirm2: "لسياسة الخصوصية",
     ok: "موافق",
+    privacypolicy: "سياسة الخصوصية",
+    
   },
 });
 
