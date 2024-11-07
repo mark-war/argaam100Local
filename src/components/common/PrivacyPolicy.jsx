@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Modal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
+import { strings } from "../../utils/constants/localizedStrings";
 
 
 const PrivacyEn = () => {
@@ -670,7 +671,7 @@ export default function PrivacyPolicy({ visible, onClose }) {
     >
       {" "}
       <a href="#" className="closeIcon" onClick={onClose}></a>
-      <h2>{'strings.privacypolicy'}</h2>
+      <h2>{strings.privacypolicy}</h2>
       <div className="contentpane"><Content /></div>
     </Modal>
   );
