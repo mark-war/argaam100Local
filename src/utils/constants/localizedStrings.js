@@ -91,7 +91,7 @@ export const strings = new LocalizedStrings({
     companyfield: "Company",
     contactus: "Contact us",
     alreadycustomer: "Already a customer?",
-    logintocharts: "Login to Argaam Charts",
+    logintocharts: "Login to Screener",
     emailaddress: "Email Address",
     requestsubmitted: "Request Submitted",
     entervalidphone: "Please enter a valid phone number",
@@ -217,7 +217,7 @@ export const strings = new LocalizedStrings({
     companyfield: "الشركة",
     contactus: "اتصل بنا",
     alreadycustomer: "لديك حساب؟",
-    logintocharts: "قم بالدخول إلى أرقام تشارتس",
+    logintocharts: "قم بالدخول إلى تحليل الاسهم تشارتس",
 
     emailaddress: "عنوان البريد الإلكتروني",
     requestsubmitted: "تم تقديم الطلب ",
@@ -253,7 +253,7 @@ export const strings = new LocalizedStrings({
     requestconfirm2: "لسياسة الخصوصية",
     ok: "موافق",
     privacypolicy: "سياسة الخصوصية",
-    
+
   },
 });
 

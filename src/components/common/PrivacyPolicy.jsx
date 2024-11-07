@@ -223,7 +223,7 @@ const PrivacyEn = () => {
         <br />
         Contact us for further information.
      
-        <a href="mailto:charts@argaam.com">charts@argaam.com</a>
+        <a href="mailto:screener@argaam.com">screener@argaam.com</a>
       </p>
 
       <h3>HOW DO WE ENSURE THE SECURITY OF YOUR PERSONAL DATA?</h3>
