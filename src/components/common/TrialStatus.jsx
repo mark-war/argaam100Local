@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
-// import error from "../../assets/images/EN_img/errorRed.gif";
-// import success from "../../assets/images/EN_img/successGreen.gif";
+import error from "../../assets/images/errorRed.gif";
+import success from "../../assets/images/successGreen.gif";
 import { settrialStatusModal } from "../../redux/features/userSlice";
 import { strings } from "../../utils/constants/localizedStrings";
 import bar from '../../assets/images/bar.png'
@@ -18,7 +18,7 @@ export const TrialStatus = () => {
 
   return (
     <Modal
-      isOpen={false}
+      isOpen={true}
       ariaHideApp={false}
       className={`${
         selectedLanguage == "en"
@@ -37,7 +37,7 @@ export const TrialStatus = () => {
       onRequestClose={onReqClose}
     >
       <div className="cen_t mtb bnone free_trail_status">
-        {/* <img className="" src={status == 1 || status == 3 ? success : error} /> */}
+        <img className="" src={status == 1 || status == 3 ? success : error} />
         <img src={bar}/>
       </div>
       <h4 className="headText_tr mg_b2">
@@ -62,8 +62,7 @@ export const TrialStatus = () => {
       </h4>
 
       <div className="trailbt">
-        {/* <CustomButton text={strings.ok} onClick={onReqClose} /> */}
-        <button onClick={onReqClose}>ok</button>
+        <button onClick={onReqClose}>{strings.ok}</button>
       </div>
     </Modal>
   );
