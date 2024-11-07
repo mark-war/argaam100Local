@@ -43,20 +43,20 @@ export const TrialStatus = () => {
       <h4 className="headText_tr mg_b2">
         {strings.formatString(
           status == 1
-            ? "strings.yougotfreetrial"
+            ? strings.yougotfreetrial
             : status == 3
-            ? "strings.yougotfreetrialwith5"
+            ? strings.yougotfreetrialwith5
             : status == 0
-            ? "strings.youtrialexpired"
+            ? strings.youtrialexpired
             : "",
-          <a className="salesTeam" href={`mailto:${"strings.salesemail"}`}>
-            {"strings.email"}
+          <a className="salesTeam" href={`mailto:${strings.salesemail}`}>
+            {strings.email}
           </a>,
           <h4
             className="headText_tr mg_b2"
             style={{ direction: "ltr", display: "inline-block" }}
           >
-            {"strings.companyphone"}
+            {strings.companyphone}
           </h4>
         )}
       </h4>

@@ -62,15 +62,17 @@ export default function RequestProductDetails() {
     debugger
     SubmitRequest(body)
       .then((res) => {
+        debugger;
+        const {data : status} = res
         reset();
         showSuccess(strings.requestsubmitted);
         refreshToken();
-        navigate(`/${selectedLanguage}`);
-        if (res == 1) {
+        if (status == 1) {
           dispatch(settrialStatusModal({ visible: true, status: 1 }));
-        } else if (res == 3) {
+        } else if (status == 3) {
           dispatch(settrialStatusModal({ visible: true, status: 3 }));
         }
+        navigate(`/${selectedLanguage}`);
       })
       .catch((err) => {
         console.log(err);

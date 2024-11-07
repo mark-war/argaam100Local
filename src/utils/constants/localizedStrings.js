@@ -119,16 +119,24 @@ export const strings = new LocalizedStrings({
     submit: "Submit",
     excelDownloadError:
       "Sorry, you have exceeded the number of times for downloading ",
-      analystuserexcelerror:
+    analystuserexcelerror:
       "Sorry, downloading files is available only for Free Trial or Full Package subscribers. For more information, please contact the Sales Team",
-      freeuserexcelerror:
+    freeuserexcelerror:
       "Sorry, downloading files is available for Argaam Plus subscribers only. For more information, please contact the Sales Team",
-      requestconfirm:
+    requestconfirm:
       "By submitting this form, I agree to the collection and use of my personal data by Argaam Investment in accordance with the",
     requestconfirm2: "Privacy Policy.",
-    ok: 'OK',
+    ok: "OK",
     privacypolicy: "Privacy Policy",
-
+    yougotfreetrial:
+      "Congratulations, you got a free trial. For more information please contact the Sales Team by {0} or {1}",
+    youtrialexpired:
+      "Sorry, your free trial is over, please contact the Sales Team by {0} or {1}",
+    yougotfreetrialwith5:
+      "Congratulations, you got a free trial. You can use the analysis services to download 10 Excel files & images during the free trial. For more information, please contact the Sales Team by {0} or {1}",
+    email: "email",
+    companyphone: "(+966 92000 7759)",
+    salesemail: "sales.team@argaam.com",
   },
   ar: {
     topTen: "أعلى 10",
@@ -245,15 +253,21 @@ export const strings = new LocalizedStrings({
     submit: "إرسال",
     excelDownloadError: "عفواً، لقد تخطيت عدد مرات التحميل المتاحة",
     analystuserexcelerror:
-    "عفواً، تحميل الملفات متاح فقط للمشتركين بالتجربة المجانية أو الباقة الكاملة، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
+      "عفواً، تحميل الملفات متاح فقط للمشتركين بالتجربة المجانية أو الباقة الكاملة، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
     freeuserexcelerror:
       "عذراً، تحميل الملفات متاح لمشتركي باقات أرقام بلس فقط، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
-      requestconfirm:
+    requestconfirm:
       "من خلال إرسال هذا النموذج، فإني أوافق على جمع واستخدام بياناتي الشخصية من قبل أرقام الاستثمارية وفقاً",
     requestconfirm2: "لسياسة الخصوصية",
     ok: "موافق",
     privacypolicy: "سياسة الخصوصية",
-
+    yougotfreetrial:
+      "تهانينا، لقد حصلت على تجربة مجانية، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات من خلال {0} أو {1}",
+    yougotfreetrialwith5: `تهانينا، لقد حصلت على تجربة مجانية، مع إمكانية استخدام خدمات التحليل بتحميل 10 ملفات اكسل وصور أثناء التجربة المجانية، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات من خلال {0} أو {1}`,
+    youtrialexpired:
+      "عفواً، لقد استنفذت مدة التجربة المجانية، يرجى التواصل مع فريق المبيعات من خلال {0} أو {1}",
+    email: "البريد الإلكتروني",
+    companyphone: "(+966 92000 7759)",
   },
 });
 
