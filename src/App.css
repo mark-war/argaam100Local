@@ -2049,8 +2049,22 @@ opacity: 0.8;
  direction: ltr;
  text-align: right;
           }
+
+          & p{
+            & img{
+              transform: rotate(180deg);
+            }
+          }
+        &  h4{
+            font-weight: 500;
+          }
       }
   }
+}
+[lang="ar"] .sec-heading h2{
+  
+    font-weight: 500;
+  
 }
 
 .ReactModal__Content.privacy_policyltr{
@@ -2227,7 +2241,7 @@ right:  8px;
           gap: 70px;
           & h4 {
               font-size: 37px;
-              font-weight: 700;
+              font-weight: 500;
               margin-bottom: 0
           }
 
