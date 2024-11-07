@@ -2073,6 +2073,11 @@ opacity: 0.8;
   text-align: left;
 
 
+  & .contentpane {
+    height: 88%;
+    overflow: auto;
+  
+}
 
 
 }
@@ -2098,11 +2103,11 @@ opacity: 0.8;
   text-align: right;
 
   
-    & .contentpane {
-        height: 88%;
-        overflow: auto;
-      
-    }
+  & .contentpane {
+    height: 88%;
+    overflow: auto;
+  
+}
 
 
 
