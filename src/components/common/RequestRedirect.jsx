@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 import { setrequestRedirectModal } from "../../redux/features/userSlice";
+import { strings } from "../../utils/constants/localizedStrings";
 
 export const RequestRedirect = () => {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export const RequestRedirect = () => {
         onClick={() => dispatch(setrequestRedirectModal(false))}
         class="closeIcon"
       ></a>
-      <h4 className="headText_tr mg_b2">{"strings.requestRedirect"}</h4>
+      <h4 className="headText_tr mg_b2">{strings.requestRedirect}</h4>
 
       <div className="trailbt">
         <Button onClick={onReqClose}>Request Details</Button>
