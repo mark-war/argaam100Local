@@ -18,7 +18,7 @@ export const TrialStatus = () => {
 
   return (
     <Modal
-      isOpen={true}
+      isOpen={false}
       ariaHideApp={false}
       className={`${
         selectedLanguage == "en"
@@ -37,7 +37,7 @@ export const TrialStatus = () => {
       onRequestClose={onReqClose}
     >
       <div className="cen_t mtb bnone free_trail_status">
-        <img className="" src={status == 1 || status == 3 ? success : error} />
+        <img className="error_image" src={status == 1 || status == 3 ? success : error} />
         <img src={bar}/>
       </div>
       <h4 className="headText_tr mg_b2">

@@ -669,7 +669,7 @@ export default function PrivacyPolicy({ visible, onClose }) {
       onRequestClose={onClose}
     >
       {" "}
-      <a href="#" className="closeIcon" onClick={onClose}>x</a>
+      <a href="#" className="closeIcon" onClick={onClose}></a>
       <h2>{'strings.privacypolicy'}</h2>
       <div className="contentpane"><Content /></div>
     </Modal>
