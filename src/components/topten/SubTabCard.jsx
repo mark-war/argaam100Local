@@ -6,6 +6,7 @@ import { localized } from "../../utils/localization";
 import NumberFormatter from "../common/NumberFormatter";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
 import useArgaamUrl from "../../hooks/useArgaamUrl";
+import RowChart from "./RowChart";
 
 const SubTabCard = ({
   section,
@@ -20,7 +21,10 @@ const SubTabCard = ({
   const activeSection = Number(section.identifier.split("-")[1]);
 
   const argaamUrl = useArgaamUrl();
-  const [includeAramco, setincludeAramco] = useState(section?.Aramcologic || true);
+  const [includeAramco, setincludeAramco] = useState(
+    section?.Aramcologic || true
+  );
+  const [activeChart, setactiveChart] = useState(null);
 
   const renderCompanyColumn = (item) => (
     <a
@@ -97,8 +101,8 @@ const SubTabCard = ({
           ? item[secondToLastProperty]
           : "";
 
-        
-        const rank = (!includeAramco ? item.Rank - 1 : item.Rank) ?? item.rankno ?? null;
+        const rank =
+          (!includeAramco ? item.Rank - 1 : item.Rank) ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "";
 
         // Determine row width based on the max value
@@ -137,43 +141,57 @@ const SubTabCard = ({
           : chartWidth;
 
         return (
-          <tr key={index}>
-            <td>
-              <span className="bg_tag">{rank}</span>
-            </td>
-            <td className="td_img">
-              <span className="d-flex align-items-center">
-                {renderCompanyColumn(item)}
-              </span>
-            </td>
-            <td>
-              <div className="charts_table_bg" style={{ width: rowWidth }}>
-                <span
-                  className="bg"
-                  style={{ width: adjustedChartWidth }}
-                ></span>
-                {showEllipsis && (
-                  <>
-                    <div className="ellipsis">......</div>
-                    <div className="ellipsis">......</div>
-                  </>
-                )}
-                {valueString !== null ? (
-                  valueString
-                ) : (
-                  <NumberFormatter
-                    value={chartValue || ""}
-                    selectedTab={selectedTab}
-                    activeSection={activeSection}
-                  />
-                )}
-              </div>
-            </td>
-          </tr>
+          <React.Fragment key={index}>
+            <tr>
+              <td>
+                <span className="bg_tag" onClick={() => console.log(item)}>
+                  {rank}
+                </span>
+              </td>
+              <td className="td_img">
+                <span className="d-flex align-items-center">
+                  {renderCompanyColumn(item)}
+                </span>
+              </td>
+              <td>
+                <div className="charts_table_bg" style={{ width: rowWidth }}>
+                  <span
+                    className="bg"
+                    style={{ width: adjustedChartWidth }}
+                  ></span>
+                  {showEllipsis && (
+                    <>
+                      <div className="ellipsis">......</div>
+                      <div className="ellipsis">......</div>
+                    </>
+                  )}
+                  {valueString !== null ? (
+                    valueString
+                  ) : (
+                    <NumberFormatter
+                      value={chartValue || ""}
+                      selectedTab={selectedTab}
+                      activeSection={activeSection}
+                    />
+                  )}
+                </div>
+              </td>
+              <td
+                onClick={() =>
+                  item.CompanyID == activeChart
+                    ? setactiveChart(null)
+                    : setactiveChart(item.CompanyID)
+                }
+              >
+                Chart
+              </td>
+            </tr>
+            {item.CompanyID === activeChart && <RowChart />}
+          </React.Fragment>
         );
       });
     },
-    [currentLanguage, includeAramco]
+    [currentLanguage, includeAramco, activeChart]
   );
 
   const processSubSectionMultipleTabs = useCallback(
@@ -317,14 +335,16 @@ const SubTabCard = ({
             <th key={index}>{column.label}</th>
           ))}
           {section?.Aramcologic && (
-            <th style={{display: "flex", alignItems: "center"}}>
-              <span style={{width: 'max-content'}}>{strings.includeAramco}</span>
+            <th style={{ display: "flex", alignItems: "center" }}>
+              <span style={{ width: "max-content" }}>
+                {strings.includeAramco}
+              </span>
               <input
                 type="checkbox"
                 value={includeAramco}
                 onChange={(e) => setincludeAramco(e.target.checked)}
                 checked={includeAramco}
-                style={{marginLeft: "10px"}}
+                style={{ marginLeft: "10px" }}
               />
             </th>
           )}
