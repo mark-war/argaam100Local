@@ -66,7 +66,7 @@ function AppRoutes() {
 
 function LockedPages({ children }) {
   const user = useSelector((state) => state.user.user);
-  const hasAccess = user?.HasTASIChartsAccess === "true";
+  const hasAccess = user?.HasScreenerChartsAccess === "true";
 
   if (!hasAccess) {
     return <Navigate to={`/en/request`} replace />;
