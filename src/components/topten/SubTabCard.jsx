@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import RaceChart from "../common/RaceChart";
 import { strings, TABS } from "../../utils/constants/localizedStrings";
@@ -20,6 +20,7 @@ const SubTabCard = ({
   const activeSection = Number(section.identifier.split("-")[1]);
 
   const argaamUrl = useArgaamUrl();
+  const [includeAramco, setincludeAramco] = useState(section?.Aramcologic || true);
 
   const renderCompanyColumn = (item) => (
     <a
@@ -95,7 +96,9 @@ const SubTabCard = ({
         const chartValue = secondToLastProperty
           ? item[secondToLastProperty]
           : "";
-        const rank = item.Rank ?? item.rankno ?? null;
+
+        
+        const rank = (!includeAramco ? item.Rank - 1 : item.Rank) ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "";
 
         // Determine row width based on the max value
@@ -170,7 +173,7 @@ const SubTabCard = ({
         );
       });
     },
-    [currentLanguage]
+    [currentLanguage, includeAramco]
   );
 
   const processSubSectionMultipleTabs = useCallback(
@@ -313,10 +316,22 @@ const SubTabCard = ({
           {columns.map((column, index) => (
             <th key={index}>{column.label}</th>
           ))}
+          {section?.Aramcologic && (
+            <th style={{display: "flex", alignItems: "center"}}>
+              <span style={{width: 'max-content'}}>{strings.includeAramco}</span>
+              <input
+                type="checkbox"
+                value={includeAramco}
+                onChange={(e) => setincludeAramco(e.target.checked)}
+                checked={includeAramco}
+                style={{marginLeft: "10px"}}
+              />
+            </th>
+          )}
         </tr>
       </thead>
     ),
-    []
+    [includeAramco]
   );
 
   const renderTableRows = useCallback(
@@ -371,6 +386,13 @@ const SubTabCard = ({
     return section.subTabs[1].direction;
   };
 
+  const filteredData = useMemo(() => {
+    if (!includeAramco) {
+      return section.data.filter((item) => item.CompanyID !== 3509);
+    }
+    return section.data;
+  }, [includeAramco, section.data]);
+
   return (
     <Card className="rounded border-0 table_chart">
       <Card.Body className="px-layout bg-white rounded">
@@ -386,8 +408,8 @@ const SubTabCard = ({
           <div className="table-responsive">
             <Table className="table_layout" style={{ width: "100%" }}>
               {!isMultiple
-                ? renderTableRows(section.data)
-                : renderMultipleTableRows(section.data)}
+                ? renderTableRows(filteredData)
+                : renderMultipleTableRows(filteredData)}
             </Table>
           </div>
         )}

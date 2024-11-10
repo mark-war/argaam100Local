@@ -137,6 +137,7 @@ export const strings = new LocalizedStrings({
     email: "email",
     companyphone: "(+966 92000 7759)",
     salesemail: "sales.team@argaam.com",
+    includeAramco: "Include Aramco",
   },
   ar: {
     topTen: "أعلى 10",
@@ -268,6 +269,7 @@ export const strings = new LocalizedStrings({
       "عفواً، لقد استنفذت مدة التجربة المجانية، يرجى التواصل مع فريق المبيعات من خلال {0} أو {1}",
     email: "البريد الإلكتروني",
     companyphone: "(+966 92000 7759)",
+    includeAramco: 'تشمل أرامكو'
   },
 });
 
