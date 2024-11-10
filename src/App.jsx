@@ -28,11 +28,9 @@ function App() {
   useFetchSectors();
 
   useEffect(() => {
-    debugger;
     if (!isEmpty(user)) {
       refreshToken()
         .then((hasExpired) => {
-          debugger;
           // request redirect popup
           const urlParams = new URLSearchParams(window.location.search);
           const requestRedirect = urlParams.get("requestRedirect");
@@ -42,7 +40,6 @@ function App() {
           }
         })
         .catch((err) => {
-          debugger;
           resetUser(false);
           redirectLogin(true);
         });

@@ -59,10 +59,8 @@ export default function RequestProductDetails() {
   }, [user]);
 
   const Submit = (body) => {
-    debugger
     SubmitRequest(body)
       .then((res) => {
-        debugger;
         const {data : status} = res
         reset();
         showSuccess(strings.requestsubmitted);
@@ -82,7 +80,6 @@ export default function RequestProductDetails() {
   const Required = () => <span style={{ color: "red" }}>*</span>;
 
   const onSubmit = (data) => {
-    debugger
     if (checked) {
       const body = {
         ...data,
