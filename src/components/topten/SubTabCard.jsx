@@ -384,7 +384,7 @@ const SubTabCard = ({
           </div>
         ) : (
           <div className="table-responsive">
-            <Table className="table_layout" style={{ width: "100%" }}>
+            <Table className="table_layout last__close__table" style={{ width: "100%" }}>
               {!isMultiple
                 ? renderTableRows(section.data)
                 : renderMultipleTableRows(section.data)}
