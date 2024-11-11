@@ -44,9 +44,9 @@ const ExportDropdown = (activeTabLink = {}) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
 
   const user = useSelector((state) => state.user.user);
-  const hasAccess = user?.HasTASIChartsAccess === "true";
+  const hasAccess = user?.HasScreenerChartsAccess === "true";
   const isonTrial = user?.isOnFreeTrail !== "False";
-  const isExcelAllowed = user?.isExcelAllowed == "true";
+  const isExcelAllowed = user?.isScreenerExcelAllowed == "true";
 
   const isPlusSubscriber = user?.IsArgaamSubscriber == "true";
   const analystPkgwithoutTrial = isPlusSubscriber && !isonTrial;
