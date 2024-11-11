@@ -81,21 +81,23 @@ export default function RowChart() {
   }?${newQueryParams.toString()}`;
 
   return (
-    <div>
+    <div className="expand_chart">
+      <div className="period">
       {Fiscals && (
         <>
-          <span>Periods</span>
+       
           <ChartTimePeriod
             data={Fiscals.config}
             labelKey={currentLanguage === "ar" ? "na" : "ne"}
-            valueKey={Fiscals.key}
-            selected={selectedPeriod}
+            valueKey={Fiscals.key}           
+            selected={selectedPeriod}            
             onSelection={(period) => setselectedPeriod(period)}
           />
         </>
       )}
-
-      <span>Years</span>
+    </div>
+     
+    <div className="year">
       <ChartTimePeriod
         data={Years.config}
         labelKey={currentLanguage === "ar" ? "na" : "ne"}
@@ -103,6 +105,7 @@ export default function RowChart() {
         selected={selectedYear}
         onSelection={(year) => setselectedYear(year)}
       />
+    </div>
 
       <CustomEmbed src={chart} />
     </div>

@@ -2282,6 +2282,54 @@ right:  8px;
   width: 100px;
 }
 
+.period .float-start.my-2-sm .py-1.rounded-3{
+  padding: .2rem 1rem !important;
+  border-radius: 1rem !important;
+  border: 1px solid #B7C2D5 !important;
+ 
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  position: relative;
+  &.selected{
+    background: #E6E7E9 !important;
+    border: 1px solid #E6E7E9 !important;
+   
+    font-weight: 700 !important;
+  }
+}
+div.year {
+  padding-bottom: 0 !important;
+}
+.year .float-start.my-2-sm .py-1.rounded-3{
+  border: 0 !important;
+  
+  font-size: 15px !important;
+  border-radius: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  font-weight: 500 !important;
+  margin: .3rem !important;
+  padding: .3rem !important;
+  line-height: .6;
+  &.selected{
+    background: none !important;
+    border: 0 !important;
+    border-bottom: 2px solid #154AC3 !important;
+    border-radius: 0 !important;
+    color: #154ac3 !important;
+    line-height: .6;
+    margin: .3rem !important;
+    padding: .3rem !important;
+    font-weight: 700;
+  }
+}
+.expand_chart{
+  padding-top:15px ;
+  & embed {
+    width: 100%;
+    min-height: 250px;
+  }
+}
+
 
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
@@ -2639,6 +2687,25 @@ right:  8px;
 }
 
 @media screen and (max-width: 1024px) {
+
+  .period .float-start.my-2-sm .py-1.rounded-3{
+    
+    font-size: 14px !important;
+   
+   
+  }
+  div.year {
+    padding-bottom: 0 !important;
+  }
+  .year .float-start.my-2-sm .py-1.rounded-3{
+   
+    font-size: 13px !important;
+   
+
+  }
+
+
+
 
   .sec-heading h2{
     font-size: 33px;
