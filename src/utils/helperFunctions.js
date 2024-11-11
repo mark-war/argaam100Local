@@ -23,3 +23,25 @@ export function parseJwt(token) {
 
   return JSON.parse(jsonPayload);
 }
+
+
+export default function getLangID(langtype) {
+  switch (langtype) {
+    case "en":
+      return 2;
+    case "ar":
+      return 1;
+    default:
+      return 1;
+  }
+}
+
+export function getCurrentYear(numYears) {
+  return new Date().getFullYear();
+}
+
+export function yearsAgo(numYears) {
+  const currentYear = new Date().getFullYear();
+  const yearsAgo = currentYear - numYears;
+  return yearsAgo;
+}

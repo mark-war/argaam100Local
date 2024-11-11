@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import ChartTimePeriod from "../common/ChartTimePeriod";
 import CustomEmbed from "../common/CustomEmbed";
+import { useSelector } from "react-redux";
+import { selectCurrentLanguage } from "../../redux/selectors";
+import useIsMobile from "../../hooks/useIsMobile";
+import getLangID, { getCurrentYear, yearsAgo } from "../../utils/helperFunctions";
 
 export default function RowChart() {
   const data = {
@@ -17,7 +21,7 @@ export default function RowChart() {
           ne: "4 years",
         },
       ],
-      key: "key",
+      key: "id",
       isselected: 3,
     },
     Fiscals: {
@@ -33,44 +37,75 @@ export default function RowChart() {
           ne: "period2",
         },
       ],
-      key: "key",
+      key: "id",
       isselected: 3,
     },
-    chartsurl:
-      "https://chartsqa.edanat.com/charts/fr-field-daily-data?frids=36&companyids=43&marketid=3&ct=dline&language=2&lang=2&toyear=2024&pcompany=43&fromyear=2014&fiscalperiodtype=6&companyid=43&tct=Bar&uid=4-43-36-46-0&uidc=4-43-36-46-0&ismobile=0&ic=0",
+    api: "financial-ratio-field",
+    params: {
+      frids: 110,
+      marketid: 3,
+      tct: "Bar",
+      ic: 0,
+    },
   };
+
+  const currentLanguage = useSelector(selectCurrentLanguage);
+  const ismobile = useIsMobile();
+  const companyid = 43;
 
   const { Fiscals, Years } = data;
   const [selectedPeriod, setselectedPeriod] = useState(
-    Fiscals.config.find((p) => p.id === Fiscals.isselected)
+    Fiscals ? Fiscals.config.find((p) => p.id === Fiscals.isselected) : null
   );
   const [selectedYear, setselectedYear] = useState(
     Years.config.find((p) => p.id === Years.isselected)
   );
 
+  const newQueryParams = new URLSearchParams({
+    ...data.params,
+    language: getLangID(currentLanguage),
+    lang: getLangID(currentLanguage),
+    toyear: getCurrentYear(),
+    pcompany: companyid,
+    fromyear: yearsAgo(selectedYear[Years.key]),
+    fiscalperiodtype: selectedPeriod ? selectedPeriod[Fiscals.key] : '',
+    companyid: companyid,
+    companyids: companyid,
+    uid: `4-${companyid}-110-31-0`,
+    uidc: `4-${companyid}-110-31-0`,
+    ismobile: ismobile ? 1 : 0,
+  });
+
+  const chart = `${import.meta.env.VITE_CHARTS_URL}/${
+    data.api
+  }?${newQueryParams.toString()}`;
+
   return (
     <div>
-      <h6>RowChart</h6>
-
-      <span>Periods</span>
-      <ChartTimePeriod
-        data={Fiscals.config}
-        labelKey={"ne"}
-        valueKey={"id"}
-        selected={selectedPeriod}
-        onSelection={(period) => setselectedPeriod(period)}
-      />
+      {Fiscals && (
+        <>
+          <span>Periods</span>
+          <ChartTimePeriod
+            data={Fiscals.config}
+            labelKey={currentLanguage === "ar" ? "na" : "ne"}
+            valueKey={Fiscals.key}
+            selected={selectedPeriod}
+            onSelection={(period) => setselectedPeriod(period)}
+          />
+        </>
+      )}
 
       <span>Years</span>
       <ChartTimePeriod
         data={Years.config}
-        labelKey={"ne"}
-        valueKey={"id"}
+        labelKey={currentLanguage === "ar" ? "na" : "ne"}
+        valueKey={Years.key}
         selected={selectedYear}
-        onSelection={(year) => setselectedYear(period)}
+        onSelection={(year) => setselectedYear(year)}
       />
 
-      <CustomEmbed src={data.chartsurl} />
+      <CustomEmbed src={chart} />
     </div>
   );
 }
+

@@ -48,7 +48,8 @@ function AppRoutes() {
           <Route path="/:lang" element={<LanguageProvider />}>
             <Route path="screener" element={<ScreenerTablesPage />} />
             <Route
-              path="top-10"
+              // path={`argaam-50`}
+              path={`top-50`}
               element={
                 <LockedPages>
                   <TopTenCompaniesPage />

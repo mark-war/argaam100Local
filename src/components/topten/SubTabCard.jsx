@@ -182,6 +182,9 @@ const SubTabCard = ({
                     ? setactiveChart(null)
                     : setactiveChart(item.CompanyID)
                 }
+                className={
+                  item.CompanyID == activeChart ? "active_chart" : "chart"
+                }
               >
                 Chart
               </td>
@@ -426,7 +429,10 @@ const SubTabCard = ({
           </div>
         ) : (
           <div className="table-responsive">
-            <Table className="table_layout last__close__table" style={{ width: "100%" }}>
+            <Table
+              className="table_layout last__close__table"
+              style={{ width: "100%" }}
+            >
               {!isMultiple
                 ? renderTableRows(filteredData)
                 : renderMultipleTableRows(filteredData)}
