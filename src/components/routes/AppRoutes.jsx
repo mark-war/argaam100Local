@@ -19,7 +19,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 
-const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
+// const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
   import("../../pages/TopTenCompaniesPage")
 );
@@ -46,7 +46,7 @@ function AppRoutes() {
           <Route path="/" element={<DefaultRedirect />} />
           <Route path="/:lang" element={<DefaultRedirect />} />
           <Route path="/:lang" element={<LanguageProvider />}>
-            <Route path="screener" element={<ScreenerTablesPage />} />
+            {/* <Route path="screener" element={<ScreenerTablesPage />} /> */}
             <Route
               // path={`argaam-50`}
               path={`top-50`}

@@ -10,7 +10,7 @@ const DefaultRedirect = () => {
 
   const redirectPath = `/${
     config.supportedLanguages.includes(lang) ? lang : config.defaultLanguage
-  }/screener`;
+  }/top-50`;
 
   return <Navigate to={redirectPath} replace />;
 };
