@@ -649,6 +649,7 @@ button.disabled {
 
 .tabs_nav.navbar-nav .nav-item:last-child .nav-link {
   border: 0;
+  text-decoration: underline;
 }
 
 .tabs_nav.navbar-nav .nav-item .nav-link.active {
@@ -2281,7 +2282,9 @@ right:  8px;
 .free_trail_status .error_image{
   width: 100px;
 }
-
+.period{
+  padding: 0 !important;
+}
 .period .float-start.my-2-sm .py-1.rounded-3{
   padding: .2rem 1rem !important;
   border-radius: 1rem !important;
@@ -2323,14 +2326,25 @@ div.year {
   }
 }
 .expand_chart{
-  padding-top:15px ;
+  padding-top: 7px;
+  margin-top: -2px;
+  background: #fff;
+  border-bottom: 1px solid #dee2e6;  
   & embed {
     width: 100%;
-    min-height: 250px;
+    min-height: 330px;
   }
 }
 
-
+.charts{
+  background: url(/src/assets/images/bar-chart.png);
+  height: 25px;
+  width: 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  background-size: 23px
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
@@ -2489,10 +2503,16 @@ div.year {
 .navbar.navbar-expand-md{
   height: 60px;
 }
-
+.table_chart tbody td:nth-child(4){
+  width: 15%; 
+}
+.table_chart tbody td:nth-child(3){
+  width: 72%; 
+}
 }
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
+ 
   body{
     zoom: 0.8; 
   }
@@ -2814,6 +2834,8 @@ div.year {
 }
 }
 @media screen and (max-width: 767px) {
+
+
   .about {
     & .container {
         max-width: 96.94%;
@@ -2950,12 +2972,12 @@ div.year {
 
   .table_chart tbody td:nth-child(3),
   .table_chart th:nth-child(3) {
-    width: 65% !important;
+    width: 43% !important;
   }
 
   [lang="ar"] .table_chart tbody td:nth-child(3),
   [lang="ar"] .table_chart th:nth-child(3) {
-    width: 72% !important;
+    width: 43% !important;
   }
 
   [lang="ar"] .table_chart tbody td:nth-child(2),
