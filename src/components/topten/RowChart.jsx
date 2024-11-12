@@ -94,7 +94,7 @@ export default function RowChart({ config, templateID, CompanyID }) {
         />
       </div>
 
-      <CustomEmbed src={chart} />
+      <CustomEmbed src={chart} key={chart} />
     </div>
   );
 }
