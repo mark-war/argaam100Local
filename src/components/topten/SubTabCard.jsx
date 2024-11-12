@@ -465,7 +465,7 @@ const SubTabCard = ({
         ) : (
           <div className="table-responsive">
             <Table
-              className="table_layout last__close__table"
+              className="table_layout last__close__table custom_scroll"
               style={{ width: "100%" }}
             >
               {!isMultiple

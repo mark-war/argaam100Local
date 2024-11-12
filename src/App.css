@@ -2345,6 +2345,41 @@ div.year {
   cursor: pointer;
   background-size: 23px
 }
+.custom_scroll tbody{
+  padding-right: 5px;
+}
+
+[lang="ar"] 
+.custom_scroll tbody{
+  padding-left: 5px;
+  padding-right: 0;
+}
+/* Custom scrollbar style */
+.custom_scroll tbody::-webkit-scrollbar {
+  width: 10px;
+  display: block;
+  cursor: pointer;
+  
+}
+
+/* Track */
+.custom_scroll tbody::-webkit-scrollbar-track {
+  /* background: url(/src/assets/images/scrollbar_track.jpg) repeat-y 1% top; */
+  border: 0px solid transparent;
+  background-clip: content-box;   /* THIS IS IMPORTANT */
+  background: #eeeef3;
+  border-radius: 5px;
+}
+
+/* Handle */
+.custom_scroll tbody::-webkit-scrollbar-thumb {
+  background: #9ac6e6;
+  border: 6px solid #9ac6e6;
+   border-radius:15px;
+   min-height: 30px;
+   cursor: pointer;
+
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
