@@ -382,7 +382,7 @@ const SubTabCard = ({
                 value={includeAramco}
                 onChange={(e) => setincludeAramco(e.target.checked)}
                 checked={includeAramco}
-                style={{ marginLeft: "10px" }}
+                style={{ margin: "0 10px" }}
               />
             </th>
           )}
