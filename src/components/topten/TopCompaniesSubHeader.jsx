@@ -49,26 +49,28 @@ const TopCompaniesSubHeader = ({
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
-                    const isFreePage =
-                      tabItem.tabLinkId == import.meta.env.VITE_FREEPAGESUBID;
-                    if (hasAccess) {
-                      handleActiveTabLink(
-                        tabItem.tabLinkId,
-                        tabItem.defaultSubTab
-                      );
-                    } else {
-                      if (isFreePage) {
-                        
-                        handleActiveTabLink(
-                          tabItem.tabLinkId,
-                          tabItem.defaultSubTab
-                        );
-                      } else {
-                        alert('ok')
-                        e.preventDefault();
-                        navigate(`/${selectedLanguage}/request`);
-                      }
-                    }
+                    // const isFreePage =
+                    //   tabItem.tabLinkId == import.meta.env.VITE_FREEPAGESUBID;
+                    // if (hasAccess) {
+                    //   handleActiveTabLink(
+                    //     tabItem.tabLinkId,
+                    //     tabItem.defaultSubTab
+                    //   );
+                    // } else {
+                    //   if (isFreePage) {  
+                    //     handleActiveTabLink(
+                    //       tabItem.tabLinkId,
+                    //       tabItem.defaultSubTab
+                    //     );
+                    //   } else {
+                    //     e.preventDefault();
+                    //     navigate(`/${selectedLanguage}/request`);
+                    //   }
+                    // }
+                    handleActiveTabLink(
+                      tabItem.tabLinkId,
+                      tabItem.defaultSubTab
+                    );
                   }}
                 >
                   <span>{localized(tabItem, "name", currentLanguage)}</span>
