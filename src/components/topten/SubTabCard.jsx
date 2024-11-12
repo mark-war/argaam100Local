@@ -283,50 +283,77 @@ const SubTabCard = ({
             : null;
 
         return (
-          <tr key={index}>
-            <td>
-              <span className="bg_tag">{rank}</span>
-            </td>
-            <td className="td_img">
-              <span className="d-flex align-items-center">
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`${argaamUrl(
-                    item.Code ? item.Code.split(".")[0] : ""
-                  )}`}
-                  className="company-link"
+          <React.Fragment key={index}>
+            <tr>
+              <td>
+                <span className="bg_tag">{rank}</span>
+              </td>
+              <td className="td_img">
+                <span className="d-flex align-items-center">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`${argaamUrl(
+                      item.Code ? item.Code.split(".")[0] : ""
+                    )}`}
+                    className="company-link"
+                  >
+                    <img
+                      alt="Image"
+                      src={item.LogoUrl}
+                      className="logo_image"
+                    />
+                    <span>{localized(item, "ShortName", currentLanguage)}</span>
+                  </a>
+                </span>
+              </td>
+              <td>
+                <div className="charts_table_bg" style={{ width: rowWidth }}>
+                  <span
+                    className="bg"
+                    style={{
+                      width: chartWidth,
+                      //backgroundColor: chartValue < 0 ? "red" : "#9ac6e6", // Set background to red if chartValue is negative
+                    }}
+                  ></span>
+                  {valueString !== null ? (
+                    valueString
+                  ) : (
+                    <NumberFormatter
+                      value={chartValue || ""}
+                      selectedTab={selectedTab}
+                      activeSection={activeSection}
+                    />
+                  )}
+                </div>
+              </td>
+              {section.chartConfig ? (
+                <td
+                  onClick={() =>
+                    item.CompanyID == activeChart
+                      ? setactiveChart(null)
+                      : setactiveChart(item.CompanyID)
+                  }
+                  className={
+                    item.CompanyID == activeChart ? "active_chart" : "chart"
+                  }
                 >
-                  <img alt="Image" src={item.LogoUrl} className="logo_image" />
-                  <span>{localized(item, "ShortName", currentLanguage)}</span>
-                </a>
-              </span>
-            </td>
-            <td>
-              <div className="charts_table_bg" style={{ width: rowWidth }}>
-                <span
-                  className="bg"
-                  style={{
-                    width: chartWidth,
-                    //backgroundColor: chartValue < 0 ? "red" : "#9ac6e6", // Set background to red if chartValue is negative
-                  }}
-                ></span>
-                {valueString !== null ? (
-                  valueString
-                ) : (
-                  <NumberFormatter
-                    value={chartValue || ""}
-                    selectedTab={selectedTab}
-                    activeSection={activeSection}
-                  />
-                )}
-              </div>
-            </td>
-          </tr>
+                  Chart
+                </td>
+              ) : null}
+            </tr>
+            {item.CompanyID === activeChart && (
+              <RowChart
+                config={section.chartConfig}
+                templateID={item?.FSTemplateID}
+                CompanyID={item?.CompanyID}
+              />
+            )}
+          </React.Fragment>
         );
       });
     },
-    [currentLanguage, activeSubTab]
+    [currentLanguage, activeSubTab,includeAramco,activeChart]
   );
 
   const headers = useMemo(
