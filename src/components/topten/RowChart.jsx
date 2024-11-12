@@ -9,19 +9,23 @@ import getLangID, {
   yearsAgo,
 } from "../../utils/helperFunctions";
 
-export default function RowChart({ config, templateID,CompanyID }) {
+export default function RowChart({ config, templateID, CompanyID }) {
   const data = JSON.parse(config);
 
   const currentLanguage = useSelector(selectCurrentLanguage);
   const ismobile = useIsMobile();
   const companyid = CompanyID;
-  const uid = `4-${companyid}-${
-    data["fs-id-config"]
-      ? data["fs-id-config"]?.find((_) => _.templateID == templateID)?.value
-      : data["fr-id-config"]
-      ? data["fr-id-config"]?.find((_) => _.templateID == templateID)?.value
-      : ""
-  }-31-0`;
+
+  const uid = data?.UID?.value
+    ?.replace("##companyid##", companyid)
+    ?.replace(
+      "##value##",
+      data["fs-id-config"]
+        ? data["fs-id-config"]?.find((_) => _.templateID == templateID)?.value
+        : data["fr-id-config"]
+        ? data["fr-id-config"]?.find((_) => _.templateID == templateID)?.value
+        : ""
+    );
 
   const { Fiscals, Years } = data;
   const [selectedPeriod, setselectedPeriod] = useState(
@@ -37,27 +41,26 @@ export default function RowChart({ config, templateID,CompanyID }) {
     lang: getLangID(currentLanguage),
     toyear: getCurrentYear(),
     pcompany: companyid,
-    // fromyear: yearsAgo(selectedYear['id']),
     ...(data?.Years && {
       [data?.Years?.key]: yearsAgo(selectedYear["id"]),
     }),
-    // fiscalperiodtype: selectedPeriod ? selectedPeriod['id'] : '',
     ...(data?.Fiscals && {
       [data?.Fiscals?.key]: selectedPeriod ? selectedPeriod["id"] : "",
     }),
     companyid: companyid,
     companyids: companyid,
-    uid: uid,
-    uidc: uid,
     ismobile: ismobile ? 1 : 0,
     ...(data["fs-id-config"] && {
-      fstfieldid: data["fs-id-config"]?.find(
-        (_) => _.templateID == templateID
-      )?.value,
+      fstfieldid: data["fs-id-config"]?.find((_) => _.templateID == templateID)
+        ?.value,
     }),
     ...(data["fr-id-config"] && {
       frids: data["fr-id-config"]?.find((_) => _.templateID == templateID)
         ?.value,
+    }),
+    ...(data?.UID?.IA && {
+      uid: uid,
+      uidc: uid,
     }),
   });
 
