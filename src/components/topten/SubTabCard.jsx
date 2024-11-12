@@ -176,20 +176,28 @@ const SubTabCard = ({
                   )}
                 </div>
               </td>
-              <td
-                onClick={() =>
-                  item.CompanyID == activeChart
-                    ? setactiveChart(null)
-                    : setactiveChart(item.CompanyID)
-                }
-                className={
-                  item.CompanyID == activeChart ? "active_chart" : "chart"
-                }
-              >
-                Chart
-              </td>
+              {section.chartConfig ? (
+                <td
+                  onClick={() =>
+                    item.CompanyID == activeChart
+                      ? setactiveChart(null)
+                      : setactiveChart(item.CompanyID)
+                  }
+                  className={
+                    item.CompanyID == activeChart ? "active_chart" : "chart"
+                  }
+                >
+                  Chart
+                </td>
+              ) : null}
             </tr>
-            {item.CompanyID === activeChart && <RowChart />}
+            {item.CompanyID === activeChart && (
+              <RowChart
+                config={section.chartConfig}
+                templateID={item?.FSTemplateID}
+                CompanyID={item?.CompanyID}
+              />
+            )}
           </React.Fragment>
         );
       });

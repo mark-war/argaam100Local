@@ -4,54 +4,24 @@ import CustomEmbed from "../common/CustomEmbed";
 import { useSelector } from "react-redux";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import useIsMobile from "../../hooks/useIsMobile";
-import getLangID, { getCurrentYear, yearsAgo } from "../../utils/helperFunctions";
+import getLangID, {
+  getCurrentYear,
+  yearsAgo,
+} from "../../utils/helperFunctions";
 
-export default function RowChart() {
-  const data = {
-    Years: {
-      config: [
-        {
-          id: 3,
-          na: "3 years",
-          ne: "3 years",
-        },
-        {
-          id: 4,
-          na: "4 years",
-          ne: "4 years",
-        },
-      ],
-      key: "id",
-      isselected: 3,
-    },
-    Fiscals: {
-      config: [
-        {
-          id: 3,
-          na: "quarterarabic",
-          ne: "period1",
-        },
-        {
-          id: 4,
-          na: "quarterarabic",
-          ne: "period2",
-        },
-      ],
-      key: "id",
-      isselected: 3,
-    },
-    api: "financial-ratio-field",
-    params: {
-      frids: 110,
-      marketid: 3,
-      tct: "Bar",
-      ic: 0,
-    },
-  };
+export default function RowChart({ config, templateID,CompanyID }) {
+  const data = JSON.parse(config);
 
   const currentLanguage = useSelector(selectCurrentLanguage);
   const ismobile = useIsMobile();
-  const companyid = 43;
+  const companyid = CompanyID;
+  const uid = `4-${companyid}-${
+    data["fs-id-config"]
+      ? data["fs-id-config"]?.find((_) => _.templateID == templateID)?.value
+      : data["fr-id-config"]
+      ? data["fr-id-config"]?.find((_) => _.templateID == templateID)?.value
+      : ""
+  }-31-0`;
 
   const { Fiscals, Years } = data;
   const [selectedPeriod, setselectedPeriod] = useState(
@@ -67,13 +37,28 @@ export default function RowChart() {
     lang: getLangID(currentLanguage),
     toyear: getCurrentYear(),
     pcompany: companyid,
-    fromyear: yearsAgo(selectedYear[Years.key]),
-    fiscalperiodtype: selectedPeriod ? selectedPeriod[Fiscals.key] : '',
+    // fromyear: yearsAgo(selectedYear['id']),
+    ...(data?.Years && {
+      [data?.Years?.key]: yearsAgo(selectedYear["id"]),
+    }),
+    // fiscalperiodtype: selectedPeriod ? selectedPeriod['id'] : '',
+    ...(data?.Fiscals && {
+      [data?.Fiscals?.key]: selectedPeriod ? selectedPeriod["id"] : "",
+    }),
     companyid: companyid,
     companyids: companyid,
-    uid: `4-${companyid}-110-31-0`,
-    uidc: `4-${companyid}-110-31-0`,
+    uid: uid,
+    uidc: uid,
     ismobile: ismobile ? 1 : 0,
+    ...(data["fs-id-config"] && {
+      fstfieldid: data["fs-id-config"]?.find(
+        (_) => _.templateID == templateID
+      )?.value,
+    }),
+    ...(data["fr-id-config"] && {
+      frids: data["fr-id-config"]?.find((_) => _.templateID == templateID)
+        ?.value,
+    }),
   });
 
   const chart = `${import.meta.env.VITE_CHARTS_URL}/${
@@ -83,32 +68,30 @@ export default function RowChart() {
   return (
     <div className="expand_chart">
       <div className="period">
-      {Fiscals && (
-        <>
-       
-          <ChartTimePeriod
-            data={Fiscals.config}
-            labelKey={currentLanguage === "ar" ? "na" : "ne"}
-            valueKey={Fiscals.key}           
-            selected={selectedPeriod}            
-            onSelection={(period) => setselectedPeriod(period)}
-          />
-        </>
-      )}
-    </div>
-     
-    <div className="year">
-      <ChartTimePeriod
-        data={Years.config}
-        labelKey={currentLanguage === "ar" ? "na" : "ne"}
-        valueKey={Years.key}
-        selected={selectedYear}
-        onSelection={(year) => setselectedYear(year)}
-      />
-    </div>
+        {Fiscals && (
+          <>
+            <ChartTimePeriod
+              data={Fiscals.config}
+              labelKey={currentLanguage === "ar" ? "na" : "ne"}
+              valueKey={"id"}
+              selected={selectedPeriod}
+              onSelection={(period) => setselectedPeriod(period)}
+            />
+          </>
+        )}
+      </div>
+
+      <div className="year">
+        <ChartTimePeriod
+          data={Years.config}
+          labelKey={currentLanguage === "ar" ? "na" : "ne"}
+          valueKey={"id"}
+          selected={selectedYear}
+          onSelection={(year) => setselectedYear(year)}
+        />
+      </div>
 
       <CustomEmbed src={chart} />
     </div>
   );
 }
-
