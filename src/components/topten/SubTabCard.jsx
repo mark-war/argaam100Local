@@ -335,10 +335,10 @@ const SubTabCard = ({
                       : setactiveChart(item.CompanyID)
                   }
                   className={
-                    item.CompanyID == activeChart ? "active_chart" : "chart"
+                    item.CompanyID == activeChart ? "active_chart charts" : "charts"
                   }
                 >
-                  Chart
+               
                 </td>
               ) : null}
             </tr>
