@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { localized } from "../../utils/localization";
 import { PAGES } from "../../utils/constants/localizedStrings";
 import ExportDropdown from "../common/ExportDropdown";
@@ -14,6 +14,14 @@ const TopCompaniesSubHeader = ({
   activeSubTabs,
 }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
+  const user = useSelector((state) => state.user.user); // Access pages from Redux store
+  const hasAccess = user?.HasScreenerChartsAccess == "true";
+  const selectedLanguage = useSelector(
+    (state) => state?.language?.currentLanguage
+  );
+  const navigate= useNavigate()
+
+  console.log(tabLinksArray)
   return (
     <div className="shadow_btm sub_header top_companies">
       {/* <div className="d-flex mt-4 mb-2 border_gray px-layout">
@@ -39,12 +47,29 @@ const TopCompaniesSubHeader = ({
                   className={`nav-link ${
                     activeTabLink === tabItem.tabLinkId ? "active" : ""
                   }`}
-                  onClick={() =>
-                    handleActiveTabLink(
-                      tabItem.tabLinkId,
-                      tabItem.defaultSubTab
-                    )
-                  }
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const isFreePage =
+                      tabItem.tabLinkId == import.meta.env.VITE_FREEPAGESUBID;
+                    if (hasAccess) {
+                      handleActiveTabLink(
+                        tabItem.tabLinkId,
+                        tabItem.defaultSubTab
+                      );
+                    } else {
+                      if (isFreePage) {
+                        
+                        handleActiveTabLink(
+                          tabItem.tabLinkId,
+                          tabItem.defaultSubTab
+                        );
+                      } else {
+                        alert('ok')
+                        e.preventDefault();
+                        navigate(`/${selectedLanguage}/request`);
+                      }
+                    }
+                  }}
                 >
                   <span>{localized(tabItem, "name", currentLanguage)}</span>
                 </Link>

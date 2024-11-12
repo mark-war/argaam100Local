@@ -49,7 +49,7 @@ function AppRoutes() {
             {/* <Route path="screener" element={<ScreenerTablesPage />} /> */}
             <Route
               // path={`argaam-50`}
-              path={`top-50`}
+              path={`argaam-100`}
               element={
                 <LockedPages>
                   <TopTenCompaniesPage />
@@ -69,9 +69,9 @@ function LockedPages({ children }) {
   const user = useSelector((state) => state.user.user);
   const hasAccess = user?.HasScreenerChartsAccess === "true";
 
-  if (!hasAccess) {
-    return <Navigate to={`/en/request`} replace />;
-  }
+  // if (!hasAccess) {
+  //   return <Navigate to={`/en/request`} replace />;
+  // }
 
   return children;
 }

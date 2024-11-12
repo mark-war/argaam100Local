@@ -10,7 +10,7 @@ const DefaultRedirect = () => {
 
   const redirectPath = `/${
     config.supportedLanguages.includes(lang) ? lang : config.defaultLanguage
-  }/top-50`;
+  }/argaam-100`;
 
   return <Navigate to={redirectPath} replace />;
 };
