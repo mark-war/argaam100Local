@@ -12,6 +12,7 @@ import { strings, TABS } from "../../utils/constants/localizedStrings";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import ReactModal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
+import Tooltip from "../common/Tooltip";
 
 function PopupTooltip({ isOpen, onRequestClose, type }) {
   const lang = useSelector(selectCurrentLanguage);
@@ -98,7 +99,11 @@ const SubSection = ({
   );
   const [loading, setLoading] = useState({});
   const [modalOpen, setmodalOpen] = useState(false);
-
+  const note = localized(section, "notes", currentLanguage);
+  const tabNote =
+    sortedSubTabs[activeSubTab]?.[
+      currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
+    ];
   useEffect(() => {
     setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
   }, [selectedTabKey, currentLanguage]);
@@ -185,20 +190,14 @@ const SubSection = ({
                 ></i>
               </>
             )}
-            {/* {!isMultiple && activeSubTab === 1 ? (
-              <span className="notes">
-                {localized(section, "notes", currentLanguage)}
-              </span>
-            ) : (
-              ""
-            )} */}
-            <span className="notes">
-              {
-                sortedSubTabs[activeSubTab]?.[
-                  currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
-                ]
-              }
-            </span>
+            
+            {note ? (
+              <Tooltip tooltipText={note}>
+                <i className="textComment_icon"></i>
+              </Tooltip>
+            ) : null}
+            
+            {tabNote ? <span className="notes">{tabNote}</span> : null}
           </p>
         </div>
         <div className="col-6 col-sm-5">
