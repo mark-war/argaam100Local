@@ -32,6 +32,8 @@ export const fetchTopTenData = createAsyncThunk(
           direction: config.extraparams?.ob || "",
           encryptedConfigJson: encryptedConfigJsons[index] || null, // Associate encryptedConfigJson for each subtab
           originalIndex: index, // Add the original index here
+          tabNoteEn: config.te,
+          tabNoteAr: config.ta
         }));
 
         const identifier = `${item.TabID}-${item.Pkey}-${currentLanguage}`;
