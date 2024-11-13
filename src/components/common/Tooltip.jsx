@@ -29,7 +29,7 @@ const Tooltip = ({ children, tooltipText }) => {
       ref={iconRef}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
-    //   className="textComment_icon"
+       className="textComment_iconPane"
       style={{ position: 'relative', display: 'inline-block' }}
     >
       {children}
@@ -39,9 +39,10 @@ const Tooltip = ({ children, tooltipText }) => {
         style={{
           ...styles.popper,
           zIndex: 10,
-          padding: '8px',
+          padding: '9px',
           backgroundColor: '#9ac6e6',
-          color: 'white',
+          color: 'rgba(0, 0, 0, 0.83)',
+          fontSize:'13px',
           borderRadius: '4px',
           visibility: showTooltip ? 'visible' : 'hidden',
           opacity: showTooltip ? 1 : 0,

@@ -2380,6 +2380,21 @@ div.year {
    cursor: pointer;
 
 }
+
+.textComment_iconPane{
+  position: relative;
+  & .textComment_icon{
+    top: -15px;
+  }
+ & div{ 
+   
+    max-width:200px;
+    width:  max-content;
+    line-height: 17px; 
+    border: 1px solid rgb(204, 204, 204);
+    
+  }
+}
 @media screen and (min-width: 1700px) {
   .table_chart .table_layout.table td:nth-child(2) {
     width: 22%;
