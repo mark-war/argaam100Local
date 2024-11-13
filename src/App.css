@@ -647,7 +647,7 @@ button.disabled {
   padding-left: 0;
 }
 
-.tabs_nav.navbar-nav .nav-item:last-child .nav-link {
+.tabs_inner.tabs_nav.navbar-nav .nav-item:last-child .nav-link {
   border: 0;
   text-decoration: underline;
 }
@@ -2544,6 +2544,11 @@ div.year {
 .table_chart tbody td:nth-child(3){
   width: 72%; 
 }
+}
+@media screen and (max-width: 1366px) and (min-width: 1025px) {
+  .table_chart tbody td:nth-child(3) {
+    width: 60%;
+} 
 }
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
