@@ -2545,6 +2545,11 @@ div.year {
   width: 72%; 
 }
 }
+@media screen and (max-width: 1366px) and (min-width: 1025px) {
+  .table_chart tbody td:nth-child(3) {
+    width: 60%;
+} 
+}
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
  
