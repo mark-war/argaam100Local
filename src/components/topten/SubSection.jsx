@@ -68,7 +68,7 @@ function PopupTooltip({ isOpen, onRequestClose, type }) {
            
           </>
         )} */}
-         <h5>{strings.growthtooltiptext4}</h5>{" "}
+        <h5>{strings.growthtooltiptext4}</h5>{" "}
         <ul>
           {textList.map((text, index) => (
             <li key={index}>{text}</li>
@@ -185,13 +185,20 @@ const SubSection = ({
                 ></i>
               </>
             )}
-            {!isMultiple && activeSubTab === 1 ? (
+            {/* {!isMultiple && activeSubTab === 1 ? (
               <span className="notes">
                 {localized(section, "notes", currentLanguage)}
               </span>
             ) : (
               ""
-            )}
+            )} */}
+            <span className="notes">
+              {
+                sortedSubTabs[activeSubTab]?.[
+                  currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
+                ]
+              }
+            </span>
           </p>
         </div>
         <div className="col-6 col-sm-5">

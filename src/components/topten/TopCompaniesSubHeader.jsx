@@ -21,7 +21,6 @@ const TopCompaniesSubHeader = ({
   );
   const navigate= useNavigate()
 
-  console.log(tabLinksArray)
   return (
     <div className="shadow_btm sub_header top_companies">
       {/* <div className="d-flex mt-4 mb-2 border_gray px-layout">
