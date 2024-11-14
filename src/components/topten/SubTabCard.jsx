@@ -293,6 +293,9 @@ const SubTabCard = ({
             ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
             : null;
 
+        const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
+
+
         return (
           <React.Fragment key={index}>
             <tr
