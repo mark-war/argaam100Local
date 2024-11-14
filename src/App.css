@@ -925,6 +925,18 @@ button.disabled {
   display: flex;
   margin-right: 10px;
   flex-shrink: 0.05;
+  &.bar{
+    position: relative;
+    &::after{
+      content: "";
+      height: 25px;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: url(/src/assets/images/bar.png) repeat;
+    }
+  }
 }
 
 .ellipsis {
@@ -938,6 +950,9 @@ button.disabled {
   margin-left: -8px;
 }
 
+.table_chart tbody tr{
+  width: 100%;
+}
 .table_chart tbody td:first-child,
 .table_chart th:first-child {
   width: 5%;
@@ -1080,7 +1095,7 @@ button.disabled {
 
 .notes {
   font-size: 13px;
-  padding: 5px 13px;
+  padding: 5px 5px;
   color: rgb(141, 137, 137);
   font-weight: normal;
   /* border: 1px solid #ccccccad;
@@ -2330,7 +2345,12 @@ div.year {
   margin-top: -2px;
   background: #fff;
   border-bottom: 1px solid #dee2e6;  
+  width: 100%;
+  & div.year{
+    padding: 0 !important;
+  }
   & embed {
+    padding: 0 !important;
     width: 100%;
     min-height: 330px;
   }
@@ -2353,6 +2373,15 @@ div.year {
 .custom_scroll tbody{
   padding-left: 5px;
   padding-right: 0;
+}
+
+ .sectionNote.px-layout {
+  text-align: right;
+  font-size: 13px;
+  font-weight: bold;
+}
+[lang="ar"] .sectionNote.px-layout {
+  text-align: left;  
 }
 /* Custom scrollbar style */
 .custom_scroll tbody::-webkit-scrollbar {
@@ -2383,16 +2412,22 @@ div.year {
 
 .textComment_iconPane{
   position: relative;
-  & .textComment_icon{
+  min-width: 21px;
+  min-height: 18px;
+padding-top: 2px;
+  /* & .textComment_icon{
     top: -15px;
+  } */
+ & .textComment_icon{
+    margin: 0;
+  top: auto;
   }
- & div{ 
-   
+ & div{    
     max-width:200px;
     width:  max-content;
     line-height: 17px; 
     border: 1px solid rgb(204, 204, 204);
-    
+    /* margin-left: 28px; */
   }
 }
 @media screen and (min-width: 1700px) {

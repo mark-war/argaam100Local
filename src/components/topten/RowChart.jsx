@@ -69,32 +69,36 @@ export default function RowChart({ config, templateID, CompanyID }) {
   }?${newQueryParams.toString()}`;
 
   return (
-    <div className="expand_chart">
-      <div className="period">
-        {Fiscals && (
-          <>
+    <tr>
+      <td colSpan={5}>
+        <div className="expand_chart">
+          <div className="period">
+            {Fiscals && (
+              <>
+                <ChartTimePeriod
+                  data={Fiscals.config}
+                  labelKey={currentLanguage === "ar" ? "na" : "ne"}
+                  valueKey={"id"}
+                  selected={selectedPeriod}
+                  onSelection={(period) => setselectedPeriod(period)}
+                />
+              </>
+            )}
+          </div>
+
+          <div className="year">
             <ChartTimePeriod
-              data={Fiscals.config}
+              data={Years.config}
               labelKey={currentLanguage === "ar" ? "na" : "ne"}
               valueKey={"id"}
-              selected={selectedPeriod}
-              onSelection={(period) => setselectedPeriod(period)}
+              selected={selectedYear}
+              onSelection={(year) => setselectedYear(year)}
             />
-          </>
-        )}
-      </div>
+          </div>
 
-      <div className="year">
-        <ChartTimePeriod
-          data={Years.config}
-          labelKey={currentLanguage === "ar" ? "na" : "ne"}
-          valueKey={"id"}
-          selected={selectedYear}
-          onSelection={(year) => setselectedYear(year)}
-        />
-      </div>
-
-      <CustomEmbed src={chart} key={chart} />
-    </div>
+          <CustomEmbed src={chart} key={chart} />
+        </div>
+    </td>
+    </tr>
   );
 }
