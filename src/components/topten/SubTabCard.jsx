@@ -146,7 +146,9 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr>
+            <tr className={
+                item.CompanyID == activeChart ? "activeRow" : ""
+              }>
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -178,14 +180,12 @@ const SubTabCard = ({
                   )}
                 </div>
 
-              {/* note */}
-              {!isEmpty(note) ? (
-                <Tooltip tooltipText={note}>
-                  <i className="textComment_icon"></i>
-                </Tooltip>
-              ) : null}
-
-
+                {/* note */}
+                {!isEmpty(note) ? (
+                  <Tooltip tooltipText={note}>
+                    <i className="textComment_icon"></i>
+                  </Tooltip>
+                ) : null}
               </td>
               {section.chartConfig ? (
                 <td
@@ -295,7 +295,11 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr>
+            <tr
+              className={
+                item.CompanyID == activeChart ? "activeRow" : ""
+              }
+            >
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -337,6 +341,13 @@ const SubTabCard = ({
                     />
                   )}
                 </div>
+
+                {/* note */}
+                {!isEmpty(note) ? (
+                  <Tooltip tooltipText={note}>
+                    <i className="textComment_icon"></i>
+                  </Tooltip>
+                ) : null}
               </td>
 
               {section.chartConfig ? (
