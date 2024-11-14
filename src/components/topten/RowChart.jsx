@@ -69,7 +69,7 @@ export default function RowChart({ config, templateID, CompanyID }) {
   }?${newQueryParams.toString()}`;
 
   return (
-    <tr>
+    <tr className="activeRow">
       <td colSpan={5}>
         <div className="expand_chart">
           <div className="period">

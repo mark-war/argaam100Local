@@ -916,6 +916,10 @@ button.disabled {
 .charts_table_bg {
   display: flex;
   width: 82%; /* Set the base width */
+ & .textComment_iconPane{
+
+    padding: 4px 2px 0;
+  }
 }
 
 .charts_table_bg span.bg {
@@ -2343,17 +2347,35 @@ div.year {
 .expand_chart{
   padding-top: 7px;
   margin-top: -2px;
-  background: #fff;
-  border-bottom: 1px solid #dee2e6;  
+  /* background: #fff; */
+  border-bottom: 0px solid #dee2e6;  
   width: 100%;
   & div.year{
     padding: 0 !important;
   }
-  & embed {
+  & embed { 
     padding: 0 !important;
     width: 100%;
     min-height: 330px;
   }
+}
+
+
+tr.activeRow{
+ 
+  & td, & td:first-child, & .year .float-start.my-2-sm .py-1.rounded-3{
+    background: #eeeef36c !important;
+    border-radius: 0 !important;
+   
+  }
+ & td.charts{
+  background: #eeeef36c url(/src/assets/images/bar-chart.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  cursor: pointer;
+  background-size: 23px;
+  }
+
 }
 
 .charts{
@@ -2365,9 +2387,9 @@ div.year {
   cursor: pointer;
   background-size: 23px
 }
-.custom_scroll tbody{
+/* .custom_scroll tbody{
   padding-right: 5px;
-}
+} */
 
 [lang="ar"] 
 .custom_scroll tbody{

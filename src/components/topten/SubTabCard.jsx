@@ -177,15 +177,15 @@ const SubTabCard = ({
                       selectedTab={selectedTab}
                       activeSection={activeSection}
                     />
-                  )}
+                  )} {/* note */}
+                  {!isEmpty(note) ? (
+                    <Tooltip tooltipText={note}>
+                      <i className="textComment_icon"></i>
+                    </Tooltip>
+                  ) : null}
                 </div>
 
-                {/* note */}
-                {!isEmpty(note) ? (
-                  <Tooltip tooltipText={note}>
-                    <i className="textComment_icon"></i>
-                  </Tooltip>
-                ) : null}
+               
               </td>
               {section.chartConfig ? (
                 <td
