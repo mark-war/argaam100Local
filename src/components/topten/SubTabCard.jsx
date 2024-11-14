@@ -343,14 +343,15 @@ const SubTabCard = ({
                       activeSection={activeSection}
                     />
                   )}
-                </div>
-
-                {/* note */}
+                    {/* note */}
                 {!isEmpty(note) ? (
                   <Tooltip tooltipText={note}>
                     <i className="textComment_icon"></i>
                   </Tooltip>
                 ) : null}
+                </div>
+
+              
               </td>
 
               {section.chartConfig ? (
