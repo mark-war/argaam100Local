@@ -950,6 +950,9 @@ button.disabled {
   margin-left: -8px;
 }
 
+.table_chart tbody tr{
+  width: 100%;
+}
 .table_chart tbody td:first-child,
 .table_chart th:first-child {
   width: 5%;
@@ -2342,7 +2345,12 @@ div.year {
   margin-top: -2px;
   background: #fff;
   border-bottom: 1px solid #dee2e6;  
+  width: 100%;
+  & div.year{
+    padding: 0 !important;
+  }
   & embed {
+    padding: 0 !important;
     width: 100%;
     min-height: 330px;
   }
