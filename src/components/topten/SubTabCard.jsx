@@ -7,6 +7,8 @@ import NumberFormatter from "../common/NumberFormatter";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
 import useArgaamUrl from "../../hooks/useArgaamUrl";
 import RowChart from "./RowChart";
+import { isEmpty } from "../../utils/helperFunctions";
+import Tooltip from "../common/Tooltip";
 
 const SubTabCard = ({
   section,
@@ -140,13 +142,13 @@ const SubTabCard = ({
           ? `${Math.max(0, parseFloat(chartWidth) - 5)}%`
           : chartWidth;
 
+        const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
+
         return (
           <React.Fragment key={index}>
             <tr>
               <td>
-                <span className="bg_tag" onClick={() => console.log(item)}>
-                  {rank}
-                </span>
+                <span className="bg_tag">{rank}</span>
               </td>
               <td className="td_img">
                 <span className="d-flex align-items-center">
@@ -175,6 +177,15 @@ const SubTabCard = ({
                     />
                   )}
                 </div>
+
+              {/* note */}
+              {!isEmpty(note) ? (
+                <Tooltip tooltipText={note}>
+                  <i className="textComment_icon"></i>
+                </Tooltip>
+              ) : null}
+
+
               </td>
               {section.chartConfig ? (
                 <td
@@ -184,11 +195,11 @@ const SubTabCard = ({
                       : setactiveChart(item.CompanyID)
                   }
                   className={
-                    item.CompanyID == activeChart ? "active_chart charts" : "charts"
+                    item.CompanyID == activeChart
+                      ? "active_chart charts"
+                      : "charts"
                   }
-                >
-                  
-                </td>
+                ></td>
               ) : null}
             </tr>
             {item.CompanyID === activeChart && (
@@ -327,6 +338,7 @@ const SubTabCard = ({
                   )}
                 </div>
               </td>
+
               {section.chartConfig ? (
                 <td
                   onClick={() =>
@@ -335,11 +347,11 @@ const SubTabCard = ({
                       : setactiveChart(item.CompanyID)
                   }
                   className={
-                    item.CompanyID == activeChart ? "active_chart charts" : "charts"
+                    item.CompanyID == activeChart
+                      ? "active_chart charts"
+                      : "charts"
                   }
-                >
-               
-                </td>
+                ></td>
               ) : null}
             </tr>
             {item.CompanyID === activeChart && (
@@ -353,7 +365,7 @@ const SubTabCard = ({
         );
       });
     },
-    [currentLanguage, activeSubTab,includeAramco,activeChart]
+    [currentLanguage, activeSubTab, includeAramco, activeChart]
   );
 
   const headers = useMemo(
