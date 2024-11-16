@@ -915,10 +915,9 @@ button.disabled {
 
 .charts_table_bg {
   display: flex;
-  width: 82%; /* Set the base width */
+  width: 63% !important; /* Set the base width */
  & .textComment_iconPane{
-
-    padding: 4px 2px 0;
+    padding: 4px 6px 0;
   }
 }
 
@@ -973,7 +972,7 @@ button.disabled {
 
 .table_chart tbody td:nth-child(3),
 .table_chart th:nth-child(3) {
-  width: 85%;
+  width: 65% !important;
 }
 
 .table_chart th:nth-child(3) {
