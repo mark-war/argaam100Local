@@ -31,7 +31,7 @@ const TopCompaniesTable = ({
   );
 
   return (
-    <div className="px-layout col_space mt-2 pt-1">
+    <div className="px-layout col_space pt-1">
       <Row>
         {filteredData.map((subSection, index) => (
           <SubSection

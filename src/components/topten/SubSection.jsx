@@ -197,7 +197,7 @@ const SubSection = ({
               </Tooltip>
             ) : null}
             
-            {tabNote ? <span className="notes">{tabNote}</span> : null}
+            {tabNote ? <span className="notes" title={tabNote}>{tabNote}</span> : null}
           </p>
         </div>
         <div className="col-6 col-sm-5">
