@@ -866,6 +866,7 @@ button.disabled {
   overflow: hidden;
 }
 .table.table_layout.last__close__table tbody {
+  overflow-x: hidden;
   height: 500px;
   overflow-y: auto;
 }
@@ -958,7 +959,7 @@ button.disabled {
 }
 .table_chart tbody td:first-child,
 .table_chart th:first-child {
-  width: 5%;
+  width: 5% !important;
 }
 
 .table_chart tbody td:nth-child(2),
