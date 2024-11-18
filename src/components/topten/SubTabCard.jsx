@@ -146,9 +146,7 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr className={
-                item.CompanyID == activeChart ? "activeRow" : ""
-              }>
+            <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -177,15 +175,16 @@ const SubTabCard = ({
                       selectedTab={selectedTab}
                       activeSection={activeSection}
                     />
-                  )} {/* note */}
-                  {!isEmpty(note) ? (
-                    <Tooltip tooltipText={note}>
-                      <i className="textComment_icon"></i>
-                    </Tooltip>
-                  ) : null}
+                  )}{" "}
+                  {/* note */}
                 </div>
-
-               
+              </td>
+              <td>
+                {!isEmpty(note) ? (
+                  <Tooltip tooltipText={note}>
+                    <i className="textComment_icon"></i>
+                  </Tooltip>
+                ) : null}
               </td>
               {section.chartConfig ? (
                 <td
@@ -295,14 +294,9 @@ const SubTabCard = ({
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
 
-
         return (
           <React.Fragment key={index}>
-            <tr
-              className={
-                item.CompanyID == activeChart ? "activeRow" : ""
-              }
-            >
+            <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -343,15 +337,15 @@ const SubTabCard = ({
                       activeSection={activeSection}
                     />
                   )}
-                    {/* note */}
+                  {/* note */}
+                </div>
+              </td>
+              <td>
                 {!isEmpty(note) ? (
                   <Tooltip tooltipText={note}>
                     <i className="textComment_icon"></i>
                   </Tooltip>
                 ) : null}
-                </div>
-
-              
               </td>
 
               {section.chartConfig ? (

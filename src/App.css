@@ -2373,17 +2373,17 @@ tr.activeRow{
    
   }
  & td.charts{
-  background: #eeeef36c url(/src/assets/images/bar-chart.png) !important;
+  background: #eeeef36c url(/src/assets/images/downloadchart.svg) !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   cursor: pointer;
-  background-size: 23px;
+  background-size: 23px !important;
   }
 
 }
 
 .charts{
-  background: url(/src/assets/images/bar-chart.png);
+  background: url(/src/assets/images/downloadchart.svg);
   height: 25px;
   width: 25px;
   background-repeat: no-repeat;
