@@ -64,16 +64,19 @@ const TopTenCompaniesPage = () => {
   const tabLinksArray = useMemo(() => {
     if (!selectedSection) return [];
 
-    return selectedSection.tabs.map((tab) => ({
-      tabLinkId: tab.tabId,
-      nameEn: tab.tabNameEn,
-      nameAr: tab.tabNameAr,
-    }));
+    return selectedSection.tabs
+      .map((tab) => ({
+        tabLinkId: tab.tabId,
+        nameEn: tab.tabNameEn,
+        nameAr: tab.tabNameAr,
+        displaySeq: tab.displaySeq,
+      }))
+      .sort((a, b) => a.displaySeq - b.displaySeq);
   }, [selectedSection, currentLanguage]);
 
   useEffect(() => {
     if (tabLinksArray.length > 0) {
-      setActiveTabLink(tabLinksArray[0].tabLinkId);
+      setActiveTabLink(selectedSection?.tabs?.find((tab) => tab?.isSelected)?.tabId);
     }
   }, [tabLinksArray, currentLanguage]);
 
