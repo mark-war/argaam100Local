@@ -138,8 +138,10 @@ export const strings = new LocalizedStrings({
     companyphone: "(+966 92000 7759)",
     salesemail: "sales.team@argaam.com",
     includeAramco: "Include Aramco",
-    stockperformancenote: 'P/E ratio is calculated based on net profit before unusual Items',
-    multiplesnote: 'Prices according to Last close',
+
+    multiplesnote:
+      "P/E ratio is calculated based on net profit before unusual Items",
+    stockperformancenote: "Prices according to Last close",
   },
   ar: {
     topTen: "أعلى 10",
@@ -271,9 +273,10 @@ export const strings = new LocalizedStrings({
       "عفواً، لقد استنفذت مدة التجربة المجانية، يرجى التواصل مع فريق المبيعات من خلال {0} أو {1}",
     email: "البريد الإلكتروني",
     companyphone: "(+966 92000 7759)",
-    includeAramco: 'تشمل أرامكو',
-    stockperformancenote: "مكرر الربح تم حسابه على أساس الربح الصافي بعد استثناء البنود غير المتكررة",
-    multiplesnote: 'الأسعار حسب آخر إغلاق',
+    includeAramco: "تشمل أرامكو",
+    multiplesnote:
+      "مكرر الربح تم حسابه على أساس الربح الصافي بعد استثناء البنود غير المتكررة",
+    stockperformancenote: "الأسعار حسب آخر إغلاق",
   },
 });
 
