@@ -686,7 +686,7 @@ button.disabled {
 
 .tabs_inner.tabs_nav.navbar-nav {
   padding-bottom: 5px;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-link {
@@ -1671,7 +1671,7 @@ footer {
 }
 
 .px-layout.bg-white {
-  min-height: 580px;
+  min-height: 600px;
 }
 
 .cursor-default {
@@ -1770,7 +1770,7 @@ footer {
 }
 
 .col_space .col-lg-6 .px-layout {
-  padding-bottom: 15px;
+  padding-bottom: 25px;
 }
 
 /* Select the last child */
@@ -3455,6 +3455,20 @@ padding-top: 2px;
       font-size: 8pt;
     }
   }
+ 
+    .tabs_inner.tabs_nav.navbar-nav {
+      padding-bottom: 5px;
+      margin-top: 5px;
+    }
+    
+    .px-layout.bg-white {
+      min-height: 580px;
+    }
+  
+    .col_space .col-lg-6 .px-layout {
+      padding-bottom: 10px;
+    }
+  
 }
 
 .ratio_msg {
