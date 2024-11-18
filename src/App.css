@@ -1649,6 +1649,10 @@ direction: ltr;
   text-decoration: underline;
 }
 
+.tabs_inner.tabs_nav.navbar-nav .nav-item {
+  text-decoration: underline;
+}
+
 footer {
   height: 50px;
   width: 100%;
