@@ -151,15 +151,9 @@ const ExportDropdown = (activeTabLink = {}) => {
   };
 
   const handleCurrentTabExport = async () => {
-    if (!(!isEmpty(user) && hasAccess && isPlusSubscriber && isExcelAllowed)) {
-      showError(
-        strings[
-          analystPkgwithoutTrial
-            ? "analystuserexcelerror"
-            : "freeuserexcelerror"
-        ]
-      )
-      return
+    if (!(!isEmpty(user) && hasAccess &&  isExcelAllowed)) {
+      showError(strings["analystuserexcelerror"]);
+      return;
     }
 
     const res = await UpdateExcelCount(user?.UserId);
@@ -241,16 +235,10 @@ const ExportDropdown = (activeTabLink = {}) => {
   // };
 
   const handleAllTabsExport = async () => {
-
-    if (!(!isEmpty(user) && hasAccess && isPlusSubscriber && isExcelAllowed)) {
-      showError(
-        strings[
-          analystPkgwithoutTrial
-            ? "analystuserexcelerror"
-            : "freeuserexcelerror"
-        ]
-      )
-      return
+    
+    if (!(!isEmpty(user) && hasAccess &&  isExcelAllowed)) {
+      showError(strings["analystuserexcelerror"]);
+      return;
     }
 
     const res = await UpdateExcelCount(user?.UserId);

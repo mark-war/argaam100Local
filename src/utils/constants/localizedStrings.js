@@ -120,7 +120,7 @@ export const strings = new LocalizedStrings({
     excelDownloadError:
       "Sorry, you have exceeded the number of times for downloading ",
     analystuserexcelerror:
-      "Sorry, downloading files is available only for Free Trial or Full Package subscribers. For more information, please contact the Sales Team",
+      "Sorry, downloading files is available only for Free Trial or Advance, Analyst and Full Package subscribers. For more information, please contact the Sales Team",
     freeuserexcelerror:
       "Sorry, downloading files is available for Argaam Plus subscribers only. For more information, please contact the Sales Team",
     requestconfirm:
@@ -258,7 +258,7 @@ export const strings = new LocalizedStrings({
     submit: "إرسال",
     excelDownloadError: "عفواً، لقد تخطيت عدد مرات التحميل المتاحة",
     analystuserexcelerror:
-      "عفواً، تحميل الملفات متاح فقط للمشتركين بالتجربة المجانية أو الباقة الكاملة، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
+      "عذرًا، تنزيل الملفات متاح فقط للمشتركين في الإصدار التجريبي المجاني أو المتقدم والمحلل والباقة الكاملة. لمزيد من المعلومات، يرجى الاتصال بفريق المبيعات",
     freeuserexcelerror:
       "عذراً، تحميل الملفات متاح لمشتركي باقات أرقام بلس فقط، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
     requestconfirm:
