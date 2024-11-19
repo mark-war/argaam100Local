@@ -2432,8 +2432,7 @@ tr.activeRow{
 
 /* Handle */
 .custom_scroll tbody::-webkit-scrollbar-thumb {
-  background: #9ac6e6;
-  border: 6px solid #9ac6e6;
+  background:url(/src/assets/images/scrollbar-img.svg) no-repeat center;
    border-radius:15px;
    min-height: 30px;
    cursor: pointer;
