@@ -98,6 +98,8 @@ const SubTabCard = ({
       }
 
       if (!data === null) return null;
+      const hasNotes = data.some((item) => item.NotesEn || item.NotesAr);
+
       return data.map((item, index) => {
         const chartValue = secondToLastProperty
           ? item[secondToLastProperty]
@@ -180,15 +182,19 @@ const SubTabCard = ({
                 </div>
               </td>
               <td>
-                {!isEmpty(note) ? (
-                  <Tooltip tooltipText={note}>
-                    <i className={"textComment_icon"}></i>
-                  </Tooltip>
-                ) : (
-                  <div className="textComment_iconPane">
-                    {" "}
-                    <i className="textComment_icon_disabled"></i>
-                  </div>
+              {hasNotes && (
+                  <>
+                    {!isEmpty(note) ? (
+                      <Tooltip tooltipText={note}>
+                        <i className={"textComment_icon"}></i>
+                      </Tooltip>
+                    ) : (
+                      <div className="textComment_iconPane">
+                        {" "}
+                        <i className="textComment_icon_disabled"></i>
+                      </div>
+                    )}
+                  </>
                 )}
               </td>
               {section.chartConfig ? (
@@ -260,6 +266,8 @@ const SubTabCard = ({
       const maxValue = Math.max(
         ...subSection.map((item) => item[secondToLastProperty] || 0)
       );
+
+      const hasNotes = subSection.some((item) => item.NotesEn || item.NotesAr);
 
       // Map over subSection to create rows
       return subSection.map((item, index) => {
@@ -346,15 +354,19 @@ const SubTabCard = ({
                 </div>
               </td>
               <td>
-                {!isEmpty(note) ? (
-                  <Tooltip tooltipText={note}>
-                    <i className={"textComment_icon"}></i>
-                  </Tooltip>
-                ) : (
-                  <div className="textComment_iconPane">
-                    {" "}
-                    <i className="textComment_icon_disabled"></i>
-                  </div>
+                {hasNotes && (
+                  <>
+                    {!isEmpty(note) ? (
+                      <Tooltip tooltipText={note}>
+                        <i className={"textComment_icon"}></i>
+                      </Tooltip>
+                    ) : (
+                      <div className="textComment_iconPane">
+                        {" "}
+                        <i className="textComment_icon_disabled"></i>
+                      </div>
+                    )}
+                  </>
                 )}
               </td>
 
