@@ -35,7 +35,7 @@ const SubTabCard = ({
       href={`${argaamUrl(item.Code.split(".")[0])}`}
       className="company-link"
     >
-      <img alt="Image" src={item.LogoUrl} className="logo_image" />
+      {/* <img alt="Image" src={item.LogoUrl} className="logo_image" /> */}
       <span>{localized(item, "ShortName", currentLanguage)}</span>
     </a>
   );
@@ -180,11 +180,17 @@ const SubTabCard = ({
                 </div>
               </td>
               <td>
-                {!isEmpty(note) ? (
-                  <Tooltip tooltipText={note}>
-                    <i className="textComment_icon"></i>
-                  </Tooltip>
-                ) : null}
+                {/* {!isEmpty(note) ? ( */}
+                <Tooltip tooltipText={note}>
+                  <i
+                    className={
+                      isEmpty(note)
+                        ? "textComment_icon_disabled"
+                        : "textComment_icon"
+                    }
+                  ></i>
+                </Tooltip>
+                {/* ) : null} */}
               </td>
               {section.chartConfig ? (
                 <td
@@ -310,11 +316,11 @@ const SubTabCard = ({
                     )}`}
                     className="company-link"
                   >
-                    <img
+                    {/* <img
                       alt="Image"
                       src={item.LogoUrl}
                       className="logo_image"
-                    />
+                    /> */}
                     <span>{localized(item, "ShortName", currentLanguage)}</span>
                   </a>
                 </span>
@@ -341,11 +347,17 @@ const SubTabCard = ({
                 </div>
               </td>
               <td>
-                {!isEmpty(note) ? (
-                  <Tooltip tooltipText={note}>
-                    <i className="textComment_icon"></i>
-                  </Tooltip>
-                ) : null}
+                {/* {!isEmpty(note) ? ( */}
+                <Tooltip tooltipText={note}>
+                  <i
+                    className={
+                      isEmpty(note)
+                        ? "textComment_icon_disabled"
+                        : "textComment_icon"
+                    }
+                  ></i>
+                </Tooltip>
+                {/* ) : null} */}
               </td>
 
               {section.chartConfig ? (

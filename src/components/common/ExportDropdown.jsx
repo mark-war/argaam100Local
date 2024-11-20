@@ -150,17 +150,38 @@ const ExportDropdown = (activeTabLink = {}) => {
     }
   };
 
-  const handleCurrentTabExport = async () => {
-    if (!(!isEmpty(user) && hasAccess &&  isExcelAllowed)) {
+  const checkAccess = () => {
+    if (user?.CpUser === "true") return true;
+
+    if (!(!isEmpty(user) && hasAccess && isExcelAllowed)) {
       showError(strings["analystuserexcelerror"]);
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const getExcelCount = async () => {
+    if (user?.CpUser === "true") return true;
 
     const res = await UpdateExcelCount(user?.UserId);
     const { data: allowed } = res;
 
     if (!allowed) {
       showError(strings.excelDownloadError);
+      return false;
+    }
+
+    return allowed;
+  };
+
+  const handleCurrentTabExport = async () => {
+    if (!checkAccess()) {
+      return;
+    }
+
+    const excelcount = await getExcelCount();
+
+    if (!excelcount) {
       return;
     }
 
@@ -235,17 +256,13 @@ const ExportDropdown = (activeTabLink = {}) => {
   // };
 
   const handleAllTabsExport = async () => {
-    
-    if (!(!isEmpty(user) && hasAccess &&  isExcelAllowed)) {
-      showError(strings["analystuserexcelerror"]);
+    if (!checkAccess()) {
       return;
     }
 
-    const res = await UpdateExcelCount(user?.UserId);
-    const { data: allowed } = res;
+    const excelcount = await getExcelCount();
 
-    if (!allowed) {
-      showError(strings.excelDownloadError);
+    if (!excelcount) {
       return;
     }
 
