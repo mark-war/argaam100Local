@@ -77,7 +77,6 @@ export default function RowChart({ config, templateID, CompanyID }) {
     <tr className="activeRow">
       <td colSpan={5}>
         <div className="expand_chart">
-          <h1 onClick={() => console.log(data)}>ads</h1>
           <div className="period">
             {Fiscals && (
               <>
