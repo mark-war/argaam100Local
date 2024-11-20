@@ -42,7 +42,12 @@ export default function RowChart({ config, templateID, CompanyID }) {
     toyear: getCurrentYear(),
     pcompany: companyid,
     ...(data?.Years && {
-      [data?.Years?.key]: yearsAgo(selectedYear ? selectedYear["id"] : ""),
+      [data?.Years?.key]:
+        data?.Years?.iyla == 1
+          ? yearsAgo(selectedYear ? selectedYear["id"] : "")
+          : selectedYear
+          ? selectedYear["id"]
+          : "",
     }),
     ...(data?.Fiscals && {
       [data?.Fiscals?.key]: selectedPeriod ? selectedPeriod["id"] : "",
@@ -72,6 +77,7 @@ export default function RowChart({ config, templateID, CompanyID }) {
     <tr className="activeRow">
       <td colSpan={5}>
         <div className="expand_chart">
+          <h1 onClick={() => console.log(data)}>ads</h1>
           <div className="period">
             {Fiscals && (
               <>
@@ -100,8 +106,7 @@ export default function RowChart({ config, templateID, CompanyID }) {
 
           <CustomEmbed src={chart} key={chart} />
         </div>
-    </td>
+      </td>
     </tr>
   );
 }
-
