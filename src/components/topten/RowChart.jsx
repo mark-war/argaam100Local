@@ -32,7 +32,7 @@ export default function RowChart({ config, templateID, CompanyID }) {
     Fiscals ? Fiscals.config.find((p) => p.id === Fiscals.isselected) : null
   );
   const [selectedYear, setselectedYear] = useState(
-    Years.config.find((p) => p.id === Years.isselected)
+    Years ? Years.config.find((p) => p.id === Years.isselected) : null
   );
 
   const newQueryParams = new URLSearchParams({
@@ -42,7 +42,7 @@ export default function RowChart({ config, templateID, CompanyID }) {
     toyear: getCurrentYear(),
     pcompany: companyid,
     ...(data?.Years && {
-      [data?.Years?.key]: yearsAgo(selectedYear["id"]),
+      [data?.Years?.key]: yearsAgo(selectedYear ? selectedYear["id"] : ""),
     }),
     ...(data?.Fiscals && {
       [data?.Fiscals?.key]: selectedPeriod ? selectedPeriod["id"] : "",
@@ -87,13 +87,15 @@ export default function RowChart({ config, templateID, CompanyID }) {
           </div>
 
           <div className="year">
-            <ChartTimePeriod
-              data={Years.config}
-              labelKey={currentLanguage === "ar" ? "na" : "ne"}
-              valueKey={"id"}
-              selected={selectedYear}
-              onSelection={(year) => setselectedYear(year)}
-            />
+            {Years && (
+              <ChartTimePeriod
+                data={Years.config}
+                labelKey={currentLanguage === "ar" ? "na" : "ne"}
+                valueKey={"id"}
+                selected={selectedYear}
+                onSelection={(year) => setselectedYear(year)}
+              />
+            )}
           </div>
 
           <CustomEmbed src={chart} key={chart} />
@@ -102,3 +104,4 @@ export default function RowChart({ config, templateID, CompanyID }) {
     </tr>
   );
 }
+
