@@ -76,7 +76,9 @@ const TopTenCompaniesPage = () => {
 
   useEffect(() => {
     if (tabLinksArray.length > 0) {
-      setActiveTabLink(selectedSection?.tabs?.find((tab) => tab?.isSelected)?.tabId);
+      setActiveTabLink(
+        selectedSection?.tabs?.find((tab) => tab?.isSelected)?.tabId
+      );
     }
   }, [tabLinksArray, currentLanguage]);
 
@@ -202,11 +204,7 @@ const TopTenCompaniesPage = () => {
           activeSubTabs={activeSubTabs}
         />
         <div className="sectionNote px-layout">
-          {activeTabLink == 9
-            ? strings.stockperformancenote
-            : activeTabLink == 10
-            ? strings.multiplesnote
-            : ""}
+          {activeTabLink == 9 ? strings.stockperformancenote : ""}
         </div>
         {renderTabContent()}
       </div>
