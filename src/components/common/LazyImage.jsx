@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink } from "react-bootstrap";
 import { LANGUAGES } from "../../utils/constants/localizedStrings";
 import { useParams } from "react-router-dom";
+import Argaam100LogoAr from "../../assets/images/argaam_100_AR.svg";
+import Argaam100LogoEn from "../../assets/images/argaam_100_EN.svg";
 
 const LazyImage = () => {
   const { lang } = useParams(); // Access the current language from URL parameters
@@ -14,12 +16,12 @@ const LazyImage = () => {
       {lang === LANGUAGES.AR ? (
         <img
           alt="Argaam Screener Logo"
-          src="/assets/images/argaam_screener_logo_ar.svg"
+          src={Argaam100LogoAr}
         />
       ) : (
         <img
           alt="Argaam Screener Logo"
-          src="/assets/images/argaam_screener_logo_en.svg"
+          src={Argaam100LogoEn}
         />
       )}
     </NavLink>

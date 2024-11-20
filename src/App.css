@@ -1090,10 +1090,7 @@ button.disabled {
   font-size: 1.125rem;
   font-weight: 600;
   position: relative;
-  white-space: nowrap;
-  width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+ 
 }
 
 .tabs_inner.tabs_nav.navbar-nav .col-6 {
@@ -1318,7 +1315,7 @@ button.disabled {
 }
 
 [lang="ar"] .navbar-brand img {
-  width: 275px;
+  width: 190px;
 }
 
 [lang="ar"] .mobile_nav .dropdown-toggle {
@@ -1843,6 +1840,20 @@ footer {
   margin-top: 0;  
   top: 2px;
 }
+.textComment_icon_disabled{
+  background: url(./assets/images/textComment_icon_disabled.svg) no-repeat;
+  width: 20px;
+  height: 24px;
+  display: inline-block;
+  z-index: 9;
+  position: absolute;
+  margin: 0 5px;
+  z-index: 1;
+  background-position: bottom;
+  margin-top: 0;  
+  top: 2px;
+}
+ 
 
 .ReactModal__Overlay{
   position: fixed !important;
@@ -2432,7 +2443,7 @@ tr.activeRow{
 
 /* Handle */
 .custom_scroll tbody::-webkit-scrollbar-thumb {
-  background:url(/src/assets/images/scrollbar-img.svg) no-repeat center;
+  background:#9ac6e6 url(/src/assets/images/scrollbar-img.svg) no-repeat center;
    border-radius:15px;
    min-height: 30px;
    cursor: pointer;
@@ -3466,6 +3477,12 @@ padding-top: 2px;
   
     .col_space .col-lg-6 .px-layout {
       padding-bottom: 10px;
+    }
+    .sub_heading{
+      width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   
 }

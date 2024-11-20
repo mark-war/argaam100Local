@@ -8,6 +8,8 @@ import LanguageSwitcher from "../common/LanguageSwitcher.jsx";
 import LoadingScreen from "../common/LoadingScreen.jsx";
 import { redirectLogin, resetUser } from "../../utils/authHelper.js";
 import AskQuestion from "./AskQuestion.jsx";
+import Argaam100LogoAr from "../../assets/images/argaam_100_AR.svg";
+import Argaam100LogoEn from "../../assets/images/argaam_100_EN.svg";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -195,13 +197,13 @@ const HeaderMain = () => {
                 {lang === LANGUAGES.AR ? (
                   <img
                     alt="Argaam Screener Logo"
-                    src="/assets/images/argaam_screener_logo_ar.svg"
-                  />
+                    src={Argaam100LogoAr}
+                    />
                 ) : (
                   <img
                     alt="Argaam Screener Logo"
-                    src="/assets/images/argaam_screener_logo_en.svg"
-                  />
+                    src={Argaam100LogoEn}
+                    />
                 )}
               </NavLink>
             </div>
