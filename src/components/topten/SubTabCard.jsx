@@ -35,7 +35,7 @@ const SubTabCard = ({
       href={`${argaamUrl(item.Code.split(".")[0])}`}
       className="company-link"
     >
-      <img alt="Image" src={item.LogoUrl} className="logo_image" />
+      {/* <img alt="Image" src={item.LogoUrl} className="logo_image" /> */}
       <span>{localized(item, "ShortName", currentLanguage)}</span>
     </a>
   );
@@ -310,11 +310,11 @@ const SubTabCard = ({
                     )}`}
                     className="company-link"
                   >
-                    <img
+                    {/* <img
                       alt="Image"
                       src={item.LogoUrl}
                       className="logo_image"
-                    />
+                    /> */}
                     <span>{localized(item, "ShortName", currentLanguage)}</span>
                   </a>
                 </span>
