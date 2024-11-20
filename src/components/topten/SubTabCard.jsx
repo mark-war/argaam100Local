@@ -180,17 +180,16 @@ const SubTabCard = ({
                 </div>
               </td>
               <td>
-                {/* {!isEmpty(note) ? ( */}
-                <Tooltip tooltipText={note}>
-                  <i
-                    className={
-                      isEmpty(note)
-                        ? "textComment_icon_disabled"
-                        : "textComment_icon"
-                    }
-                  ></i>
-                </Tooltip>
-                {/* ) : null} */}
+                {!isEmpty(note) ? (
+                  <Tooltip tooltipText={note}>
+                    <i className={"textComment_icon"}></i>
+                  </Tooltip>
+                ) : (
+                  <div className="textComment_iconPane">
+                    {" "}
+                    <i className="textComment_icon_disabled"></i>
+                  </div>
+                )}
               </td>
               {section.chartConfig ? (
                 <td
@@ -347,17 +346,16 @@ const SubTabCard = ({
                 </div>
               </td>
               <td>
-                {/* {!isEmpty(note) ? ( */}
-                <Tooltip tooltipText={note}>
-                  <i
-                    className={
-                      isEmpty(note)
-                        ? "textComment_icon_disabled"
-                        : "textComment_icon"
-                    }
-                  ></i>
-                </Tooltip>
-                {/* ) : null} */}
+                {!isEmpty(note) ? (
+                  <Tooltip tooltipText={note}>
+                    <i className={"textComment_icon"}></i>
+                  </Tooltip>
+                ) : (
+                  <div className="textComment_iconPane">
+                    {" "}
+                    <i className="textComment_icon_disabled"></i>
+                  </div>
+                )}
               </td>
 
               {section.chartConfig ? (
