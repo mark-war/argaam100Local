@@ -1092,6 +1092,7 @@ button.disabled {
   font-size: 1.125rem;
   font-weight: 600;
   position: relative;
+  white-space: nowrap;
  
 }
 
@@ -2623,6 +2624,9 @@ padding-top: 2px;
     font-size: 1.3rem;
     font-weight: 500;
   }
+  .table.table_layout.last__close__table tbody {
+    height: 514px !important; 
+  }
 }
 
 @media screen and (max-width: 1600px) and (min-width: 1025px)  {
@@ -3175,7 +3179,7 @@ padding-top: 2px;
   }
 
   .sub_heading {
-    font-size: 1.125rem;
+    white-space: nowrap;
   }
 
   .tabs_inner_nav .sub_heading {
@@ -3520,3 +3524,206 @@ padding-top: 2px;
   padding-inline-end: 25px;
 }
 
+
+
+
+
+
+
+
+
+
+/* history_legend css start  */
+
+
+
+.history_legend.totalCompany {
+  width: 100%;
+  padding-left: 2%!important;
+  display: flex;
+  vertical-align: top;
+  padding-top: 12px
+}
+
+[lang="ar"]  .history_legend.totalCompany .border-start {
+  padding-right: 10px!important
+}
+
+.history_legend.totalCompany .border-start.b1, [lang="ar"] .history_legend.totalCompany .border-start.b1 {
+  border-color: #0000f6!important;
+}
+
+.history_legend.totalCompany .border-start.b2, [lang="ar"] .history_legend.totalCompany .border-start.b2 {
+  border-color: #008001!important;
+}
+
+.history_legend.totalCompany .border-start.b3, [lang="ar"] .history_legend.totalCompany .border-start.b3 {
+  border-color: gray!important
+}
+
+[lang="ar"]  .history_legend {
+  padding-left: 0!important;
+  padding-right: 2%!important
+}
+
+.totalCompany.history_legend .border-start {
+  margin-bottom: 35px
+}
+
+.newDes.history_legend .border-start {
+  margin-bottom: 54px!important;
+  padding-right: 0!important
+}
+
+[lang="ar"]  .newDes.history_legend .border-start {
+  padding-right: .5rem!important
+}
+
+.history_legend .border-start {
+  margin-bottom: 25px!important;
+  padding: 5px 0;
+  border-bottom-left-radius: 3px
+}
+
+.history_legend .border-start.b1 {
+  border-left: 3px solid #D9EAF7!important
+}
+
+[lang="ar"]  .history_legend .border-start.b1 {
+  border-right: 3px solid #D9EAF7!important;
+  border-left: 0!important
+}
+
+.history_legend .border-start.b2 {
+  border-left: 3px solid #E4E4E4!important
+}
+
+[lang="ar"]  .history_legend .border-start.b2 {
+  border-right: 3px solid #E4E4E4!important;
+  border-left: 0!important
+}
+
+.history_legend .border-start.b3 {
+  border-left: 3px solid #919191!important
+}
+
+[lang="ar"]  .history_legend .border-start.b3 {
+  border-right: 3px solid #919191!important;
+  border-left: 0!important
+}
+
+.history_legend .border-start.b4 {
+  border-left: 3px solid #000000!important
+}
+
+[lang="ar"]  .history_legend .border-start.b4 {
+  border-right: 3px solid #000000!important;
+  border-left: 0!important
+}
+
+.history_legend .border-start .text_semibold {
+  font-weight: 700;
+  font-size: 17px!important;
+  margin-bottom: .2rem!important;
+  color: #043681;
+  letter-spacing: -.5px!important
+}
+
+[lang="ar"]  .newDes.history_legend .border-start {
+  padding-bottom: 0
+}
+
+[lang="ar"]  .newDes.history_legend .border-start .text_semibold {
+  margin-bottom: 0;
+  padding-top: 2px
+}
+
+[lang="ar"]  .history_legend .border-start .text_semibold {
+  text-align: right;
+  font-size: 18px!important
+}
+
+.history_legend .border-start .text_semibold.empty b {
+  font-weight: 800;
+  font-size: 18px!important;
+  margin: 0 5px
+}
+
+.history_legend .border-start .text_semibold {
+  font-size: 1.1rem!important;
+  line-height: 1.5rem;
+  margin-bottom: 5px!important
+}
+
+.history_legend .border-start h6 {
+  font-size: 1.2rem!important;
+}
+
+.history_legend .border-start h6 span {
+  font-size: 1rem!important
+}
+
+.history_legend .border-start h6 {
+  color: #5a5a5a!important;
+  font-size: 19px!important
+}
+.history_legend .border-start h6 i.textComment_icon{
+    position: relative;
+    top: 0;
+    margin: 0 5px !important;
+}
+
+[lang="ar"]  .history_legend .border-start h6 {
+  direction: ltr;
+  text-align: right;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+
+}
+
+[lang="ar"]  .history_legend .border-start h6 i.textComment_icon {
+  left: 0;
+  position: relative;
+  top: 0;
+  margin: 0 5px !important;
+}
+
+
+[lang="ar"]  .companyName .com_icons {
+  text-align: right
+}
+
+.history_legend .border-start h6 span {
+  font-weight: 500;
+  font-size: 13px;
+  padding: 0 5px
+}
+
+.history_legend .border-start span b,.history_legend .border-start span span {
+  color: #5a5a5a!important;
+  font-size: 14px!important;
+  padding: 0 2px;
+  font-weight: 500
+}
+
+.history_legend {
+  width: 100%;
+  padding: 0
+}
+
+.history_legend .border-start {
+  display: inline-block;
+  text-align: left;
+  padding-left: 10px!important;
+  padding-right: 20px!important
+}
+
+[lang="ar"]  .history_legend .border-start {
+  text-align: right;
+  padding-left: 20px!important;
+  padding-right: 10px!important
+}
+
+
+/* history_legend css end  */
