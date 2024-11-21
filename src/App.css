@@ -646,7 +646,9 @@ button.disabled {
 .tabs_nav.navbar-nav .nav-item:first-child .nav-link {
   padding-left: 0;
 }
-
+.tabs_nav.navbar-nav .nav-item:last-child .nav-link{
+  border-right: 0 !important;
+}
 .tabs_inner.tabs_nav.navbar-nav .nav-item:last-child .nav-link {
   border: 0;
   text-decoration: underline;
@@ -3517,3 +3519,4 @@ padding-top: 2px;
 .table_chart .table.table_layout tbody tr:first-child td:last-child {
   padding-inline-end: 25px;
 }
+
