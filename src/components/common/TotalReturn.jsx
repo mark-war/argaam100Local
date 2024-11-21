@@ -4,7 +4,7 @@ import { strings } from "../../utils/constants/localizedStrings";
 import Tooltip from "./Tooltip";
 
 const getCommaSeperatedWithNoDecimal = (num) =>
-  parseFloat(parseFloat(num).toFixed(0)).toLocaleString();
+  parseFloat(parseFloat(num).toFixed(2)).toLocaleString();
 
 export default function TotalReturn({ params }) {
   const [overViewData, setoverViewData] = useState(null);
