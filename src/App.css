@@ -3299,6 +3299,22 @@ padding-top: 2px;
   [lang="ar"] .race_chart_container .table_layout.table th:nth-child(2) {
     padding-right: 0;
   }
+
+
+  .history_legend .border-start .text_semibold {
+    font-size: 0.9rem !important;
+}
+.history_legend .border-start h6{
+  font-size: 1rem;
+}
+.history_legend.totalCompany{
+  flex-wrap: wrap;
+  justify-content: inherit !important;
+}
+[lang="ar"]  .history_legend .border-start {
+  padding-left: 40px !important;
+}
+
 }
 
 @media screen and (max-width: 575px) {
@@ -3626,7 +3642,6 @@ padding-top: 2px;
 
 .history_legend .border-start .text_semibold {
   font-weight: 700;
-  font-size: 17px!important;
   margin-bottom: .2rem!important;
   color: #043681;
   letter-spacing: -.5px!important
@@ -3643,7 +3658,7 @@ padding-top: 2px;
 
 [lang="ar"]  .history_legend .border-start .text_semibold {
   text-align: right;
-  font-size: 18px!important
+  font-size: 18px;
 }
 
 .history_legend .border-start .text_semibold.empty b {
@@ -3653,7 +3668,7 @@ padding-top: 2px;
 }
 
 .history_legend .border-start .text_semibold {
-  font-size: 1.1rem!important;
+  font-size: 1.1rem;
   line-height: 1.5rem;
   margin-bottom: 5px!important
 }
@@ -3671,8 +3686,6 @@ padding-top: 2px;
   font-size: 19px!important
 }
 .history_legend .border-start h6 i.textComment_icon{
-    position: relative;
-    top: 0;
     margin: 0 5px !important;
 }
 
@@ -3688,7 +3701,6 @@ padding-top: 2px;
 [lang="ar"]  .history_legend .border-start h6 i.textComment_icon {
   left: 0;
   position: relative;
-  top: 0;
   margin: 0 5px !important;
 }
 
@@ -3724,8 +3736,8 @@ padding-top: 2px;
 
 [lang="ar"]  .history_legend .border-start {
   text-align: right;
-  padding-left: 20px!important;
-  padding-right: 10px!important
+  padding-left: 20px;
+  padding-right: 10px;
 }
 
 
