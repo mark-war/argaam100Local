@@ -45,3 +45,25 @@ export function yearsAgo(numYears) {
   const yearsAgo = currentYear - numYears;
   return yearsAgo;
 }
+
+export function getDateYearsAgo(yearsAgo) {
+  var currentDate = new Date();
+  var year = currentDate.getFullYear() - yearsAgo;
+  var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+  var day = ("0" + currentDate.getDate()).slice(-2);
+
+  var formattedDate = year + "-" + month + "-" + day;
+
+  return formattedDate;
+}
+
+export function getCurrentDate() {
+  var currentDate = new Date();
+  var year = currentDate.getFullYear();
+  var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+  var day = ("0" + currentDate.getDate()).slice(-2);
+
+  var formattedDate = year + "-" + month + "-" + day;
+
+  return formattedDate;
+}

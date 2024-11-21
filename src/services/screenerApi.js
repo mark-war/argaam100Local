@@ -60,15 +60,23 @@ export const fetchArgaamSectors = async () => {
   }
 };
 
-export const SubmitRequest = (body)=>{
+export const SubmitRequest = (body) => {
   return axiosInstance.post("/add-product-details-request-screener", body);
-}
+};
 
-export const PostQuestionaierScreener = (body)=>{
+export const PostQuestionaierScreener = (body) => {
   return axiosInstance.post("/post-questionnaier-screener", body);
-}
+};
 
-export const UpdateExcelCount = userId =>{
-  return axiosInstance.post(`/update-user-download-count-screener?userId=${userId}`)
-}
+export const UpdateExcelCount = (userId) => {
+  return axiosInstance.post(
+    `/update-user-download-count-screener?userId=${userId}`
+  );
+};
 
+export const getTotalReturns = (params) => {
+  const urlParams = new URLSearchParams(params);
+  return axios.get(
+    `${import.meta.env.VITE_CHARTS_API_URL}/companies-total-returns-history-data?${urlParams.toString()}`
+  );
+};

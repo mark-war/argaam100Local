@@ -142,6 +142,15 @@ export const strings = new LocalizedStrings({
     multiplesnote:
       "P/E ratio is calculated based on net profit before unusual Items",
     stockperformancenote: "Prices according to Last close",
+    capitalreturn: "Capital Appreciation",
+    totalreturn: "Total return",
+    totalreturnreinvestment: "Total Return Including Dividend Reinvestment",
+    companyreturntooltip1:
+      "The increase or decrease in the share price during the specified period",
+    companyreturntooltip2:
+      "Capital appreciation plus dividends paid over the selected period",
+    companyreturntooltip3:
+      "Assuming dividend reinvestment in the same stock over the selected period",
   },
   ar: {
     topTen: "أعلى 10",
@@ -277,6 +286,14 @@ export const strings = new LocalizedStrings({
     multiplesnote:
       "مكرر الربح تم حسابه على أساس الربح الصافي بعد استثناء البنود غير المتكررة",
     stockperformancenote: "الأسعار حسب آخر إغلاق",
+    capitalreturn: "العائد الرأسمالي",
+    totalreturn: "العائد الكلي",
+    totalreturnreinvestment: "العائد الكلي بإعادة استثمار التوزيعات",
+    companyreturntooltip1: "الزيادة أو النقص في سعر السهم خلال الفترة المحددة",
+    companyreturntooltip2:
+      "يشمل الزيادة في سعر السهم اضافة للتوزيعات النقدية خلال الفترة المحددة",
+    companyreturntooltip3:
+      "بافتراض اعادة استثمار التوزيعات النقدية في نفس السهم خلال الفترة المحددة",
   },
 });
 

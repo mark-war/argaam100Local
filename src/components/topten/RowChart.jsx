@@ -5,12 +5,17 @@ import { useSelector } from "react-redux";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import useIsMobile from "../../hooks/useIsMobile";
 import getLangID, {
+  getCurrentDate,
   getCurrentYear,
+  getDateYearsAgo,
   yearsAgo,
 } from "../../utils/helperFunctions";
+import TotalReturn from "../common/TotalReturn";
 
 export default function RowChart({ config, templateID, CompanyID }) {
   const data = JSON.parse(config);
+
+  const isReturnChart = data?.api === "company-total-return";
 
   const currentLanguage = useSelector(selectCurrentLanguage);
   const ismobile = useIsMobile();
@@ -105,6 +110,16 @@ export default function RowChart({ config, templateID, CompanyID }) {
 
           <CustomEmbed src={chart} key={chart} />
         </div>
+        {isReturnChart ? (
+          <TotalReturn
+            params={{
+              marketID: import.meta.env.VITE_DEFAULT_MARKETID,
+              companyIDs: companyid,
+              fromDate: getDateYearsAgo(selectedYear['id']),
+              toDate: getCurrentDate(),
+            }}
+          />
+        ) : null}
       </td>
     </tr>
   );
