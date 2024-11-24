@@ -7,16 +7,24 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
   const iconRef = useRef(null);
   const tooltipRef = useRef(null);
 
+  let flipModifier = {};
+  if(tooltipCustomPlacement && tooltipCustomPlacement != ""){
+    flipModifier =  {
+      name: "flip", //-- Disable flip modifier
+      enabled: false, //-- Set to false to disable automatic flipping
+    }
+  }
+
   const { styles, attributes } = usePopper(
     iconRef.current,
     tooltipRef.current,
     {
-      placement:  tooltipCustomPlacement ?? 'right',
+      placement:  tooltipCustomPlacement ?? 'left',
       modifiers: [
         {
           name: "flip",
           options: {
-            fallbackPlacements: ["top", "bottom", "right", "left"],
+            fallbackPlacements: ["top", "bottom"],
           },
         },
         {
@@ -25,7 +33,11 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
             padding: 8,
           },
         },
+
+        flipModifier
+
       ],
+      
     }
   );
 
@@ -55,7 +67,7 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
           ...styles.offset,
         }}
         {...attributes.popper}
-        data-popper-placement={tooltipCustomPlacement ?? 'right'} 
+        data-popper-placement={tooltipCustomPlacement ?? 'left'} 
       >
         {tooltipText}
       </div>

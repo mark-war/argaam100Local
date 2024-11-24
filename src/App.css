@@ -918,7 +918,8 @@ button.disabled {
 
 .charts_table_bg {
   display: flex;
-  width: 63% !important; /* Set the base width */
+  /* width: 63% !important;  */
+  /* Set the base width */
  & .textComment_iconPane{
     padding: 4px 6px 0;
   }

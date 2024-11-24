@@ -126,9 +126,9 @@ const SubTabCard = ({
 
         const valueString =
           item[thirdToLastProperty] !== null &&
-          item[secondToLastProperty] !== null &&
-          typeof item[thirdToLastProperty] === "number" &&
-          typeof item[secondToLastProperty] === "number"
+            item[secondToLastProperty] !== null &&
+            typeof item[thirdToLastProperty] === "number" &&
+            typeof item[secondToLastProperty] === "number"
             ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
             : null;
 
@@ -182,10 +182,10 @@ const SubTabCard = ({
                 </div>
               </td>
               <td className="textcomIcon">
-              {hasNotes && (
+                {hasNotes && (
                   <>
                     {!isEmpty(note) ? (
-                      <Tooltip tooltipText={note}>
+                      <Tooltip tooltipText={note} tooltipCustomPlacement={currentLanguage == 'ar' ? 'right' : "left"}>
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
                     ) : (
@@ -299,9 +299,9 @@ const SubTabCard = ({
 
         const valueString =
           item[thirdToLastProperty] !== null &&
-          item[secondToLastProperty] !== null &&
-          typeof item[thirdToLastProperty] === "number" &&
-          typeof item[secondToLastProperty] === "number"
+            item[secondToLastProperty] !== null &&
+            typeof item[thirdToLastProperty] === "number" &&
+            typeof item[secondToLastProperty] === "number"
             ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
             : null;
 
@@ -353,11 +353,12 @@ const SubTabCard = ({
                   {/* note */}
                 </div>
               </td>
-              <td className="textcomIcon">
-                {hasNotes && (
+
+              {hasNotes && (
+                <td className="textcomIcon">
                   <>
                     {!isEmpty(note) ? (
-                      <Tooltip tooltipText={note}>
+                      <Tooltip tooltipText={note} tooltipCustomPlacement={currentLanguage == 'ar' ? 'right' : "left"}>
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
                     ) : (
@@ -367,8 +368,8 @@ const SubTabCard = ({
                       </div>
                     )}
                   </>
-                )}
-              </td>
+                </td>
+              )}
 
               {section.chartConfig ? (
                 <td
