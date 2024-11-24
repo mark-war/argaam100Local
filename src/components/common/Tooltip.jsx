@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { usePopper } from "react-popper";
 import { isEmpty } from "../../utils/helperFunctions";
 
-const Tooltip = ({ children, tooltipText }) => {
+const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const iconRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -11,7 +11,7 @@ const Tooltip = ({ children, tooltipText }) => {
     iconRef.current,
     tooltipRef.current,
     {
-      placement: "right",
+      placement:  tooltipCustomPlacement ?? 'right',
       modifiers: [
         {
           name: "flip",
@@ -55,6 +55,7 @@ const Tooltip = ({ children, tooltipText }) => {
           ...styles.offset,
         }}
         {...attributes.popper}
+        data-popper-placement={tooltipCustomPlacement ?? 'right'} 
       >
         {tooltipText}
       </div>

@@ -181,7 +181,7 @@ const SubTabCard = ({
                   {/* note */}
                 </div>
               </td>
-              <td>
+              <td className="textcomIcon">
               {hasNotes && (
                   <>
                     {!isEmpty(note) ? (
@@ -353,7 +353,7 @@ const SubTabCard = ({
                   {/* note */}
                 </div>
               </td>
-              <td>
+              <td className="textcomIcon">
                 {hasNotes && (
                   <>
                     {!isEmpty(note) ? (
