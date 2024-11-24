@@ -2538,7 +2538,7 @@ padding-top: 2px;
   .table.table_layout td {
     padding-inline: 20px;
     &.textcomIcon{
-      padding: 20px 0px 20px 40px;
+      padding: 20px 10px 20px 30px;
     }
   }
   [lang="ar"]{
@@ -2546,7 +2546,7 @@ padding-top: 2px;
     .table.table_layout td {
       
       &.textcomIcon{
-        padding: 20px 40px 20px 0px;
+        padding: 20px 30px 20px 10px;
       }
     }
   }
