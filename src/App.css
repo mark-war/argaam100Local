@@ -1119,6 +1119,11 @@ white-space: normal;
   color: #000;
   border-radius: 3px; */
 }
+
+.notes.growth-loose-note{
+  padding-inline-start: 30px;
+}
+
 /* Tabs Chart Ends */
 
 /* Pagination Starts */
