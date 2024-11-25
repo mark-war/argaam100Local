@@ -3584,7 +3584,8 @@ padding-top: 2px;
   padding-left: 2%!important;
   display: flex;
   vertical-align: top;
-  padding-top: 12px
+  padding-top: 0px;
+  margin-top: 0 !important;
 }
 
 [lang="ar"]  .history_legend.totalCompany .border-start {
