@@ -654,6 +654,10 @@ button.disabled {
   text-decoration: underline;
 }
 
+.tabs_inner.tabs_nav.navbar-nav .nav-item:first-child {
+  position: relative;
+}
+
 .tabs_nav.navbar-nav .nav-item .nav-link.active {
   text-decoration: none;
   /* font-size: 24px; */
@@ -3763,6 +3767,7 @@ padding-top: 2px;
   padding-left: 20px;
   padding-right: 10px;
 }
+
 
 
 /* history_legend css end  */

@@ -91,7 +91,7 @@ export const strings = new LocalizedStrings({
     companyfield: "Company",
     contactus: "Contact us",
     alreadycustomer: "Already a customer?",
-    logintocharts: "Login to Screener",
+    logintocharts: "Login to Argaam100",
     emailaddress: "Email Address",
     requestsubmitted: "Request Submitted",
     entervalidphone: "Please enter a valid phone number",
@@ -239,7 +239,7 @@ export const strings = new LocalizedStrings({
     companyfield: "الشركة",
     contactus: "اتصل بنا",
     alreadycustomer: "لديك حساب؟",
-    logintocharts: "قم بالدخول إلى تحليل الاسهم تشارتس",
+    logintocharts: "قم بالدخول إلى أرقام100",
 
     emailaddress: "عنوان البريد الإلكتروني",
     requestsubmitted: "تم تقديم الطلب ",

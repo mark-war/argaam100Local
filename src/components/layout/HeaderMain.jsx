@@ -191,7 +191,7 @@ const HeaderMain = () => {
               </Suspense> */}
               <NavLink
                 className="navbar-brand"
-                to={`/${lang}/screener`}
+                to={`/${lang}/argaam-100`}
                 // onClick={() => (window.location.href = `/${lang}/screener`)}
               >
                 {lang === LANGUAGES.AR ? (

@@ -21,10 +21,10 @@ function PopupTooltip({ isOpen, onRequestClose, type }) {
 
   const textList = isTopGrowthChart
     ? [
-        strings.growthtooltiptext5,
+        // strings.growthtooltiptext5,
         strings.growthtooltiptext6,
         strings.growthtooltiptext7,
-        strings.growthtooltiptext8,
+        // strings.growthtooltiptext8,
       ]
     : isTopLoosingChart
     ? [
@@ -94,9 +94,13 @@ const SubSection = ({
     return activeTab.originalIndex;
   });
 
-  const sortedSubTabs = [...section.subTabs].sort(
+  
+  let sortedSubTabs = [...section.subTabs].sort(
     (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
   );
+
+
+
   const [loading, setLoading] = useState({});
   const [modalOpen, setmodalOpen] = useState(false);
   const note = localized(section, "notes", currentLanguage);
@@ -147,6 +151,7 @@ const SubSection = ({
 
   const handleSubTabClick = useCallback(
     (newSubTabIndex) => {
+      
       setActiveSubTab(newSubTabIndex);
 
       onSubTabsChange(subSectionIndex, newSubTabIndex);
