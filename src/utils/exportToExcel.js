@@ -538,6 +538,8 @@ const exportDataToExcel = async (
       }
     });
   } else {
+    // Keep track of generated tab names for duplicate checking
+    const generatedTabNames = new Set();
     dataObjects.map((dataObject, index) => {
       const activeSubTabId = subTabIds[index];
       // Get the mapped table
@@ -552,11 +554,23 @@ const exportDataToExcel = async (
         currentLanguage
       );
 
-      const sanitizedTabName = sanitizeSheetName(
+      // Generate the base tab name
+      const baseTabName = sanitizeSheetName(
         localized(dataObject, "fieldName", currentLanguage) +
           "_" +
           selectedSubTabName
       );
+
+      // Start with the base tab name as the sanitized tab name
+      let sanitizedTabName = baseTabName;
+
+      // Check for duplicates and append the index only if needed
+      if (generatedTabNames.has(sanitizedTabName)) {
+        sanitizedTabName = `${baseTabName}_${index}`;
+      }
+
+      // Add the final unique name to the set of generated names
+      generatedTabNames.add(sanitizedTabName);
 
       // Create a new worksheet named after the fieldNameEn (which is the sheet name)
       const worksheet = workbook.addWorksheet(sanitizedTabName);

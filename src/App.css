@@ -2434,7 +2434,8 @@ tr.activeRow{
  .sectionNote.px-layout {
   text-align: right;
   font-size: 13px;
-  font-weight: bold;
+  font-weight: normal;
+  color: red;
 }
 [lang="ar"] .sectionNote.px-layout {
   text-align: left;  
