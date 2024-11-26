@@ -12,7 +12,10 @@ export function redirectLogin(autoLogin, email = null) {
 
   const urlParams = new URLSearchParams(window.location.search);
   const requestRedirect = urlParams.get("requestRedirect");
-  const url = `${loginUrl}/${lang}?refferalURL=${window.location.href}${
+
+  const refferalURL = `${window.location.origin}/${lang}/argaam-100`;
+
+  const url = `${loginUrl}/${lang}?refferalURL=${refferalURL}${
     !isEmpty(autoLogin) ? "&autoRedirect=true" : ""
   }${!isEmpty(email) ? `&email=${email}` : ""}${
     requestRedirect == "true" ? "&requestRedirect=true" : ""
@@ -21,6 +24,7 @@ export function redirectLogin(autoLogin, email = null) {
     ?.replace("&", "(rs)")}&requiredToken=true&app=Screener`;
 
   window.open(url, "_self");
+  
 }
 
 export function resetUser(reload = true, autologout = false) {

@@ -21,19 +21,19 @@ function PopupTooltip({ isOpen, onRequestClose, type }) {
 
   const textList = isTopGrowthChart
     ? [
-        strings.growthtooltiptext5,
-        strings.growthtooltiptext6,
-        strings.growthtooltiptext7,
-        strings.growthtooltiptext8,
-      ]
+      // strings.growthtooltiptext5,
+      strings.growthtooltiptext6,
+      strings.growthtooltiptext7,
+      // strings.growthtooltiptext8,
+    ]
     : isTopLoosingChart
-    ? [
+      ? [
         strings.loosinggrowthtooltiptext5,
         strings.loosinggrowthtooltiptext6,
         strings.loosinggrowthtooltiptext7,
         strings.loosinggrowthtooltiptext8,
       ]
-    : [];
+      : [];
 
   useScrollbarVisibility(isOpen);
   return (
@@ -94,15 +94,19 @@ const SubSection = ({
     return activeTab.originalIndex;
   });
 
-  const sortedSubTabs = [...section.subTabs].sort(
+
+  let sortedSubTabs = [...section.subTabs].sort(
     (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
   );
+
+
+
   const [loading, setLoading] = useState({});
   const [modalOpen, setmodalOpen] = useState(false);
   const note = localized(section, "notes", currentLanguage);
   const tabNote =
     sortedSubTabs[activeSubTab]?.[
-      currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
+    currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
     ];
   useEffect(() => {
     setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
@@ -147,6 +151,7 @@ const SubSection = ({
 
   const handleSubTabClick = useCallback(
     (newSubTabIndex) => {
+
       setActiveSubTab(newSubTabIndex);
 
       onSubTabsChange(subSectionIndex, newSubTabIndex);
@@ -190,14 +195,24 @@ const SubSection = ({
                 ></i>
               </>
             )}
-            
+
             {note ? (
               <Tooltip tooltipText={note}>
                 <i className="textComment_icon"></i>
               </Tooltip>
             ) : null}
-            
-            {tabNote ? <span className="notes" title={tabNote}>{tabNote}</span> : null}
+
+            {tabNote && (
+              <span
+                className={`notes ${isTopGrowthChart || isTopLoosingChart ? 'growth-loose-note' : ''}`}
+                title={tabNote}
+              >
+                {tabNote}
+              </span>
+            )}
+
+
+
           </p>
         </div>
         <div className="col-6 col-sm-5">
