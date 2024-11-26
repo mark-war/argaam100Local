@@ -176,7 +176,7 @@ const SubSection = ({
         <div className="col-6 col-sm-7">
           <p className="sub_heading">
             {localized(section, "fieldName", currentLanguage)}{" "}
-            {selectedTabKey === TABS.T_RANKING && activeSubTab === 1 ? null : (
+            {selectedTabKey === TABS.T_RANKING && (activeSubTab !== 1 && activeSubTab !== 0) ? null : (
               <span className="unit">
                 {localized(section, "unitName", currentLanguage)}
               </span>
