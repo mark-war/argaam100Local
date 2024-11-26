@@ -2433,7 +2433,7 @@ tr.activeRow{
 
  .sectionNote.px-layout {
   text-align: right;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: normal;
   color: red;
 }
@@ -3230,6 +3230,12 @@ padding-top: 2px;
   .tabs_inner_nav .sub_heading .notes{
     padding: 5px 5px 5px 0px;
   }
+
+
+  [lang="ar"] .tabs_inner_nav .sub_heading .unit,
+   .tabs_inner_nav .sub_heading .notes {
+    padding: 5px;
+}
 
   .tabs_inner_nav .col-6 {
     width: 100%;
