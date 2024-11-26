@@ -2691,6 +2691,10 @@ padding-top: 2px;
   .table_chart tbody td:nth-child(3) {
     width: 60%;
 } 
+.table_chart tbody td:nth-child(3), 
+.table_chart th:nth-child(3) {
+  width: 58% !important;
+}
 }
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
