@@ -204,7 +204,7 @@ const ExportDropdown = (activeTabLink = {}) => {
         activeSubTabs
       );
 
-      fetchMissingTopTenMultiple(mappedTopTenData); //TODO: if required, should refactor this for isMultiple true
+      //fetchMissingTopTenMultiple(mappedTopTenData); //TODO: if required, should refactor this for isMultiple true
     }
   };
 
