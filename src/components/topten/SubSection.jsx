@@ -192,7 +192,7 @@ const SubSection = ({
       <div className="tabs_inner_nav row px-3">
         <div className="col-6 col-sm-7">
           <p className="sub_heading">
-            {localized(section, "fieldName", currentLanguage)}{" "}
+            <span className="first_heading">{localized(section, "fieldName", currentLanguage)}{" "}</span>
             {selectedTabKey === TABS.T_RANKING && (activeSubTab !== 1 && activeSubTab !== 0) ? null : (
               <span className="unit">
                 {localized(section, "unitName", currentLanguage)}

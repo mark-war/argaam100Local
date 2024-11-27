@@ -2433,7 +2433,7 @@ tr.activeRow{
 
  .sectionNote.px-layout {
   text-align: right;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: normal;
   color: red;
 }
@@ -2691,6 +2691,10 @@ padding-top: 2px;
   .table_chart tbody td:nth-child(3) {
     width: 60%;
 } 
+.table_chart tbody td:nth-child(3), 
+.table_chart th:nth-child(3) {
+  width: 58% !important;
+}
 }
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
@@ -3221,6 +3225,21 @@ padding-top: 2px;
   .tabs_inner_nav .sub_heading {
     margin-inline: 1rem;
   }
+
+    span.first_heading {
+      width: 100%;
+      display: block;
+  }
+  .tabs_inner_nav .sub_heading .unit,
+  .tabs_inner_nav .sub_heading .notes{
+    padding: 5px 5px 5px 0px;
+  }
+
+
+  [lang="ar"] .tabs_inner_nav .sub_heading .unit,
+   .tabs_inner_nav .sub_heading .notes {
+    padding: 5px;
+}
 
   .tabs_inner_nav .col-6 {
     width: 100%;
