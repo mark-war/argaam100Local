@@ -73,7 +73,7 @@ export async function refreshToken() {
   const newToken = await axios.post(`${config.baseUrl}refresh-authenticate-for-charts`, {
     jwtToken,
     refreshToken,
-    tokenOption: "Screener",
+    tokenOption: "Argaam100",
     uniqueIdentifier,
   });
   const { jwtToken: newjwtToken, refreshToken: newrefreshToken } =
