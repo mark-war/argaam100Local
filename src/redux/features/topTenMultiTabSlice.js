@@ -80,6 +80,9 @@ export const fetchMultipleTabTopTenData = createAsyncThunk(
               data: wrappedData, // Include primary response
               subTabs: data.subTabs,
               timestamp: Date.now(), // Add timestamp here
+              pkey: data.Pkey,
+              tabID: data.TabID
+              
             };
           } catch (error) {
             console.error("Error in processing data:", error);

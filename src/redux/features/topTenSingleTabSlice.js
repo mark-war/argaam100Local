@@ -63,6 +63,8 @@ export const fetchTopTenData = createAsyncThunk(
               chartData: data.encryptedConfigJsons[1] || null, // Add a check for undefined
               subTabs: data.subTabs,
               timestamp: Date.now(), // Add timestamp here
+              pkey: data.Pkey,
+              tabID: data.TabID
             };
           } catch (error) {
             console.error("Error in processing data:", error);

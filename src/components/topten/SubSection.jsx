@@ -14,26 +14,40 @@ import ReactModal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 import Tooltip from "../common/Tooltip";
 
-function PopupTooltip({ isOpen, onRequestClose, type }) {
+function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart }) {
   const lang = useSelector(selectCurrentLanguage);
   const isTopGrowthChart = type === "Top Growth Companies";
   const isTopLoosingChart = type === "Top Losing Companies";
 
-  const textList = isTopGrowthChart
-    ? [
-      // strings.growthtooltiptext5,
-      strings.growthtooltiptext6,
-      strings.growthtooltiptext7,
-      // strings.growthtooltiptext8,
-    ]
-    : isTopLoosingChart
-      ? [
+
+  const getTextList = () => {
+    if (isTopGrowthChart) {
+      if (isTopGrowthRevenueChart) {
+        return [
+          strings.growthtooltiptext6,
+          strings.growthtooltiptext7,
+        ];
+      } else {
+        return [
+          strings.growthtooltiptext5,
+          strings.growthtooltiptext6,
+          strings.growthtooltiptext7,
+          strings.growthtooltiptext8,
+        ];
+      }
+    } else if(isTopLoosingChart) {
+      return [
         strings.loosinggrowthtooltiptext5,
         strings.loosinggrowthtooltiptext6,
         strings.loosinggrowthtooltiptext7,
         strings.loosinggrowthtooltiptext8,
-      ]
-      : [];
+      ];
+    }else{
+      return [];
+    }
+  }
+
+  const textList = getTextList();
 
   useScrollbarVisibility(isOpen);
   return (
@@ -88,6 +102,7 @@ const SubSection = ({
   onSubTabsChange,
   subSectionIndex,
 }) => {
+
   const dispatch = useDispatch();
   const [activeSubTab, setActiveSubTab] = useState(() => {
     const activeTab = section.subTabs.find((tab) => tab.isSelected === "1");
@@ -168,6 +183,8 @@ const SubSection = ({
 
   const isTopGrowthChart = section?.fieldNameEn === "Top Growth Companies";
   const isTopLoosingChart = section?.fieldNameEn === "Top Losing Companies";
+  const isTopGrowthRevenueChart = section?.tabID == "12" && section?.pkey == "35" ? true : false;
+
 
   // Render the sub-section's content based on whether it has multiple tabs
   return (
@@ -186,6 +203,7 @@ const SubSection = ({
                 <PopupTooltip
                   isOpen={modalOpen}
                   type={section?.fieldNameEn}
+                  isTopGrowthRevenueChart={isTopGrowthRevenueChart}
                   onRequestClose={() => setmodalOpen(false)}
                 />
                 <i
