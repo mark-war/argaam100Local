@@ -21,7 +21,7 @@ export function redirectLogin(autoLogin, email = null) {
     requestRedirect == "true" ? "&requestRedirect=true" : ""
   }&refferalSearch=${urlParams
     ?.toString()
-    ?.replace("&", "(rs)")}&requiredToken=true&app=Screener`;
+    ?.replace("&", "(rs)")}&requiredToken=true&app=Argaam100`;
 
   window.open(url, "_self");
   
