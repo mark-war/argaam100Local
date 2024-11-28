@@ -206,11 +206,13 @@ const SubSection = ({
                   isTopGrowthRevenueChart={isTopGrowthRevenueChart}
                   onRequestClose={() => setmodalOpen(false)}
                 />
-                <i
+                    <div className="textComment_iconPane"
+               style={{ position: "relative", display: "inline-block" }}>
+                 <i
                   data-tooltip-id={"tooltip"}
                   className="textComment_icon"
                   onClick={() => setmodalOpen(true)}
-                ></i>
+                ></i> </div>
               </>
             )}
 
