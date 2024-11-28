@@ -1121,7 +1121,7 @@ white-space: normal;
 }
 
 .notes.growth-loose-note{
-  padding-inline-start: 30px;
+  padding-inline-start: 5px;
 }
 
 /* Tabs Chart Ends */
@@ -3097,14 +3097,14 @@ padding-top: 2px;
   }
 
   /* Chart CSS Ends */
-
+/* 
   .navbar.bg-light {
     padding-bottom: 3.5rem;
   }
 
   [lang="ar"] .navbar.sticky.bg-light {
     padding-bottom: 3.5rem;
-  }
+  } */
 
   .top_companies .tabs_nav.navbar-nav .nav-item .nav-link.active span {
     padding-bottom: 10px;
@@ -3418,6 +3418,12 @@ padding-top: 2px;
     padding-top: 0px;
     padding-bottom: 0px;
   }
+}
+
+@media screen and (max-width: 395px) {
+  .notes{
+  font-size: 11px;
+}
 }
 
 @media screen and (max-width: 360px) {
