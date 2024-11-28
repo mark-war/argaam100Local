@@ -2450,11 +2450,9 @@ tr.activeRow{
 
 /* Track */
 .custom_scroll tbody::-webkit-scrollbar-track {
-  /* background: url(/src/assets/images/scrollbar_track.jpg) repeat-y 1% top; */
+  background: url(/src/assets/images/scrollbar_track.jpg) repeat-y 2px top;
   border: 0px solid transparent;
-  background-clip: content-box;   /* THIS IS IMPORTANT */
-  background: #eeeef3;
-  border-radius: 5px;
+  background-clip: content-box;
 }
 
 /* Handle */
