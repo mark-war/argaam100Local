@@ -2690,7 +2690,7 @@ padding-top: 2px;
 }
 .charts_table_bg {
   & span{
-    line-height: normal;
+    line-height: 13px;
    }
   & .textComment_iconPane {
       padding: 1px 2px 0;
