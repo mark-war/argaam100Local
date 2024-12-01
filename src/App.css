@@ -931,7 +931,7 @@ button.disabled {
 
 .charts_table_bg span.bg {
   background: #9ac6e6;
-  height: 25px;
+  height: 12px;
   width: 100%;
   display: flex;
   margin-right: 10px;
@@ -951,14 +951,17 @@ button.disabled {
 }
 
 .ellipsis {
-  position: relative; /* Positioning ellipsis */
-  width: 100%; /* Width of the ellipsis */
-  height: 25px; /* Height of the ellipsis */
-  background-color: #9ac6e6; /* Color of the ellipsis */
-  color: #9ac6e6;
-  border-radius: 50%; /* Make it circular */
+  position: relative;
+  width: 100%;
+  background-color: #9ac6e6;
+  color: #ffffff;
+  border-radius: 10px;
   margin-right: 10px;
   margin-left: -8px;
+  max-width: none;
+  padding: 5px;
+  min-width: 13px;
+  height: 13px;
 }
 
 .table_chart tbody tr{
@@ -1843,6 +1846,7 @@ footer {
   position: relative;
   padding: 0 12px;
 }
+
 .textComment_icon {
   background: url(./assets/images/textComment_icon.svg) no-repeat;
   width: 20px;
@@ -1855,6 +1859,7 @@ footer {
   background-position: bottom;
   margin-top: 0;  
   top: 2px;
+  right: 0;
 }
 .textComment_icon_disabled{
   background: url(./assets/images/textComment_icon_disabled.svg) no-repeat;
@@ -1867,9 +1872,18 @@ footer {
   background-position: bottom;
   margin-top: 0;  
   top: 2px;
+  right: 0;
 }
- 
 
+[lang="ar"] .textComment_icon_disabled,
+[lang="ar"] .textComment_icon{
+  left: 0 !important;
+  right: auto;
+}
+
+.table_layout .textComment_iconPane {
+    display: block !important;
+}
 .ReactModal__Overlay{
   position: fixed !important;
   inset: 0;
@@ -2307,6 +2321,7 @@ right:  8px;
               font-size: 32px;
               font-weight: 300;
               cursor: pointer;
+              white-space: nowrap;
               &:hover {
                   color: #0f2e6d
               }
@@ -2481,6 +2496,8 @@ padding-top: 2px;
     width:  max-content;
     line-height: 17px; 
     border: 1px solid rgb(204, 204, 204);
+    background-color: rgb(32, 53, 102) !important;
+    color: rgb(255, 255, 255) !important;
     /* margin-left: 28px; */
   }
 }
@@ -2675,14 +2692,14 @@ padding-top: 2px;
 }
 .charts_table_bg {
   & span{
-    line-height: 26px;
+    line-height: normal;
    }
   & .textComment_iconPane {
       padding: 1px 2px 0;
   }
 }
 .notes{
-  font-size: 11.5px; 
+  font-size: 11px; 
 }
 }
 @media screen and (max-width: 1366px) and (min-width: 1025px) {
