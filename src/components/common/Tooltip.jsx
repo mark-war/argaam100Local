@@ -27,12 +27,13 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
             fallbackPlacements: ["top", "bottom"],
           },
         },
-        {
-          name: "preventOverflow",
-          options: {
-            padding: 8,
-          },
-        },
+        // {
+        //   name: "preventOverflow",
+        //   options: {
+        //     padding: 8,
+        //     boundariesElement: 'scrollParent',
+        //   },
+        // },
 
         flipModifier
 
@@ -76,3 +77,4 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
 };
 
 export default Tooltip;
+
