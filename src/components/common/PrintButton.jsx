@@ -1,9 +1,36 @@
 import React from "react";
 import { printScreen } from "../../utils/printPage";
+import { isEmpty } from "../../utils/helperFunctions";
+import { showError } from "../../utils/toastutil";
+import { strings } from "../../utils/constants/localizedStrings";
+import { useSelector } from "react-redux";
 
 const PrintButton = () => {
+
+  const user = useSelector((state) => state.user.user);
+  const hasAccess = user?.HasScreenerChartsAccess === "true";
+
+  const checkAccess = () => {
+    if (user?.CpUser === "true") return true;
+
+    if (!(!isEmpty(user) && hasAccess)) {
+      showError(strings["analystuserexcelerror"]);
+      return false;
+    }
+    return true;
+  };
+
+  const print = ()=>{
+    if (!checkAccess()) {
+      return;
+    }
+
+    printScreen();
+
+  }
+
   return (
-    <a className="screen_icons no-print" href="#" onClick={printScreen}>
+    <a className="screen_icons no-print" href="#" onClick={print}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="39"

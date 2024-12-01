@@ -170,11 +170,11 @@ const HeaderMain = () => {
                 {strings.navLinkArgaam}
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 {strings.navLinkAbout}
               </a>
-            </li>
+            </li> */}
             <LanguageSwitcher /> {/* Add the new component */}
           </ul>
         </div>
@@ -250,11 +250,11 @@ const HeaderMain = () => {
                           {strings.navLinkArgaam}
                         </a>
                       </li>
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <a href="#" className="nav-link">
                           {strings.navLinkAbout}
                         </a>
-                      </li>
+                      </li> */}
                       <LanguageSwitcher /> {/* language switcher component */}
                     </ul>
                     <div
