@@ -29,7 +29,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
         ];
       } else {
         return [
-          strings.growthtooltiptext5,
+          // strings.growthtooltiptext5,
           strings.growthtooltiptext6,
           strings.growthtooltiptext7,
           strings.growthtooltiptext8,
