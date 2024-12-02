@@ -1,7 +1,7 @@
 body,
 html {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
 }
 
 .app {
@@ -3824,6 +3824,8 @@ padding-top: 2px;
   padding-right: 10px;
 }
 
-
+.comprank_reve.bank_ranking .textComment_icon{
+  margin-top: 2px !important;
+}
 
 /* history_legend css end  */
