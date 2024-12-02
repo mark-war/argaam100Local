@@ -3247,10 +3247,10 @@ padding-top: 2px;
     margin-inline: 1rem;
   }
 
-    span.first_heading {
+    /* span.first_heading {
       width: 100%;
       display: block;
-  }
+  } */
   .tabs_inner_nav .sub_heading .unit,
   .tabs_inner_nav .sub_heading .notes{
     padding: 5px 5px 5px 0px;
@@ -3438,6 +3438,10 @@ padding-top: 2px;
     padding-inline: 4px;
     padding-top: 0px;
     padding-bottom: 0px;
+  }
+  .tabs_inner_nav .sub_heading .notes{
+    display: block;
+    padding: 0;
   }
 }
 

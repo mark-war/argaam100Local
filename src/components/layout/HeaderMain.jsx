@@ -207,9 +207,9 @@ const HeaderMain = () => {
                 )}
               </NavLink>
             </div>
-            <div className="flex-fill justify_content_center sub_nav no-print">
+            {/* <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
-                {/* {navLinks.map((link, index) => {
+                 {navLinks.map((link, index) => {
                   const isFreePage =
                     link?.page?.pageId == import.meta.env.VITE_FREEPAGEID;
                   return (
@@ -232,9 +232,9 @@ const HeaderMain = () => {
                       </NavLink>
                     </li>
                   );
-                })} */}
+                })} 
               </ul>
-            </div>
+            </div> */}
             <div className="flex-fill justify-content-end no-print">
               <div className="justify_content_end w-100">
                 <div className="d_flex justify_content_end">
