@@ -29,7 +29,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
         ];
       } else {
         return [
-          strings.growthtooltiptext5,
+          // strings.growthtooltiptext5,
           strings.growthtooltiptext6,
           strings.growthtooltiptext7,
           strings.growthtooltiptext8,
@@ -70,11 +70,11 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
     >
       <a className="closeIcon closeIconfill" onClick={onRequestClose}></a>
 
-      {isTopGrowthChart && (
+      {/* {isTopGrowthChart && (
         <h2 className="growthHead">{strings.definitions}</h2>
-      )}
+      )} */}
       <div className="topgrowthcompanies">
-        {isTopGrowthChart && (
+        {/* {isTopGrowthChart && (
           <>
             <span className="bar"></span>
             <p>{strings.growthtooltiptext1}</p>
@@ -82,7 +82,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
             <p>{strings.growthtooltiptext3}</p>
            
           </>
-        )}
+        )} */}
         <h5>{strings.growthtooltiptext4}</h5>{" "}
         <ul>
           {textList.map((text, index) => (
