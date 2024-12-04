@@ -185,7 +185,7 @@ const SubTabCard = ({
                 {hasNotes && (
                   <>
                     {!isEmpty(note) ? (
-                      <Tooltip tooltipText={note} tooltipCustomPlacement={index ==0 ? 'left' : 'top-end'}>
+                      <Tooltip tooltipText={note} tooltipCustomPlacement={index==0 ? (currentLanguage == "ar" ? "right" : "left") : 'top-end'}>
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
                     ) : (
@@ -358,7 +358,7 @@ const SubTabCard = ({
                 <td className="textcomIcon">
                   <>
                     {!isEmpty(note) ? (
-                      <Tooltip tooltipText={note} tooltipCustomPlacement={index==0? 'left':'top-end'}>
+                      <Tooltip tooltipText={note} tooltipCustomPlacement={index==0 ? (currentLanguage == "ar" ? "right" : "left") :'top-end'}>
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
                     ) : (
