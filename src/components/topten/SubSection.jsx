@@ -37,7 +37,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
       }
     } else if(isTopLoosingChart) {
       return [
-        strings.loosinggrowthtooltiptext5,
+        // strings.loosinggrowthtooltiptext5,
         strings.loosinggrowthtooltiptext6,
         strings.loosinggrowthtooltiptext7,
         strings.loosinggrowthtooltiptext8,
@@ -83,7 +83,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
            
           </>
         )} */}
-        <h5>{strings.growthtooltiptext4}</h5>{" "}
+        {/* <h5>{strings.growthtooltiptext4}</h5>{" "} */}
         <ul>
           {textList.map((text, index) => (
             <li key={index}>{text}</li>
