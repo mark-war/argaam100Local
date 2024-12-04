@@ -301,7 +301,7 @@ div {
 
 .table_chart .bg_tag {
   text-align: center !important;
-  padding: 5px 18px;
+  padding: 1px 16px;
 }
 
 .table_default .td_img {
@@ -1111,7 +1111,7 @@ white-space: normal;
 }
 
 .notes {
-  font-size: 13px;
+  font-size: 14px;
   padding: 5px 5px;
   color: rgb(141, 137, 137);
   font-weight: normal;
@@ -1846,7 +1846,7 @@ footer {
 
 .textComment_icon {
   background: url(./assets/images/textComment_icon.svg) no-repeat;
-  width: 20px;
+  width: 24px;
   height: 24px;
   display: inline-block;
   z-index: 9;
@@ -1860,7 +1860,7 @@ footer {
 }
 .textComment_icon_disabled{
   background: url(./assets/images/textComment_icon_disabled.svg) no-repeat;
-  width: 20px;
+  width: 24px;
   height: 24px;
   display: inline-block;
   z-index: 9;
@@ -2566,7 +2566,7 @@ padding-top: 2px;
   .table.table_layout td {
     padding-inline: 20px;
     &.textcomIcon{
-      padding: 20px 10px 20px 30px;
+      padding: 5px 10px 10px 30px;
     }
   }
   [lang="ar"]{
@@ -2574,7 +2574,7 @@ padding-top: 2px;
     .table.table_layout td {
       
       &.textcomIcon{
-        padding: 20px 30px 20px 10px;
+        padding: 5px 30px 10px 10px;
       }
     }
   }
@@ -2625,7 +2625,7 @@ padding-top: 2px;
   }
 
   .charts_table_bg {
-    line-height: 30px;
+    line-height: 13px;
   }
 
   .multi_select_toggle {
@@ -2652,7 +2652,7 @@ padding-top: 2px;
   }
 
   .table_chart .table.table_layout td span {
-    font-size: 1.188rem;
+    font-size: 1.088rem;
   }
 
   .table.table_layout td.text-center {
@@ -2671,8 +2671,53 @@ padding-top: 2px;
     height: 514px !important; 
   }
 }
-
+@media screen and (max-width: 1600px) and (min-width: 1367px) {
+  .px-layout.bg-white {
+    min-height: 471px;
+   
+}
+.col_space .col-lg-6 .px-layout{
+  padding-bottom: 10px;
+}
+.col_space .col-lg-6{
+  margin-bottom: 15px;
+}
+.table.table_layout.last__close__table tbody {
+ 
+  height: 390px;
+ 
+}
+.table.table_layout th, .table.table_layout td{
+  padding: 0.6em 0.625em 0.525em 0.625em;
+}
+}
+@media screen and (max-width: 1366px) and (min-width: 1024px) {
+  .px-layout.bg-white {
+    min-height: 471px;
+   
+}
+.col_space .col-lg-6 .px-layout{
+  padding-bottom: 10px;
+}
+.col_space .col-lg-6{
+  margin-bottom: 15px;
+}
+.table.table_layout.last__close__table tbody {
+ 
+  height: 390px;
+ 
+}
+.table.table_layout th, .table.table_layout td{
+  padding: 0.6em 0.625em 0.525em 0.625em;
+}
+}
 @media screen and (max-width: 1600px) and (min-width: 1025px)  {
+  .textComment_icon_disabled,
+  .textComment_icon{
+    width: 20px;
+    height: 20px;background-size:100%;
+    top:0;
+  }
   .table_chart tbody td:nth-child(3), .table_chart th:nth-child(3){
     width: 63% !important;
   }
@@ -3052,7 +3097,7 @@ padding-top: 2px;
 
   .charts_table_bg {
     margin-left: -25px;
-    width: 50% !important;
+    width: 100% !important;
   }
   [lang="ar"] .charts_table_bg {
     margin-right: -25px;

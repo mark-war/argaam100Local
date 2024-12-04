@@ -1,10 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="19" height="24" viewBox="0 0 19 24">
-  <g id="Group_1" data-name="Group 1" transform="translate(-902.788 -519)">
-    <path id="Path_7323" data-name="Path 7323" d="M9.5,0A9.5,9.5,0,1,1,0,9.5,9.5,9.5,0,0,1,9.5,0Z" transform="translate(902.788 521)" fill="#203566"/>
-    <text id="_" data-name="!" transform="translate(910.788 535)" fill="#fff" font-size="14" font-family="Dubai-Bold, Dubai" font-weight="700"><tspan x="0" y="0">!</tspan></text>
-    <g id="Group_144854" data-name="Group 144854">
-      <path id="Path_7323-2" data-name="Path 7323" d="M9.5,0A9.5,9.5,0,1,1,0,9.5,9.5,9.5,0,0,1,9.5,0Z" transform="translate(902.788 521)" fill="#203566"/>
-      <text id="_2" data-name="!" transform="translate(910.788 535)" fill="#fff" font-size="14" font-family="Dubai-Bold, Dubai" font-weight="700"><tspan x="0" y="0">!</tspan></text>
+<svg xmlns="http://www.w3.org/2000/svg" width="23.75" height="23.75" viewBox="0 0 23.75 23.75">
+  <g id="Group_1" data-name="Group 1" transform="translate(-908.851 -519.531)">
+    <text id="_" data-name="!" transform="translate(910.913 534.563)" fill="#fff" font-size="14" font-family="SegoeUI-Bold, Segoe UI" font-weight="700"><tspan x="0" y="0">!</tspan></text>
+    <g id="Group_144854" data-name="Group 144854" transform="translate(908.851 519.531)">
+      <path id="Path_7323" data-name="Path 7323" d="M11.875,0A11.875,11.875,0,1,1,0,11.875,11.875,11.875,0,0,1,11.875,0Z" fill="#203566"/>
+      <text id="_2" data-name="!" transform="translate(9.375 17)" fill="#fff" font-size="16" font-family="SegoeUI-Bold, Segoe UI" font-weight="700"><tspan x="0" y="0">!</tspan></text>
     </g>
   </g>
 </svg>
