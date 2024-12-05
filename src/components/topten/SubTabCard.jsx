@@ -191,7 +191,7 @@ const SubTabCard = ({
                       <Tooltip
                         tooltipText={note}
                         tooltipCustomPlacement={
-                          index == 0
+                          index == 0 || index == 1
                             ? currentLanguage == "ar"
                               ? "right"
                               : "left"
@@ -376,7 +376,7 @@ const SubTabCard = ({
                       <Tooltip
                         tooltipText={note}
                         tooltipCustomPlacement={
-                          index == 0
+                          index == 0 || index == 1
                             ? currentLanguage == "ar"
                               ? "right"
                               : "left"
