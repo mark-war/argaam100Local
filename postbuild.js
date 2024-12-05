@@ -23,6 +23,8 @@ fs.ensureDirSync(enDir);
 fs.ensureDirSync(arDir);
 fs.ensureDirSync(en10Dir);
 fs.ensureDirSync(ar10Dir);
+fs.ensureDirSync(en100Dir);
+fs.ensureDirSync(ar100Dir);
 
 // Example of copying files to respective directories with a filter
 fs.readdir(sourceDir, (err, files) => {
