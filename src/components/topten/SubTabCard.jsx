@@ -126,9 +126,9 @@ const SubTabCard = ({
 
         const valueString =
           item[thirdToLastProperty] !== null &&
-            item[secondToLastProperty] !== null &&
-            typeof item[thirdToLastProperty] === "number" &&
-            typeof item[secondToLastProperty] === "number"
+          item[secondToLastProperty] !== null &&
+          typeof item[thirdToLastProperty] === "number" &&
+          typeof item[secondToLastProperty] === "number"
             ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
             : null;
 
@@ -145,6 +145,7 @@ const SubTabCard = ({
           : chartWidth;
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
+        const showPercentage = section.unitNameEn.includes("%");
 
         return (
           <React.Fragment key={index}>
@@ -176,6 +177,7 @@ const SubTabCard = ({
                       value={chartValue || ""}
                       selectedTab={selectedTab}
                       activeSection={activeSection}
+                      showPercentage={showPercentage}
                     />
                   )}{" "}
                   {/* note */}
@@ -185,7 +187,16 @@ const SubTabCard = ({
                 {hasNotes && (
                   <>
                     {!isEmpty(note) ? (
-                      <Tooltip tooltipText={note} tooltipCustomPlacement={index==0 ? (currentLanguage == "ar" ? "right" : "left") : 'top-end'}>
+                      <Tooltip
+                        tooltipText={note}
+                        tooltipCustomPlacement={
+                          index == 0
+                            ? currentLanguage == "ar"
+                              ? "right"
+                              : "left"
+                            : "top-end"
+                        }
+                      >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
                     ) : (
@@ -299,13 +310,14 @@ const SubTabCard = ({
 
         const valueString =
           item[thirdToLastProperty] !== null &&
-            item[secondToLastProperty] !== null &&
-            typeof item[thirdToLastProperty] === "number" &&
-            typeof item[secondToLastProperty] === "number"
+          item[secondToLastProperty] !== null &&
+          typeof item[thirdToLastProperty] === "number" &&
+          typeof item[secondToLastProperty] === "number"
             ? `${item[thirdToLastProperty]}/${item[secondToLastProperty]}`
             : null;
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
+        const showPercentage = section.unitNameEn.includes("%");
 
         return (
           <React.Fragment key={index}>
@@ -348,6 +360,7 @@ const SubTabCard = ({
                       value={chartValue || ""}
                       selectedTab={selectedTab}
                       activeSection={activeSection}
+                      showPercentage={showPercentage}
                     />
                   )}
                   {/* note */}
@@ -358,7 +371,16 @@ const SubTabCard = ({
                 <td className="textcomIcon">
                   <>
                     {!isEmpty(note) ? (
-                      <Tooltip tooltipText={note} tooltipCustomPlacement={index==0 ? (currentLanguage == "ar" ? "right" : "left") :'top-end'}>
+                      <Tooltip
+                        tooltipText={note}
+                        tooltipCustomPlacement={
+                          index == 0
+                            ? currentLanguage == "ar"
+                              ? "right"
+                              : "left"
+                            : "top-end"
+                        }
+                      >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
                     ) : (

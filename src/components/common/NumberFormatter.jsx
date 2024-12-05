@@ -16,13 +16,25 @@ const formatNumber = (number, decimals) => {
 };
 
 // Function to format the value
-const formatValue = (value, decimals = 2, isPEColumn = false) => {
+const formatValue = (
+  value,
+  decimals = 2,
+  isPEColumn = false,
+  showPercentage = false
+) => {
   if (isPEColumn) {
     if (value < 0) return strings.neg;
     if (value > 100) return strings.moreThan100;
   }
 
-  return typeof value === "number" ? formatNumber(value, decimals) : value;
+  let formattedValue =
+    typeof value === "number" ? formatNumber(value, decimals) : value;
+
+  // Append percentage symbol if showPercentage is true
+  if (showPercentage) {
+    formattedValue = `${formattedValue}%`;
+  }
+  return formattedValue;
 };
 
 const NumberFormatter = ({
@@ -30,6 +42,7 @@ const NumberFormatter = ({
   isPEColumn = false,
   selectedTab = null,
   activeSection = null,
+  showPercentage = false,
 }) => {
   const decimals =
     selectedTab === TABS.T_RANKING ||
@@ -39,10 +52,15 @@ const NumberFormatter = ({
       : config.decimals || 2;
 
   if (activeSection === 30 || activeSection === 31) {
-    const formattedValue =
+    let formattedValue =
       value < 0
         ? `(${Math.abs(value)})` // Add parentheses for negative numbers
         : value; // Return formatted number
+
+    if (showPercentage) {
+      formattedValue = `${formattedValue}%`;
+    }
+
     return (
       <span
         style={{
@@ -56,8 +74,8 @@ const NumberFormatter = ({
 
   // Memoize the formatted value to avoid unnecessary recalculations
   const formattedValue = useMemo(
-    () => formatValue(value, decimals, isPEColumn),
-    [value, decimals, isPEColumn]
+    () => formatValue(value, decimals, isPEColumn, showPercentage),
+    [value, decimals, isPEColumn, showPercentage]
   );
 
   return (
@@ -74,6 +92,7 @@ const NumberFormatter = ({
 NumberFormatter.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   isPEColumn: PropTypes.bool,
+  showPercentage: PropTypes.bool, // Add the new prop type validation
 };
 
 export default NumberFormatter;
