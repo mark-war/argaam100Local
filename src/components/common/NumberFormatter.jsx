@@ -19,7 +19,7 @@ const formatNumber = (number, decimals) => {
 const formatValue = (
   value,
   decimals = 2,
-  isPEColumn = false,
+  isPEColumn = false
   // showPercentage = false
 ) => {
   if (isPEColumn) {
@@ -42,7 +42,7 @@ const NumberFormatter = ({
   isPEColumn = false,
   selectedTab = null,
   activeSection = null,
-  unit= null,
+  unit = null,
   // showPercentage = false,
 }) => {
   const decimals =
@@ -56,7 +56,8 @@ const NumberFormatter = ({
     let formattedValue =
       value < 0
         ? `(${Math.abs(value)})` // Add parentheses for negative numbers
-        : value; // Return formatted number
+        : // : value; // Return formatted number
+          parseFloat((value)).toFixed(2);
 
     // if (showPercentage) {
     //   formattedValue = `${formattedValue}%`;
@@ -68,7 +69,8 @@ const NumberFormatter = ({
           color: Number(value) < 0 ? "red" : "inherit",
         }}
       >
-        {formattedValue}{unit}
+        {formattedValue}
+        {unit}
       </span>
     );
   }
@@ -87,7 +89,8 @@ const NumberFormatter = ({
         color: Number(value) < 0 ? "red" : "inherit",
       }}
     >
-      {formattedValue}{unit}
+      {formattedValue}
+      {unit}
     </span>
   );
 };
