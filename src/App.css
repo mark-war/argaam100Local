@@ -922,6 +922,7 @@ button.disabled {
   display: flex;
   /* width: 63% !important;  */
   /* Set the base width */
+  margin-top: 2px;
  & .textComment_iconPane{
     padding: 4px 6px 0;
   }
@@ -2467,7 +2468,8 @@ tr.activeRow{
 }
 
 /* Track */
-.custom_scroll tbody::-webkit-scrollbar-track {
+.custom_scroll tbody::-webkit-scrollbar-track,
+.custom_scroll tbody::-webkit-scrollbar {
   background: url(/src/assets/images/scrollbar_track.jpg) repeat-y 2px top;
   border: 0px solid transparent;
   background-clip: content-box;
@@ -2502,6 +2504,21 @@ padding-top: 2px;
     background-color: rgb(32, 53, 102) !important;
     color: rgb(255, 255, 255) !important;
     /* margin-left: 28px; */
+  }
+}
+@media print {
+  .charts{
+    padding-right:30px !important ;
+  }
+}
+
+
+.sub_heading{
+  & .textComment_iconPane{
+    & .textComment_icon{
+      top: -1px;
+      background-size: 18px;
+    }
   }
 }
 @media screen and (min-width: 1700px) {
@@ -2687,7 +2704,11 @@ padding-top: 2px;
   height: 390px;
  
 }
-.table.table_layout th, .table.table_layout td{
+.table.table_layout th{
+padding-top: 0.6em;
+padding-bottom: 0.525em;
+}
+ .table.table_layout td{
   padding: 0.6em 0.625em 0.525em 0.625em;
 }
 }
@@ -3087,7 +3108,9 @@ padding-top: 2px;
 }
 @media screen and (max-width: 767px) {
 
-
+  .charts{
+    width: 35px !important;
+  }
   .about {
     & .container {
         max-width: 96.94%;
