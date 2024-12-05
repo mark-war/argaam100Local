@@ -20,7 +20,7 @@ const formatValue = (
   value,
   decimals = 2,
   isPEColumn = false,
-  showPercentage = false
+  // showPercentage = false
 ) => {
   if (isPEColumn) {
     if (value < 0) return strings.neg;
@@ -31,9 +31,9 @@ const formatValue = (
     typeof value === "number" ? formatNumber(value, decimals) : value;
 
   // Append percentage symbol if showPercentage is true
-  if (showPercentage) {
-    formattedValue = `${formattedValue}%`;
-  }
+  // if (showPercentage) {
+  //   formattedValue = `${formattedValue}%`;
+  // }
   return formattedValue;
 };
 
@@ -42,7 +42,8 @@ const NumberFormatter = ({
   isPEColumn = false,
   selectedTab = null,
   activeSection = null,
-  showPercentage = false,
+  unit= null,
+  // showPercentage = false,
 }) => {
   const decimals =
     selectedTab === TABS.T_RANKING ||
@@ -57,9 +58,9 @@ const NumberFormatter = ({
         ? `(${Math.abs(value)})` // Add parentheses for negative numbers
         : value; // Return formatted number
 
-    if (showPercentage) {
-      formattedValue = `${formattedValue}%`;
-    }
+    // if (showPercentage) {
+    //   formattedValue = `${formattedValue}%`;
+    // }
 
     return (
       <span
@@ -67,15 +68,17 @@ const NumberFormatter = ({
           color: Number(value) < 0 ? "red" : "inherit",
         }}
       >
-        {formattedValue}
+        {formattedValue}{unit}
       </span>
     );
   }
 
   // Memoize the formatted value to avoid unnecessary recalculations
   const formattedValue = useMemo(
-    () => formatValue(value, decimals, isPEColumn, showPercentage),
-    [value, decimals, isPEColumn, showPercentage]
+    () => formatValue(value, decimals, isPEColumn),
+    [value, decimals, isPEColumn]
+    // () => formatValue(value, decimals, isPEColumn, showPercentage),
+    // [value, decimals, isPEColumn, showPercentage]
   );
 
   return (
@@ -84,7 +87,7 @@ const NumberFormatter = ({
         color: Number(value) < 0 ? "red" : "inherit",
       }}
     >
-      {formattedValue}
+      {formattedValue}{unit}
     </span>
   );
 };
@@ -92,7 +95,7 @@ const NumberFormatter = ({
 NumberFormatter.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   isPEColumn: PropTypes.bool,
-  showPercentage: PropTypes.bool, // Add the new prop type validation
+  // showPercentage: PropTypes.bool, // Add the new prop type validation
 };
 
 export default NumberFormatter;
