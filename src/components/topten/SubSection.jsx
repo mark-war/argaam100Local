@@ -124,9 +124,11 @@ const SubSection = ({
     currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
     ];
 
-  // useEffect(() => {
-  //   setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
-  // }, [selectedTabKey, currentLanguage]);
+  useEffect(() => {
+    // setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
+    const activeTab = section.subTabs.find((tab) => tab.isSelected === "1");
+    handleSubTabClick(activeTab.originalIndex);
+  }, [selectedTabKey, currentLanguage]);  
 
   const fetchAndUpdateData = (encryptedConfigJson, identifier, index) => {
     setLoading((prevLoading) => ({
