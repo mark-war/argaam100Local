@@ -37,7 +37,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
       }
     } else if(isTopLoosingChart) {
       return [
-        strings.loosinggrowthtooltiptext5,
+        // strings.loosinggrowthtooltiptext5,
         strings.loosinggrowthtooltiptext6,
         strings.loosinggrowthtooltiptext7,
         strings.loosinggrowthtooltiptext8,
@@ -83,7 +83,7 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
            
           </>
         )} */}
-        <h5>{strings.growthtooltiptext4}</h5>{" "}
+        {/* <h5>{strings.growthtooltiptext4}</h5>{" "} */}
         <ul>
           {textList.map((text, index) => (
             <li key={index}>{text}</li>
@@ -123,9 +123,12 @@ const SubSection = ({
     sortedSubTabs[activeSubTab]?.[
     currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
     ];
+
   useEffect(() => {
-    setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
-  }, [selectedTabKey, currentLanguage]);
+    // setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
+    const activeTab = section.subTabs.find((tab) => tab.isSelected === "1");
+    handleSubTabClick(activeTab.originalIndex);
+  }, [selectedTabKey, currentLanguage]);  
 
   const fetchAndUpdateData = (encryptedConfigJson, identifier, index) => {
     setLoading((prevLoading) => ({

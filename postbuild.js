@@ -12,6 +12,8 @@ const enDir = `${__dirname}/dist/en/screener`;
 const arDir = `${__dirname}/dist/ar/screener`;
 const en10Dir = `${__dirname}/dist/en/top-10`;
 const ar10Dir = `${__dirname}/dist/ar/top-10`;
+const en100Dir = `${__dirname}/dist/en/argaam-100`;
+const ar100Dir = `${__dirname}/dist/ar/argaam-100`;
 
 // Check environment mode (development or production)
 const mode = process.env.BUILD_MODE || "development";
@@ -21,6 +23,8 @@ fs.ensureDirSync(enDir);
 fs.ensureDirSync(arDir);
 fs.ensureDirSync(en10Dir);
 fs.ensureDirSync(ar10Dir);
+fs.ensureDirSync(en100Dir);
+fs.ensureDirSync(ar100Dir);
 
 // Example of copying files to respective directories with a filter
 fs.readdir(sourceDir, (err, files) => {
@@ -35,6 +39,8 @@ fs.readdir(sourceDir, (err, files) => {
       fs.copyFileSync(srcPath, `${arDir}/${file}`);
       fs.copyFileSync(srcPath, `${en10Dir}/${file}`);
       fs.copyFileSync(srcPath, `${ar10Dir}/${file}`);
+      fs.copyFileSync(srcPath, `${en100Dir}/${file}`);
+      fs.copyFileSync(srcPath, `${ar100Dir}/${file}`);
     }
   });
 
