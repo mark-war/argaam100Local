@@ -123,9 +123,10 @@ const SubSection = ({
     sortedSubTabs[activeSubTab]?.[
     currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
     ];
-  useEffect(() => {
-    setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
-  }, [selectedTabKey, currentLanguage]);
+
+  // useEffect(() => {
+  //   setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
+  // }, [selectedTabKey, currentLanguage]);
 
   const fetchAndUpdateData = (encryptedConfigJson, identifier, index) => {
     setLoading((prevLoading) => ({
