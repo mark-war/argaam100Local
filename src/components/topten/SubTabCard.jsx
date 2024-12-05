@@ -145,7 +145,7 @@ const SubTabCard = ({
           : chartWidth;
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
-        // const showPercentage = section.unitNameEn.includes("%");
+        const unit = JSON.parse(section?.chartConfig)?.unit
 
         return (
           <React.Fragment key={index}>
@@ -177,7 +177,7 @@ const SubTabCard = ({
                       value={chartValue || ""}
                       selectedTab={selectedTab}
                       activeSection={activeSection}
-                      unit={currentLanguage == "en" ? section.unitNameEn : section.unitNameAr}
+                      unit={currentLanguage == "en" ? unit?.en : unit?.ar}
                       // showPercentage={showPercentage}
                     />
                   )}{" "}
@@ -318,7 +318,7 @@ const SubTabCard = ({
             : null;
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
-        // const showPercentage = section.unitNameEn.includes("%");
+        const unit = JSON.parse(section?.chartConfig)?.unit
 
         return (
           <React.Fragment key={index}>
@@ -361,7 +361,7 @@ const SubTabCard = ({
                       value={chartValue || ""}
                       selectedTab={selectedTab}
                       activeSection={activeSection}
-                      unit={currentLanguage == "en" ? section.unitNameEn : section.unitNameAr}
+                      unit={currentLanguage == "en" ? unit?.en : unit?.ar}
                       // showPercentage={showPercentage}
                     />
                   )}
