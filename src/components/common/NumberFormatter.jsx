@@ -55,7 +55,7 @@ const NumberFormatter = ({
   if (activeSection === 30 || activeSection === 31) {
     let formattedValue =
       value < 0
-        ? `(${Math.abs(value)})` // Add parentheses for negative numbers
+        ? `(${Math.abs(value).toFixed(2)})` // Add parentheses for negative numbers
         : // : value; // Return formatted number
           parseFloat((value)).toFixed(2);
 

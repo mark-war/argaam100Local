@@ -57,3 +57,20 @@ export const createChartParams = (params, args, lang) => {
 
   return encryptedResults;
 };
+
+export const decodeChartParams = (encryptedText) => {
+  const secretKeyHex = CryptoJS.enc.Hex.parse(
+    "7a1b6c4d3e2f1a0b7c8d9e0a1b2c3d4e"
+  );
+
+  const iv = CryptoJS.enc.Hex.parse("0123456789abcdef0123456789abcdef");
+
+  const decryptedText = CryptoJS.AES.decrypt(
+    atob(encryptedText),
+    secretKeyHex,
+    { iv }
+  ).toString(CryptoJS.enc.Utf8);
+
+  return JSON.parse(decryptedText);
+};
+
