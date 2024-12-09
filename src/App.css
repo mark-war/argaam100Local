@@ -2579,7 +2579,8 @@ padding-top: 2px;
   }
 
   .race_chart {
-    min-height: 538px;
+    min-height: 511px;
+    margin-top: 0 !important;
   }
 
   [lang="ar"] .table_chart th:nth-child(3) {
@@ -2725,6 +2726,10 @@ padding-top: 2px;
     min-height: 390px;
     margin-top: 0 !important;
   }
+  .rank_column{
+    gap: 8px;
+   
+  }
   .px-layout.bg-white {
     min-height: 471px;
    
@@ -2749,6 +2754,14 @@ padding-bottom: 0.525em;
 }
 }
 @media screen and (max-width: 1366px) and (min-width: 1024px) {
+  .race_chart{
+    min-height: 389px;
+    margin-top: 0 !important;
+  }
+  .rank_column{
+    gap: 8px;
+    
+  }
   .px-layout.bg-white {
     min-height: 471px;
    
