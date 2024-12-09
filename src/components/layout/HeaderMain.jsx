@@ -250,6 +250,27 @@ const HeaderMain = () => {
                           {strings.navLinkArgaam}
                         </a>
                       </li>
+                      <li className="nav-item">
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href="https://www.https://argaamcharts.com/"
+                          className="nav-link"
+                        >
+                          {strings.navCharts}
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href="https://macro.argaam.com/"
+                          className="nav-link"
+                        >
+                          {strings.navMacro}
+                        </a>
+                      </li>
+                     
                       {/* <li className="nav-item">
                         <a href="#" className="nav-link">
                           {strings.navLinkAbout}
@@ -359,6 +380,16 @@ const HeaderMain = () => {
                             </g>
                           </g>
                         </svg>
+                      </div>
+
+                     <div className="request-btn"> <a
+                       
+                         
+                          href="/request/"
+                          className="nav-link"
+                        >
+                          {strings.navRequest}
+                        </a>
                       </div>
                       {/* Toggle Button */}
                     </div>

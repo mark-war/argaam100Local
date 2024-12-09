@@ -2440,6 +2440,38 @@ tr.activeRow{
   cursor: pointer;
   background-size: 23px
 }
+.request-btn{
+  margin-left: .5rem !important;
+  display: inline-block;
+}
+.request-btn a {
+  background-color: #152e66;
+  padding: 5px 15px !important;
+  border-radius: 5px;
+  font-weight: 400 !important;
+  font-size: 14px;
+  width: max-content;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+  display: flex;
+  margin-right: 0rem;
+  list-style: none;
+  position: relative;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.6;
+  &:hover{
+  color: #fff;
+  }
+}
+
+[lang="ar"] .request-btn{
+  margin-right: 0.5rem !important;
+  margin-left:0 !important; 
+}
+
 /* .custom_scroll tbody{
   padding-right: 5px;
 } */
@@ -2547,7 +2579,7 @@ padding-top: 2px;
   }
 
   .race_chart {
-    min-height: 645px;
+    min-height: 538px;
   }
 
   [lang="ar"] .table_chart th:nth-child(3) {
@@ -2689,6 +2721,10 @@ padding-top: 2px;
   }
 }
 @media screen and (max-width: 1600px) and (min-width: 1367px) {
+  .race_chart{
+    min-height: 390px;
+    margin-top: 0 !important;
+  }
   .px-layout.bg-white {
     min-height: 471px;
    
