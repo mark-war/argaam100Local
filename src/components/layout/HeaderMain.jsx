@@ -375,12 +375,14 @@ const HeaderMain = () => {
                         </svg>
                       </div>
 
-                      <div className="request-btn">
-                        {" "}
-                        <a href="/request/" className="nav-link">
-                          {strings.navRequest}
-                        </a>
-                      </div>
+                      {user?.HasScreenerChartsAccess !== "true" ? (
+                        <div className="request-btn">
+                          {" "}
+                          <a href="/request/" className="nav-link">
+                            {strings.navRequest}
+                          </a>
+                        </div>
+                      ) : null}
                       {/* Toggle Button */}
                     </div>
                   </div>
