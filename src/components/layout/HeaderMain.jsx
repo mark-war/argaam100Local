@@ -331,7 +331,10 @@ const HeaderMain = () => {
                             <li>
                               <a
                                 className="dropdown-item"
-                                onClick={() => resetUser()}
+                                onClick={() => {
+                                  setIsOpen(false)
+                                  resetUser();
+                                }}
                               >
                                 <img
                                   alt="Image"
@@ -378,7 +381,10 @@ const HeaderMain = () => {
                       {user?.HasScreenerChartsAccess !== "true" ? (
                         <div className="request-btn">
                           {" "}
-                          <Link to={`/${selectedLanguage}/request`} className="nav-link">
+                          <Link
+                            to={`/${selectedLanguage}/request`}
+                            className="nav-link"
+                          >
                             {strings.navRequest}
                           </Link>
                         </div>
