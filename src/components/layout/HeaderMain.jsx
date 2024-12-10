@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setLanguage } from "../../redux/features/languageSlice.js";
 import { strings, LANGUAGES } from "../../utils/constants/localizedStrings.js";
@@ -378,9 +378,9 @@ const HeaderMain = () => {
                       {user?.HasScreenerChartsAccess !== "true" ? (
                         <div className="request-btn">
                           {" "}
-                          <a href="/request/" className="nav-link">
+                          <Link to={`/${selectedLanguage}/request`} className="nav-link">
                             {strings.navRequest}
-                          </a>
+                          </Link>
                         </div>
                       ) : null}
                       {/* Toggle Button */}
