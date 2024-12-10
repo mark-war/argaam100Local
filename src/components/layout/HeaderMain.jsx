@@ -238,7 +238,7 @@ const HeaderMain = () => {
                         <a
                           target="_blank"
                           rel="noreferrer"
-                          href="https://www.argaam.com/"
+                          href={`https://www.argaam.com/${selectedLanguage}`}
                           className="nav-link"
                         >
                           {strings.navLinkArgaam}
@@ -248,7 +248,7 @@ const HeaderMain = () => {
                         <a
                           target="_blank"
                           rel="noreferrer"
-                          href="https://www.argaamcharts.com/"
+                          href={`https://www.argaamcharts.com/${selectedLanguage}`}
                           className="nav-link"
                         >
                           {strings.navCharts}
@@ -258,7 +258,7 @@ const HeaderMain = () => {
                         <a
                           target="_blank"
                           rel="noreferrer"
-                          href="https://macro.argaam.com/"
+                          href={`https://macro.argaam.com/${selectedLanguage}`}
                           className="nav-link"
                         >
                           {strings.navMacro}
