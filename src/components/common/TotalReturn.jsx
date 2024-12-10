@@ -37,7 +37,7 @@ export default function TotalReturn({ params }) {
               : "ND"}
           </b>
 
-          <Tooltip tooltipText={strings.companyreturntooltip1}>
+          <Tooltip tooltipText={strings.companyreturntooltip1} tooltipCustomPlacement='top'>
             <i className={"textComment_icon"}></i>
           </Tooltip>
         </h6>
@@ -55,7 +55,7 @@ export default function TotalReturn({ params }) {
               ? `${getCommaSeperatedWithNoDecimal(overViewData?.totalReturn)}%`
               : "ND"}
           </b>
-          <Tooltip tooltipText={strings.companyreturntooltip2}>
+          <Tooltip tooltipText={strings.companyreturntooltip2} tooltipCustomPlacement='top'>
             <i className={"textComment_icon"}></i>
           </Tooltip>
         </h6>
@@ -71,7 +71,7 @@ export default function TotalReturn({ params }) {
                 overViewData?.totalReturnIncludingDividendReinvestment
               )}%`
             : "ND"}
-          <Tooltip tooltipText={strings.companyreturntooltip3}>
+          <Tooltip tooltipText={strings.companyreturntooltip3} tooltipCustomPlacement='top-end'>
             <i className={"textComment_icon"}></i>
           </Tooltip>
         </h6>
