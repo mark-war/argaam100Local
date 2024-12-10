@@ -111,19 +111,19 @@ const HeaderMain = () => {
       <div className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}>
         <div
           className="mobile_menu"
-          onClick={user ?handleMenuInnerClick: ()=>onLoginPress()}
+          onClick={user ? handleMenuInnerClick : () => onLoginPress()}
           ref={dropdownMobileRef}
         >
           <ul>
             {/* {user ? ( */}
-              <li>
-                <a href="#" className="dropdown-item">
-                  <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
-                    <img alt="Image" src="/assets/images/user.svg" />
-                  </button>
-                  <strong>{user?.Username}</strong>
-                </a>
-              </li>
+            <li>
+              <a href="#" className="dropdown-item">
+                <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
+                  <img alt="Image" src="/assets/images/user.svg" />
+                </button>
+                <strong>{user?.Username}</strong>
+              </a>
+            </li>
             {/* ) : (
               <li>
                 <a
@@ -195,15 +195,9 @@ const HeaderMain = () => {
                 // onClick={() => (window.location.href = `/${lang}/screener`)}
               >
                 {lang === LANGUAGES.AR ? (
-                  <img
-                    alt="Argaam Screener Logo"
-                    src={Argaam100LogoAr}
-                    />
+                  <img alt="Argaam Screener Logo" src={Argaam100LogoAr} />
                 ) : (
-                  <img
-                    alt="Argaam Screener Logo"
-                    src={Argaam100LogoEn}
-                    />
+                  <img alt="Argaam Screener Logo" src={Argaam100LogoEn} />
                 )}
               </NavLink>
             </div>
@@ -254,7 +248,7 @@ const HeaderMain = () => {
                         <a
                           target="_blank"
                           rel="noreferrer"
-                          href="https://www.https://argaamcharts.com/"
+                          href="https://www.argaamcharts.com/"
                           className="nav-link"
                         >
                           {strings.navCharts}
@@ -270,7 +264,6 @@ const HeaderMain = () => {
                           {strings.navMacro}
                         </a>
                       </li>
-                     
                       {/* <li className="nav-item">
                         <a href="#" className="nav-link">
                           {strings.navLinkAbout}
@@ -283,7 +276,7 @@ const HeaderMain = () => {
                       ref={dropdownRef}
                     >
                       <button
-                        onClick={user ?toggleDropdown: ()=> onLoginPress()}
+                        onClick={user ? toggleDropdown : () => onLoginPress()}
                         className="btn borderless-transparent dropdown-toggle remove_after pr_0"
                       >
                         <img alt="Image" src="/assets/images/user.svg" />
@@ -291,11 +284,11 @@ const HeaderMain = () => {
                       {isOpen && (
                         <ul className="dropdown-menu show user_dropdown">
                           {/* {user ? ( */}
-                            <li>
-                              <a href="#" className="dropdown-item">
-                                <strong>{user?.Username}</strong>
-                              </a>
-                            </li>
+                          <li>
+                            <a href="#" className="dropdown-item">
+                              <strong>{user?.Username}</strong>
+                            </a>
+                          </li>
                           {/* ) : (
                             
                             <li>
@@ -382,12 +375,9 @@ const HeaderMain = () => {
                         </svg>
                       </div>
 
-                     <div className="request-btn"> <a
-                       
-                         
-                          href="/request/"
-                          className="nav-link"
-                        >
+                      <div className="request-btn">
+                        {" "}
+                        <a href="/request/" className="nav-link">
                           {strings.navRequest}
                         </a>
                       </div>
