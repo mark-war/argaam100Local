@@ -220,7 +220,7 @@ const SubSection = ({
             )}
 
             {note ? (
-              <Tooltip tooltipText={note}>
+              <Tooltip tooltipText={note} tooltipCustomPlacement={currentLanguage == 'en' ? 'right': 'left'}>
                 <i className="textComment_icon"></i>
               </Tooltip>
             ) : null}
