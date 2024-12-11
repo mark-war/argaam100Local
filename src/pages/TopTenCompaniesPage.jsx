@@ -31,7 +31,14 @@ const TopTenCompaniesPage = () => {
   );
 
   //defaultActiveTab
-  const [activeTabLink, setActiveTabLink] = useState(TABS.T_RANKING);
+  // const [activeTabLink, setActiveTabLink] = useState(TABS.T_ARR_MULTIPLE);
+  const [activeTabLink, setActiveTabLink] = useState(()=>selectedSection.tabs.find(tab=>tab.isSelected).tabId);
+
+
+  // useEffect(() => {
+  // console.log(selectedSection.tabs.find(tab=>tab.isSelected).tabId , 'Xd')
+  // }, [])
+  
 
   // default active subtabs will be index 0 for each subsection
   const [activeSubTabs, setActiveSubTabs] = useState({
@@ -74,13 +81,13 @@ const TopTenCompaniesPage = () => {
       .sort((a, b) => a.displaySeq - b.displaySeq);
   }, [selectedSection, currentLanguage]);
 
-  useEffect(() => {
-    if (tabLinksArray.length > 0) {
-      setActiveTabLink(
-        selectedSection?.tabs?.find((tab) => tab?.isSelected)?.tabId
-      );
-    }
-  }, [tabLinksArray, currentLanguage]);
+  // useEffect(() => {
+  //   if (tabLinksArray.length > 0) {
+  //     setActiveTabLink(
+  //       selectedSection?.tabs?.find((tab) => tab?.isSelected)?.tabId
+  //     );
+  //   }
+  // }, [tabLinksArray, currentLanguage]);
 
   // Create a map of field configurations for easier lookup
   const fieldConfigMap = useMemo(() => {
