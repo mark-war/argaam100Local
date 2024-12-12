@@ -693,11 +693,12 @@ button.disabled {
 .tabs_inner.tabs_nav.navbar-nav {
   padding-bottom: 5px;
   margin-top: 10px;
+  position: relative;
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-link {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: normal;
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-item:last-child button {
@@ -1666,6 +1667,7 @@ direction: ltr;
 .tabs_inner.tabs_nav.navbar-nav .nav-item .active {
   color: #e27922 !important;
   text-decoration: underline;
+  font-weight: 500;
 }
 
 .tabs_inner.tabs_nav.navbar-nav .nav-item {
@@ -1766,7 +1768,7 @@ footer {
   margin-top: -5px;
 }
 .tabs_nav.tabs_inner.navbar-nav .nav-link {
-  padding-inline: 10px;
+  padding-inline: 5px;
 }
 
 /* Col Borders Starts */
