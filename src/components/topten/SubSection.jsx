@@ -14,19 +14,20 @@ import ReactModal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 import Tooltip from "../common/Tooltip";
 
-function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart }) {
+function PopupTooltip({
+  isOpen,
+  onRequestClose,
+  type,
+  isTopGrowthRevenueChart,
+}) {
   const lang = useSelector(selectCurrentLanguage);
   const isTopGrowthChart = type === "Top Growth Companies";
   const isTopLoosingChart = type === "Top Losing Companies";
 
-
   const getTextList = () => {
     if (isTopGrowthChart) {
       if (isTopGrowthRevenueChart) {
-        return [
-          strings.growthtooltiptext6,
-          strings.growthtooltiptext7,
-        ];
+        return [strings.growthtooltiptext6, strings.growthtooltiptext7];
       } else {
         return [
           // strings.growthtooltiptext5,
@@ -35,17 +36,17 @@ function PopupTooltip({ isOpen, onRequestClose, type, isTopGrowthRevenueChart })
           strings.growthtooltiptext8,
         ];
       }
-    } else if(isTopLoosingChart) {
+    } else if (isTopLoosingChart) {
       return [
         // strings.loosinggrowthtooltiptext5,
         strings.loosinggrowthtooltiptext6,
         strings.loosinggrowthtooltiptext7,
         strings.loosinggrowthtooltiptext8,
       ];
-    }else{
+    } else {
       return [];
     }
-  }
+  };
 
   const textList = getTextList();
 
@@ -102,33 +103,29 @@ const SubSection = ({
   onSubTabsChange,
   subSectionIndex,
 }) => {
-
   const dispatch = useDispatch();
   const [activeSubTab, setActiveSubTab] = useState(() => {
     const activeTab = section.subTabs.find((tab) => tab.isSelected === "1");
     return activeTab.originalIndex;
   });
 
-
   let sortedSubTabs = [...section.subTabs].sort(
     (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
   );
-
-
 
   const [loading, setLoading] = useState({});
   const [modalOpen, setmodalOpen] = useState(false);
   const note = localized(section, "notes", currentLanguage);
   const tabNote =
     sortedSubTabs[activeSubTab]?.[
-    currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
+      currentLanguage == "en" ? "tabNoteEn" : "tabNoteAr"
     ];
 
   useEffect(() => {
     // setActiveSubTab(0); // Reset to the first tab (index 0) when selectedTabKey changes or current language changes
     const activeTab = section.subTabs.find((tab) => tab.isSelected === "1");
     handleSubTabClick(activeTab.originalIndex);
-  }, [selectedTabKey, currentLanguage]);  
+  }, [selectedTabKey, currentLanguage]);
 
   const fetchAndUpdateData = (encryptedConfigJson, identifier, index) => {
     setLoading((prevLoading) => ({
@@ -169,7 +166,6 @@ const SubSection = ({
 
   const handleSubTabClick = useCallback(
     (newSubTabIndex) => {
-
       setActiveSubTab(newSubTabIndex);
 
       onSubTabsChange(subSectionIndex, newSubTabIndex);
@@ -186,8 +182,8 @@ const SubSection = ({
 
   const isTopGrowthChart = section?.fieldNameEn === "Top Growth Companies";
   const isTopLoosingChart = section?.fieldNameEn === "Top Losing Companies";
-  const isTopGrowthRevenueChart = section?.tabID == "12" && section?.pkey == "35" ? true : false;
-
+  const isTopGrowthRevenueChart =
+    section?.tabID == "12" && section?.pkey == "35" ? true : false;
 
   // Render the sub-section's content based on whether it has multiple tabs
   return (
@@ -195,13 +191,17 @@ const SubSection = ({
       <div className="tabs_inner_nav row px-3">
         <div className="col-6 col-sm-7">
           <p className="sub_heading">
-            <span className="first_heading">{localized(section, "fieldName", currentLanguage)}{" "}</span>
-            {selectedTabKey === TABS.T_RANKING && (activeSubTab !== 1 && activeSubTab !== 0) ? null : (
+            <span className="first_heading">
+              {localized(section, "fieldName", currentLanguage)}{" "}
+            </span>
+            {selectedTabKey === TABS.T_RANKING &&
+            activeSubTab !== 1 &&
+            activeSubTab !== 0 ? null : (
               <span className="unit">
                 {localized(section, "unitName", currentLanguage)}
               </span>
             )}
-            {(isTopGrowthChart || isTopLoosingChart) && (
+            {/* {(isTopGrowthChart || isTopLoosingChart) && (
               <>
                 <PopupTooltip
                   isOpen={modalOpen}
@@ -217,25 +217,31 @@ const SubSection = ({
                   onClick={() => setmodalOpen(true)}
                 ></i> </div>
               </>
-            )}
+            )} */}
 
             {note ? (
-              <Tooltip tooltipText={note} tooltipCustomPlacement={currentLanguage == 'en' ? 'right': 'left'}>
+              <Tooltip
+                tooltipText={note}
+                tooltipCustomPlacement={
+                  currentLanguage == "en" ? "right" : "left"
+                }
+              >
                 <i className="textComment_icon"></i>
               </Tooltip>
             ) : null}
 
             {tabNote && (
               <span
-                className={`notes ${isTopGrowthChart || isTopLoosingChart ? 'growth-loose-note' : ''}`}
+                className={`notes ${
+                  isTopGrowthChart || isTopLoosingChart
+                    ? "growth-loose-note"
+                    : ""
+                }`}
                 title={tabNote}
               >
                 {tabNote}
               </span>
             )}
-
-
-
           </p>
         </div>
         <div className="col-6 col-sm-5">
