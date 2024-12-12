@@ -32,7 +32,7 @@ const TopTenCompaniesPage = () => {
 
   //defaultActiveTab
   // const [activeTabLink, setActiveTabLink] = useState(TABS.T_ARR_MULTIPLE);
-  const [activeTabLink, setActiveTabLink] = useState(()=>selectedSection.tabs.find(tab=>tab.isSelected).tabId);
+  const [activeTabLink, setActiveTabLink] = useState(selectedSection?.tabs.find(tab=>tab.isSelected)?.tabId ?? TABS.T_ARR_MULTIPLE);
 
 
   // useEffect(() => {
