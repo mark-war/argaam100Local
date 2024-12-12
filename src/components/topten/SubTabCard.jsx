@@ -145,7 +145,7 @@ const SubTabCard = ({
           : chartWidth;
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
-        const unit = JSON.parse(section?.chartConfig)?.unit
+        const unit = JSON.parse(section?.chartConfig)?.unit;
 
         return (
           <React.Fragment key={index}>
@@ -200,12 +200,7 @@ const SubTabCard = ({
                       >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
-                    ) : (
-                      <div className="textComment_iconPane">
-                        {" "}
-                        <i className="textComment_icon_disabled"></i>
-                      </div>
-                    )}
+                    ) : null}
                   </>
                 )}
               </td>
@@ -318,7 +313,7 @@ const SubTabCard = ({
             : null;
 
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
-        const unit = JSON.parse(section?.chartConfig)?.unit
+        const unit = JSON.parse(section?.chartConfig)?.unit;
 
         return (
           <React.Fragment key={index}>
@@ -385,12 +380,7 @@ const SubTabCard = ({
                       >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
-                    ) : (
-                      <div className="textComment_iconPane">
-                        {" "}
-                        <i className="textComment_icon_disabled"></i>
-                      </div>
-                    )}
+                    ) : null}
                   </>
                 </td>
               )}
