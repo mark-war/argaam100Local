@@ -21,7 +21,9 @@ const SubTabCard = ({
 }) => {
   const selectedTab = Number(section.identifier.split("-")[0]);
   const activeSection = Number(section.identifier.split("-")[1]);
-
+  const tableConfig = section.TableConfig
+    ? JSON.parse(section.TableConfig)
+    : [];
   const argaamUrl = useArgaamUrl();
   const [includeAramco, setincludeAramco] = useState(
     section?.Aramcologic || true
@@ -315,6 +317,7 @@ const SubTabCard = ({
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
+        const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
         return (
           <React.Fragment key={index}>
             <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
@@ -363,6 +366,15 @@ const SubTabCard = ({
                   {/* note */}
                 </div>
               </td>
+              {tableConfig.length
+                ? tableConfig.map((config, index) => (
+                    <td key={index}>
+                      <span onClick={() => console.log(dataFields)}>
+                        {parseFloat(dataFields[config.key]).toFixed(2) || ""}
+                      </span>
+                    </td>
+                  ))
+                : null}
 
               {hasNotes && (
                 <td className="textcomIcon">
@@ -419,8 +431,11 @@ const SubTabCard = ({
       { label: strings.rank },
       { label: strings.companies },
       { label: "" }, //TODO: made empty to remove the charts header, because when removed the alignment of the Companies is getting wrong...(need to fix on design)
+      ...tableConfig?.map((header) => ({
+        label: currentLanguage == "en" ? header.en : header.ar,
+      })),
     ],
-    [currentLanguage]
+    [currentLanguage, tableConfig]
   );
 
   const renderTableHeaders = useCallback(

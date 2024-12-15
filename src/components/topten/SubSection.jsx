@@ -194,7 +194,9 @@ const SubSection = ({
             <span className="first_heading">
               {localized(section, "fieldName", currentLanguage)}{" "}
             </span>
-            <span className="unit">
+            <span
+              className="unit"
+            >
               {
                 sortedSubTabs[activeSubTab][
                   currentLanguage == "en" ? "tabNameEn" : "tabNameAr"

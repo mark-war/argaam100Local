@@ -102,6 +102,7 @@ const TopTenCompaniesPage = () => {
         notesAr: field.NotesAr,
         Aramcologic: field.Aramcologic,
         chartConfig: field.chartConfig,
+        TableConfig: field.TableConfig
       };
     });
     return map;
@@ -135,6 +136,7 @@ const TopTenCompaniesPage = () => {
           notesAr: fieldConfigMap[fieldId]?.notesAr || "",
           Aramcologic: fieldConfigMap[fieldId]?.Aramcologic || false,
           chartConfig: fieldConfigMap[fieldId]?.chartConfig || null,
+          TableConfig: fieldConfigMap[fieldId]?.TableConfig || null,
         };
       });
   };
