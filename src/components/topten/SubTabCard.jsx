@@ -186,8 +186,19 @@ const SubTabCard = ({
                   {/* note */}
                 </div>
               </td>
-              <td className="textcomIcon">
-                {hasNotes && (
+
+              {tableConfig.length
+                ? tableConfig.map((config, index) => (
+                    <td key={index}>
+                      <span onClick={() => console.log(dataFields)}>
+                        {parseFloat(dataFields[config.key]).toFixed(2) || ""}
+                      </span>
+                    </td>
+                  ))
+                : null}
+
+              {hasNotes && (
+                <td className="textcomIcon">
                   <>
                     {!isEmpty(note) ? (
                       <Tooltip
@@ -204,8 +215,8 @@ const SubTabCard = ({
                       </Tooltip>
                     ) : null}
                   </>
-                )}
-              </td>
+                </td>
+              )}
               {section.chartConfig ? (
                 <td
                   onClick={() =>
