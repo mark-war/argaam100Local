@@ -196,9 +196,11 @@ const SubSection = ({
             </span>
             {sortedSubTabs[activeSubTab] && (
               <span className="unit">
-                {sortedSubTabs[activeSubTab][
-                  currentLanguage == "en" ? "tabNameEn" : "tabNameAr"
-                ]}
+                {
+                  sortedSubTabs[activeSubTab][
+                    currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
+                  ]
+                }
               </span>
             )}
             {selectedTabKey === TABS.T_RANKING &&

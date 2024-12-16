@@ -33,7 +33,9 @@ export const fetchTopTenData = createAsyncThunk(
           encryptedConfigJson: encryptedConfigJsons[index] || null, // Associate encryptedConfigJson for each subtab
           originalIndex: index, // Add the original index here
           tabNoteEn: config.te,
-          tabNoteAr: config.ta
+          tabNoteAr: config.ta,
+          fiscalUnitEn: config.tfuen,
+          fiscalUnitAr: config.tfuar,
         }));
 
         const identifier = `${item.TabID}-${item.Pkey}-${currentLanguage}`;
@@ -64,7 +66,7 @@ export const fetchTopTenData = createAsyncThunk(
               subTabs: data.subTabs,
               timestamp: Date.now(), // Add timestamp here
               pkey: data.Pkey,
-              tabID: data.TabID
+              tabID: data.TabID,
             };
           } catch (error) {
             console.error("Error in processing data:", error);

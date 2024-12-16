@@ -504,7 +504,7 @@ const exportDataToExcel = async (
     dataObjects.forEach((dataObject) => {
       const selectedSubTabName = localized(
         dataObject.subTabs[0],
-        "tabName",
+        "fiscalUnit",
         currentLanguage
       );
       // Get the mapped table
