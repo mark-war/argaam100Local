@@ -194,7 +194,7 @@ const SubSection = ({
             <span className="first_heading">
               {localized(section, "fieldName", currentLanguage)}{" "}
             </span>
-            <span
+            {/* <span
               className="unit"
             >
               {
@@ -202,7 +202,7 @@ const SubSection = ({
                   currentLanguage == "en" ? "tabNameEn" : "tabNameAr"
                 ]
               }
-            </span>
+            </span> */}
             {selectedTabKey === TABS.T_RANKING &&
             activeSubTab !== 1 &&
             activeSubTab !== 0 ? null : (
