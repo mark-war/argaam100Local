@@ -190,9 +190,24 @@ const SubTabCard = ({
               {tableConfig.length
                 ? tableConfig.map((config, index) => (
                     <td key={index}>
-                      <span onClick={() => console.log(dataFields)}>
+                      {/* <span onClick={() => console.log(dataFields)}>
                         {parseFloat(dataFields[config.key]).toFixed(2) || ""}
-                      </span>
+                      </span> */}
+                      {config.type === "numeric" ? (
+                        // Handle numeric type
+                        <span onClick={() => console.log(dataFields)}>
+                          {parseFloat(dataFields[config.key]).toFixed(2) || ""}
+                        </span>
+                      ) : config.type === "bool" ? (
+                        // Handle boolean type
+                        <span
+                          className={
+                            dataFields[config.key] === 1
+                              ? "up-arrow"
+                              : "down-arrow"
+                          }
+                        ></span>
+                      ) : null}
                     </td>
                   ))
                 : null}
@@ -329,6 +344,7 @@ const SubTabCard = ({
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
         const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
+        console.log("RESPONSE: ", item);
         return (
           <React.Fragment key={index}>
             <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
@@ -380,9 +396,24 @@ const SubTabCard = ({
               {tableConfig.length
                 ? tableConfig.map((config, index) => (
                     <td key={index}>
-                      <span onClick={() => console.log(dataFields)}>
+                      {/* <span onClick={() => console.log(dataFields)}>
                         {parseFloat(dataFields[config.key]).toFixed(2) || ""}
-                      </span>
+                      </span> */}
+                      {config.type === "numeric" ? (
+                        // Handle numeric type
+                        <span onClick={() => console.log(dataFields)}>
+                          {parseFloat(dataFields[config.key]).toFixed(2) || ""}
+                        </span>
+                      ) : config.type === "bool" ? (
+                        // Handle boolean type
+                        <span
+                          className={
+                            dataFields[config.key] === 1
+                              ? "up-arrow"
+                              : "down-arrow"
+                          }
+                        ></span>
+                      ) : null}
                     </td>
                   ))
                 : null}
@@ -470,6 +501,8 @@ const SubTabCard = ({
               />
             </th>
           )}
+          {/* added empty th to make the header and data balanced */}
+          {/* {tableConfig.length > 0 && <th></th>} */}
         </tr>
       </thead>
     ),
@@ -549,7 +582,9 @@ const SubTabCard = ({
         ) : (
           <div className="table-responsive">
             <Table
-              className="table_layout last__close__table custom_scroll"
+              className={`table_layout last__close__table custom_scroll ${
+                tableConfig.length > 0 ? "table-fields" : ""
+              }`}
               style={{ width: "100%" }}
             >
               {!isMultiple
