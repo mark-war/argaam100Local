@@ -3984,4 +3984,12 @@ padding-bottom: 0.525em;
     width: 47% !important;
 }
 
+
+.charts_table_bg span.bg.red {
+  background: red;
+}
+
+.charts_table_bg span.bg.green {
+  background: green;
+}
 /* history_legend css end  */
