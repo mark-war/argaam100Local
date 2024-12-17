@@ -911,7 +911,7 @@ button.disabled {
 }
 .unit{
   font-size: 13px;
-  padding: 5px 5px;
+  padding: 5px 2px;
   color: rgb(141, 137, 137);
   font-weight: normal;
 }
@@ -2537,6 +2537,7 @@ padding-top: 2px;
     border: 1px solid rgb(204, 204, 204);
     background-color: rgb(32, 53, 102) !important;
     color: rgb(255, 255, 255) !important;
+    font-weight: normal;
     /* margin-left: 28px; */
   }
 }
@@ -3378,7 +3379,7 @@ padding-bottom: 0.525em;
 
   [lang="ar"] .tabs_inner_nav .sub_heading .unit,
    .tabs_inner_nav .sub_heading .notes {
-    padding: 5px;
+    padding: 2px;
 }
 
   .tabs_inner_nav .col-6 {
@@ -3941,6 +3942,46 @@ padding-bottom: 0.525em;
   text-align: right;
   padding-left: 20px;
   padding-right: 10px;
+}
+  
+.down-arrow-red{
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid #ff0000;
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  }
+  
+  .up-arrow-green {
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 15px solid #2da100;
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 35%;
+  }
+  
+  .table_chart .table-fields td{
+     position: relative;
+  }
+  .table_chart .table-fields th:nth-child(4),
+  .table_chart .table-fields tbody td:nth-child(4){
+    min-width: 160px;
+    text-align-last: center;
+  }
+  
+  .table_chart .table-fields th:nth-child(4){
+    line-height: 16px;
+      padding: 0px 0;
+  }
+  .table_chart .table-fields th:nth-child(3){
+    width: 39% !important;
+  }
+  .table_chart .table-fields tbody td:nth-child(3) {
+    width: 47% !important;
 }
 
 /* history_legend css end  */
