@@ -203,8 +203,8 @@ const SubTabCard = ({
                         <span
                           className={
                             dataFields[config.key] === 1
-                              ? "up-arrow"
-                              : "down-arrow"
+                              ? "up-arrow-green"
+                              : "down-arrow-red"
                           }
                         ></span>
                       ) : null}
@@ -409,8 +409,8 @@ const SubTabCard = ({
                         <span
                           className={
                             dataFields[config.key] === 1
-                              ? "up-arrow"
-                              : "down-arrow"
+                              ? "up-arrow-green"
+                              : "down-arrow-red"
                           }
                         ></span>
                       ) : null}
