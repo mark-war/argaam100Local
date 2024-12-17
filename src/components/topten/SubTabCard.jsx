@@ -502,7 +502,7 @@ const SubTabCard = ({
             </th>
           )}
           {/* added empty th to make the header and data balanced */}
-          {/* {tableConfig.length > 0 && <th></th>} */}
+          {tableConfig.length > 0 && <th></th>}
         </tr>
       </thead>
     ),
