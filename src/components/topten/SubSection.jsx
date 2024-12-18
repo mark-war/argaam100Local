@@ -185,6 +185,13 @@ const SubSection = ({
   const isTopGrowthRevenueChart =
     section?.tabID == "12" && section?.pkey == "35" ? true : false;
 
+  const activeTabunit =
+    sortedSubTabs[activeSubTab][
+      currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
+    ];
+
+  const unit = localized(section, "unitName", currentLanguage);
+
   // Render the sub-section's content based on whether it has multiple tabs
   return (
     <Col lg={6} key={sectionKey}>
@@ -194,21 +201,14 @@ const SubSection = ({
             <span className="first_heading">
               {localized(section, "fieldName", currentLanguage)}{" "}
             </span>
-            {sortedSubTabs[activeSubTab] && (
-              <span className="unit">
-                {
-                  sortedSubTabs[activeSubTab][
-                    currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
-                  ]
-                }
-              </span>
-            )}
+            {sortedSubTabs[activeSubTab] && activeTabunit ? (
+              <span className="unit">{activeTabunit}</span>
+            ) : null}
             {selectedTabKey === TABS.T_RANKING &&
             activeSubTab !== 1 &&
-            activeSubTab !== 0 ? null : (
-              <span className="unit">
-                {localized(section, "unitName", currentLanguage)}
-              </span>
+            activeSubTab !== 0 &&
+            unit ? null : (
+              <span className="unit">{unit}</span>
             )}
             {/* {(isTopGrowthChart || isTopLoosingChart) && (
               <>
