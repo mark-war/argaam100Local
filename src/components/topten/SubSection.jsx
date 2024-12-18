@@ -201,13 +201,13 @@ const SubSection = ({
             <span className="first_heading">
               {localized(section, "fieldName", currentLanguage)}{" "}
             </span>
-            {sortedSubTabs[activeSubTab] && activeTabunit ? (
+            {sortedSubTabs[activeSubTab] && activeTabunit && !isMultiple ? (
               <span className="unit">{activeTabunit}</span>
             ) : null}
             {selectedTabKey === TABS.T_RANKING &&
             activeSubTab !== 1 &&
             activeSubTab !== 0 &&
-            unit ? null : (
+            unit ? null : unit === "" ? null : (
               <span className="unit">{unit}</span>
             )}
             {/* {(isTopGrowthChart || isTopLoosingChart) && (
