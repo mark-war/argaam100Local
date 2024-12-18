@@ -3567,6 +3567,18 @@ padding-bottom: 0.525em;
     padding-right: 20px;
     padding-left: 5px;
   }
+  .table-fields .charts_table_bg span.bg {
+    max-width: 94% !important;
+  }
+  [lang="ar"] .table-fields .charts_table_bg span.bg {
+    max-width: 88% !important;
+  }
+  .table_chart .table-fields th:nth-child(4), .table_chart .table-fields tbody td:nth-child(4){
+    min-width: 100px !important;
+  }
+  [lang="ar"] .charts_table_bg span.bg {
+    margin-right: 13px;
+}
 }
 
 @media screen and (max-width: 395px) {
@@ -3989,7 +4001,9 @@ padding-bottom: 0.525em;
   .table_chart .table-fields tbody td:nth-child(3) {
     width: 47% !important;
 }
-
+[lang="ar"]  .table_chart .table-fields tbody td:nth-child(3) {
+  width: 44% !important;
+}
 
 .charts_table_bg span.bg.red {
   background: red;
@@ -3998,4 +4012,9 @@ padding-bottom: 0.525em;
 .charts_table_bg span.bg.green {
   background: #23b533;
 } 
+
+
+.table-fields .charts_table_bg span.bg {
+  max-width: 97%;
+}
 /* history_legend css end  */
