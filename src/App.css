@@ -3978,9 +3978,10 @@ padding-bottom: 0.525em;
   }
   
   .table_chart .table-fields th:nth-child(4){
-    line-height: 16px;
+      line-height: 16px;
       padding: 0px 0;
       font-weight: normal;
+      font-size: 14px;
   }
   .table_chart .table-fields th:nth-child(3){
     width: 39% !important;
