@@ -6,7 +6,8 @@ import { useCallback } from "react";
 import ExportDropdown from "../common/ExportDropdown";
 import PrintButton from "../common/PrintButton";
 import useLanguage from "../../hooks/useLanguage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { settrialStatusModal } from "../../redux/features/userSlice";
 
 const PageSubHeader = ({
   tabLinksArray,
@@ -17,6 +18,7 @@ const PageSubHeader = ({
   setSelectedOptions, // Receive setSelectedOptions here
 }) => {
   const { lang } = useParams();
+  const dispatch = useDispatch();
   const currentLanguage = useLanguage(lang);
   const user = useSelector((state) => state.user.user); // Access pages from Redux store
   const hasAccess = user?.HasScreenerChartsAccess == "true";
@@ -60,19 +62,29 @@ const PageSubHeader = ({
                     onClick={(e) => {
                       e.preventDefault();
                       const isFreePage =
-                      tabItem.tabLinkId == import.meta.env.VITE_FREEPAGESUBID;
+                        tabItem.tabLinkId == import.meta.env.VITE_FREEPAGESUBID;
                       if (hasAccess) {
                         handleActiveTabLink(tabItem.tabLinkId);
                       } else {
                         if (isFreePage) {
                           handleActiveTabLink(tabItem.tabLinkId);
                         } else {
-                          e.preventDefault();
-                          navigate(`/${selectedLanguage}/request`);
+                          if (
+                            user?.IsScreenerTrialOrScreenerPackageExpired ==
+                            "true"
+                          ) {
+                            dispatch(
+                              settrialStatusModal({
+                                visible: true,
+                                status: 0,
+                              })
+                            );
+                          } else {
+                            e.preventDefault();
+                            navigate(`/${selectedLanguage}/request`);
+                          }
                         }
                       }
-
-                   
                     }}
                   >
                     <span>{localized(tabItem, "name", currentLanguage)}</span>

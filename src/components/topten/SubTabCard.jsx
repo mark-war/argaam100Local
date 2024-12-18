@@ -313,6 +313,8 @@ const SubTabCard = ({
         const rank = item.Rank ?? item.rankno ?? null;
         const chartWidth = rankToBarWidth[rank] || "";
 
+        const barColor =
+          activeSection === 34 ? "green" : activeSection === 35 ? "red" : "";
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
           if (maxValue > 10_000_000) {
@@ -344,7 +346,7 @@ const SubTabCard = ({
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
         const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
-        console.log("RESPONSE: ", item);
+
         return (
           <React.Fragment key={index}>
             <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
@@ -373,7 +375,7 @@ const SubTabCard = ({
               <td>
                 <div className="charts_table_bg" style={{ width: rowWidth }}>
                   <span
-                    className="bg"
+                    className={`bg ${barColor}`}
                     style={{
                       width: chartWidth,
                       //backgroundColor: chartValue < 0 ? "red" : "#9ac6e6", // Set background to red if chartValue is negative

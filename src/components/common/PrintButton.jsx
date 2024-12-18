@@ -3,15 +3,25 @@ import { printScreen } from "../../utils/printPage";
 import { isEmpty } from "../../utils/helperFunctions";
 import { showError } from "../../utils/toastutil";
 import { strings } from "../../utils/constants/localizedStrings";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { settrialStatusModal } from "../../redux/features/userSlice";
 
 const PrintButton = () => {
-
   const user = useSelector((state) => state.user.user);
   const hasAccess = user?.HasScreenerChartsAccess === "true";
-
+  const dispatch = useDispatch();
   const checkAccess = () => {
     if (user?.CpUser === "true") return true;
+
+    if (user?.IsScreenerTrialOrScreenerPackageExpired == "true") {
+      dispatch(
+        settrialStatusModal({
+          visible: true,
+          status: 0,
+        })
+      );
+      return false;
+    }
 
     if (!(!isEmpty(user) && hasAccess)) {
       showError(strings["analystuserexcelerror"]);
@@ -20,14 +30,13 @@ const PrintButton = () => {
     return true;
   };
 
-  const print = ()=>{
+  const print = () => {
     if (!checkAccess()) {
       return;
     }
 
     printScreen();
-
-  }
+  };
 
   return (
     <a className="screen_icons no-print" href="#" onClick={print}>

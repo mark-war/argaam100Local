@@ -30,6 +30,7 @@ import { UpdateExcelCount } from "../../services/screenerApi";
 import { showError, showSuccess } from "../../utils/toastutil";
 import { toast } from "react-toastify";
 import { isEmpty } from "../../utils/helperFunctions";
+import { settrialStatusModal } from "../../redux/features/userSlice";
 // import {
 //   addNewTopTenItem,
 //   fetchMultipleTabTopTenData,
@@ -152,7 +153,15 @@ const ExportDropdown = (activeTabLink = {}) => {
 
   const checkAccess = () => {
     if (user?.CpUser === "true") return true;
-
+    if (user?.IsScreenerTrialOrScreenerPackageExpired == "true") {
+      dispatch(
+        settrialStatusModal({
+          visible: true,
+          status: 0,
+        })
+      );
+      return false;
+    }
     if (!(!isEmpty(user) && hasAccess && isExcelAllowed)) {
       showError(strings["analystuserexcelerror"]);
       return false;

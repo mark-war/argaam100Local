@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { localized } from "../../utils/localization";
 import { PAGES } from "../../utils/constants/localizedStrings";
 import ExportDropdown from "../common/ExportDropdown";
 import PrintButton from "../common/PrintButton";
 import { selectCurrentLanguage } from "../../redux/selectors";
+import { settrialStatusModal } from "../../redux/features/userSlice";
 
 const TopCompaniesSubHeader = ({
   title,
@@ -14,12 +15,13 @@ const TopCompaniesSubHeader = ({
   activeSubTabs,
 }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user); // Access pages from Redux store
   const hasAccess = user?.HasScreenerChartsAccess == "true";
   const selectedLanguage = useSelector(
     (state) => state?.language?.currentLanguage
   );
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="shadow_btm sub_header top_companies">
@@ -56,17 +58,28 @@ const TopCompaniesSubHeader = ({
                         tabItem.defaultSubTab
                       );
                     } else {
-                      if (isFreePage) {  
+                      if (isFreePage) {
                         handleActiveTabLink(
                           tabItem.tabLinkId,
                           tabItem.defaultSubTab
                         );
                       } else {
-                        e.preventDefault();
-                        navigate(`/${selectedLanguage}/request`);
+                        if (
+                          user?.IsScreenerTrialOrScreenerPackageExpired ==
+                          "true"
+                        ) {
+                          dispatch(
+                            settrialStatusModal({
+                              visible: true,
+                              status: 0,
+                            })
+                          );
+                        } else {
+                          e.preventDefault();
+                          navigate(`/${selectedLanguage}/request`);
+                        }
                       }
                     }
-                    
                   }}
                 >
                   <span>{localized(tabItem, "name", currentLanguage)}</span>
