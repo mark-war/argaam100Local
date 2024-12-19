@@ -185,10 +185,11 @@ const SubSection = ({
   const isTopGrowthRevenueChart =
     section?.tabID == "12" && section?.pkey == "35" ? true : false;
 
-  const activeTabunit =
-    sortedSubTabs[activeSubTab][
-      currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
-    ];
+  const activeTabunit = sortedSubTabs[activeSubTab]
+    ? sortedSubTabs[activeSubTab][
+        currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
+      ]
+    : null;
 
   const unit = localized(section, "unitName", currentLanguage);
 
