@@ -5,13 +5,13 @@ export const strings = new LocalizedStrings({
     topTen: "Top 10",
     screener: "Screener",
     navLinkArgaam: "Argaam",
-    navCharts:"Charts",
-    navMacro:"Macro",
-    navRequest:"Request Product",
+    navCharts: "Charts",
+    navMacro: "Macro",
+    navRequest: "Request Product",
     navLinkAbout: "About Us",
     sector: "Sector",
     date: "Last Update :",
-    code: "Symbol", 
+    code: "Symbol",
     companies: "Companies",
     sector: "Sector",
     pemtt: "P/E (MTT)",
@@ -144,7 +144,7 @@ export const strings = new LocalizedStrings({
 
     multiplesnote:
       "P/E ratio is calculated based on net profit before unusual Items",
-    stockperformancenote: "Prices according to Last close",
+    stockperformancenote: "Prices according to last close",
     capitalreturn: "Capital Appreciation",
     totalreturn: "Total return",
     totalreturnreinvestment: "Total Return Including Dividend Reinvestment",
@@ -159,9 +159,9 @@ export const strings = new LocalizedStrings({
     topTen: "أعلى 10",
     screener: "تحليل الاسهم",
     navLinkArgaam: "أرقام",
-    navCharts:"Charts",
-    navMacro:"Macro",
-    navRequest:"اطلب المنتج",
+    navCharts: "Charts",
+    navMacro: "Macro",
+    navRequest: "اطلب المنتج",
     navLinkAbout: "معلومات عنا",
     code: "الرمز",
     companies: "الشركة",
@@ -223,9 +223,11 @@ export const strings = new LocalizedStrings({
     growthtooltiptext4: "ما الشركات التي تظهر في القائمة؟",
     growthtooltiptext5:
       "الشركة التي حققت نموا مقارناَ في الربحية لـ 65% أو أكثر من الأرباع للفترة المختارة.",
-    growthtooltiptext6: "تتم المقارنة باستعمال ربح السهم قبل البنود الاستثنائية",
+    growthtooltiptext6:
+      "تتم المقارنة باستعمال ربح السهم قبل البنود الاستثنائية",
     growthtooltiptext7: "لا يتم احتساب أي ربع تحقق فيه الشركة خسارة صافية",
-    growthtooltiptext8: "يتم تحديث البيانات في كل مرة تعلن شركة بالسوق عن نتائجها (أكثر من 800 مرة سنويا)",
+    growthtooltiptext8:
+      "يتم تحديث البيانات في كل مرة تعلن شركة بالسوق عن نتائجها (أكثر من 800 مرة سنويا)",
     definitions: "تعريفات",
     loosinggrowthtooltiptext5:
       "الشركة التي حققت خسائر ربعية لـ 60% أو أكثر من الأرباع للفترة المختارة.",
@@ -270,7 +272,8 @@ export const strings = new LocalizedStrings({
     confirmpassrequired: "الرجاء تأكيد كلمة المرور",
     submit: "إرسال",
     excelDownloadError: "عفواً، لقد تخطيت عدد مرات التحميل المتاحة",
-    analystuserexcelerror: "عذرا، تحميل الملفات متاح لمشتركي باقات أرقام بلس و التجربة المجانية فقط ، لمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
+    analystuserexcelerror:
+      "عذرا، تحميل الملفات متاح لمشتركي باقات أرقام بلس و التجربة المجانية فقط ، لمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
     freeuserexcelerror:
       "عذراً، تحميل الملفات متاح لمشتركي باقات أرقام بلس فقط، ولمزيد من المعلومات يرجى التواصل مع فريق المبيعات",
     requestconfirm:

@@ -185,10 +185,11 @@ const SubSection = ({
   const isTopGrowthRevenueChart =
     section?.tabID == "12" && section?.pkey == "35" ? true : false;
 
-  const activeTabunit =
-    sortedSubTabs[activeSubTab][
-      currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
-    ];
+  const activeTabunit = sortedSubTabs[activeSubTab]
+    ? sortedSubTabs[activeSubTab][
+        currentLanguage == "en" ? "fiscalUnitEn" : "fiscalUnitAr"
+      ]
+    : null;
 
   const unit = localized(section, "unitName", currentLanguage);
 
@@ -201,13 +202,13 @@ const SubSection = ({
             <span className="first_heading">
               {localized(section, "fieldName", currentLanguage)}{" "}
             </span>
-            {sortedSubTabs[activeSubTab] && activeTabunit ? (
+            {sortedSubTabs[activeSubTab] && activeTabunit && !isMultiple ? (
               <span className="unit">{activeTabunit}</span>
             ) : null}
             {selectedTabKey === TABS.T_RANKING &&
             activeSubTab !== 1 &&
             activeSubTab !== 0 &&
-            unit ? null : (
+            unit ? null : unit === "" ? null : (
               <span className="unit">{unit}</span>
             )}
             {/* {(isTopGrowthChart || isTopLoosingChart) && (

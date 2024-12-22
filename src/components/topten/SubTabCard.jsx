@@ -314,7 +314,11 @@ const SubTabCard = ({
         const chartWidth = rankToBarWidth[rank] || "";
 
         const barColor =
-          activeSection === 34 ? "green" : activeSection === 35 ? "red" : "";
+          activeSection === 34 || activeSection === 30
+            ? "green"
+            : activeSection === 35 || activeSection === 31
+            ? "red"
+            : "";
         // Determine row width based on the max value
         const getRowWidth = (maxValue) => {
           if (maxValue > 10_000_000) {
