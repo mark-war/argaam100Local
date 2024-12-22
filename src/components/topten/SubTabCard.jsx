@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import RaceChart from "../common/RaceChart";
-import { strings, TABS } from "../../utils/constants/localizedStrings";
+import { SECTORS, strings, TABS } from "../../utils/constants/localizedStrings";
 import { localized } from "../../utils/localization";
 import NumberFormatter from "../common/NumberFormatter";
 import { generateRankToBarWidth } from "../../utils/generateRankToBarWidth";
@@ -30,17 +30,30 @@ const SubTabCard = ({
   );
   const [activeChart, setactiveChart] = useState(null);
 
-  const renderCompanyColumn = (item) => (
-    <a
-      target="_blank"
-      rel="noreferrer"
-      href={`${argaamUrl(item.Code.split(".")[0])}`}
-      className="company-link"
-    >
-      {/* <img alt="Image" src={item.LogoUrl} className="logo_image" /> */}
-      <span>{localized(item, "ShortName", currentLanguage)}</span>
-    </a>
-  );
+  // const renderCompanyColumn = (item) => (
+  //   <a
+  //     target="_blank"
+  //     rel="noreferrer"
+  //     href={`${argaamUrl(item.Code.split(".")[0])}`}
+  //     className="company-link"
+  //   >
+  //     {/* <img alt="Image" src={item.LogoUrl} className="logo_image" /> */}
+  //     <span>{localized(item, "ShortName", currentLanguage)}</span>
+  //   </a>
+  // );
+
+  const renderCompanyColumn = (item) => {
+    const isInsuranceSector = item.ArgaamSectorID === SECTORS.INSURANCE;
+    const url = isInsuranceSector
+      ? `${argaamUrl(null, item.CompanyID, item.ShortNameEn)}`
+      : `${argaamUrl(item.Code.split(".")[0])}`;
+
+    return (
+      <a target="_blank" rel="noreferrer" href={url} className="company-link">
+        <span>{localized(item, "ShortName", currentLanguage)}</span>
+      </a>
+    );
+  };
 
   const processSubSection = useCallback(
     (data) => {
