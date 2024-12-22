@@ -3445,7 +3445,7 @@ padding-bottom: 0.525em;
   }
 
   .navbar .navbar-brand img {
-    max-width: 230px;
+    max-width: 150px !important;
   }
 
   .navbar .navbar-toggler {
@@ -3507,12 +3507,17 @@ padding-bottom: 0.525em;
 [lang="ar"]  .history_legend .border-start {
   padding-left: 40px !important;
 }
+.table_chart .table-fields th:nth-child(4) {
+  font-size: 12px !important;
+  white-space: normal;
+  min-width: 130px !important;
+}
 
 }
 
 @media screen and (max-width: 575px) {
   .navbar .navbar-brand img {
-    max-width: 220px;
+    max-width: 130px !important;
   }
 
   /* .table_chart .table_layout.table th:nth-child(2),
@@ -3578,6 +3583,11 @@ padding-bottom: 0.525em;
   }
   [lang="ar"] .charts_table_bg span.bg {
     margin-right: 13px;
+}
+.table_chart .table-fields th:nth-child(4) {
+  font-size: 12px !important;
+  white-space: normal;
+  min-width: 130px !important;
 }
 }
 
@@ -4016,5 +4026,10 @@ padding-bottom: 0.525em;
 
 .table-fields .charts_table_bg span.bg {
   max-width: 97%;
+}
+
+
+.navbar .navbar-brand img{
+  max-width: 30%;
 }
 /* history_legend css end  */
