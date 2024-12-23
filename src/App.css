@@ -2535,8 +2535,8 @@ padding-top: 2px;
     width:  max-content;
     line-height: 17px; 
     border: 1px solid rgb(204, 204, 204);
-    background-color: rgb(32, 53, 102) !important;
-    color: rgb(255, 255, 255) !important;
+    /* background-color: rgb(32, 53, 102) !important; */
+    color: rgb(0, 0, 0) !important;
     font-weight: normal;
     /* margin-left: 28px; */
   }
@@ -2782,6 +2782,9 @@ padding-bottom: 0.525em;
 }
 .table.table_layout th, .table.table_layout td{
   padding: 0.6em 0.625em 0.525em 0.625em;
+}
+.table_chart .table-fields tbody td:nth-child(3) {
+  max-width: 43% !important;
 }
 }
 @media screen and (max-width: 1600px) and (min-width: 1025px)  {
@@ -3588,6 +3591,10 @@ padding-bottom: 0.525em;
   font-size: 12px !important;
   white-space: normal;
   min-width: 130px !important;
+}
+
+.table_chart .table-fields tbody td:nth-child(3) {
+  max-width: 36% !important;
 }
 }
 
