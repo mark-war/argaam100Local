@@ -57,16 +57,26 @@ const NumberFormatter = ({
       value < 0
         ? `(${Math.abs(value).toFixed(2)})` // Add parentheses for negative numbers
         : // : value; // Return formatted number
-          parseFloat((value)).toFixed(2);
+          parseFloat(value).toFixed(2);
 
     // if (showPercentage) {
     //   formattedValue = `${formattedValue}%`;
     // }
 
     return (
+      // <span
+      //   style={{
+      //     color: Number(value) < 0 ? "red" : "inherit",
+      //   }}
+      // >
       <span
         style={{
-          color: Number(value) < 0 ? "red" : "inherit",
+          color:
+            activeSection === 30
+              ? "green"
+              : Number(value) < 0
+              ? "red"
+              : "inherit",
         }}
       >
         {formattedValue}

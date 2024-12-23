@@ -372,21 +372,22 @@ const SubTabCard = ({
               </td>
               <td className="td_img">
                 <span className="d-flex align-items-center">
-                  <a
+                  {renderCompanyColumn(item)}
+                  {/* <a
                     target="_blank"
                     rel="noreferrer"
                     href={`${argaamUrl(
                       item.Code ? item.Code.split(".")[0] : ""
                     )}`}
                     className="company-link"
-                  >
-                    {/* <img
+                  > */}
+                  {/* <img
                       alt="Image"
                       src={item.LogoUrl}
                       className="logo_image"
                     /> */}
-                    <span>{localized(item, "ShortName", currentLanguage)}</span>
-                  </a>
+                  {/* <span>{localized(item, "ShortName", currentLanguage)}</span>
+                  </a> */}
                 </span>
               </td>
               <td>
