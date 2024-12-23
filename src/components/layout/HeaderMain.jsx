@@ -10,6 +10,7 @@ import { redirectLogin, resetUser } from "../../utils/authHelper.js";
 import AskQuestion from "./AskQuestion.jsx";
 import Argaam100LogoAr from "../../assets/images/argaam_100_AR.svg";
 import Argaam100LogoEn from "../../assets/images/argaam_100_EN.svg";
+import useIsMobile from "../../hooks/useIsMobile.js";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const HeaderMain = () => {
   const { lang } = useParams(); // Access the current language from URL parameters
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const isMobile = useIsMobile();
   const dropdownRef = useRef(null); // Create a ref for the dropdown element
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
@@ -175,6 +177,39 @@ const HeaderMain = () => {
                 {strings.navLinkAbout}
               </a>
             </li> */}
+            {isMobile && (
+              <>
+                <li className="nav-item">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`https://www.argaamcharts.com/${selectedLanguage}`}
+                    className="nav-link"
+                  >
+                    {strings.navCharts}
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`https://macro.argaam.com/${selectedLanguage}`}
+                    className="nav-link"
+                  >
+                    {strings.navMacro}
+                  </a>
+                </li>
+                <li>
+                  {" "}
+                  <Link
+                    to={`/${selectedLanguage}/request`}
+                    className="nav-link"
+                  >
+                    {strings.requestproductdetails}
+                  </Link>
+                </li>
+              </>
+            )}
             <LanguageSwitcher /> {/* Add the new component */}
           </ul>
         </div>
@@ -332,7 +367,7 @@ const HeaderMain = () => {
                               <a
                                 className="dropdown-item"
                                 onClick={() => {
-                                  setIsOpen(false)
+                                  setIsOpen(false);
                                   resetUser();
                                 }}
                               >
@@ -378,7 +413,7 @@ const HeaderMain = () => {
                         </svg>
                       </div>
 
-                      {user?.HasScreenerChartsAccess !== "true" ? (
+                      {user?.HasScreenerChartsAccess !== "true" && !isMobile ? (
                         <div className="request-btn">
                           {" "}
                           <Link
