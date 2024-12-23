@@ -13,6 +13,7 @@ import { selectCurrentLanguage } from "../../redux/selectors";
 import ReactModal from "react-modal";
 import useScrollbarVisibility from "../../hooks/useScrollbarVisibility";
 import Tooltip from "../common/Tooltip";
+import useIsMobile from "../../hooks/useIsMobile";
 
 function PopupTooltip({
   isOpen,
@@ -112,7 +113,7 @@ const SubSection = ({
   let sortedSubTabs = [...section.subTabs].sort(
     (a, b) => Number(a.displaySeq) - Number(b.displaySeq)
   );
-
+  const isMobile = useIsMobile();
   const [loading, setLoading] = useState({});
   const [modalOpen, setmodalOpen] = useState(false);
   const note = localized(section, "notes", currentLanguage);
@@ -233,7 +234,7 @@ const SubSection = ({
               <Tooltip
                 tooltipText={note}
                 tooltipCustomPlacement={
-                  currentLanguage == "en" ? "right" : "left"
+                  isMobile ? "top" : currentLanguage == "en" ? "right" : "left"
                 }
               >
                 <i className="textComment_icon"></i>
