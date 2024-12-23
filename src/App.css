@@ -3176,6 +3176,7 @@ padding-bottom: 0.525em;
   .charts_table_bg {
     margin-left: -25px;
     width: 100% !important;
+    max-width: 75%;
   }
   [lang="ar"] .charts_table_bg {
     margin-right: -25px;
