@@ -4,16 +4,24 @@ import { LANGUAGES } from "../utils/constants/localizedStrings";
 const useArgaamUrl = () => {
   const { lang } = useParams();
 
+  //LIVE URL
+  // const argaamBaseUrl = "https://www.argaam.com/"
+  // const chartsBaseUrl = "https://www.argaamcharts.com/"
+
+  //QA URL
+  const argaamBaseUrl = "https://ppliveargaamplus.edanat.com/";
+  const chartsBaseUrl = "https://charts2.edanat.com/";
+
   const getBaseUrl = () => {
     return lang === LANGUAGES.AR
-      ? "https://www.argaamcharts.com/ar/"
-      : "https://www.argaamcharts.com/en/";
+      ? chartsBaseUrl + "ar/"
+      : chartsBaseUrl + "en/";
   };
 
   const getArgaamUrl = () => {
     return lang === LANGUAGES.AR
-      ? `https://www.argaam.com/ar/company/companyoverview/marketid/3/companyid/`
-      : `https://www.argaam.com/en/tadawul/tasi/`;
+      ? argaamBaseUrl + `ar/company/companyoverview/marketid/3/companyid/`
+      : argaamBaseUrl + `en/tadawul/tasi/`;
   };
 
   const argaamUrl = (symbol = null, companyId = null, companyName = null) => {
