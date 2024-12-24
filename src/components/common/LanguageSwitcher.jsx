@@ -12,7 +12,7 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <li className="nav-item">
+    <li className="nav-item languauge_web">
       <a className="nav-link" onClick={handleLanguageSwitch} href="#">
         {lang === LANGUAGES.AR
           ? LANGUAGES.EN.toUpperCase()

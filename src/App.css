@@ -3064,6 +3064,16 @@ padding-bottom: 0.525em;
     padding-top: 10px;
   }
 
+  .nav-item.languauge_web{
+    display: none !important;
+  }
+  .language_mobile .nav-item.languauge_web {
+    display: block !important;
+}
+.language_mobile{
+  margin: 0;
+  padding: 0;
+}
   /* Mobile Nav Ends */
 }
 
@@ -4101,3 +4111,9 @@ padding-bottom: 0.525em;
   max-width: 30%;
 }
 /* history_legend css end  */
+.nav-item.languauge_web{
+  display: block;
+}
+.language_mobile .nav-item.languauge_web {
+  display: none;
+}

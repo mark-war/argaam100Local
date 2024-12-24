@@ -266,6 +266,7 @@ const HeaderMain = () => {
                 )}
               </NavLink>
             </div>
+            
             {/* <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                  {navLinks.map((link, index) => {
@@ -431,6 +432,9 @@ const HeaderMain = () => {
                 </div>
               </div>
             </div>
+            <ul className="language_mobile">
+              <LanguageSwitcher />
+              </ul>
           </div>
         </div>
       </nav>
