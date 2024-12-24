@@ -3074,6 +3074,15 @@ padding-bottom: 0.525em;
   margin: 0;
   padding: 0;
 }
+
+.top_textcomment_icon,
+ .textComment_icon_disabled,
+  .textComment_icon {
+  width: 20px;
+  height: 20px;
+  background-size: 100%;
+  top: 0;
+}
   /* Mobile Nav Ends */
 }
 
