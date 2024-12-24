@@ -47,7 +47,7 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
       ref={iconRef}
       onMouseEnter={() => (!isEmpty(tooltipText) ? setShowTooltip(true) : null)}
       onMouseLeave={() => setShowTooltip(false)}
-      className="textComment_iconPane"
+      className="textComment_iconPane top_textComment"
       style={{ position: "relative", display: "inline-block" }}
     >
       {children}

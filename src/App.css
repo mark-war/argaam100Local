@@ -2531,7 +2531,7 @@ tr.activeRow{
    cursor: pointer;
 
 }
-.textComment_iconPane.top_textComment div {
+.sub_heading .textComment_iconPane.top_textComment div {
        background-color: rgb(32, 53, 102) !important;
        color: rgb(255, 255, 255) !important;
 }
