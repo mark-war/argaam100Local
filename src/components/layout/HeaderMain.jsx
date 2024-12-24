@@ -217,13 +217,43 @@ const HeaderMain = () => {
       </div>
       {/* Mobile Nav Ends */}
 
-      <nav className="navbar navbar-expand-md navbar-light sticky bg-light shadow_btm">
+      <nav className="navbar navbar-expand-md navbar-light sticky bg-light shadow_btm respons__mobile">
         <div className="container-fluid px-layout">
           <div className="d-flex container_inner w-100 align-items-center">
             <div className="flex-fill justify-content-center">
               {/* <Suspense fallback={<LoadingScreen />}>
                 <ScreenerLogo />
               </Suspense> */}
+               <div
+                        className="nav_toggle"
+                        onClick={toggleMobileDropdown}
+                      >
+                        <svg
+                          fill="#000000"
+                          width="30"
+                          version="1.1"
+                          id="Layer_1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 455 455"
+                        >
+                          <g strokeWidth="0"></g>
+                          <g
+                            id="SVGRepo_tracerCarrier"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          ></g>
+                          <g id="SVGRepo_iconCarrier">
+                            {" "}
+                            <g>
+                              {" "}
+                              <rect y="380" height="15" width="455"></rect>{" "}
+                              <rect y="212.5" width="455" height="15"></rect>{" "}
+                              <rect y="50.5" width="455" height="15"></rect>{" "}
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+
               <NavLink
                 className="navbar-brand"
                 to={`/${lang}/argaam-100`}
@@ -383,36 +413,7 @@ const HeaderMain = () => {
                         </ul>
                       )}
                       {/* Toggle Button */}
-                      <div
-                        className="nav_toggle"
-                        onClick={toggleMobileDropdown}
-                      >
-                        <svg
-                          fill="#000000"
-                          width="30"
-                          version="1.1"
-                          id="Layer_1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 455 455"
-                        >
-                          <g strokeWidth="0"></g>
-                          <g
-                            id="SVGRepo_tracerCarrier"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          ></g>
-                          <g id="SVGRepo_iconCarrier">
-                            {" "}
-                            <g>
-                              {" "}
-                              <rect y="380" height="15" width="455"></rect>{" "}
-                              <rect y="212.5" width="455" height="15"></rect>{" "}
-                              <rect y="50.5" width="455" height="15"></rect>{" "}
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-
+                     
                       {user?.HasScreenerChartsAccess !== "true" && !isMobile ? (
                         <div className="request-btn">
                           {" "}

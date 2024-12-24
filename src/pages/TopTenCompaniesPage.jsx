@@ -200,7 +200,7 @@ const TopTenCompaniesPage = () => {
 
   return (
     <MainLayout>
-      <div className="pb-5 min__height">
+      <div className="pb-5 min__height respons__mobile">
         <TopCompaniesSubHeader
           title={
             selectedSection
