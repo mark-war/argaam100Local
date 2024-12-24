@@ -64,21 +64,22 @@ const NumberFormatter = ({
     // }
 
     return (
-      // <span
+      //  <span
+      //    style={{
+      //      color: Number(value) < 0 ? "red" : "inherit",
+      //    }}
+      //  >
+      //   <span
       //   style={{
-      //     color: Number(value) < 0 ? "red" : "inherit",
+      //     color:
+      //       activeSection === 30
+      //         ? "green"
+      //         : Number(value) < 0
+      //         ? "red"
+      //         : "inherit",
       //   }}
       // >
-      <span
-        style={{
-          color:
-            activeSection === 30
-              ? "green"
-              : Number(value) < 0
-              ? "red"
-              : "inherit",
-        }}
-      >
+      <span>
         {formattedValue}
         {unit}
       </span>
