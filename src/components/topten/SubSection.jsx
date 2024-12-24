@@ -237,7 +237,7 @@ const SubSection = ({
                   isMobile ? "top" : currentLanguage == "en" ? "right" : "left"
                 }
               >
-                <i className="textComment_icon"></i>
+                <i className="top_textcomment_icon"></i>
               </Tooltip>
             ) : null}
 
