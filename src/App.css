@@ -3360,6 +3360,7 @@ padding-bottom: 0.525em;
   .table_chart tbody td:nth-child(3),
   .table_chart th:nth-child(3) {
     width: 43% !important;
+    line-height: 14px;
   }
 
   [lang="ar"] .table_chart tbody td:nth-child(3),
