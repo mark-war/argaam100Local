@@ -120,7 +120,7 @@ const HeaderMain = () => {
           ref={dropdownMobileRef}
         >
           <ul>
-            <li>
+            <li className="dropdown__menu">
               <a className="dropdown-item">
                 <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
                   <img alt="Image" src="/assets/images/user.svg" />
@@ -129,7 +129,11 @@ const HeaderMain = () => {
                 {!isEmpty(user) ? (
                   <>
                     <strong>{user?.Username}</strong>
-                    <button className="accordion_nav"
+                 
+                  </>
+                ):<strong>{strings.login}</strong>}
+              </a>
+              <a className="accordion_nav"
                       onClick={() =>
                         !isEmpty(user)
                           ? setisAccordionOpen(!isAccordionOpen)
@@ -137,10 +141,7 @@ const HeaderMain = () => {
                       }
                     >
                       
-                    </button>
-                  </>
-                ):<strong>{strings.login}</strong>}
-              </a>
+                    </a>
             </li>
             {isAccordionOpen ? (
               <>

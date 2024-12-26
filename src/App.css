@@ -3608,7 +3608,7 @@ padding-bottom: 0.525em;
   padding: 0;
   border: none;
   cursor: pointer;
-  background-image: url(./assets/images/arrow_slide_R.svg) !important;
+  background-image: url(/src/assets/images/arrow_slide_R.svg) !important;
   background-repeat: no-repeat;
   background-position: center;
   height: 20px;
@@ -3617,13 +3617,19 @@ padding-bottom: 0.525em;
   background-color: transparent;
   transform: rotate(90deg);
   transition: all .5s ease-in-out;
+  max-width: 163px;
+  top: 12px;
+  position: absolute;
+  right: 0;
+}
+[lang="ar"] .mobile_menu .accordion_nav{
+  left: 0;
+  right: auto;
 }
 
-.mobile_menu ul li:first-child .dropdown-item {
+.mobile_menu .dropdown__menu {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 }
 .mobile_menu .accordion_nav.open{
   transform: rotate(270deg);
