@@ -129,7 +129,7 @@ const HeaderMain = () => {
                 {!isEmpty(user) ? (
                   <>
                     <strong>{user?.Username}</strong>
-                    <button className="accordion_nav"
+                    <button className={`accordion_nav ${isAccordionOpen ? 'open': ' '}`}
                       onClick={() =>
                         !isEmpty(user)
                           ? setisAccordionOpen(!isAccordionOpen)
