@@ -11,6 +11,7 @@ import AskQuestion from "./AskQuestion.jsx";
 import Argaam100LogoAr from "../../assets/images/argaam_100_AR.svg";
 import Argaam100LogoEn from "../../assets/images/argaam_100_EN.svg";
 import useIsMobile from "../../hooks/useIsMobile.js";
+import { isEmpty } from "../../utils/helperFunctions.js";
 
 const HeaderMain = () => {
   const dispatch = useDispatch();
@@ -107,60 +108,66 @@ const HeaderMain = () => {
     return <LoadingScreen />; // Optional: Show loading screen if pages data is not available
   }
 
+  const [isAccordionOpen, setisAccordionOpen] = useState(false);
+
   return (
     <>
       {/* Mobile Nav Starts */}
       <div className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}>
         <div
           className="mobile_menu"
-          onClick={user ? handleMenuInnerClick : () => onLoginPress()}
+          onClick={!user ? () => onLoginPress(): null }
           ref={dropdownMobileRef}
         >
           <ul>
-            {/* {user ? ( */}
             <li>
-              <a href="#" className="dropdown-item">
+              <a className="dropdown-item">
                 <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
                   <img alt="Image" src="/assets/images/user.svg" />
                 </button>
-                <strong>{user?.Username}</strong>
+              
+                {!isEmpty(user) ? (
+                  <>
+                    <strong>{user?.Username}</strong>
+                    <button
+                      onClick={() =>
+                        !isEmpty(user)
+                          ? setisAccordionOpen(!isAccordionOpen)
+                          : null
+                      }
+                    >
+                      toggle
+                    </button>
+                  </>
+                ):<strong>{strings.login}</strong>}
               </a>
             </li>
-            {/* ) : (
-              <li>
-                <a
-                  href="#"
-                  className="dropdown-item"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onLoginPress();
-                  }}
-                >
-                  Login
-                </a>
-              </li>
-            )} */}
-            <li>
-              <a href="#" className="dropdown-item">
-                <img
-                  alt="Image"
-                  className="mr_10"
-                  src="/assets/images/qmark.svg"
-                />{" "}
-                {strings.anyQuestions}
-              </a>
-            </li>
-            {user ? (
-              <li onClick={() => resetUser()}>
-                <a href="#" className="dropdown-item">
-                  <img
-                    alt="Image"
-                    className="mr_10"
-                    src="/assets/images/logout.svg"
-                  />{" "}
-                  {strings.signOut}
-                </a>
-              </li>
+            {isAccordionOpen ? (
+              <>
+                <li>
+                  <a className="dropdown-item">
+                    <img
+                      alt="Image"
+                      className="mr_10"
+                      src="/assets/images/qmark.svg"
+                    />{" "}
+                    {strings.anyQuestions}
+                  </a>
+                </li>
+
+                {user ? (
+                  <li onClick={() => resetUser()}>
+                    <a href="#" className="dropdown-item">
+                      <img
+                        alt="Image"
+                        className="mr_10"
+                        src="/assets/images/logout.svg"
+                      />{" "}
+                      {strings.signOut}
+                    </a>
+                  </li>
+                ) : null}
+              </>
             ) : null}
             <li className="nav-item">
               <a
@@ -224,35 +231,32 @@ const HeaderMain = () => {
               {/* <Suspense fallback={<LoadingScreen />}>
                 <ScreenerLogo />
               </Suspense> */}
-               <div
-                        className="nav_toggle"
-                        onClick={toggleMobileDropdown}
-                      >
-                        <svg
-                          fill="#000000"
-                          width="30"
-                          version="1.1"
-                          id="Layer_1"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 455 455"
-                        >
-                          <g strokeWidth="0"></g>
-                          <g
-                            id="SVGRepo_tracerCarrier"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          ></g>
-                          <g id="SVGRepo_iconCarrier">
-                            {" "}
-                            <g>
-                              {" "}
-                              <rect y="380" height="15" width="455"></rect>{" "}
-                              <rect y="212.5" width="455" height="15"></rect>{" "}
-                              <rect y="50.5" width="455" height="15"></rect>{" "}
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
+              <div className="nav_toggle" onClick={toggleMobileDropdown}>
+                <svg
+                  fill="#000000"
+                  width="30"
+                  version="1.1"
+                  id="Layer_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 455 455"
+                >
+                  <g strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <g>
+                      {" "}
+                      <rect y="380" height="15" width="455"></rect>{" "}
+                      <rect y="212.5" width="455" height="15"></rect>{" "}
+                      <rect y="50.5" width="455" height="15"></rect>{" "}
+                    </g>
+                  </g>
+                </svg>
+              </div>
 
               <NavLink
                 className="navbar-brand"
@@ -266,7 +270,7 @@ const HeaderMain = () => {
                 )}
               </NavLink>
             </div>
-            
+
             {/* <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                  {navLinks.map((link, index) => {
@@ -414,7 +418,7 @@ const HeaderMain = () => {
                         </ul>
                       )}
                       {/* Toggle Button */}
-                     
+
                       {user?.HasScreenerChartsAccess !== "true" && !isMobile ? (
                         <div className="request-btn">
                           {" "}
@@ -434,7 +438,7 @@ const HeaderMain = () => {
             </div>
             <ul className="language_mobile">
               <LanguageSwitcher />
-              </ul>
+            </ul>
           </div>
         </div>
       </nav>
