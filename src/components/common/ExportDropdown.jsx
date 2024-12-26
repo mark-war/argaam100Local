@@ -143,6 +143,7 @@ const ExportDropdown = (activeTabLink = {}) => {
   const structuredTopTenData = getFilteredData(isMultiple);
 
   const handleExport = (option) => {
+    
     setDropdownOpen(false); // Close dropdown after selection
     if (option === "current") {
       handleCurrentTabExport();
@@ -300,6 +301,11 @@ const ExportDropdown = (activeTabLink = {}) => {
 
   // Function to handle the toggle of the dropdown
   const toggleDropdown = (event) => {
+
+    if (!checkAccess()) {
+      return;
+    }
+
     event.stopPropagation(); // Prevent the click event from bubbling up
     setDropdownOpen((prev) => !prev);
   };
