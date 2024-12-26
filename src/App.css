@@ -3602,6 +3602,32 @@ padding-bottom: 0.525em;
   background: #555;
 }
 
+.mobile_menu .accordion_nav{
+  font-size: 0px;
+  color: #fff;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-image: url(./assets/images/arrow_slide_R.svg) !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 20px;
+  width: 22px;
+  background-size: auto;
+  background-color: transparent;
+  transform: rotate(90deg);
+  transition: all .5s ease-in-out;
+}
+
+.mobile_menu ul li:first-child .dropdown-item {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.mobile_menu .accordion_nav.open{
+  transform: rotate(270deg);
+} 
 }
 
 @media screen and (max-width: 575px) {
@@ -4143,3 +4169,6 @@ padding-bottom: 0.525em;
 .language_mobile .nav-item.languauge_web {
   display: none;
 }
+
+
+
