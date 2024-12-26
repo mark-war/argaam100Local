@@ -3725,6 +3725,10 @@ padding-bottom: 0.525em;
   display: block !important;
 }
 
+.table_chart tbody td.leftTooltip{
+  width: 60% !important;
+}
+
 }
 
 @media screen and (max-width: 395px) {
