@@ -3278,12 +3278,12 @@ padding-bottom: 0.525em;
 
 
   .charts_table_bg {
-    margin-left: -25px;
+    margin-left: -10px;
     width: 100% !important;
     max-width: 75%;
   }
   [lang="ar"] .charts_table_bg {
-    margin-right: -25px;
+    margin-right: -18px;
     margin-left: 0px;
   }
   /* Chart CSS Starts */
@@ -4165,7 +4165,7 @@ padding-bottom: 0.525em;
     width: 39% !important;
   }
   .table_chart .table-fields tbody td:nth-child(3) {
-    width: 47% !important;
+    width: 45% !important;
 }
 [lang="ar"]  .table_chart .table-fields tbody td:nth-child(3) {
   width: 44% !important;
