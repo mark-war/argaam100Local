@@ -3893,9 +3893,17 @@ padding-bottom: 0.525em;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .tabs_nav.navbar-nav .nav-item .nav-link.active span{
+      padding-bottom: 10px;
+    }
     .sub_heading_tabs {
       padding: 12px 0;
+    }
+
+  [lang="ar"] .tabs_nav.navbar-nav .nav-item .nav-link.active span{
+    padding-bottom: 6px;
   }
+
   [lang="ar"]  .sub_heading_tabs {
     padding: 10px 0;
 }
