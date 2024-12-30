@@ -521,6 +521,7 @@ const SubTabCard = ({
                 value={includeAramco}
                 onChange={(e) => setincludeAramco(e.target.checked)}
                 checked={includeAramco}
+                className={includeAramco ? "include_aramco" : ""}
                 style={{ margin: "0 10px" }}
               />
             </th>
