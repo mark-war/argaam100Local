@@ -3761,6 +3761,8 @@ padding-bottom: 0.525em;
 .navbar .container_inner .flex-fill {
   gap: 15px;
 }
+
+
 }
 
 @media screen and (max-width: 360px) {
@@ -4159,7 +4161,7 @@ padding-bottom: 0.525em;
   left: 50%;
   top: 35%;
   }
-  
+
   .up-arrow-green {
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
@@ -4224,3 +4226,21 @@ padding-bottom: 0.525em;
 
 
 
+
+@supports (-webkit-backdrop-filter: blur(10px)) {
+  .up-arrow-green ,
+  .down-arrow-red {
+    left: 30%;
+    top: 35%;
+    right: auto;
+}
+
+[lang="ar"] .up-arrow-green ,
+[lang="ar"] .down-arrow-red {
+  left: auto;
+  top: 35%;
+  right: 30%;
+}
+
+
+  }
