@@ -4171,6 +4171,18 @@ padding-bottom: 0.525em;
       left: 50%;
       top: 35%;
   }
+
+  [lang="ar"] .down-arrow-red{
+    position: absolute;
+    left: 30%;
+    top: 35%;
+    }
+  
+    [lang="ar"] .up-arrow-green {
+        position: absolute;
+        left: 30%;
+        top: 35%;
+    }
   
   .table_chart .table-fields td{
      position: relative;
