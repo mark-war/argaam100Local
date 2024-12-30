@@ -3893,7 +3893,12 @@ padding-bottom: 0.525em;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-  
+    .sub_heading_tabs {
+      padding: 12px 0;
+  }
+  [lang="ar"]  .sub_heading_tabs {
+    padding: 10px 0;
+}
 }
 
 .ratio_msg {
