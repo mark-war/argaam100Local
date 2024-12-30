@@ -2859,6 +2859,9 @@ padding-bottom: 0.525em;
 .table_chart th:nth-child(3) {
   width: 58% !important;
 }
+.table_chart tbody td.leftTooltip{
+  width: 85% !important;
+}
 .tabs_nav.tabs_inner.navbar-nav .nav-link{
   zoom: 0.8;
 }
