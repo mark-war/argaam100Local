@@ -162,7 +162,9 @@ const SubTabCard = ({
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
-        const customClassfortop3Items  =isEmpty(section.chartConfig) && (index == 0 || index == 1 || index == 2);
+        const customClassfortop3Items =
+          isEmpty(section.chartConfig) &&
+          (index == 0 || index == 1 || index == 2);
 
         return (
           <React.Fragment key={index}>
@@ -175,7 +177,7 @@ const SubTabCard = ({
                   {renderCompanyColumn(item)}
                 </span>
               </td>
-              <td className={`${customClassfortop3Items ? 'leftTooltip' : ''}`}>
+              <td className={`${customClassfortop3Items ? "leftTooltip" : ""}`}>
                 <div className={"charts_table_bg"} style={{ width: rowWidth }}>
                   <span
                     className="bg"
@@ -319,8 +321,6 @@ const SubTabCard = ({
 
       const hasNotes = subSection.some((item) => item.NotesEn || item.NotesAr);
 
-      
-
       // Map over subSection to create rows
       return subSection.map((item, index) => {
         const chartValue =
@@ -364,8 +364,9 @@ const SubTabCard = ({
 
         const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
 
-        const customClassfortop3Items  =isEmpty(section.chartConfig) && (index == 0 || index == 1 || index == 2);
-
+        const customClassfortop3Items =
+          isEmpty(section.chartConfig) &&
+          (index == 0 || index == 1 || index == 2);
 
         return (
           <React.Fragment key={index}>
@@ -393,7 +394,7 @@ const SubTabCard = ({
                   </a> */}
                 </span>
               </td>
-              <td className={`${customClassfortop3Items ? 'leftTooltip' : ''}`}>
+              <td className={`${customClassfortop3Items ? "leftTooltip" : ""}`}>
                 <div className="charts_table_bg" style={{ width: rowWidth }}>
                   <span
                     className={`bg ${barColor}`}
@@ -525,7 +526,8 @@ const SubTabCard = ({
             </th>
           )}
           {/* added empty th to make the header and data balanced */}
-          {tableConfig.length > 0 && <th></th>}
+          {/* {tableConfig.length > 0 && <th></th>} */}
+          {tableConfig.length > 0 && section.chartConfig ? <th></th> : ""}
         </tr>
       </thead>
     ),
