@@ -3740,6 +3740,17 @@ padding-bottom: 0.525em;
 .table_chart tbody td.leftTooltip{
   width: 60% !important;
 }
+*:not(.simulator){
+  scrollbar-width: inherit;
+}
+.table-responsive::-webkit-scrollbar {
+  background: #000;
+  width: 0 !important;
+  height: 3px !important;
+}
+.table_chart:has(input.include_aramco) tbody .charts_table_bg {
+  max-width: 70%;
+}
 
 }
 
