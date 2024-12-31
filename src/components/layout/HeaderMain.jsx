@@ -184,8 +184,7 @@ const HeaderMain = () => {
                 {strings.navLinkAbout}
               </a>
             </li> */}
-            {isMobile && (
-              <>
+
                 <li className="nav-item">
                   <a
                     target="_blank"
@@ -215,8 +214,7 @@ const HeaderMain = () => {
                     {strings.requestproductdetails}
                   </Link>
                 </li>
-              </>
-            )}
+
             <LanguageSwitcher /> {/* Add the new component */}
           </ul>
         </div>
@@ -419,7 +417,7 @@ const HeaderMain = () => {
                       )}
                       {/* Toggle Button */}
 
-                      {user?.HasScreenerChartsAccess !== "true" && !isMobile ? (
+                      {user?.HasScreenerChartsAccess !== "true"  ? (
                         <div className="request-btn">
                           {" "}
                           <Link
