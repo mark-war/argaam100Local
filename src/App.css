@@ -4221,6 +4221,14 @@ padding-bottom: 0.525em;
   background: #23b533;
 } 
 
+.green{
+  color: #23b533;;
+  }
+  
+  .red{
+  color: red;;
+  }
+  
 
 .table-fields .charts_table_bg span.bg {
   max-width: 97%;
@@ -4244,19 +4252,18 @@ padding-bottom: 0.525em;
 
 
 @supports (-webkit-backdrop-filter: blur(10px)) {
-  .up-arrow-green ,
-  .down-arrow-red {
-    left: 30%;
-    top: 35%;
-    right: auto;
+      .up-arrow-green ,
+      .down-arrow-red {
+        left: 30%;
+        top: 35%;
+        right: auto;
+    }
+
+    [lang="ar"] .up-arrow-green ,
+    [lang="ar"] .down-arrow-red {
+      left: auto;
+      top: 35%;
+      right: 30%;
+    }
+
 }
-
-[lang="ar"] .up-arrow-green ,
-[lang="ar"] .down-arrow-red {
-  left: auto;
-  top: 35%;
-  right: 30%;
-}
-
-
-  }
