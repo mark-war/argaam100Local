@@ -8,12 +8,12 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
   const tooltipRef = useRef(null);
 
   let flipModifier = {};
-  if(tooltipCustomPlacement && tooltipCustomPlacement != ""){
-    flipModifier =  {
-      name: "flip", //-- Disable flip modifier
-      enabled: false, //-- Set to false to disable automatic flipping
-    }
-  }
+  // if(tooltipCustomPlacement && tooltipCustomPlacement != ""){
+  //   flipModifier =  {
+  //     name: "flip", //-- Disable flip modifier
+  //     enabled: false, //-- Set to false to disable automatic flipping
+  //   }
+  // }
 
   const { styles, attributes } = usePopper(
     iconRef.current,
@@ -27,6 +27,12 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
             fallbackPlacements: ["top", "bottom"],
           },
         },
+        {
+          name: "flip",
+          options: {
+            fallbackPlacements: ["top-end", "bottom-end"],
+          },
+        },
         // {
         //   name: "preventOverflow",
         //   options: {
@@ -35,7 +41,7 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
         //   },
         // },
 
-        flipModifier
+        // flipModifier
 
       ],
       
