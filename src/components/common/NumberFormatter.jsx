@@ -64,6 +64,20 @@ const NumberFormatter = ({
     // }
 
     return (
+      <span
+        style={{
+          color:
+            activeSection === 30
+              ? "green"
+              : Number(value) < 0
+              ? "red"
+              : "inherit",
+        }}
+      >
+        {formattedValue}
+        {unit}
+      </span>
+
       //  <span
       //    style={{
       //      color: Number(value) < 0 ? "red" : "inherit",
@@ -79,10 +93,10 @@ const NumberFormatter = ({
       //         : "inherit",
       //   }}
       // >
-      <span>
-        {formattedValue}
-        {unit}
-      </span>
+      // <span>
+      //   {formattedValue}
+      //   {unit}
+      // </span>
     );
   }
 

@@ -116,7 +116,7 @@ const HeaderMain = () => {
       <div className={`mobile_nav ${isMobileOpen ? "mobile-active" : ""}`}>
         <div
           className="mobile_menu"
-          onClick={!user ? () => onLoginPress(): null }
+          onClick={!user ? () => onLoginPress() : null}
           ref={dropdownMobileRef}
         >
           <ul>
@@ -125,21 +125,24 @@ const HeaderMain = () => {
                 <button className="btn borderless-transparent dropdown-toggle remove_after pr_0">
                   <img alt="Image" src="/assets/images/user.svg" />
                 </button>
-              
+
                 {!isEmpty(user) ? (
                   <>
                     <strong>{user?.Username}</strong>
-                    <button className={`accordion_nav ${isAccordionOpen ? 'open': ' '}`}
+                    <button
+                      className={`accordion_nav ${
+                        isAccordionOpen ? "open" : " "
+                      }`}
                       onClick={() =>
                         !isEmpty(user)
                           ? setisAccordionOpen(!isAccordionOpen)
                           : null
                       }
-                    >
-                      
-                    </button>
+                    ></button>
                   </>
-                ):<strong>{strings.login}</strong>}
+                ) : (
+                  <strong>{strings.login}</strong>
+                )}
               </a>
             </li>
             {isAccordionOpen ? (
@@ -184,37 +187,32 @@ const HeaderMain = () => {
                 {strings.navLinkAbout}
               </a>
             </li> */}
-
-                <li className="nav-item">
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`https://www.argaamcharts.com/${selectedLanguage}`}
-                    className="nav-link"
-                  >
-                    {strings.navCharts}
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`https://macro.argaam.com/${selectedLanguage}`}
-                    className="nav-link"
-                  >
-                    {strings.navMacro}
-                  </a>
-                </li>
-                <li>
-                  {" "}
-                  <Link
-                    to={`/${selectedLanguage}/request`}
-                    className="nav-link"
-                  >
-                    {strings.requestproductdetails}
-                  </Link>
-                </li>
-
+            <li className="nav-item">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`https://www.argaamcharts.com/${selectedLanguage}`}
+                className="nav-link"
+              >
+                {strings.navCharts}
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`https://macro.argaam.com/${selectedLanguage}`}
+                className="nav-link"
+              >
+                {strings.navMacro}
+              </a>
+            </li>
+            <li>
+              {" "}
+              <Link to={`/${selectedLanguage}/request`} className="nav-link">
+                {strings.requestproductdetails}
+              </Link>
+            </li>
             <LanguageSwitcher /> {/* Add the new component */}
           </ul>
         </div>
@@ -260,6 +258,10 @@ const HeaderMain = () => {
                 className="navbar-brand"
                 to={`/${lang}/argaam-100`}
                 // onClick={() => (window.location.href = `/${lang}/screener`)}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent React Router's default navigation.
+                  window.location.href = `/${lang}/argaam-100`; // Force full reload.
+                }}
               >
                 {lang === LANGUAGES.AR ? (
                   <img alt="Argaam Screener Logo" src={Argaam100LogoAr} />
@@ -417,7 +419,7 @@ const HeaderMain = () => {
                       )}
                       {/* Toggle Button */}
 
-                      {user?.HasScreenerChartsAccess !== "true"  ? (
+                      {user?.HasScreenerChartsAccess !== "true" ? (
                         <div className="request-btn">
                           {" "}
                           <Link
