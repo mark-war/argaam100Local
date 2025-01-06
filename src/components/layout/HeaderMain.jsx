@@ -19,7 +19,7 @@ const HeaderMain = () => {
   const { lang } = useParams(); // Access the current language from URL parameters
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile(1024);
   const dropdownRef = useRef(null); // Create a ref for the dropdown element
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
@@ -425,7 +425,7 @@ const HeaderMain = () => {
                       )}
                       {/* Toggle Button */}
 
-                      {user?.HasScreenerChartsAccess !== "true" ? (
+                      {user?.HasScreenerChartsAccess !== "true" && !isMobile ? (
                         <div className="request-btn">
                           {" "}
                           <Link
