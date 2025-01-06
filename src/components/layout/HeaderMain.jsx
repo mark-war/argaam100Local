@@ -148,7 +148,13 @@ const HeaderMain = () => {
             {isAccordionOpen ? (
               <>
                 <li>
-                  <a className="dropdown-item">
+                  <a
+                    className="dropdown-item"
+                    onClick={() => {
+                      setIsMobileOpen(false)
+                      setVisibleAskQuestion(true);
+                    }}
+                  >
                     <img
                       alt="Image"
                       className="mr_10"
