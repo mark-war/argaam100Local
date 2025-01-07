@@ -162,8 +162,6 @@ const SubTabCard = ({
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
-
-
         return (
           <React.Fragment key={index}>
             <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
@@ -362,8 +360,6 @@ const SubTabCard = ({
 
         const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
 
-
-
         return (
           <React.Fragment key={index}>
             <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
@@ -416,13 +412,20 @@ const SubTabCard = ({
               {tableConfig.length
                 ? tableConfig.map((config, index) => (
                     <td key={index}>
-                      {/* <span onClick={() => console.log(dataFields)}>
-                        {parseFloat(dataFields[config.key]).toFixed(2) || ""}
-                      </span> */}
                       {config.type === "numeric" ? (
                         // Handle numeric type
                         <span onClick={() => console.log(dataFields)}>
-                          {parseFloat(dataFields[config.key]).toFixed(2) || ""}
+                          {config.key === "CAGR"
+                            ? dataFields[config.key] == null
+                              ? "NED*"
+                              : item.LatestEPSBeforeXOItems < 0 ||
+                                item.OldEPSBeforeXOItems < 0
+                              ? "NM"
+                              : `${parseFloat(dataFields[config.key]).toFixed(
+                                  1
+                                )}%`
+                            : parseFloat(dataFields[config.key]).toFixed(2) ||
+                              ""}
                         </span>
                       ) : config.type === "bool" ? (
                         // Handle boolean type
