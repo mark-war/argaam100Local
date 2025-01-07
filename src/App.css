@@ -402,7 +402,7 @@ button.disabled {
 .shadow_btm {
   -webkit-box-shadow: 0px 2px 5px -1px rgb(232 232 232);
   -moz-box-shadow: 0px 2px 5px -1px rgb(232 232 232);
-  box-shadow: 0px 2px 5px -1px rgb(232 232 232); 
+  box-shadow: 0px 2px 5px -1px rgb(232 232 232 / 53%); 
 
 }
 
@@ -1114,7 +1114,7 @@ white-space: normal;
 }
 
 .notes {
-  font-size: 14px;
+  font-size: 13px;
   padding: 5px 5px;
   color: rgb(141, 137, 137);
   font-weight: normal;
@@ -1231,6 +1231,7 @@ white-space: normal;
 .table_chart .table_layout.table td:nth-child(2) {
   width: 25%;
   line-height: 13px;
+  max-width: 17%;
 }
 
 .table_chart th:first-child {
@@ -1304,10 +1305,12 @@ white-space: normal;
   text-align: left !important;
 }
 
-[lang="ar"] .table_chart .table_layout.table th {
+/* [lang="ar"] .table_chart .table_layout.table th {
   text-align: right !important;
+} */
+[lang="ar"]   .table_chart .table-fields tbody td:nth-child(4){
+  text-indent: 28px;
 }
-
 [lang="ar"] .table_chart .table_layout.table th:nth-child(2) {
   padding-right: 5px;
 }
@@ -2746,6 +2749,9 @@ padding-top: 2px;
   }
 }
 @media screen and (max-width: 1600px) and (min-width: 1367px) {
+  .table_chart .table-fields th:nth-child(5){
+    min-width: 120px;
+  }
   .race_chart{
     min-height: 390px;
     margin-top: 0 !important;
@@ -2778,6 +2784,9 @@ padding-bottom: 0.525em;
 }
 }
 @media screen and (max-width: 1366px) and (min-width: 1024px) {
+  .table_chart .table-fields th:nth-child(5){
+    min-width: 118px;
+  }
   .race_chart{
     min-height: 389px;
     margin-top: 0 !important;
@@ -4178,7 +4187,7 @@ padding-bottom: 0.525em;
 
   [lang="ar"] .down-arrow-red{
     position: absolute;
-    left: 30%;
+    left: 40%;
     top: 35%;
     }
   
@@ -4203,8 +4212,19 @@ padding-bottom: 0.525em;
       font-weight: normal;
       font-size: 14px;
   }
+  .table_chart .table-fields th:nth-child(5){
+    font-size: 14px;
+    text-align: center !important;
+  }
   .table_chart .table-fields th:nth-child(3){
-    width: 39% !important;
+    width: 45% !important;
+  }
+  .table_chart .table-fields tbody td:nth-child(4){
+    text-indent: 15px;
+  }
+  .table_chart .table-fields tbody td:nth-child(5){
+    min-width:118px;
+    padding-right: 5px;
   }
   .table_chart .table-fields tbody td:nth-child(3) {
     width: 45% !important;
