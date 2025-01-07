@@ -4,7 +4,7 @@ export default function useIsMobile(customWidth = 500) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= customWidth);
 
   const handleWindowSizeChange = () => {
-    setIsMobile(window.innerWidth <= 500);
+    setIsMobile(window.innerWidth <= customWidth);
   };
 
   useEffect(() => {
