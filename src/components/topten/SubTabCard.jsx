@@ -277,13 +277,15 @@ const SubTabCard = ({
   const processSubSectionMultipleTabs = useCallback(
     (subSection) => {
       // Check if subSection is an array and is not empty
-      if (!Array.isArray(subSection) || subSection.length === 0) {
+      //if (!Array.isArray(subSection) || subSection.length === 0) {
+      if (!subSection[activeSubTab]) {
         console.error("Invalid subSection data:", subSection);
         return null; // Return null if subSection is not an array or is empty
       }
 
       // Extract property names from the first item of subSection
-      const propertyNames = Object.keys(subSection[0] || {});
+      //const propertyNames = Object.keys(subSection[0] || {});
+      const propertyNames = Object.keys(subSection[activeSubTab] || {});
       const thirdToLastProperty = propertyNames[propertyNames.length - 3];
       const secondToLastProperty = propertyNames[propertyNames.length - 2];
 
