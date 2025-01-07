@@ -64,15 +64,33 @@ export const fetchMultipleTabTopTenData = createAsyncThunk(
       const results = await Promise.all(
         processedData.map(async (data) => {
           try {
+            // Find the sub-tab marked as isSelected === "1"
+            const selectedSubTab = data.subTabs.find(
+              (tab) => tab.isSelected === "1"
+            );
+            if (!selectedSubTab) {
+              console.warn("No selected sub-tab found for:", data.identifier);
+              return null; // Skip processing if no selected sub-tab
+            }
+
+            // Fetch data for the selected sub-tab
+            const response = await fetchScreenerTableData(
+              selectedSubTab.encryptedConfigJson
+            );
+
             // process the default subtab
-            const encryptedConfig = data.encryptedConfigJsons[0];
-            const response = await fetchScreenerTableData(encryptedConfig);
+            // const encryptedConfig = data.encryptedConfigJsons[0];
+            // const response = await fetchScreenerTableData(encryptedConfig);
 
             // Extract only the serializable parts of the response
             const { data: responseData } = response;
 
             // Wrap responseData in an array and then wrap that in another array
-            const wrappedData = [responseData || [{}]];
+            //const wrappedData = [responseData || [{}]];
+
+            // Place the fetched data in the appropriate index of the sub-tab array
+            const wrappedData = Array(data.subTabs.length).fill({});
+            wrappedData[selectedSubTab.originalIndex] = responseData || [{}];
 
             // Combine responses if necessary or handle separately
             return {
@@ -81,8 +99,7 @@ export const fetchMultipleTabTopTenData = createAsyncThunk(
               subTabs: data.subTabs,
               timestamp: Date.now(), // Add timestamp here
               pkey: data.Pkey,
-              tabID: data.TabID
-              
+              tabID: data.TabID,
             };
           } catch (error) {
             console.error("Error in processing data:", error);

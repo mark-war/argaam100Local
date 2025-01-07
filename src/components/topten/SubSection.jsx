@@ -171,7 +171,15 @@ const SubSection = ({
 
       onSubTabsChange(subSectionIndex, newSubTabIndex);
 
-      if (isMultiple && !section.data[newSubTabIndex]) {
+      //if (isMultiple && !section.data[newSubTabIndex]) {
+      if (
+        isMultiple &&
+        (!section.data[0] ||
+          (Array.isArray(section.data[newSubTabIndex]) &&
+            section.data[newSubTabIndex].length === 0) ||
+          (typeof section.data[newSubTabIndex] === "object" &&
+            Object.keys(section.data[newSubTabIndex]).length === 0))
+      ) {
         const encryptedConfigJson =
           section.subTabs[newSubTabIndex].encryptedConfigJson;
         const identifier = section.identifier;
