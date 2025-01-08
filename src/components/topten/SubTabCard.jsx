@@ -232,11 +232,7 @@ const SubTabCard = ({
                       <Tooltip
                         tooltipText={note}
                         tooltipCustomPlacement={
-                          index == 0 || index == 1 || index == 2
-                            ? currentLanguage == "ar"
-                              ? "right"
-                              : "top-end"
-                            : "top-end"
+                           "top-end"
                         }
                       >
                         <i className={"textComment_icon"}></i>
@@ -450,11 +446,7 @@ const SubTabCard = ({
                       <Tooltip
                         tooltipText={note}
                         tooltipCustomPlacement={
-                          index == 0 || index == 1 || index == 2
-                            ? currentLanguage == "ar"
-                              ? "right"
-                              : "top-end"
-                            : "top-end"
+                           "top-end"
                         }
                       >
                         <i className={"textComment_icon"}></i>
