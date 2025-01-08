@@ -151,7 +151,7 @@ const HeaderMain = () => {
                   <a
                     className="dropdown-item"
                     onClick={() => {
-                      setIsMobileOpen(false)
+                      setIsMobileOpen(false);
                       setVisibleAskQuestion(true);
                     }}
                   >
@@ -193,7 +193,7 @@ const HeaderMain = () => {
                 {strings.navLinkAbout}
               </a>
             </li> */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a
                 target="_blank"
                 rel="noreferrer"
@@ -212,9 +212,8 @@ const HeaderMain = () => {
               >
                 {strings.navMacro}
               </a>
-            </li>
+            </li> */}
             <li>
-              {" "}
               <Link to={`/${selectedLanguage}/request`} className="nav-link">
                 {strings.requestproductdetails}
               </Link>
@@ -320,7 +319,7 @@ const HeaderMain = () => {
                           {strings.navLinkArgaam}
                         </a>
                       </li>
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <a
                           target="_blank"
                           rel="noreferrer"
@@ -339,7 +338,7 @@ const HeaderMain = () => {
                         >
                           {strings.navMacro}
                         </a>
-                      </li>
+                      </li> */}
                       {/* <li className="nav-item">
                         <a href="#" className="nav-link">
                           {strings.navLinkAbout}
