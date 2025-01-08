@@ -1305,9 +1305,9 @@ white-space: normal;
   text-align: left !important;
 }
 
-/* [lang="ar"] .table_chart .table_layout.table th {
+[lang="ar"] .table_chart .table_layout.table th {
   text-align: right !important;
-} */
+}
 [lang="ar"]   .table_chart .table-fields tbody td:nth-child(4){
   text-indent: 28px;
 }
@@ -4226,7 +4226,7 @@ padding-bottom: 0.525em;
       font-weight: normal;
       font-size: 14px;
   }
-  .table_chart .table-fields th:nth-child(5){
+  body .table_chart .table-fields th:nth-child(5){
     font-size: 14px;
     text-align: center !important;
   }
