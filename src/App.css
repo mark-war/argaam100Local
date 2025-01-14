@@ -3689,8 +3689,34 @@ padding-bottom: 0.525em;
   background: #555;
 }
 }
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) { 
+    .table-responsive:after {
+      content: "";
+      height: 3px;
+      width: 50%;
+      background: #888888;
+      display: inline-block;
+      margin-top: -5px;
+  }
+
+  /* .table-responsive:hover {
+    &::after{
+      display: none;
+    }
+  } */
+}
+
 
 @media screen and (max-width: 575px) {
+
+  body .table_chart .table-fields th:nth-child(3){
+    width: 35% !important;
+  }
+  
   .navbar .navbar-brand img {
     max-width: 130px !important;
   }
@@ -3903,6 +3929,11 @@ padding-bottom: 0.525em;
 
   /* Smaller prints or smaller paper sizes */
   @media print and (max-width: 800px) {
+    body .table_chart .table-fields th:nth-child(5){
+      font-size: 13px !important;
+    }
+
+    
     body {
       font-size: 80%;
     }
