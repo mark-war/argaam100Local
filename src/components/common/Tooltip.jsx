@@ -19,7 +19,7 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
     iconRef.current,
     tooltipRef.current,
     {
-      placement:  tooltipCustomPlacement ?? 'left',
+      placement: tooltipCustomPlacement ?? "left",
       modifiers: [
         {
           name: "flip",
@@ -42,9 +42,7 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
         // },
 
         // flipModifier
-
       ],
-      
     }
   );
 
@@ -58,7 +56,7 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
     >
       {children}
 
-      <div
+      {/* <div
         ref={tooltipRef}
         style={{
           ...styles.popper,
@@ -77,10 +75,31 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
         data-popper-placement={tooltipCustomPlacement ?? 'left'} 
       >
         {tooltipText}
+      </div> */}
+      <div
+        ref={tooltipRef}
+        style={{
+          ...styles.popper,
+          zIndex: 10,
+          padding: "9px",
+          backgroundColor: "#9ac6e6",
+          color: "rgba(0, 0, 0, 0.83)",
+          fontSize: "13px",
+          borderRadius: "4px",
+          opacity: showTooltip ? 1 : 0,
+          transition: "opacity 0.2s ease",
+          pointerEvents: showTooltip ? "auto" : "none",
+          willChange: "opacity, transform",
+          transform: `${styles.popper?.transform || ""} translate3d(0, 0, 0)`,
+          ...styles.offset,
+        }}
+        {...attributes.popper}
+        data-popper-placement={tooltipCustomPlacement ?? "left"}
+      >
+        {tooltipText}
       </div>
     </div>
   );
 };
 
 export default Tooltip;
-
