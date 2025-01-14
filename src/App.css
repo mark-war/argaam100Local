@@ -1115,7 +1115,7 @@ white-space: normal;
 
 .notes {
   font-size: 13px;
-  padding: 5px 5px;
+  padding: 5px 3px;
   color: rgb(141, 137, 137);
   font-weight: normal;
   /* border: 1px solid #ccccccad;
@@ -2863,7 +2863,7 @@ padding-bottom: 0.525em;
   }
 }
 .notes{
-  font-size: 13px; 
+  font-size: 12px; 
 }
 }
 @media screen and (max-width: 1366px) and (min-width: 1025px) {
@@ -3787,6 +3787,7 @@ padding-bottom: 0.525em;
   .table_chart .table-fields th:nth-child(4), .table_chart .table-fields tbody td:nth-child(4){
     min-width: 100px !important;
   }
+  
   [lang="ar"] .charts_table_bg span.bg {
     margin-right: 13px;
 }
@@ -3822,7 +3823,6 @@ padding-bottom: 0.525em;
 .table_chart:has(input.include_aramco) tbody .charts_table_bg {
   max-width: 70%;
 }
-
 }
 
 @media screen and (max-width: 395px) {
@@ -3832,8 +3832,6 @@ padding-bottom: 0.525em;
 .navbar .container_inner .flex-fill {
   gap: 15px;
 }
-
-
 }
 
 @media screen and (max-width: 360px) {
@@ -4278,6 +4276,7 @@ padding-bottom: 0.525em;
   body .table_chart .table-fields th:nth-child(5){
     font-size: 14px;
     text-align: center !important;
+    font-weight: normal;
   }
   .table_chart .table-fields th:nth-child(3){
     width: 45% !important;
