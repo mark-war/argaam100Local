@@ -2880,6 +2880,9 @@ padding-bottom: 0.525em;
 .tabs_nav.tabs_inner.navbar-nav .nav-link{
   zoom: 0.8;
 }
+.table-fields .charts_table_bg span.bg {
+  max-width: 88% !important;
+}
 }
 
 @media screen and (max-width: 1300px) and (min-width: 1025px) {
@@ -3700,8 +3703,10 @@ padding-bottom: 0.525em;
       width: 50%;
       background: #888888;
       display: inline-block;
-      margin-top: -5px;
+      margin-top: 0;
+      position: absolute;
   }
+
 
   /* .table-responsive:hover {
     &::after{
