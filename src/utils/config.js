@@ -11,7 +11,8 @@ const config = {
   peFieldIds: new Set(import.meta.env.VITE_PE_FIELDIDS.split(",").map(Number)),
   refreshOnReload: Number(import.meta.env.VITE_REFRESH_ONRELOAD),
   expirationInMinutes: Number(import.meta.env.VITE_EXPIRATION_IN_MINUTES),
-  // Add other global configurations here
+  chartsApiUrl: import.meta.env.VITE_CHARTS_API_URL,
+  defaultMarket: import.meta.env.VITE_DEFAULT_MARKETID,
 };
 
 export default config;

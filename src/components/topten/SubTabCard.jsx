@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Card, Table } from "react-bootstrap";
 import RaceChart from "../common/RaceChart";
 import { SECTORS, strings, TABS } from "../../utils/constants/localizedStrings";
@@ -9,6 +15,7 @@ import useArgaamUrl from "../../hooks/useArgaamUrl";
 import RowChart from "./RowChart";
 import { isEmpty } from "../../utils/helperFunctions";
 import Tooltip from "../common/Tooltip";
+import scrollIntoView from "smooth-scroll-into-view-if-needed";
 
 const SubTabCard = ({
   section,
@@ -18,7 +25,9 @@ const SubTabCard = ({
   isMultiple,
   loadingState,
   activeSubTab,
+  selectedCompanyID,
 }) => {
+  console.log("selectedCompanyID ", selectedCompanyID);
   const selectedTab = Number(section.identifier.split("-")[0]);
   const activeSection = Number(section.identifier.split("-")[1]);
   const tableConfig = section.TableConfig
@@ -54,7 +63,7 @@ const SubTabCard = ({
       </a>
     );
   };
-
+  const tableRef = useRef(null);
   const processSubSection = useCallback(
     (data) => {
       if (
@@ -115,7 +124,30 @@ const SubTabCard = ({
       if (!data === null) return null;
       const hasNotes = data.some((item) => item.NotesEn || item.NotesAr);
 
+      useLayoutEffect(() => {
+        setTimeout(() => {
+          const table = tableRef.current?.closest("table"); // Find the parent table
+          const rows = table?.querySelectorAll("tr"); // Now query all tr elements
+          console.log("Rows:", rows);
+          rows?.forEach((row) => {
+            console.log("Class Name:", `'${row.className}'`); // Surround with quotes to catch spaces
+          });
+          const highlightedRow = tableRef.current?.querySelector(
+            'tr[class*="highlightRow"]'
+          );
+          if (highlightedRow) {
+            scrollIntoView(highlightedRow, {
+              behavior: "smooth",
+              block: "center",
+            });
+          }
+          console.log("ref: ", tableRef.current);
+          console.log("highlightedRow: ", highlightedRow);
+        }, 0);
+      }, [selectedCompanyID]);
+
       return data.map((item, index) => {
+        const isHighlighted = item.CompanyID === selectedCompanyID;
         const chartValue = secondToLastProperty
           ? item[secondToLastProperty]
           : "";
@@ -164,7 +196,12 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
+            <tr
+              className={`${
+                item.CompanyID === activeChart ? "activeRow" : ""
+              } ${isHighlighted ? "highlightRow" : ""}`}
+              ref={isHighlighted ? tableRef : null} // Assign ref only to the highlighted row
+            >
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -231,9 +268,7 @@ const SubTabCard = ({
                     {!isEmpty(note) ? (
                       <Tooltip
                         tooltipText={note}
-                        tooltipCustomPlacement={
-                           "top-end"
-                        }
+                        tooltipCustomPlacement={"top-end"}
                       >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
@@ -267,7 +302,7 @@ const SubTabCard = ({
         );
       });
     },
-    [currentLanguage, includeAramco, activeChart]
+    [currentLanguage, includeAramco, activeChart, selectedCompanyID, tableRef]
   );
 
   const processSubSectionMultipleTabs = useCallback(
@@ -360,7 +395,11 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
+            <tr
+              className={`${
+                item.CompanyID === activeChart ? "activeRow" : ""
+              } ${item.CompanyID === selectedCompanyID ? "highlightRow" : ""}`}
+            >
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -445,9 +484,7 @@ const SubTabCard = ({
                     {!isEmpty(note) ? (
                       <Tooltip
                         tooltipText={note}
-                        tooltipCustomPlacement={
-                           "top-end"
-                        }
+                        tooltipCustomPlacement={"top-end"}
                       >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
@@ -482,7 +519,13 @@ const SubTabCard = ({
         );
       });
     },
-    [currentLanguage, activeSubTab, includeAramco, activeChart]
+    [
+      currentLanguage,
+      activeSubTab,
+      includeAramco,
+      activeChart,
+      selectedCompanyID,
+    ]
   );
 
   const headers = useMemo(

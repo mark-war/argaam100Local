@@ -12,8 +12,9 @@ import Argaam100LogoAr from "../../assets/images/argaam_100_AR.svg";
 import Argaam100LogoEn from "../../assets/images/argaam_100_EN.svg";
 import useIsMobile from "../../hooks/useIsMobile.js";
 import { isEmpty } from "../../utils/helperFunctions.js";
+import SearchDropdown from "../common/CompanySearch.jsx";
 
-const HeaderMain = () => {
+const HeaderMain = ({ onCompanySelect }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { lang } = useParams(); // Access the current language from URL parameters
@@ -275,7 +276,7 @@ const HeaderMain = () => {
                 )}
               </NavLink>
             </div>
-
+            <SearchDropdown onCompanySelect={onCompanySelect} />
             {/* <div className="flex-fill justify_content_center sub_nav no-print">
               <ul className="center_nav navbar-nav align-items-center justify-content-center me-auto mb-2 mb-md-0">
                  {navLinks.map((link, index) => {

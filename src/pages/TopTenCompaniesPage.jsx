@@ -32,13 +32,21 @@ const TopTenCompaniesPage = () => {
 
   //defaultActiveTab
   // const [activeTabLink, setActiveTabLink] = useState(TABS.T_ARR_MULTIPLE);
-  const [activeTabLink, setActiveTabLink] = useState(selectedSection?.tabs.find(tab=>tab.isSelected)?.tabId ?? TABS.T_ARR_MULTIPLE);
+  const [activeTabLink, setActiveTabLink] = useState(
+    selectedSection?.tabs.find((tab) => tab.isSelected)?.tabId ??
+      TABS.T_ARR_MULTIPLE
+  );
 
+  const [selectedCompanyID, setSelectedCompanyID] = useState(0);
+
+  const handleCompanySelect = (company) => {
+    setSelectedCompanyID(company.companyID);
+    // You can also do other things with the selected company here
+  };
 
   // useEffect(() => {
   // console.log(selectedSection.tabs.find(tab=>tab.isSelected).tabId , 'Xd')
   // }, [])
-  
 
   // default active subtabs will be index 0 for each subsection
   const [activeSubTabs, setActiveSubTabs] = useState({
@@ -102,7 +110,7 @@ const TopTenCompaniesPage = () => {
         notesAr: field.NotesAr,
         Aramcologic: field.Aramcologic,
         chartConfig: field.chartConfig,
-        TableConfig: field.TableConfig
+        TableConfig: field.TableConfig,
       };
     });
     return map;
@@ -193,13 +201,14 @@ const TopTenCompaniesPage = () => {
           data={data}
           isMultiple={isMultiple} // Pass isMultiple as true or false
           onSubTabsChange={handleSubTabsChange}
+          selectedCompanyID={selectedCompanyID}
         />
       </>
     );
   }, [activeTabLink, getFilteredData, loading]);
 
   return (
-    <MainLayout>
+    <MainLayout onCompanySelect={handleCompanySelect}>
       <div className="pb-5 min__height respons__mobile">
         <TopCompaniesSubHeader
           title={

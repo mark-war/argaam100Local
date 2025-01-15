@@ -154,7 +154,8 @@ export const strings = new LocalizedStrings({
       "Capital appreciation plus dividends paid over the selected period",
     companyreturntooltip3:
       "Assuming dividend reinvestment in the same stock over the selected period",
-      login: 'Login',
+    login: "Login",
+    searchByCompany: "Search by Company",
   },
   ar: {
     topTen: "أعلى 10",
@@ -301,7 +302,8 @@ export const strings = new LocalizedStrings({
       "يشمل الزيادة في سعر السهم اضافة للتوزيعات النقدية خلال الفترة المحددة",
     companyreturntooltip3:
       "بافتراض اعادة استثمار التوزيعات النقدية في نفس السهم خلال الفترة المحددة",
-      login: 'تسجيل الدخول'
+    login: "تسجيل الدخول",
+    searchByCompany: "ابحث باسم الشركة",
   },
 });
 

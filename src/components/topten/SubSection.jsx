@@ -103,6 +103,7 @@ const SubSection = ({
   isMultiple,
   onSubTabsChange,
   subSectionIndex,
+  selectedCompanyID,
 }) => {
   const dispatch = useDispatch();
   const [activeSubTab, setActiveSubTab] = useState(() => {
@@ -290,6 +291,7 @@ const SubSection = ({
         isMultiple={isMultiple}
         loadingState={loading}
         activeSubTab={activeSubTab}
+        selectedCompanyID={selectedCompanyID}
       />
     </Col>
   );
