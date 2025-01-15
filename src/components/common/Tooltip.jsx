@@ -87,10 +87,11 @@ const Tooltip = ({ children, tooltipText, tooltipCustomPlacement }) => {
           fontSize: "13px",
           borderRadius: "4px",
           opacity: showTooltip ? 1 : 0,
-          transition: "opacity 0.2s ease",
+          visibility: showTooltip ? "visible" : "hidden", // Ensure visibility is handled
+          transition: "opacity 0.2s ease, visibility 0.2s ease", // Ensure smooth opacity + visibility transition
           pointerEvents: showTooltip ? "auto" : "none",
-          willChange: "opacity, transform",
-          transform: `${styles.popper?.transform || ""} translate3d(0, 0, 0)`,
+          willChange: "opacity, visibility, transform", // Suggests which properties will change
+          transform: `${styles.popper?.transform || ""} translate3d(0, 0, 0)`, // Ensure transform for GPU acceleration
           ...styles.offset,
         }}
         {...attributes.popper}
