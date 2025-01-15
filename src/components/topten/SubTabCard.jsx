@@ -231,9 +231,7 @@ const SubTabCard = ({
                     {!isEmpty(note) ? (
                       <Tooltip
                         tooltipText={note}
-                        tooltipCustomPlacement={
-                           "top-end"
-                        }
+                        tooltipCustomPlacement={"top-end"}
                       >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
@@ -445,9 +443,7 @@ const SubTabCard = ({
                     {!isEmpty(note) ? (
                       <Tooltip
                         tooltipText={note}
-                        tooltipCustomPlacement={
-                           "top-end"
-                        }
+                        tooltipCustomPlacement={"top-end"}
                       >
                         <i className={"textComment_icon"}></i>
                       </Tooltip>
@@ -489,12 +485,14 @@ const SubTabCard = ({
     () => [
       { label: strings.rank },
       { label: strings.companies },
-      { label: "" }, //TODO: made empty to remove the charts header, because when removed the alignment of the Companies is getting wrong...(need to fix on design)
+      // Conditionally add the bar chart column before tableConfig if IncludeAramco is false
+      ...(section.IncludeAramco ? [] : [{ label: "" }]),
+      // Add headers from tableConfig
       ...tableConfig?.map((header) => ({
-        label: currentLanguage == "en" ? header.en : header.ar,
+        label: currentLanguage === "en" ? header.en : header.ar,
       })),
     ],
-    [currentLanguage, tableConfig]
+    [currentLanguage, tableConfig, section.IncludeAramco]
   );
 
   const renderTableHeaders = useCallback(
@@ -504,6 +502,15 @@ const SubTabCard = ({
           {columns.map((column, index) => (
             <th key={index}>{column.label}</th>
           ))}
+          {/* additional header for the charts icon */}
+          {section.chartConfig ? <th></th> : ""}
+          {/* for the specific widgets add one header for the note icon */}
+          {section.pkey === 22 || section.pkey === 23 || section.pkey === 37 ? (
+            <th></th>
+          ) : (
+            ""
+          )}
+          {/* to always make the aramco header at the last */}
           {section?.Aramcologic && (
             <th style={{ display: "flex", alignItems: "center" }}>
               <span style={{ width: "max-content" }}>
@@ -519,9 +526,6 @@ const SubTabCard = ({
               />
             </th>
           )}
-          {/* added empty th to make the header and data balanced */}
-          {/* {tableConfig.length > 0 && <th></th>} */}
-          {tableConfig.length > 0 && section.chartConfig ? <th></th> : ""}
         </tr>
       </thead>
     ),
