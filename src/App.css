@@ -4223,3 +4223,7 @@ body .table_chart .table-fields th:nth-child(5) {
   font-weight: bolder;
   background-color: #008001;
 }
+
+.table-responsive {
+  overflow-y: auto !important; /* Enable vertical scrolling */
+}

@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -15,7 +16,6 @@ import useArgaamUrl from "../../hooks/useArgaamUrl";
 import RowChart from "./RowChart";
 import { isEmpty } from "../../utils/helperFunctions";
 import Tooltip from "../common/Tooltip";
-import scrollIntoView from "smooth-scroll-into-view-if-needed";
 
 const SubTabCard = ({
   section,
@@ -39,18 +39,6 @@ const SubTabCard = ({
   );
   const [activeChart, setactiveChart] = useState(null);
 
-  // const renderCompanyColumn = (item) => (
-  //   <a
-  //     target="_blank"
-  //     rel="noreferrer"
-  //     href={`${argaamUrl(item.Code.split(".")[0])}`}
-  //     className="company-link"
-  //   >
-  //     {/* <img alt="Image" src={item.LogoUrl} className="logo_image" /> */}
-  //     <span>{localized(item, "ShortName", currentLanguage)}</span>
-  //   </a>
-  // );
-
   const renderCompanyColumn = (item) => {
     const isInsuranceSector = item.ArgaamSectorID === SECTORS.INSURANCE;
     const url = isInsuranceSector
@@ -64,6 +52,7 @@ const SubTabCard = ({
     );
   };
   const tableRef = useRef(null);
+  const highlightRef = useRef(null);
   const processSubSection = useCallback(
     (data) => {
       if (
@@ -125,26 +114,48 @@ const SubTabCard = ({
       const hasNotes = data.some((item) => item.NotesEn || item.NotesAr);
 
       useLayoutEffect(() => {
-        setTimeout(() => {
-          const table = tableRef.current?.closest("table"); // Find the parent table
-          const rows = table?.querySelectorAll("tr"); // Now query all tr elements
-          console.log("Rows:", rows);
-          rows?.forEach((row) => {
-            console.log("Class Name:", `'${row.className}'`); // Surround with quotes to catch spaces
-          });
-          const highlightedRow = tableRef.current?.querySelector(
-            'tr[class*="highlightRow"]'
+        // Ensure the effect runs after the DOM is updated
+        const timer = setTimeout(() => {
+          const table = tableRef.current?.closest(".table-responsive"); // Find the parent table
+          const highlightedRow = table?.querySelector(
+            `tr.highlightRow` // Look for rows with the 'highlightRow' class
           );
+
           if (highlightedRow) {
-            scrollIntoView(highlightedRow, {
-              behavior: "smooth",
-              block: "center",
+            highlightedRow.scrollIntoView({
+              behavior: "auto",
+              block: "start",
+              inline: "nearest", // Keep the scroll position horizontal if possible
             });
           }
-          console.log("ref: ", tableRef.current);
+
           console.log("highlightedRow: ", highlightedRow);
-        }, 0);
-      }, [selectedCompanyID]);
+        }, 0); // Using setTimeout ensures the DOM is updated before executing the logic
+
+        return () => clearTimeout(timer); // Cleanup on component unmount or dependency change
+      }, [selectedCompanyID, section]); // This hook will be triggered whenever selectedCompanyID changes
+
+      useEffect(() => {
+        // Only scroll if there is a selected company ID
+        if (selectedCompanyID && highlightRef.current) {
+          const tableContainer = tableRef.current;
+
+          if (tableContainer) {
+            const highlightedRow = highlightRef.current;
+
+            // Use scrollIntoView but prevent page scrolling
+            highlightedRow.scrollIntoView({
+              behavior: "auto",
+              block: "start",
+              inline: "nearest",
+            });
+
+            // After scrollIntoView, manually adjust the scrollTop of the table container to ensure no page scroll
+            tableContainer.scrollTop =
+              highlightedRow.offsetTop - tableContainer.offsetTop;
+          }
+        }
+      }, [selectedCompanyID]); // Runs when selectedCompanyID changes
 
       return data.map((item, index) => {
         const isHighlighted = item.CompanyID === selectedCompanyID;
@@ -240,9 +251,6 @@ const SubTabCard = ({
               {tableConfig.length
                 ? tableConfig.map((config, index) => (
                     <td key={index}>
-                      {/* <span onClick={() => console.log(dataFields)}>
-                        {parseFloat(dataFields[config.key]).toFixed(2) || ""}
-                      </span> */}
                       {config.type === "numeric" ? (
                         // Handle numeric type
                         <span onClick={() => console.log(dataFields)}>
@@ -308,14 +316,12 @@ const SubTabCard = ({
   const processSubSectionMultipleTabs = useCallback(
     (subSection) => {
       // Check if subSection is an array and is not empty
-      //if (!Array.isArray(subSection) || subSection.length === 0) {
       if (!subSection[activeSubTab]) {
         console.error("Invalid subSection data:", subSection);
         return null; // Return null if subSection is not an array or is empty
       }
 
       // Extract property names from the first item of subSection
-      //const propertyNames = Object.keys(subSection[0] || {});
       const propertyNames = Object.keys(subSection[activeSubTab] || {});
       const thirdToLastProperty = propertyNames[propertyNames.length - 3];
       const secondToLastProperty = propertyNames[propertyNames.length - 2];
@@ -406,21 +412,6 @@ const SubTabCard = ({
               <td className="td_img">
                 <span className="d-flex align-items-center">
                   {renderCompanyColumn(item)}
-                  {/* <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`${argaamUrl(
-                      item.Code ? item.Code.split(".")[0] : ""
-                    )}`}
-                    className="company-link"
-                  > */}
-                  {/* <img
-                      alt="Image"
-                      src={item.LogoUrl}
-                      className="logo_image"
-                    /> */}
-                  {/* <span>{localized(item, "ShortName", currentLanguage)}</span>
-                  </a> */}
                 </span>
               </td>
               <td>
@@ -563,7 +554,6 @@ const SubTabCard = ({
             </th>
           )}
           {/* added empty th to make the header and data balanced */}
-          {/* {tableConfig.length > 0 && <th></th>} */}
           {tableConfig.length > 0 && section.chartConfig ? <th></th> : ""}
         </tr>
       </thead>
