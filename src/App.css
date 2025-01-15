@@ -3299,16 +3299,17 @@ padding-bottom: 0.525em;
 @media screen and (max-width: 767px) {
 
   .table_chart .table-fields th:nth-child(5){
-    font-size: 12px;
+    font-size: 12px !important;
     text-align: center !important;
     white-space: normal;
-    width: 33%;
+    width: 25%;
   }
   .table_chart .table-fields tbody td:nth-child(5){
-    min-width: 113px;
+    min-width: 90px !important;
   }
   .charts{
     width: 35px !important;
+    min-width: 50px;
   }
   .about {
     & .container {
@@ -3442,7 +3443,7 @@ padding-bottom: 0.525em;
 
   .table.table_layout th,
   .table_layout.table td {
-    font-size: 0.938rem;
+    font-size: 0.816rem;
   }
 
   .table_chart tbody td:nth-child(3),
