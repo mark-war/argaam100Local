@@ -113,49 +113,90 @@ const SubTabCard = ({
       if (!data === null) return null;
       const hasNotes = data.some((item) => item.NotesEn || item.NotesAr);
 
+      // useLayoutEffect(() => {
+      //   // Ensure the effect runs after the DOM is updated
+      //   const timer = setTimeout(() => {
+      //     const table = tableRef.current?.closest(".table-responsive"); // Find the parent table
+      //     const highlightedRow = table?.querySelector(
+      //       `tr.highlightRow` // Look for rows with the 'highlightRow' class
+      //     );
+
+      //     if (highlightedRow) {
+      //       highlightedRow.scrollIntoView({
+      //         behavior: "auto",
+      //         block: "start",
+      //         inline: "nearest", // Keep the scroll position horizontal if possible
+      //       });
+      //     }
+
+      //     console.log("highlightedRow: ", highlightedRow);
+      //   }, 0); // Using setTimeout ensures the DOM is updated before executing the logic
+
+      //   return () => clearTimeout(timer); // Cleanup on component unmount or dependency change
+      // }, [selectedCompanyID, section]); // This hook will be triggered whenever selectedCompanyID changes
+
+      // useEffect(() => {
+      //   // Only scroll if there is a selected company ID
+      //   if (selectedCompanyID && highlightRef.current) {
+      //     const tableContainer = tableRef.current;
+
+      //     if (tableContainer) {
+      //       const highlightedRow = highlightRef.current;
+
+      //       // Use scrollIntoView but prevent page scrolling
+      //       highlightedRow.scrollIntoView({
+      //         behavior: "auto",
+      //         block: "start",
+      //         inline: "nearest",
+      //       });
+
+      //       // After scrollIntoView, manually adjust the scrollTop of the table container to ensure no page scroll
+      //       tableContainer.scrollTop =
+      //         highlightedRow.offsetTop - tableContainer.offsetTop;
+      //     }
+      //   }
+      // }, [selectedCompanyID]); // Runs when selectedCompanyID changes
+
       useLayoutEffect(() => {
-        // Ensure the effect runs after the DOM is updated
         const timer = setTimeout(() => {
-          const table = tableRef.current?.closest(".table-responsive"); // Find the parent table
-          const highlightedRow = table?.querySelector(
-            `tr.highlightRow` // Look for rows with the 'highlightRow' class
+          if (!tableRef.current) {
+            console.error("tableRef.current is null or undefined");
+            return;
+          }
+
+          // tableRef.current is already the <tr> element with the highlightRow class
+          console.log("tableRef.current: ", tableRef.current);
+
+          // Find the closest scrollable container
+          const scrollableContainer = tableRef.current.closest(
+            ".table_layout.last__close__table.custom_scroll.table"
           );
 
-          if (highlightedRow) {
-            highlightedRow.scrollIntoView({
-              behavior: "auto",
-              block: "start",
-              inline: "nearest", // Keep the scroll position horizontal if possible
-            });
+          if (scrollableContainer) {
+            const containerTop =
+              scrollableContainer.getBoundingClientRect().top;
+            const rowTop = tableRef.current.getBoundingClientRect().top;
+
+            // Calculate the offset and adjust the scroll position
+            const offset = rowTop - containerTop;
+            scrollableContainer.scrollTop += offset;
+
+            console.log("scrollableContainer: ", scrollableContainer);
+            console.log(
+              "containerTop: ",
+              containerTop,
+              "rowTop: ",
+              rowTop,
+              "offset: ",
+              offset
+            );
+          } else {
+            console.warn("Scrollable container not found");
           }
+        }, 0);
 
-          console.log("highlightedRow: ", highlightedRow);
-        }, 0); // Using setTimeout ensures the DOM is updated before executing the logic
-
-        return () => clearTimeout(timer); // Cleanup on component unmount or dependency change
-      }, [selectedCompanyID, section]); // This hook will be triggered whenever selectedCompanyID changes
-
-      useEffect(() => {
-        // Only scroll if there is a selected company ID
-        if (selectedCompanyID && highlightRef.current) {
-          const tableContainer = tableRef.current;
-
-          if (tableContainer) {
-            const highlightedRow = highlightRef.current;
-
-            // Use scrollIntoView but prevent page scrolling
-            highlightedRow.scrollIntoView({
-              behavior: "auto",
-              block: "start",
-              inline: "nearest",
-            });
-
-            // After scrollIntoView, manually adjust the scrollTop of the table container to ensure no page scroll
-            tableContainer.scrollTop =
-              highlightedRow.offsetTop - tableContainer.offsetTop;
-          }
-        }
-      }, [selectedCompanyID]); // Runs when selectedCompanyID changes
+        return () => clearTimeout(timer);
+      }, [selectedCompanyID, section]);
 
       return data.map((item, index) => {
         const isHighlighted = item.CompanyID === selectedCompanyID;
@@ -397,7 +438,10 @@ const SubTabCard = ({
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
-        const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
+        const dataFields =
+          typeof item?.DataFields === "string"
+            ? JSON.parse(item?.DataFields)
+            : item?.DataFields || {}; // If it's already an object, use it directly or default to an empty object
 
         return (
           <React.Fragment key={index}>
