@@ -354,7 +354,11 @@ const SubTabCard = ({
         const note = item?.[currentLanguage == "en" ? "NotesEn" : "NotesAr"];
         const unit = JSON.parse(section?.chartConfig)?.unit;
 
-        const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
+        // const dataFields = item?.DataFields ? JSON.parse(item?.DataFields) : {};
+        const dataFields =
+          typeof item?.DataFields === "string"
+            ? JSON.parse(item?.DataFields)
+            : item?.DataFields || {}; // If it's already an object, use it directly or default to an empty object
 
         return (
           <React.Fragment key={index}>
