@@ -51,8 +51,9 @@ const SubTabCard = ({
       </a>
     );
   };
+
   const tableRef = useRef(null);
-  const highlightRef = useRef(null);
+
   const processSubSection = useCallback(
     (data) => {
       if (
@@ -112,91 +113,6 @@ const SubTabCard = ({
 
       if (!data === null) return null;
       const hasNotes = data.some((item) => item.NotesEn || item.NotesAr);
-
-      // useLayoutEffect(() => {
-      //   // Ensure the effect runs after the DOM is updated
-      //   const timer = setTimeout(() => {
-      //     const table = tableRef.current?.closest(".table-responsive"); // Find the parent table
-      //     const highlightedRow = table?.querySelector(
-      //       `tr.highlightRow` // Look for rows with the 'highlightRow' class
-      //     );
-
-      //     if (highlightedRow) {
-      //       highlightedRow.scrollIntoView({
-      //         behavior: "auto",
-      //         block: "start",
-      //         inline: "nearest", // Keep the scroll position horizontal if possible
-      //       });
-      //     }
-
-      //     console.log("highlightedRow: ", highlightedRow);
-      //   }, 0); // Using setTimeout ensures the DOM is updated before executing the logic
-
-      //   return () => clearTimeout(timer); // Cleanup on component unmount or dependency change
-      // }, [selectedCompanyID, section]); // This hook will be triggered whenever selectedCompanyID changes
-
-      // useEffect(() => {
-      //   // Only scroll if there is a selected company ID
-      //   if (selectedCompanyID && highlightRef.current) {
-      //     const tableContainer = tableRef.current;
-
-      //     if (tableContainer) {
-      //       const highlightedRow = highlightRef.current;
-
-      //       // Use scrollIntoView but prevent page scrolling
-      //       highlightedRow.scrollIntoView({
-      //         behavior: "auto",
-      //         block: "start",
-      //         inline: "nearest",
-      //       });
-
-      //       // After scrollIntoView, manually adjust the scrollTop of the table container to ensure no page scroll
-      //       tableContainer.scrollTop =
-      //         highlightedRow.offsetTop - tableContainer.offsetTop;
-      //     }
-      //   }
-      // }, [selectedCompanyID]); // Runs when selectedCompanyID changes
-
-      useLayoutEffect(() => {
-        const timer = setTimeout(() => {
-          if (!tableRef.current) {
-            console.error("tableRef.current is null or undefined");
-            return;
-          }
-
-          // tableRef.current is already the <tr> element with the highlightRow class
-          console.log("tableRef.current: ", tableRef.current);
-
-          // Find the closest scrollable container
-          const scrollableContainer = tableRef.current.closest(
-            ".table_layout.last__close__table.custom_scroll.table"
-          );
-
-          if (scrollableContainer) {
-            const containerTop =
-              scrollableContainer.getBoundingClientRect().top;
-            const rowTop = tableRef.current.getBoundingClientRect().top;
-
-            // Calculate the offset and adjust the scroll position
-            const offset = rowTop - containerTop;
-            scrollableContainer.scrollTop += offset;
-
-            console.log("scrollableContainer: ", scrollableContainer);
-            console.log(
-              "containerTop: ",
-              containerTop,
-              "rowTop: ",
-              rowTop,
-              "offset: ",
-              offset
-            );
-          } else {
-            console.warn("Scrollable container not found");
-          }
-        }, 0);
-
-        return () => clearTimeout(timer);
-      }, [selectedCompanyID, section]);
 
       return data.map((item, index) => {
         const isHighlighted = item.CompanyID === selectedCompanyID;
@@ -399,6 +315,7 @@ const SubTabCard = ({
 
       // Map over subSection to create rows
       return subSection.map((item, index) => {
+        const isHighlighted = item.CompanyID === selectedCompanyID;
         const chartValue =
           typeof item[secondToLastProperty] === "number"
             ? item[secondToLastProperty]
@@ -448,7 +365,8 @@ const SubTabCard = ({
             <tr
               className={`${
                 item.CompanyID === activeChart ? "activeRow" : ""
-              } ${item.CompanyID === selectedCompanyID ? "highlightRow" : ""}`}
+              } ${isHighlighted ? "highlightRow" : ""}`}
+              ref={isHighlighted ? tableRef : null} // Assign ref only to the highlighted row
             >
               <td>
                 <span className="bg_tag">{rank}</span>
@@ -562,6 +480,28 @@ const SubTabCard = ({
       selectedCompanyID,
     ]
   );
+
+  useEffect(() => {
+    console.log("SCROLL TO HIGHLIGHT: ", tableRef.current);
+    // Only scroll if there is a selected company ID
+    if (selectedCompanyID && tableRef.current) {
+      const highlightedRow = tableRef.current;
+
+      // Find the table container (grand-grandparent)
+      const tableContainer = highlightedRow.closest("table");
+
+      if (tableContainer) {
+        // Prevent page scroll by resetting scroll position
+        highlightedRow.scrollIntoView({
+          behavior: "auto",
+          block: "center",
+          inline: "nearest",
+        });
+
+        window.scrollTo(0, 0);
+      }
+    }
+  }, [selectedCompanyID, section, processSubSectionMultipleTabs]); // Runs when selectedCompanyID changes
 
   const headers = useMemo(
     () => [
