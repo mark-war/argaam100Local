@@ -501,7 +501,7 @@ const SubTabCard = ({
         window.scrollTo(0, 0);
       }
     }
-  }, [selectedCompanyID, section, processSubSectionMultipleTabs]); // Runs when selectedCompanyID changes
+  }, [selectedCompanyID, section]); // Runs when selectedCompanyID changes
 
   const headers = useMemo(
     () => [
