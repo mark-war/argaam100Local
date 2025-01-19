@@ -10,6 +10,7 @@ const TopCompaniesTable = ({
   data,
   isMultiple,
   onSubTabsChange,
+  selectedCompanyID,
 }) => {
   const { lang } = useParams(); // Access the current language from URL parameters
 
@@ -42,6 +43,7 @@ const TopCompaniesTable = ({
             isMultiple={isMultiple}
             onSubTabsChange={onSubTabsChange}
             subSectionIndex={index} // Pass the index as subSectionIndex
+            selectedCompanyID={selectedCompanyID}
           />
         ))}
       </Row>

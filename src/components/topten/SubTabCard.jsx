@@ -1,4 +1,11 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Card, Table } from "react-bootstrap";
 import RaceChart from "../common/RaceChart";
 import { SECTORS, strings, TABS } from "../../utils/constants/localizedStrings";
@@ -18,7 +25,9 @@ const SubTabCard = ({
   isMultiple,
   loadingState,
   activeSubTab,
+  selectedCompanyID,
 }) => {
+  console.log("selectedCompanyID ", selectedCompanyID);
   const selectedTab = Number(section.identifier.split("-")[0]);
   const activeSection = Number(section.identifier.split("-")[1]);
   const tableConfig = section.TableConfig
@@ -29,18 +38,6 @@ const SubTabCard = ({
     section?.Aramcologic || true
   );
   const [activeChart, setactiveChart] = useState(null);
-
-  // const renderCompanyColumn = (item) => (
-  //   <a
-  //     target="_blank"
-  //     rel="noreferrer"
-  //     href={`${argaamUrl(item.Code.split(".")[0])}`}
-  //     className="company-link"
-  //   >
-  //     {/* <img alt="Image" src={item.LogoUrl} className="logo_image" /> */}
-  //     <span>{localized(item, "ShortName", currentLanguage)}</span>
-  //   </a>
-  // );
 
   const renderCompanyColumn = (item) => {
     const isInsuranceSector = item.ArgaamSectorID === SECTORS.INSURANCE;
@@ -54,6 +51,8 @@ const SubTabCard = ({
       </a>
     );
   };
+
+  const tableRef = useRef(null);
 
   const processSubSection = useCallback(
     (data) => {
@@ -116,6 +115,7 @@ const SubTabCard = ({
       const hasNotes = data.some((item) => item.NotesEn || item.NotesAr);
 
       return data.map((item, index) => {
+        const isHighlighted = item.CompanyID === selectedCompanyID;
         const chartValue = secondToLastProperty
           ? item[secondToLastProperty]
           : "";
@@ -164,7 +164,12 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
+            <tr
+              className={`${
+                item.CompanyID === activeChart ? "activeRow" : ""
+              } ${isHighlighted ? "highlightRow" : ""}`}
+              ref={isHighlighted ? tableRef : null} // Assign ref only to the highlighted row
+            >
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
@@ -203,9 +208,6 @@ const SubTabCard = ({
               {tableConfig.length
                 ? tableConfig.map((config, index) => (
                     <td key={index}>
-                      {/* <span onClick={() => console.log(dataFields)}>
-                        {parseFloat(dataFields[config.key]).toFixed(2) || ""}
-                      </span> */}
                       {config.type === "numeric" ? (
                         // Handle numeric type
                         <span onClick={() => console.log(dataFields)}>
@@ -265,20 +267,18 @@ const SubTabCard = ({
         );
       });
     },
-    [currentLanguage, includeAramco, activeChart]
+    [currentLanguage, includeAramco, activeChart, selectedCompanyID, tableRef]
   );
 
   const processSubSectionMultipleTabs = useCallback(
     (subSection) => {
       // Check if subSection is an array and is not empty
-      //if (!Array.isArray(subSection) || subSection.length === 0) {
       if (!subSection[activeSubTab]) {
         console.error("Invalid subSection data:", subSection);
         return null; // Return null if subSection is not an array or is empty
       }
 
       // Extract property names from the first item of subSection
-      //const propertyNames = Object.keys(subSection[0] || {});
       const propertyNames = Object.keys(subSection[activeSubTab] || {});
       const thirdToLastProperty = propertyNames[propertyNames.length - 3];
       const secondToLastProperty = propertyNames[propertyNames.length - 2];
@@ -315,6 +315,7 @@ const SubTabCard = ({
 
       // Map over subSection to create rows
       return subSection.map((item, index) => {
+        const isHighlighted = item.CompanyID === selectedCompanyID;
         const chartValue =
           typeof item[secondToLastProperty] === "number"
             ? item[secondToLastProperty]
@@ -362,28 +363,18 @@ const SubTabCard = ({
 
         return (
           <React.Fragment key={index}>
-            <tr className={item.CompanyID == activeChart ? "activeRow" : ""}>
+            <tr
+              className={`${
+                item.CompanyID === activeChart ? "activeRow" : ""
+              } ${isHighlighted ? "highlightRow" : ""}`}
+              ref={isHighlighted ? tableRef : null} // Assign ref only to the highlighted row
+            >
               <td>
                 <span className="bg_tag">{rank}</span>
               </td>
               <td className="td_img">
                 <span className="d-flex align-items-center">
                   {renderCompanyColumn(item)}
-                  {/* <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`${argaamUrl(
-                      item.Code ? item.Code.split(".")[0] : ""
-                    )}`}
-                    className="company-link"
-                  > */}
-                  {/* <img
-                      alt="Image"
-                      src={item.LogoUrl}
-                      className="logo_image"
-                    /> */}
-                  {/* <span>{localized(item, "ShortName", currentLanguage)}</span>
-                  </a> */}
                 </span>
               </td>
               <td>
@@ -482,8 +473,36 @@ const SubTabCard = ({
         );
       });
     },
-    [currentLanguage, activeSubTab, includeAramco, activeChart]
+    [
+      currentLanguage,
+      activeSubTab,
+      includeAramco,
+      activeChart,
+      selectedCompanyID,
+    ]
   );
+
+  useEffect(() => {
+    console.log("SCROLL TO HIGHLIGHT: ", tableRef.current);
+    // Only scroll if there is a selected company ID
+    if (selectedCompanyID && tableRef.current) {
+      const highlightedRow = tableRef.current;
+
+      // Find the table container (grand-grandparent)
+      const tableContainer = highlightedRow.closest("table");
+
+      if (tableContainer) {
+        // Prevent page scroll by resetting scroll position
+        highlightedRow.scrollIntoView({
+          behavior: "auto",
+          block: "center",
+          inline: "nearest",
+        });
+
+        window.scrollTo(0, 0);
+      }
+    }
+  }, [selectedCompanyID, section]); // Runs when selectedCompanyID changes
 
   const headers = useMemo(
     () => [
