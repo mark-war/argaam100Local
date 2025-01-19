@@ -2743,6 +2743,7 @@ tr.activeRow {
   .table.table_layout td {
     padding: 0.6em 0.625em 0.525em 0.625em;
   }
+  
 }
 @media screen and (max-width: 1366px) and (min-width: 1024px) {
   .table_chart .table-fields th:nth-child(5) {
@@ -2836,6 +2837,10 @@ tr.activeRow {
   }
   .table-fields .charts_table_bg span.bg {
     max-width: 88% !important;
+  }
+  .table_chart th:first-child {
+    padding-right: 25px !important;
+    padding-left: 20px !important;
   }
 }
 
@@ -4297,6 +4302,9 @@ body .table_chart .table-fields th:nth-child(5) {
 }
 [lang="ar"] .table_chart .table-fields tbody td:nth-child(4) {
   text-indent: 0;
+}
+[lang="ar"] .charts_table_bg span.bg {
+  margin-right: 4px;
 }
 }
 
