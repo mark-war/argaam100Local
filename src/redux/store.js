@@ -13,6 +13,8 @@ import { persistStore } from "redux-persist";
 import { toptenMultipleTabReducer } from "./features/topTenMultiTabSlice";
 import logger from "redux-logger";
 
+import { apiSlice } from "./features/apiSlice";
+
 const persistConfig = {
   key: "root",
   version: 1,
@@ -37,6 +39,7 @@ const combinedReducers = combineReducers({
   topten: topTenSingleTabReducer,
   toptenMultiple: toptenMultipleTabReducer,
   user: userSlice,
+  [apiSlice.reducerPath]: apiSlice.reducer, // add apiSlice reducer path here
 });
 
 const rootReducer = (state, action) => {
@@ -56,13 +59,15 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     process.env.NODE_ENV !== "production"
-      ? getDefaultMiddleware({ serializableCheck: false }).concat(logger)
-      : getDefaultMiddleware({ serializableCheck: false }),
+      ? getDefaultMiddleware({ serializableCheck: false })
+          .concat(apiSlice.middleware)
+          .concat(logger)
+      : getDefaultMiddleware({ serializableCheck: false }).concat(
+          apiSlice.middleware
+        ),
   devTools: process.env.NODE_ENV !== "production",
 });
 
 export const persistor = persistStore(store);
 
 export default store;
-
-
