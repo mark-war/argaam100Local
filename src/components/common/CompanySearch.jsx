@@ -93,7 +93,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
   return (
     <div style={{ width: "100%", maxWidth: "400px", margin: "auto" }}>
-      <div style={{ position: "relative" }}>
+      <div className="top_search_bar" style={{ position: "relative" }}>
         <input
           type="text"
           placeholder={strings.searchByCompany}
@@ -103,6 +103,15 @@ const SearchDropdown = ({ onCompanySelect }) => {
           onBlur={handleDropdownBlur}
           className="search_bar_dropdown"
         />
+              <button
+          type="button"
+          id="dropdownMenuButton2"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          className="dropdownMenuButton2 show"
+          onClick={() => handleSearch()}
+        >
+  </button>
         {isDropdownOpen && (
           <div
             style={{
@@ -123,11 +132,13 @@ const SearchDropdown = ({ onCompanySelect }) => {
               <>
                 {/* Display market name at the top */}
                 <div
+                className="dropdown-header expanded"
                   style={{
                     padding: "10px",
+                    fontsize: "14px",
+                    margin: "0px 5px",
+                    padding: "8px",
                     backgroundColor: "#f7f7f7",
-                    fontWeight: "bold",
-                    borderBottom: "1px solid #ddd",
                   }}
                 >
                   {filteredOptions[0].market}
@@ -139,9 +150,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                     <div
                       style={{
                         padding: "10px",
-                        backgroundColor: "#f7f7f7",
                         fontWeight: "bold",
-                        borderBottom: "1px solid #ddd",
                         // cursor: "pointer",
                       }}
                       //onClick={() => toggleSector(option.sector)} // Toggle sector visibility
@@ -151,13 +160,14 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
                     {/* Always expanded by default */}
                     {expandedSectors[option.sector] !== false && (
-                      <div style={{ paddingLeft: "20px" }}>
+                      <div className="dropdown-item" style={{ paddingLeft: "20px" }}>
                         {option.companies.map((company) => (
                           <div
                             key={company.companyID}
                             style={{
                               padding: "8px",
                               cursor: "pointer",
+                              fontsize: "14px",
                             }}
                             onClick={() => handleCompanySelect(company)}
                           >
@@ -178,6 +188,9 @@ const SearchDropdown = ({ onCompanySelect }) => {
           </div>
         )}
       </div>
+      <a className="search_icon">
+        <img src="/src/assets/images/search__icon.png" alt="" />
+      </a>
     </div>
   );
 };
