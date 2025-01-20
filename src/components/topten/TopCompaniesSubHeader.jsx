@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { localized } from "../../utils/localization";
-import { PAGES } from "../../utils/constants/localizedStrings";
+import { PAGES, strings, TABS } from "../../utils/constants/localizedStrings";
 import ExportDropdown from "../common/ExportDropdown";
 import PrintButton from "../common/PrintButton";
 import { selectCurrentLanguage } from "../../redux/selectors";
@@ -25,19 +25,6 @@ const TopCompaniesSubHeader = ({
 
   return (
     <div className="shadow_btm sub_header top_companies">
-      {/* <div className="d-flex mt-4 mb-2 border_gray px-layout">
-        <div className="flex-fill heading_lg">
-          <strong>{title}</strong>
-        </div>
-        <div className="d-flex no-print">
-          <PrintButton />
-          <ExportDropdown
-            activeTabLink={activeTabLink}
-            pageId={PAGES.TOPTEN}
-            activeSubTabs={activeSubTabs}
-          />
-        </div>
-      </div> */}
       <div className="d-flex border_gray sub_heading_tabs_container px-layout pb-0">
         <div className="sub_heading_tabs">
           <div className="tabs_nav navbar-nav align-items-center flex-row">
@@ -89,6 +76,11 @@ const TopCompaniesSubHeader = ({
           </div>
         </div>
         <div className="d-flex justify-content-end flex-fill text_right select_container P_relative">
+          <div className="sectionNote px-layout">
+            {activeTabLink === TABS.T_STOCK_PERFORMANCE
+              ? strings.stockperformancenote
+              : ""}
+          </div>
           <div className="d-flex no-print">
             <PrintButton />
             <ExportDropdown

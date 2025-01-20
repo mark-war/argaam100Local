@@ -221,9 +221,9 @@ const TopTenCompaniesPage = () => {
           handleActiveTabLink={handleActiveTabLink}
           activeSubTabs={activeSubTabs}
         />
-        <div className="sectionNote px-layout">
+        {/* <div className="sectionNote px-layout">
           {activeTabLink == 9 ? strings.stockperformancenote : ""}
-        </div>
+        </div> */}
         {renderTabContent()}
       </div>
     </MainLayout>
