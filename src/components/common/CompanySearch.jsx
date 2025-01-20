@@ -101,13 +101,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={handleDropdownFocus}
           onBlur={handleDropdownBlur}
-          style={{
-            width: "100%",
-            padding: "8px",
-            marginBottom: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-          }}
+          className="search_bar_dropdown"
         />
         {isDropdownOpen && (
           <div
