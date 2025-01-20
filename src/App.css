@@ -2481,9 +2481,14 @@ tr.activeRow {
   font-weight: normal;
   color: red;
   margin-top: 10px;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0 !important;
 }
 [lang="ar"] .sectionNote.px-layout {
   text-align: left;
+  padding-left: 0 !important;
+    padding-left: 0 !important;
 }
 /* Custom scrollbar style */
 .custom_scroll tbody::-webkit-scrollbar {
