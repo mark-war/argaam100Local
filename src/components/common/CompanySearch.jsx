@@ -71,7 +71,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
     console.log("EVENT: ", e);
     if (
       e.target.className === "modal-backdrop" ||
-      e.target.className === "dropdown-header" ||
+      e.target.className.contains("dropdown-header") ||
       e.target.className === ""
     ) {
       setIsMobilePopupOpen(false);
@@ -133,7 +133,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
           className="dropdownMenuButton2 show"
-          onClick={() => handleSearch()}
+          onClick={handleDropdownFocus}
+          onBlur={handleDropdownBlur}
         ></button>
         {isDropdownOpen && (
           <div
@@ -266,13 +267,13 @@ const SearchDropdown = ({ onCompanySelect }) => {
               }}
             />
             <button
-          type="button"
-          id="dropdownMenuButton2"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          className="dropdownMenuButton2 show"
-          onClick={() => handleSearch()}
-        ></button>
+              type="button"
+              id="dropdownMenuButton2"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              className="dropdownMenuButton2 show"
+              onClick={() => handleSearch()}
+            ></button>
 
             {/* Render Filtered Options */}
             {filteredOptions.length > 0 ? (
