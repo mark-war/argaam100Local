@@ -4253,12 +4253,16 @@ input.search_bar_dropdown {
   min-width: 160px;
   text-align-last: center;
 }
+[lang="ar"] .table_chart .table-fields th:nth-child(4) {
+  text-align: center !important;
+}
 
 .table_chart .table-fields th:nth-child(4) {
   line-height: 16px;
   padding: 0px 0;
   font-weight: normal;
   font-size: 14px;
+  text-align: center !important;
 }
 body .table_chart .table-fields th:nth-child(5) {
   font-size: 14px;
