@@ -4465,7 +4465,15 @@ tr.highlightRow td {
   background-color: #edf5fb;
   font-weight: bold;
 }
+.highlightRow.red {
+  font-weight: bolder;
+  background-color:#fce3e9;
+}
 
+tr.highlightRow.red td {
+  background-color: #fce3e9;
+  font-weight: bold;
+}
 .highlightRow td .charts_table_bg span.bg{
   height: 21px;
   }
