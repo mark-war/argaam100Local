@@ -3802,6 +3802,24 @@ tr.activeRow {
 .mobile_nav ~ .respons__mobile .language_mobile {
   padding-right: 10% !important;
 }
+
+button#dropdownMenuButton2:after {
+  top: 24px !important;
+  left: 10px;
+}
+.search_bar_dropdown{
+  padding-left: 7% !important;
+}
+input.search_bar_dropdown {
+  padding-left:13% !important;
+}
+[lang="ar"] .search_bar_dropdown {
+  padding: 10px 12% 10px 5px !important;
+}
+[lang="ar"]  input.search_bar_dropdown {
+  padding-right:13% !important;
+}
+
 }
 
 @media screen and (max-width: 395px) {
@@ -4366,7 +4384,38 @@ body .table_chart .table-fields th:nth-child(5) {
 [lang="ar"] .mobile_nav ~ .respons__mobile .language_mobile {
   padding-left: 5%;
 }
+button#dropdownMenuButton2:after {
+  top: 24px !important;
+}
+.search_bar_dropdown{
+  padding-left: 7% !important;
+}
+.search_bar_dropdown {
+  padding: 10px 5px 10px 7% !important;
+}
+[lang="ar"] .search_bar_dropdown {
+  padding: 10px 8% 10px 5px !important;
+}
+[lang="ar"] button#dropdownMenuButton2:after{
+  right: 24px;
+}
+.dropdown-header.expanded{
+  position: relative;
+}
+[lang="ar"] .dropdown-header.expanded:after {
+  left: 13px;
+  right: auto;
 
+}
+.dropdown-header.expanded:after {
+  content: "−";
+  position: absolute;
+  right: 13px;
+  font-size: 32px;
+  top: -3px;
+  color: #8ec4ec;
+  font-family: fantasy;
+}
 }
 
 @media screen and (min-width: 2500px) and (max-width: 2800px) {

@@ -252,18 +252,25 @@ const SearchDropdown = ({ onCompanySelect }) => {
               className="search_bar_dropdown"
               style={{
                 width: "100%",
-                padding: "10px",
                 marginBottom: "10px",
                 border: "1px solid #ccc",
                 borderRadius: "5px",
               }}
             />
+            <button
+          type="button"
+          id="dropdownMenuButton2"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          className="dropdownMenuButton2 show"
+          onClick={() => handleSearch()}
+        ></button>
 
             {/* Render Filtered Options */}
             {filteredOptions.length > 0 ? (
               <>
                 <div
-                  className="dropdown-header"
+                  className="dropdown-header expanded"
                   style={{
                     padding: "10px",
                     fontSize: "14px",
