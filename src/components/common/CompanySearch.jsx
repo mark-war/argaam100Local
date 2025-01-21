@@ -71,6 +71,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
     if (
       e.target.className === "modal-backdrop" ||
       e.target.className.includes("dropdown-header") ||
+      e.target.className === "dropdown-item" ||
       e.target.className === ""
     ) {
       setIsMobilePopupOpen(false);
@@ -188,6 +189,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                       <div
                         className="dropdown-item"
                         style={{ paddingLeft: "20px" }}
+                        onClick={(e) => handleOutsideClick(e)}
                       >
                         {option.companies.map((company) => (
                           <div
