@@ -5,6 +5,7 @@ import { localized } from "../../utils/localization";
 import { useSelector } from "react-redux";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import { strings } from "../../utils/constants/localizedStrings";
+import search_icon from "../../assets/images/search__icon.png"
 
 const SearchDropdown = ({ onCompanySelect }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
@@ -217,7 +218,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
         )}
       </div>
       <a className="search_icon" onClick={toggleMobilePopup}>
-        <img src="/src/assets/images/search__icon.png" alt="" />
+        <img src={search_icon} alt="" />
       </a>
       {/* Modal for Mobile */}
       {isMobilePopupOpen && (
