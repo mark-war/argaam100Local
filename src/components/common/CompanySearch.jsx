@@ -19,7 +19,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
   // Populate filtered options based on the data and search term
   useEffect(() => {
-    console.log("data", data);
     if (data) {
       // filter the result to TASI market only
       const marketData = data.find(
@@ -71,7 +70,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
     console.log("EVENT: ", e);
     if (
       e.target.className === "modal-backdrop" ||
-      e.target.className.contains("dropdown-header") ||
+      e.target.className.includes("dropdown-header") ||
       e.target.className === ""
     ) {
       setIsMobilePopupOpen(false);
@@ -164,7 +163,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                     padding: "8px",
                     backgroundColor: "#f7f7f7",
                   }}
-                  onClick={handleOutsideClick}
+                  onClick={(e) => handleOutsideClick(e)}
                 >
                   {filteredOptions[0].market}
                 </div>
@@ -179,7 +178,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                         // cursor: "pointer",
                       }}
                       //onClick={() => toggleSector(option.sector)} // Toggle sector visibility
-                      onClick={handleOutsideClick}
+                      onClick={(e) => handleOutsideClick(e)}
                     >
                       {option.sector}
                     </div>
@@ -224,7 +223,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
       {isMobilePopupOpen && (
         <div
           className="modal-backdrop"
-          onClick={handleOutsideClick}
+          onClick={(e) => handleOutsideClick(e)}
           style={{
             position: "fixed",
             top: 0,

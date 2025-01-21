@@ -273,7 +273,6 @@ const SubTabCard = ({
     (subSection) => {
       // Check if subSection is an array and is not empty
       if (!subSection[activeSubTab]) {
-        console.error("Invalid subSection data:", subSection);
         return null; // Return null if subSection is not an array or is empty
       }
 
