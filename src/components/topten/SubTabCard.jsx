@@ -27,7 +27,6 @@ const SubTabCard = ({
   activeSubTab,
   selectedCompanyID,
 }) => {
-  console.log("selectedCompanyID ", selectedCompanyID);
   const selectedTab = Number(section.identifier.split("-")[0]);
   const activeSection = Number(section.identifier.split("-")[1]);
   const tableConfig = section.TableConfig
@@ -274,7 +273,6 @@ const SubTabCard = ({
     (subSection) => {
       // Check if subSection is an array and is not empty
       if (!subSection[activeSubTab]) {
-        console.error("Invalid subSection data:", subSection);
         return null; // Return null if subSection is not an array or is empty
       }
 
@@ -491,15 +489,19 @@ const SubTabCard = ({
       // Find the table container (grand-grandparent)
       const tableContainer = highlightedRow.closest("table");
 
-      if (tableContainer) {
-        // Prevent page scroll by resetting scroll position
-        highlightedRow.scrollIntoView({
-          behavior: "auto",
-          block: "center",
-          inline: "nearest",
-        });
+      if (window.scrollY === 0) {
+        if (tableContainer) {
+          // Prevent page scroll by resetting scroll position
+          highlightedRow.scrollIntoView({
+            behavior: "auto",
+            block: "center",
+            inline: "nearest",
+          });
 
-        window.scrollTo(0, 0);
+          // Check the current scroll position
+
+          window.scrollTo(0, 0); // Scroll to the top only if already at the top
+        }
       }
     }
   }, [selectedCompanyID, section]); // Runs when selectedCompanyID changes
