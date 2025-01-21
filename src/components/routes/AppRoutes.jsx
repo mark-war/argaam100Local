@@ -16,7 +16,7 @@ import { RequestRedirect } from "../common/RequestRedirect";
 import Request from "../Request";
 import { TrialStatus } from "../common/TrialStatus";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
 // const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
@@ -49,7 +49,7 @@ function AppRoutes() {
             {/* <Route path="screener" element={<ScreenerTablesPage />} /> */}
             <Route
               // path={`argaam-50`}
-              path={`argaam-100`}
+              path={`argaam-100/:tabName`}
               element={
                 <LockedPages>
                   <TopTenCompaniesPage />
@@ -86,4 +86,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-

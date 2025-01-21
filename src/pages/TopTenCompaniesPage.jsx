@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import TopCompaniesSubHeader from "../components/topten/TopCompaniesSubHeader";
 import { useSelector } from "react-redux";
@@ -14,7 +14,7 @@ import {
   selectTopTenData,
   selectTopTenDataMultiple,
 } from "../redux/selectors.js";
-import { strings } from "../utils/constants/localizedStrings";
+import { useParams } from "react-router-dom";
 
 const TopTenCompaniesPage = () => {
   const pages = useSelector(selectPages);
@@ -24,18 +24,49 @@ const TopTenCompaniesPage = () => {
   const topTenData = useSelector(selectTopTenData);
   const topTenDataMultiple = useSelector(selectTopTenDataMultiple);
 
+  const { lang, tabName } = useParams();
+
   // Get the selected page and section
   const selectedPage = pages.find((page) => page.pageId === PAGES.TOPTEN);
   const selectedSection = selectedPage?.sections.find(
     (section) => section.isSelected
   );
+  const sanitizeTabName = (name) => {
+    console.log("SANITIZE NAME: ", name);
+    // Replace forbidden characters with an underscore or any other preferred character
+    return name.replace(/[*?:\/\\[\]\s]/g, "-");
+  };
+  const validTabs = [
+    "multiples",
+    "ranking",
+    "growth-and-dividends",
+    "financial-ratios",
+    "stock-performance",
+  ];
 
-  //defaultActiveTab
-  // const [activeTabLink, setActiveTabLink] = useState(TABS.T_ARR_MULTIPLE);
-  const [activeTabLink, setActiveTabLink] = useState(
-    selectedSection?.tabs.find((tab) => tab.isSelected)?.tabId ??
+  const [activeTabLink, setActiveTabLink] = useState(() => {
+    const selectedTab = selectedSection?.tabs.find(
+      (tab) => sanitizeTabName(tab.tabNameEn.toLowerCase()) === tabName
+    );
+
+    if (selectedTab && validTabs.includes(tabName)) {
+      return selectedTab.tabId; // Use sanitized tab name if it's valid
+    }
+
+    return (
+      selectedSection?.tabs.find((tab) => tab.isSelected)?.tabId ??
       TABS.T_ARR_MULTIPLE
+    );
+  });
+
+  console.log(
+    "CHANGED TAB ID: ",
+    selectedSection?.tabs.find((tab) => tab.isSelected)?.tabId
   );
+
+  console.log("ACTIVE TAB LINK: ", activeTabLink);
+
+  console.log("PARAM TAB: ", tabName);
 
   const [selectedCompanyID, setSelectedCompanyID] = useState(0);
 
@@ -71,6 +102,20 @@ const TopTenCompaniesPage = () => {
   );
 
   const handleActiveTabLink = (tab) => {
+    const selectedTabObj = selectedSection?.tabs.find(
+      (item) => item.tabId === tab
+    );
+
+    // window.location.href = `/${lang}/argaam-100/${sanitizeTabName(
+    //   selectedTabObj.tabNameEn.toLowerCase()
+    // )}`;
+
+    // Update the browser's URL without refreshing the page
+    const newUrl = `/${lang}/argaam-100/${sanitizeTabName(
+      selectedTabObj.tabNameEn.toLowerCase()
+    )}`;
+    window.history.pushState(null, "", newUrl);
+
     setActiveTabLink(tab);
     setActiveSubTabs({ 0: 0, 1: 0, 2: 0, 3: 0 }); // reset to default when active tab is changed
   };

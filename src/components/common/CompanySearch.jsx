@@ -15,7 +15,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [expandedSectors, setExpandedSectors] = useState({});
   const [isDropdownClicked, setIsDropdownClicked] = useState(false);
-  console.log("currentLanguage", currentLanguage);
+  const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
+
   // Populate filtered options based on the data and search term
   useEffect(() => {
     console.log("data", data);
@@ -59,11 +60,27 @@ const SearchDropdown = ({ onCompanySelect }) => {
     setSearchTerm(localized(company, "shortName", currentLanguage));
     onCompanySelect(company);
     setIsDropdownOpen(false);
+    setIsMobilePopupOpen(false);
+  };
+
+  const toggleMobilePopup = () => {
+    setIsMobilePopupOpen((prev) => !prev);
+  };
+
+  const handleOutsideClick = (e) => {
+    if (e.target.className === "modal-backdrop") {
+      setIsMobilePopupOpen(false);
+    }
   };
 
   const handleDropdownFocus = () => {
     setSearchTerm("");
     setIsDropdownOpen(true);
+  };
+
+  const handleModalInputClick = () => {
+    setSearchTerm(""); // Clear search term
+    setIsDropdownOpen(true); // Open the dropdown
   };
 
   const handleDropdownBlur = () => {
@@ -75,6 +92,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
           ); // Revert to selected option if nothing new is chosen
         }
         setIsDropdownOpen(false); // Close dropdown
+        setIsMobilePopupOpen(false);
       }
       setIsDropdownClicked(false); // Reset dropdown click state
     }, 150);
@@ -103,15 +121,14 @@ const SearchDropdown = ({ onCompanySelect }) => {
           onBlur={handleDropdownBlur}
           className="search_bar_dropdown"
         />
-              <button
+        <button
           type="button"
           id="dropdownMenuButton2"
           data-bs-toggle="dropdown"
           aria-expanded="false"
           className="dropdownMenuButton2 show"
           onClick={() => handleSearch()}
-        >
-  </button>
+        ></button>
         {isDropdownOpen && (
           <div
             style={{
@@ -132,7 +149,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
               <>
                 {/* Display market name at the top */}
                 <div
-                className="dropdown-header expanded"
+                  className="dropdown-header expanded"
                   style={{
                     padding: "10px",
                     fontsize: "14px",
@@ -160,7 +177,10 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
                     {/* Always expanded by default */}
                     {expandedSectors[option.sector] !== false && (
-                      <div className="dropdown-item" style={{ paddingLeft: "20px" }}>
+                      <div
+                        className="dropdown-item"
+                        style={{ paddingLeft: "20px" }}
+                      >
                         {option.companies.map((company) => (
                           <div
                             key={company.companyID}
@@ -188,9 +208,117 @@ const SearchDropdown = ({ onCompanySelect }) => {
           </div>
         )}
       </div>
-      <a className="search_icon">
+      <a className="search_icon" onClick={toggleMobilePopup}>
         <img src="/src/assets/images/search__icon.png" alt="" />
       </a>
+      {/* Modal for Mobile */}
+      {isMobilePopupOpen && (
+        <div
+          className="modal-backdrop"
+          onClick={handleOutsideClick}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 200,
+          }}
+        >
+          <div
+            className="modal-content"
+            style={{
+              position: "absolute",
+              top: "20%",
+              left: "50%",
+              transform: "translate(-50%, -20%)",
+              width: "90%",
+              maxHeight: "60%",
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              overflowY: "auto",
+            }}
+          >
+            {/* Input Field Inside Modal */}
+            <input
+              type="text"
+              placeholder={strings.searchByCompany}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onClick={handleModalInputClick} // Clear search term when input is clicked
+              className="search_bar_dropdown"
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginBottom: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+
+            {/* Render Filtered Options */}
+            {filteredOptions.length > 0 ? (
+              <>
+                <div
+                  className="dropdown-header"
+                  style={{
+                    padding: "10px",
+                    fontSize: "14px",
+                    margin: "0px 5px",
+                    backgroundColor: "#f7f7f7",
+                  }}
+                >
+                  {filteredOptions[0].market}
+                </div>
+
+                {filteredOptions.map((option) => (
+                  <div key={option.sector}>
+                    <div
+                      style={{
+                        padding: "10px",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => toggleSector(option.sector)}
+                    >
+                      {option.sector}
+                    </div>
+
+                    {expandedSectors[option.sector] !== false && (
+                      <div
+                        className="dropdown-item"
+                        style={{ paddingLeft: "20px" }}
+                      >
+                        {option.companies.map((company) => (
+                          <div
+                            key={company.companyID}
+                            style={{
+                              padding: "8px",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                            }}
+                            onClick={() => handleCompanySelect(company)}
+                          >
+                            {company.stockSymbol} -{" "}
+                            {localized(company, "shortName", currentLanguage)}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div style={{ padding: "10px", color: "#888" }}>
+                No matching companies found.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
