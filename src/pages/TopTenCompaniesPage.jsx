@@ -31,11 +31,12 @@ const TopTenCompaniesPage = () => {
   const selectedSection = selectedPage?.sections.find(
     (section) => section.isSelected
   );
+
   const sanitizeTabName = (name) => {
-    console.log("SANITIZE NAME: ", name);
     // Replace forbidden characters with an underscore or any other preferred character
     return name.replace(/[*?:\/\\[\]\s]/g, "-");
   };
+
   const validTabs = [
     "multiples",
     "ranking",
@@ -59,25 +60,11 @@ const TopTenCompaniesPage = () => {
     );
   });
 
-  console.log(
-    "CHANGED TAB ID: ",
-    selectedSection?.tabs.find((tab) => tab.isSelected)?.tabId
-  );
-
-  console.log("ACTIVE TAB LINK: ", activeTabLink);
-
-  console.log("PARAM TAB: ", tabName);
-
   const [selectedCompanyID, setSelectedCompanyID] = useState(0);
 
   const handleCompanySelect = (company) => {
     setSelectedCompanyID(company.companyID);
-    // You can also do other things with the selected company here
   };
-
-  // useEffect(() => {
-  // console.log(selectedSection.tabs.find(tab=>tab.isSelected).tabId , 'Xd')
-  // }, [])
 
   // default active subtabs will be index 0 for each subsection
   const [activeSubTabs, setActiveSubTabs] = useState({

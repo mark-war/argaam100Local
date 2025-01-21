@@ -13,7 +13,7 @@ export function redirectLogin(autoLogin, email = null) {
   const urlParams = new URLSearchParams(window.location.search);
   const requestRedirect = urlParams.get("requestRedirect");
 
-  const refferalURL = `${window.location.origin}/${lang}/argaam-100`;
+  const refferalURL = `${window.location.origin}/${lang}/argaam-100/multiples`;
 
   const url = `${loginUrl}/${lang}?refferalURL=${refferalURL}${
     !isEmpty(autoLogin) ? "&autoRedirect=true" : ""
@@ -24,7 +24,6 @@ export function redirectLogin(autoLogin, email = null) {
     ?.replace("&", "(rs)")}&requiredToken=true&app=Argaam100`;
 
   window.open(url, "_self");
-  
 }
 
 export function resetUser(reload = true, autologout = false) {
@@ -63,19 +62,21 @@ export function resetUser(reload = true, autologout = false) {
   // }
 }
 
-
 export async function refreshToken() {
   // console.log("REFRESH");
   const jwtToken = localStorage.getItem("jwtToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const uniqueIdentifier = localStorage.getItem("uniqueIdentifier");
 
-  const newToken = await axios.post(`${config.baseUrl}refresh-authenticate-for-charts`, {
-    jwtToken,
-    refreshToken,
-    tokenOption: "Argaam100",
-    uniqueIdentifier,
-  });
+  const newToken = await axios.post(
+    `${config.baseUrl}refresh-authenticate-for-charts`,
+    {
+      jwtToken,
+      refreshToken,
+      tokenOption: "Argaam100",
+      uniqueIdentifier,
+    }
+  );
   const { jwtToken: newjwtToken, refreshToken: newrefreshToken } =
     newToken.data;
 
