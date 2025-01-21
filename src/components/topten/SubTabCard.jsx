@@ -166,7 +166,9 @@ const SubTabCard = ({
             <tr
               className={`${
                 item.CompanyID === activeChart ? "activeRow" : ""
-              } ${isHighlighted ? "highlightRow" : ""}`}
+              } ${isHighlighted ? "highlightRow" : ""} ${
+                section.pkey === 31 ? "red" : ""
+              }`}
               ref={isHighlighted ? tableRef : null} // Assign ref only to the highlighted row
             >
               <td>
@@ -364,7 +366,9 @@ const SubTabCard = ({
             <tr
               className={`${
                 item.CompanyID === activeChart ? "activeRow" : ""
-              } ${isHighlighted ? "highlightRow" : ""}`}
+              } ${isHighlighted ? "highlightRow" : ""} ${
+                section.pkey === 31 ? "red" : ""
+              }`}
               ref={isHighlighted ? tableRef : null} // Assign ref only to the highlighted row
             >
               <td>
