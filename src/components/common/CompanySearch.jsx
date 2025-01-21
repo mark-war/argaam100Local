@@ -68,9 +68,15 @@ const SearchDropdown = ({ onCompanySelect }) => {
   };
 
   const handleOutsideClick = (e) => {
-    if (e.target.className === "modal-backdrop") {
+    console.log("EVENT: ", e);
+    if (
+      e.target.className === "modal-backdrop" ||
+      e.target.className === "dropdown-header" ||
+      e.target.className === ""
+    ) {
       setIsMobilePopupOpen(false);
     }
+    setIsDropdownOpen(false);
   };
 
   const handleDropdownFocus = () => {
@@ -157,6 +163,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                     padding: "8px",
                     backgroundColor: "#f7f7f7",
                   }}
+                  onClick={handleOutsideClick}
                 >
                   {filteredOptions[0].market}
                 </div>
@@ -171,6 +178,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                         // cursor: "pointer",
                       }}
                       //onClick={() => toggleSector(option.sector)} // Toggle sector visibility
+                      onClick={handleOutsideClick}
                     >
                       {option.sector}
                     </div>
@@ -277,6 +285,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                     margin: "0px 5px",
                     backgroundColor: "#f7f7f7",
                   }}
+                  onClick={(e) => handleOutsideClick(e)}
                 >
                   {filteredOptions[0].market}
                 </div>
@@ -289,7 +298,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
                         fontWeight: "bold",
                         cursor: "pointer",
                       }}
-                      onClick={() => toggleSector(option.sector)}
+                      // onClick={() => toggleSector(option.sector)}
+                      onClick={(e) => handleOutsideClick(e)}
                     >
                       {option.sector}
                     </div>
