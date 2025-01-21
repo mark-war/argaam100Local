@@ -156,6 +156,7 @@ export const strings = new LocalizedStrings({
       "Assuming dividend reinvestment in the same stock over the selected period",
     login: "Login",
     searchByCompany: "Search by Company",
+    companyNotFound: "No matching companies found.",
   },
   ar: {
     topTen: "أعلى 10",
@@ -304,6 +305,7 @@ export const strings = new LocalizedStrings({
       "بافتراض اعادة استثمار التوزيعات النقدية في نفس السهم خلال الفترة المحددة",
     login: "تسجيل الدخول",
     searchByCompany: "ابحث باسم الشركة",
+    companyNotFound: "لا توجد بيانات",
   },
 });
 

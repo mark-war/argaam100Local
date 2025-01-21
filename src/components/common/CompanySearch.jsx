@@ -4,19 +4,32 @@ import config from "../../utils/config";
 import { localized } from "../../utils/localization";
 import { useSelector } from "react-redux";
 import { selectCurrentLanguage } from "../../redux/selectors";
-import { strings } from "../../utils/constants/localizedStrings";
-import search_icon from "../../assets/images/search__icon.png"
+import { LANGUAGES, strings } from "../../utils/constants/localizedStrings";
+import search_icon from "../../assets/images/search__icon.png";
 
 const SearchDropdown = ({ onCompanySelect }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
   const { data } = useFetchCompanyDataQuery();
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm2, setSearchTerm2] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [expandedSectors, setExpandedSectors] = useState({});
   const [isDropdownClicked, setIsDropdownClicked] = useState(false);
   const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
+
+  const normalizeArabic = (text) => {
+    return text
+      .replace(/\ا/g, "أ")
+      .replace(/\أ/g, "ا")
+      .replace(/\ى/g, "ي")
+      .replace(/\ه/g, "ة")
+      .replace(/\ا/g, "آ")
+      .replace(/\عِ/g, "ع")
+      .replace(/\آ/g, "ا")
+      .replace(/\إ/g, "ا");
+  };
 
   // Populate filtered options based on the data and search term
   useEffect(() => {
@@ -34,7 +47,12 @@ const SearchDropdown = ({ onCompanySelect }) => {
               currentLanguage
             )}`
               .toLowerCase()
-              .includes(searchTerm.toLowerCase())
+              .trim()
+              .includes(
+                currentLanguage === LANGUAGES.AR
+                  ? normalizeArabic(searchTerm.toLowerCase())
+                  : searchTerm.toLowerCase()
+              )
           );
 
           return {
@@ -55,9 +73,23 @@ const SearchDropdown = ({ onCompanySelect }) => {
     }
   }, [data, searchTerm, currentLanguage]);
 
+  // Update searchTerm when language changes
+  useEffect(() => {
+    console.log("CHANGE LANGUAGE: ", currentLanguage);
+    console.log("CHANGE LANGUAGE 1: ", searchTerm);
+    console.log("CHANGE LANGUAGE 2: ", searchTerm2);
+    if (searchTerm2) {
+      setSearchTerm(searchTerm2);
+      setSearchTerm2(searchTerm);
+    }
+  }, [currentLanguage]);
+
   const handleCompanySelect = (company) => {
     setSelectedOption(company);
     setSearchTerm(localized(company, "shortName", currentLanguage));
+    setSearchTerm2(
+      localized(company, "shortName", currentLanguage === "ar" ? "en" : "ar")
+    );
     onCompanySelect(company);
     setIsDropdownOpen(false);
     setIsMobilePopupOpen(false);
@@ -213,7 +245,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
               </>
             ) : (
               <div style={{ padding: "10px", color: "#888" }}>
-                No matching companies found.
+                {strings.companyNotFound}
               </div>
             )}
           </div>
