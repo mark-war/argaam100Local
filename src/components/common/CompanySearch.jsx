@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useFetchCompanyDataQuery } from "../../redux/features/apiSlice";
 import config from "../../utils/config";
 import { localized } from "../../utils/localization";
@@ -11,7 +11,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
   const { data } = useFetchCompanyDataQuery();
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchTerm2, setSearchTerm2] = useState("");
+  // const [searchTerm2, setSearchTerm2] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -32,64 +32,98 @@ const SearchDropdown = ({ onCompanySelect }) => {
   };
 
   // Populate filtered options based on the data and search term
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (data) {
+  //     // filter the result to TASI market only
+  //     const marketData = data.find(
+  //       (item) => item.market.marketID === Number(config.defaultMarket)
+  //     );
+  //     if (marketData) {
+  //       const options = marketData.sectorCompanies.map((sectorCompany) => {
+  //         const filteredCompanies = sectorCompany.companies.filter((company) =>
+  //           `${company.stockSymbol} ${localized(
+  //             company,
+  //             "shortName",
+  //             currentLanguage
+  //           )}`
+  //             .toLowerCase()
+  //             .trim()
+  //             .includes(
+  //               currentLanguage === LANGUAGES.AR
+  //                 ? normalizeArabic(searchTerm.toLowerCase())
+  //                 : searchTerm.toLowerCase()
+  //             )
+  //         );
+
+  //         return {
+  //           market: localized(marketData.market, "marketName", currentLanguage),
+  //           sector: localized(
+  //             sectorCompany.sector,
+  //             "sectorName",
+  //             currentLanguage
+  //           ),
+  //           companies: filteredCompanies,
+  //         };
+  //       });
+
+  //       setFilteredOptions(
+  //         options.filter((option) => option.companies.length > 0)
+  //       );
+  //     }
+  //   }
+  // }, [data, searchTerm, currentLanguage]);
+
+  const memoizedFilter = useCallback(() => {
     if (data) {
-      // filter the result to TASI market only
       const marketData = data.find(
         (item) => item.market.marketID === Number(config.defaultMarket)
       );
+
       if (marketData) {
-        const options = marketData.sectorCompanies.map((sectorCompany) => {
-          const filteredCompanies = sectorCompany.companies.filter((company) =>
-            `${company.stockSymbol} ${localized(
-              company,
-              "shortName",
-              currentLanguage
-            )}`
-              .toLowerCase()
-              .trim()
-              .includes(
-                currentLanguage === LANGUAGES.AR
-                  ? normalizeArabic(searchTerm.toLowerCase())
-                  : searchTerm.toLowerCase()
-              )
-          );
-
-          return {
-            market: localized(marketData.market, "marketName", currentLanguage),
-            sector: localized(
-              sectorCompany.sector,
-              "sectorName",
-              currentLanguage
-            ),
-            companies: filteredCompanies,
-          };
-        });
-
-        setFilteredOptions(
-          options.filter((option) => option.companies.length > 0)
-        );
+        return marketData.sectorCompanies
+          .map((sectorCompany) => {
+            const filteredCompanies = sectorCompany.companies.filter(
+              (company) =>
+                `${company.stockSymbol} ${localized(
+                  company,
+                  "shortName",
+                  currentLanguage
+                )}`
+                  .toLowerCase()
+                  .includes(
+                    currentLanguage === LANGUAGES.AR
+                      ? normalizeArabic(searchTerm.toLowerCase())
+                      : searchTerm.toLowerCase()
+                  )
+            );
+            return {
+              market: localized(
+                marketData.market,
+                "marketName",
+                currentLanguage
+              ),
+              sector: localized(
+                sectorCompany.sector,
+                "sectorName",
+                currentLanguage
+              ),
+              companies: filteredCompanies,
+            };
+          })
+          .filter((option) => option.companies.length > 0);
       }
     }
+    return [];
   }, [data, searchTerm, currentLanguage]);
 
-  // Update searchTerm when language changes
   useEffect(() => {
-    console.log("CHANGE LANGUAGE: ", currentLanguage);
-    console.log("CHANGE LANGUAGE 1: ", searchTerm);
-    console.log("CHANGE LANGUAGE 2: ", searchTerm2);
-    if (searchTerm2) {
-      setSearchTerm(searchTerm2);
-      setSearchTerm2(searchTerm);
-    }
-  }, [currentLanguage]);
+    setFilteredOptions(memoizedFilter());
+  }, [memoizedFilter]);
 
   const handleCompanySelect = (company) => {
     setSelectedOption(company);
     setSearchTerm(localized(company, "shortName", currentLanguage));
-    setSearchTerm2(
-      localized(company, "shortName", currentLanguage === "ar" ? "en" : "ar")
-    );
+
     onCompanySelect(company);
     setIsDropdownOpen(false);
     setIsMobilePopupOpen(false);
@@ -100,7 +134,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
   };
 
   const handleOutsideClick = (e) => {
-    console.log("EVENT: ", e);
     if (
       e.target.className === "modal-backdrop" ||
       e.target.className.includes("dropdown-header") ||
@@ -110,7 +143,16 @@ const SearchDropdown = ({ onCompanySelect }) => {
       setIsMobilePopupOpen(false);
     }
     setIsDropdownOpen(false);
+    if (selectedOption) {
+      setSearchTerm(localized(selectedOption, "shortName", currentLanguage)); // Revert to selected option if nothing new is chosen
+    }
   };
+
+  useEffect(() => {
+    if (selectedOption) {
+      setSearchTerm(localized(selectedOption, "shortName", currentLanguage));
+    }
+  }, [selectedOption, currentLanguage]);
 
   const handleDropdownFocus = () => {
     setSearchTerm("");
@@ -141,6 +183,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
     setIsDropdownClicked(true); // Mark dropdown as clicked
   };
 
+  // TO BE USED IF REQUIRED TO TOGGLE SECTORS TO MINIMIZE AND EXPAND COMPANIES
   const toggleSector = (sectorName) => {
     setExpandedSectors((prev) => ({
       ...prev,
@@ -191,7 +234,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
                 <div
                   className="dropdown-header expanded"
                   style={{
-                    padding: "10px",
                     fontsize: "14px",
                     margin: "0px 5px",
                     padding: "8px",
@@ -365,7 +407,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
               </>
             ) : (
               <div style={{ padding: "10px", color: "#888" }}>
-                No matching companies found.
+                {strings.companyNotFound}
               </div>
             )}
           </div>
