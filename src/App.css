@@ -900,7 +900,7 @@ button.disabled {
 } */
 
 .table.table_layout tbody td {
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 .table_chart .table.table_layout tbody {
@@ -4367,16 +4367,20 @@ body .table_chart .table-fields th:nth-child(5) {
   margin: 0;
   vertical-align: middle;
   position: absolute;
-  right: 5%;
-  top: 25px;
+  right: 0;
+  top: 10px;
   content: "";
   height: 20px;
   width: 20px;
   display: block;
   background-size: 84%;
+  visibility: visible;
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-appearance: none;
 }
 [lang="ar"] .search_icon img{
-  left: 5%;
+  left: 0;
   right: auto;
 }
 .search_icon{
@@ -4419,6 +4423,9 @@ button#dropdownMenuButton2:after {
   top: -3px;
   color: #8ec4ec;
   font-family: fantasy;
+}
+.navbar .container_inner {
+  position: relative;
 }
 }
 
