@@ -4454,11 +4454,14 @@ body .table_chart .table-fields tbody td:nth-child(4){
   left: auto;
 }
 [lang="ar"] .up-arrow-green{
-  right: 40%;
+  right: 50%;
   left: auto;
 }
 [lang="ar"] .table_chart .table-fields tbody td:nth-child(3){
   width: 41% !important;
+}
+[lang=ar] .table_chart .table_layout.table th:nth-child(5) {
+  text-align: center !important;
 }
 }
 
