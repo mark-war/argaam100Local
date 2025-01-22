@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentLanguage } from "../../redux/selectors";
 import { LANGUAGES, strings } from "../../utils/constants/localizedStrings";
 import search_icon from "../../assets/images/search__icon.png";
+import useIsMobile from "../../hooks/useIsMobile.js";
 
 const SearchDropdown = ({ onCompanySelect }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
@@ -17,6 +18,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const [expandedSectors, setExpandedSectors] = useState({});
   const [isDropdownClicked, setIsDropdownClicked] = useState(false);
   const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
+  const isMobile = useIsMobile(500);
 
   const normalizeArabic = (text) => {
     return text
@@ -82,12 +84,16 @@ const SearchDropdown = ({ onCompanySelect }) => {
     setSearchTerm(localized(company, "shortName", currentLanguage));
 
     onCompanySelect(company);
-    setIsDropdownOpen(false);
-    setIsMobilePopupOpen(false);
+
+    if (!isMobile) setIsDropdownOpen(false);
+    else setIsMobilePopupOpen(false);
   };
 
   const toggleMobilePopup = () => {
     setIsMobilePopupOpen((prev) => !prev);
+    if (selectedOption && searchTerm === "") {
+      setSearchTerm(localized(selectedOption, "shortName", currentLanguage)); // Revert to selected option if nothing new is chosen
+    }
   };
 
   const handleOutsideClick = (e) => {
@@ -107,15 +113,14 @@ const SearchDropdown = ({ onCompanySelect }) => {
   };
 
   useEffect(() => {
-    if (selectedOption && !isMobilePopupOpen) {
+    if (selectedOption) {
       setSearchTerm(localized(selectedOption, "shortName", currentLanguage));
     }
   }, [selectedOption, currentLanguage]);
 
   const handleDropdownFocus = () => {
     setSearchTerm("");
-    if (!isMobilePopupOpen) setIsDropdownOpen(true);
-    else setIsMobilePopupOpen(true);
+    setIsDropdownOpen(true);
   };
 
   const handleModalInputClick = () => {
