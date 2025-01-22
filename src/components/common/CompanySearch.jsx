@@ -11,7 +11,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
   const { data } = useFetchCompanyDataQuery();
   const [searchTerm, setSearchTerm] = useState("");
-  // const [searchTerm2, setSearchTerm2] = useState("");
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -30,48 +29,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
       .replace(/\آ/g, "ا")
       .replace(/\إ/g, "ا");
   };
-
-  // Populate filtered options based on the data and search term
-  // useEffect(() => {
-  //   if (data) {
-  //     // filter the result to TASI market only
-  //     const marketData = data.find(
-  //       (item) => item.market.marketID === Number(config.defaultMarket)
-  //     );
-  //     if (marketData) {
-  //       const options = marketData.sectorCompanies.map((sectorCompany) => {
-  //         const filteredCompanies = sectorCompany.companies.filter((company) =>
-  //           `${company.stockSymbol} ${localized(
-  //             company,
-  //             "shortName",
-  //             currentLanguage
-  //           )}`
-  //             .toLowerCase()
-  //             .trim()
-  //             .includes(
-  //               currentLanguage === LANGUAGES.AR
-  //                 ? normalizeArabic(searchTerm.toLowerCase())
-  //                 : searchTerm.toLowerCase()
-  //             )
-  //         );
-
-  //         return {
-  //           market: localized(marketData.market, "marketName", currentLanguage),
-  //           sector: localized(
-  //             sectorCompany.sector,
-  //             "sectorName",
-  //             currentLanguage
-  //           ),
-  //           companies: filteredCompanies,
-  //         };
-  //       });
-
-  //       setFilteredOptions(
-  //         options.filter((option) => option.companies.length > 0)
-  //       );
-  //     }
-  //   }
-  // }, [data, searchTerm, currentLanguage]);
 
   const memoizedFilter = useCallback(() => {
     if (data) {
@@ -136,6 +93,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const handleOutsideClick = (e) => {
     if (
       e.target.className === "modal-backdrop" ||
+      e.target.className === "modal-content" ||
       e.target.className.includes("dropdown-header") ||
       e.target.className === "dropdown-item" ||
       e.target.className === ""
@@ -143,25 +101,26 @@ const SearchDropdown = ({ onCompanySelect }) => {
       setIsMobilePopupOpen(false);
     }
     setIsDropdownOpen(false);
-    if (selectedOption) {
+    if (selectedOption && !isMobilePopupOpen) {
       setSearchTerm(localized(selectedOption, "shortName", currentLanguage)); // Revert to selected option if nothing new is chosen
     }
   };
 
   useEffect(() => {
-    if (selectedOption) {
+    if (selectedOption && !isMobilePopupOpen) {
       setSearchTerm(localized(selectedOption, "shortName", currentLanguage));
     }
   }, [selectedOption, currentLanguage]);
 
   const handleDropdownFocus = () => {
     setSearchTerm("");
-    setIsDropdownOpen(true);
+    if (!isMobilePopupOpen) setIsDropdownOpen(true);
+    else setIsMobilePopupOpen(true);
   };
 
   const handleModalInputClick = () => {
     setSearchTerm(""); // Clear search term
-    setIsDropdownOpen(true); // Open the dropdown
+    setIsMobilePopupOpen(true); // Open the dropdown
   };
 
   const handleDropdownBlur = () => {
@@ -199,8 +158,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
           placeholder={strings.searchByCompany}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onFocus={handleDropdownFocus}
-          onBlur={handleDropdownBlur}
+          onFocus={() => handleDropdownFocus()}
+          onBlur={() => handleDropdownBlur()}
           className="search_bar_dropdown"
         />
         <button
@@ -209,8 +168,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
           className="dropdownMenuButton2 show"
-          onClick={handleDropdownFocus}
-          onBlur={handleDropdownBlur}
+          onClick={() => handleDropdownFocus()}
+          onBlur={() => handleDropdownBlur()}
         ></button>
         {isDropdownOpen && (
           <div
@@ -313,6 +272,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
         >
           <div
             className="modal-content"
+            onClick={(e) => handleOutsideClick(e)}
             style={{
               position: "absolute",
               top: "20%",
@@ -333,14 +293,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
               placeholder={strings.searchByCompany}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onClick={handleModalInputClick} // Clear search term when input is clicked
+              onFocus={handleModalInputClick} // Clear search term when input is clicked
               className="search_bar_dropdown"
-              style={{
-                width: "100%",
-                marginBottom: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-              }}
             />
             <button
               type="button"
@@ -348,7 +302,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
               data-bs-toggle="dropdown"
               aria-expanded="false"
               className="dropdownMenuButton2 show"
-              onClick={() => handleSearch()}
+              onClick={handleModalInputClick}
             ></button>
 
             {/* Render Filtered Options */}
