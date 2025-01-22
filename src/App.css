@@ -3747,6 +3747,10 @@ tr.activeRow {
   .mobile_nav.mobile-active ~ .respons__mobile .language_mobile {
     display: none !important;
   }
+
+    .mobile_nav.mobile-active ~ .respons__mobile .search_icon {
+      top: 0 !important;
+    }
   .mobile_nav ~ .respons__mobile .navbar-brand,
   .mobile_nav ~ .respons__mobile .language_mobile {
     display: block !important;
@@ -3788,11 +3792,11 @@ tr.activeRow {
 .table_chart .table-fields tbody td:nth-child(4){
   text-indent: 0 !important;
 }
-.search_icon img{
+.search_icon {
   right: 0% !important;
   top: 10px !important;
 }
-[lang="ar"] .search_icon img{
+[lang="ar"] .search_icon {
   left: 0% !important;
   right: auto !important;
 }
@@ -4363,7 +4367,7 @@ body .table_chart .table-fields th:nth-child(5) {
 .top_search_bar {
   display: none;
 }
-.search_icon img{
+.search_icon{
   margin: 0;
   vertical-align: middle;
   position: absolute;
@@ -4379,12 +4383,15 @@ body .table_chart .table-fields th:nth-child(5) {
     -webkit-transform: translate3d(0, 0, 0);
     -webkit-appearance: none;
 }
-[lang="ar"] .search_icon img{
+[lang="ar"] .search_icon{
   left: 0;
   right: auto;
 }
 .search_icon{
   display: block !important;
+}
+.search_icon img{
+  width: 100%;
 }
 .mobile_nav ~ .respons__mobile .language_mobile {
   padding-right: 5%;
