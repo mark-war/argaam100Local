@@ -9,9 +9,9 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     // Define an endpoint for fetching the data, passing the marketId as a parameter
     fetchCompanyData: builder.query({
-      query: (marketId) => ({
+      query: () => ({
         url: "/country-markets-sector-companies", // The endpoint path
-        params: { marketId }, // The query parameter (marketId)
+        params: { includeInsurance: true }, // The query parameter (marketId)
       }),
     }),
   }),
