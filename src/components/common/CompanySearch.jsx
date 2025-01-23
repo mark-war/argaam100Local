@@ -220,7 +220,10 @@ const SearchDropdown = ({ onCompanySelect }) => {
     }, 150);
   };
 
-  const handleDropdownClick = () => {
+  const handleDropdownClick = (e) => {
+    // fix for clicking on the edge of the market row
+    if (e.target.className === "" && e.target.firstElementChild)
+      setIsDropdownOpen(false);
     setIsDropdownClicked(true); // Mark dropdown as clicked
   };
 
@@ -267,7 +270,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
               backgroundColor: "#fff",
               zIndex: "100",
             }}
-            onMouseDown={handleDropdownClick} // Detect dropdown clicks
+            onMouseDown={(e) => handleDropdownClick(e)} // Detect dropdown clicks
           >
             {filteredOptions.length > 0 ? (
               <>
