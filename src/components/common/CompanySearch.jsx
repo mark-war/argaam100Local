@@ -20,16 +20,73 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
   const isMobile = useIsMobile(500);
 
+  // const normalizeArabic = (text) => {
+  //   return text
+
+  //     .replace(/\ى/g, "ي")
+  //     .replace(/\ه/g, "ة")
+  //     .replace(/\ا/g, "آ")
+  //     .replace(/\عِ/g, "ع")
+  //     .replace(/\آ/g, "ا")
+  //     .replace(/\إ/g, "ا");
+  // };
+
+  // const memoizedFilter = useCallback(() => {
+  //   if (data) {
+  //     const marketData = data.find(
+  //       (item) => item.market.marketID === Number(config.defaultMarket)
+  //     );
+
+  //     if (marketData) {
+  //       return marketData.sectorCompanies
+  //         .map((sectorCompany) => {
+  //           const filteredCompanies = sectorCompany.companies.filter(
+  //             (company) =>
+  //               `${company.stockSymbol} ${localized(
+  //                 company,
+  //                 "shortName",
+  //                 currentLanguage
+  //               )}`
+  //                 .toLowerCase()
+  //                 .trim()
+  //                 .includes(
+  //                   currentLanguage === LANGUAGES.AR
+  //                     ? normalizeArabic(searchTerm.toLowerCase())
+  //                     : searchTerm.toLowerCase()
+  //                 )
+  //           );
+  //           return {
+  //             market: localized(
+  //               marketData.market,
+  //               "marketName",
+  //               currentLanguage
+  //             ),
+  //             sector: localized(
+  //               sectorCompany.sector,
+  //               "sectorName",
+  //               currentLanguage
+  //             ),
+  //             companies: filteredCompanies,
+  //           };
+  //         })
+  //         .filter((option) => option.companies.length > 0);
+  //     }
+  //   }
+  //   return [];
+  // }, [data, searchTerm, currentLanguage]);
+
+  // useEffect(() => {
+  //   setFilteredOptions(memoizedFilter());
+  // }, [memoizedFilter]);
+
   const normalizeArabic = (text) => {
     return text
-      .replace(/\ا/g, "أ")
-      .replace(/\أ/g, "ا")
-      .replace(/\ى/g, "ي")
-      .replace(/\ه/g, "ة")
-      .replace(/\ا/g, "آ")
-      .replace(/\عِ/g, "ع")
-      .replace(/\آ/g, "ا")
-      .replace(/\إ/g, "ا");
+      .replace(/[\u064B-\u065F]/g, "") // Remove diacritics
+      .replace(/[أآإ]/g, "ا") // Normalize all forms of 'ا'
+      .replace(/[يى]/g, "ي") // Normalize 'ي' and 'ى' to 'ي'
+      .replace(/[هة]/g, "ة") // Normalize 'ه' and 'ة' to 'ة'
+      .replace(/\s+/g, " ") // Normalize all spaces to a single space
+      .trim(); // Remove leading/trailing spaces
   };
 
   const memoizedFilter = useCallback(() => {
@@ -42,34 +99,54 @@ const SearchDropdown = ({ onCompanySelect }) => {
         return marketData.sectorCompanies
           .map((sectorCompany) => {
             const filteredCompanies = sectorCompany.companies.filter(
-              (company) =>
-                `${company.stockSymbol} ${localized(
+              (company) => {
+                // Extract relevant fields
+                const stockSymbol = company.stockSymbol?.toLowerCase();
+                const shortName = localized(
                   company,
                   "shortName",
                   currentLanguage
-                )}`
-                  .toLowerCase()
-                  .includes(
-                    currentLanguage === LANGUAGES.AR
-                      ? normalizeArabic(searchTerm.toLowerCase())
-                      : searchTerm.toLowerCase()
-                  )
+                ).toLowerCase();
+
+                // Normalize search term
+                const normalizedSearchTerm =
+                  currentLanguage === LANGUAGES.AR
+                    ? normalizeArabic(searchTerm.toLowerCase())
+                    : searchTerm.toLowerCase();
+
+                // Match conditions
+                const isStockSymbolMatch =
+                  stockSymbol && stockSymbol.includes(normalizedSearchTerm);
+
+                const isShortNameMatch =
+                  shortName &&
+                  (currentLanguage === LANGUAGES.AR
+                    ? normalizeArabic(shortName).includes(normalizedSearchTerm)
+                    : shortName.includes(normalizedSearchTerm));
+
+                return isStockSymbolMatch || isShortNameMatch;
+              }
             );
-            return {
-              market: localized(
-                marketData.market,
-                "marketName",
-                currentLanguage
-              ),
-              sector: localized(
-                sectorCompany.sector,
-                "sectorName",
-                currentLanguage
-              ),
-              companies: filteredCompanies,
-            };
+
+            if (filteredCompanies.length > 0) {
+              return {
+                market: localized(
+                  marketData.market,
+                  "marketName",
+                  currentLanguage
+                ),
+                sector: localized(
+                  sectorCompany.sector,
+                  "sectorName",
+                  currentLanguage
+                ),
+                companies: filteredCompanies,
+              };
+            } else {
+              return null;
+            }
           })
-          .filter((option) => option.companies.length > 0);
+          .filter((sector) => sector !== null); // Remove empty sectors
       }
     }
     return [];
