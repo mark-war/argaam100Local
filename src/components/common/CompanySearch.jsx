@@ -222,7 +222,14 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
   const handleDropdownClick = (e) => {
     // fix for clicking on the edge of the market row
-    if (e.target.className === "" && e.target.firstElementChild)
+    if (
+      e.target.className === "" &&
+      e.target.firstElementChild &&
+      !(
+        e.target.offsetWidth > e.target.clientWidth ||
+        e.target.offsetHeight > e.target.clientHeight
+      )
+    )
       setIsDropdownOpen(false);
     setIsDropdownClicked(true); // Mark dropdown as clicked
   };
@@ -393,7 +400,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
             {/* Render Filtered Options */}
             {filteredOptions.length > 0 ? (
               <>
-                <div
+                {/* <div
                   className="dropdown-header expanded"
                   style={{
                     padding: "10px",
@@ -404,7 +411,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                   onClick={(e) => handleOutsideClick(e)}
                 >
                   {filteredOptions[0].market}
-                </div>
+                </div> */}
 
                 {filteredOptions.map((option) => (
                   <div key={option.sector}>
