@@ -130,11 +130,11 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
             if (filteredCompanies.length > 0) {
               return {
-                market: localized(
-                  marketData.market,
-                  "marketName",
-                  currentLanguage
-                ),
+                // market: localized(
+                //   marketData.market,
+                //   "marketName",
+                //   currentLanguage
+                // ),
                 sector: localized(
                   sectorCompany.sector,
                   "sectorName",
@@ -275,7 +275,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
             {filteredOptions.length > 0 ? (
               <>
                 {/* Display market name at the top */}
-                <div
+                {/* <div
                   className="dropdown-header expanded"
                   style={{
                     fontsize: "14px",
@@ -286,7 +286,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
                   onClick={(e) => handleOutsideClick(e)}
                 >
                   {filteredOptions[0].market}
-                </div>
+                </div> */}
 
                 {/* Render sectors and their companies */}
                 {filteredOptions.map((option) => (

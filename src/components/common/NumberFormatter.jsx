@@ -52,6 +52,21 @@ const NumberFormatter = ({
       ? 0
       : config.decimals || 2;
 
+  // Handle specific case for Total Return with Dividend Reinvestment
+  if (activeSection === 37) {
+    let roundedValue = Math.round(value); // Round to nearest whole number
+    return (
+      <span
+        style={{
+          color: Number(value) < 0 ? "red" : "inherit", // Keep the red color for negative values
+        }}
+      >
+        {roundedValue}
+        {unit}
+      </span>
+    );
+  }
+
   if (activeSection === 30 || activeSection === 31) {
     let formattedValue =
       value < 0

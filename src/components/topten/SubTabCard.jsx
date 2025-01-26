@@ -485,7 +485,6 @@ const SubTabCard = ({
   );
 
   useEffect(() => {
-    console.log("SCROLL TO HIGHLIGHT: ", tableRef.current);
     // Only scroll if there is a selected company ID
     if (selectedCompanyID && tableRef.current) {
       const highlightedRow = tableRef.current;

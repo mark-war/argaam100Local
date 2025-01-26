@@ -17,7 +17,7 @@ import SearchDropdown from "../common/CompanySearch.jsx";
 const HeaderMain = ({ onCompanySelect }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { lang } = useParams(); // Access the current language from URL parameters
+  const { lang, tabName = "multiples" } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const isMobile = useIsMobile(1024);
@@ -262,11 +262,11 @@ const HeaderMain = ({ onCompanySelect }) => {
 
               <NavLink
                 className="navbar-brand"
-                to={`/${lang}/argaam-100`}
+                to={`/${lang}/argaam-100/${tabName}`}
                 // onClick={() => (window.location.href = `/${lang}/screener`)}
                 onClick={(e) => {
                   e.preventDefault(); // Prevent React Router's default navigation.
-                  window.location.href = `/${lang}/argaam-100`; // Force full reload.
+                  window.location.href = `/${lang}/argaam-100/${tabName}`; // Force full reload.
                 }}
               >
                 {lang === LANGUAGES.AR ? (
