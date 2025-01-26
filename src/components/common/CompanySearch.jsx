@@ -20,65 +20,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
   const isMobile = useIsMobile(500);
 
-  // const normalizeArabic = (text) => {
-  //   return text
-
-  //     .replace(/\ى/g, "ي")
-  //     .replace(/\ه/g, "ة")
-  //     .replace(/\ا/g, "آ")
-  //     .replace(/\عِ/g, "ع")
-  //     .replace(/\آ/g, "ا")
-  //     .replace(/\إ/g, "ا");
-  // };
-
-  // const memoizedFilter = useCallback(() => {
-  //   if (data) {
-  //     const marketData = data.find(
-  //       (item) => item.market.marketID === Number(config.defaultMarket)
-  //     );
-
-  //     if (marketData) {
-  //       return marketData.sectorCompanies
-  //         .map((sectorCompany) => {
-  //           const filteredCompanies = sectorCompany.companies.filter(
-  //             (company) =>
-  //               `${company.stockSymbol} ${localized(
-  //                 company,
-  //                 "shortName",
-  //                 currentLanguage
-  //               )}`
-  //                 .toLowerCase()
-  //                 .trim()
-  //                 .includes(
-  //                   currentLanguage === LANGUAGES.AR
-  //                     ? normalizeArabic(searchTerm.toLowerCase())
-  //                     : searchTerm.toLowerCase()
-  //                 )
-  //           );
-  //           return {
-  //             market: localized(
-  //               marketData.market,
-  //               "marketName",
-  //               currentLanguage
-  //             ),
-  //             sector: localized(
-  //               sectorCompany.sector,
-  //               "sectorName",
-  //               currentLanguage
-  //             ),
-  //             companies: filteredCompanies,
-  //           };
-  //         })
-  //         .filter((option) => option.companies.length > 0);
-  //     }
-  //   }
-  //   return [];
-  // }, [data, searchTerm, currentLanguage]);
-
-  // useEffect(() => {
-  //   setFilteredOptions(memoizedFilter());
-  // }, [memoizedFilter]);
-
   const normalizeArabic = (text) => {
     return text
       .replace(/[\u064B-\u065F]/g, "") // Remove diacritics
