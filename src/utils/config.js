@@ -13,7 +13,6 @@ const config = {
   expirationInMinutes: Number(import.meta.env.VITE_EXPIRATION_IN_MINUTES),
   chartsApiUrl: import.meta.env.VITE_CHARTS_API_URL,
   defaultMarket: import.meta.env.VITE_DEFAULT_MARKETID,
-  companyApiUrl: import.meta.env.VITE_SCREENER_API_URL,
 };
 
 export default config;

@@ -3,7 +3,7 @@ import { createChartParams } from "../../utils/queryParamHelpers";
 import { fetchScreenerTableData } from "../../services/screenerApi.js";
 
 export const fetchScreenerData = createAsyncThunk(
-  "screener/fetchScreenerData",
+  "argaam100/fetchScreenerData",
   async (
     { filteredConfigurations, currentLanguage, selectedSectorId = null },
     { rejectWithValue, getState }

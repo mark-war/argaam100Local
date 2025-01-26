@@ -45,9 +45,9 @@ const ExportDropdown = (activeTabLink = {}) => {
   const currentLanguage = useSelector(selectCurrentLanguage);
 
   const user = useSelector((state) => state.user.user);
-  const hasAccess = user?.HasScreenerChartsAccess === "true";
-  const isonTrial = user?.isOnFreeTrail !== "False";
-  const isExcelAllowed = user?.isScreenerExcelAllowed == "true";
+  const hasAccess = user?.HasArgaam100ChartsAccess === "true";
+  const isonTrial = user?.isArgaam100OnFreeTrail !== "False";
+  const isExcelAllowed = user?.isArgaam100ExcelAllowed == "true";
 
   const isPlusSubscriber = user?.IsArgaamSubscriber == "true";
   const analystPkgwithoutTrial = isPlusSubscriber && !isonTrial;
@@ -143,7 +143,6 @@ const ExportDropdown = (activeTabLink = {}) => {
   const structuredTopTenData = getFilteredData(isMultiple);
 
   const handleExport = (option) => {
-    
     setDropdownOpen(false); // Close dropdown after selection
     if (option === "current") {
       handleCurrentTabExport();
@@ -154,7 +153,7 @@ const ExportDropdown = (activeTabLink = {}) => {
 
   const checkAccess = () => {
     if (user?.CpUser === "true") return true;
-    if (user?.IsScreenerTrialOrScreenerPackageExpired == "true") {
+    if (user?.IsArgaam100TrialOrArgaam100PackageExpired == "true") {
       dispatch(
         settrialStatusModal({
           visible: true,
@@ -301,7 +300,6 @@ const ExportDropdown = (activeTabLink = {}) => {
 
   // Function to handle the toggle of the dropdown
   const toggleDropdown = (event) => {
-
     if (!checkAccess()) {
       return;
     }

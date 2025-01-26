@@ -3,7 +3,7 @@ import { fetchFieldConfiguration } from "../../services/screenerApi.js";
 
 // Fetch Field Configuration Data Thunk
 export const fetchFieldConfigurationData = createAsyncThunk(
-  "screener/fetchFieldConfigurationData",
+  "argaam100/fetchFieldConfigurationData",
   async (_, { rejectWithValue }) => {
     try {
       const response = await fetchFieldConfiguration();

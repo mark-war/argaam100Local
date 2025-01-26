@@ -10,19 +10,13 @@ const LazyImage = () => {
   return (
     <NavLink
       className="navbar-brand"
-      to={`/${lang}/screener`}
+      to={`/${lang}/argaam-100`}
       // onClick={() => (window.location.href = `/${lang}/screener`)}
     >
       {lang === LANGUAGES.AR ? (
-        <img
-          alt="Argaam Screener Logo"
-          src={Argaam100LogoAr}
-        />
+        <img alt="Argaam Screener Logo" src={Argaam100LogoAr} />
       ) : (
-        <img
-          alt="Argaam Screener Logo"
-          src={Argaam100LogoEn}
-        />
+        <img alt="Argaam Screener Logo" src={Argaam100LogoEn} />
       )}
     </NavLink>
   );

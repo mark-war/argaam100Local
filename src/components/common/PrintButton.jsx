@@ -8,12 +8,12 @@ import { settrialStatusModal } from "../../redux/features/userSlice";
 
 const PrintButton = () => {
   const user = useSelector((state) => state.user.user);
-  const hasAccess = user?.HasScreenerChartsAccess === "true";
+  const hasAccess = user?.HasArgaam100ChartsAccess === "true";
   const dispatch = useDispatch();
   const checkAccess = () => {
     if (user?.CpUser === "true") return true;
 
-    if (user?.IsScreenerTrialOrScreenerPackageExpired == "true") {
+    if (user?.IsArgaam100TrialOrArgaam100PackageExpired == "true") {
       dispatch(
         settrialStatusModal({
           visible: true,

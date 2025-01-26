@@ -21,7 +21,7 @@ const PageSubHeader = ({
   const dispatch = useDispatch();
   const currentLanguage = useLanguage(lang);
   const user = useSelector((state) => state.user.user); // Access pages from Redux store
-  const hasAccess = user?.HasScreenerChartsAccess == "true";
+  const hasAccess = user?.HasArgaam100ChartsAccess == "true";
 
   const selectedLanguage = useSelector(
     (state) => state?.language?.currentLanguage
@@ -70,7 +70,7 @@ const PageSubHeader = ({
                           handleActiveTabLink(tabItem.tabLinkId);
                         } else {
                           if (
-                            user?.IsScreenerTrialOrScreenerPackageExpired ==
+                            user?.IsArgaam100TrialOrArgaam100PackageExpired ==
                             "true"
                           ) {
                             dispatch(

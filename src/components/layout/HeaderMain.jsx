@@ -25,7 +25,7 @@ const HeaderMain = ({ onCompanySelect }) => {
   const dropdownMobileRef = useRef(null); // Create a ref for the dropdown element
   const pages = useSelector((state) => state.pages.pages); // Access pages from Redux store
   const user = useSelector((state) => state.user.user); // Access pages from Redux store
-  const hasAccess = user?.HasScreenerChartsAccess == "true";
+  const hasAccess = user?.HasArgaam100ChartsAccess == "true";
 
   const selectedLanguage = useSelector(
     (state) => state?.language?.currentLanguage
@@ -425,7 +425,8 @@ const HeaderMain = ({ onCompanySelect }) => {
                       )}
                       {/* Toggle Button */}
 
-                      {user?.HasScreenerChartsAccess !== "true" && !isMobile ? (
+                      {user?.HasArgaam100ChartsAccess !== "true" &&
+                      !isMobile ? (
                         <div className="request-btn">
                           {" "}
                           <Link

@@ -4,7 +4,7 @@ import config from "../../utils/config";
 export const apiSlice = createApi({
   reducerPath: "companyApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: config.companyApiUrl,
+    baseUrl: config.apiUrl,
   }), // Base URL from the API
   endpoints: (builder) => ({
     // Define an endpoint for fetching the data, passing the marketId as a parameter

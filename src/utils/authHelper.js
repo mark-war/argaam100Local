@@ -91,8 +91,8 @@ export async function refreshToken() {
 
   const extstinguser = store.getState()?.user?.user;
   const hasExpired =
-    extstinguser?.IsScreenerTrialOrScreenerPackageExpired !== "true" &&
-    user?.IsScreenerTrialOrScreenerPackageExpired === "true";
+    extstinguser?.IsArgaam100TrialOrArgaam100PackageExpired !== "true" &&
+    user?.IsArgaam100TrialOrArgaam100PackageExpired === "true";
 
   store.dispatch(setUser(user));
 
