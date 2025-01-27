@@ -4464,7 +4464,16 @@ body .table_chart .table-fields tbody td:nth-child(4){
   text-align: center !important;
 }
 }
-
+@media screen and (min-width: 1600px) and (max-width: 2800px){
+  .top_textcomment_icon{
+    width: 22px;
+    height: 22px;
+    background-size: 100%;
+  }
+  .textComment_iconPane{
+    width: 24px;
+  }
+}
 .table-responsive {
   overflow-y: auto !important; /* Enable vertical scrolling */
 }
