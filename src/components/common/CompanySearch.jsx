@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useFetchCompanyDataQuery } from "../../redux/features/apiSlice";
 import config from "../../utils/config";
 import { localized } from "../../utils/localization";
@@ -19,6 +19,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const [isDropdownClicked, setIsDropdownClicked] = useState(false);
   const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
   const isMobile = useIsMobile(500);
+  const searchRef = useRef(searchTerm);
 
   const normalizeArabic = (text) => {
     return text
@@ -41,7 +42,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
           .map((sectorCompany) => {
             const filteredCompanies = sectorCompany.companies.filter(
               (company) => {
-                // Extract relevant fields
                 const stockSymbol = company.stockSymbol?.toLowerCase();
                 const shortName = localized(
                   company,
@@ -49,13 +49,11 @@ const SearchDropdown = ({ onCompanySelect }) => {
                   currentLanguage
                 ).toLowerCase();
 
-                // Normalize search term
                 const normalizedSearchTerm =
                   currentLanguage === LANGUAGES.AR
                     ? normalizeArabic(searchTerm.toLowerCase())
                     : searchTerm.toLowerCase();
 
-                // Match conditions
                 const isStockSymbolMatch =
                   stockSymbol && stockSymbol.includes(normalizedSearchTerm);
 
@@ -71,11 +69,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
             if (filteredCompanies.length > 0) {
               return {
-                // market: localized(
-                //   marketData.market,
-                //   "marketName",
-                //   currentLanguage
-                // ),
                 sector: localized(
                   sectorCompany.sector,
                   "sectorName",
@@ -96,6 +89,12 @@ const SearchDropdown = ({ onCompanySelect }) => {
   useEffect(() => {
     setFilteredOptions(memoizedFilter());
   }, [memoizedFilter]);
+
+  const isValidOption = filteredOptions.some((option) =>
+    option.companies.some(
+      (company) => company.shortNameEn === searchTerm.trim()
+    )
+  );
 
   const handleCompanySelect = (company) => {
     setSelectedOption(company);
@@ -125,9 +124,12 @@ const SearchDropdown = ({ onCompanySelect }) => {
       setIsMobilePopupOpen(false);
     }
     setIsDropdownOpen(false);
-    if (selectedOption && !isMobilePopupOpen) {
-      setSearchTerm(localized(selectedOption, "shortName", currentLanguage)); // Revert to selected option if nothing new is chosen
-    }
+
+    if (isValidOption) {
+      if (selectedOption && !isMobilePopupOpen) {
+        setSearchTerm(localized(selectedOption, "shortName", currentLanguage)); // Revert to selected option if nothing new is chosen
+      }
+    } else setSearchTerm(searchRef.current.value);
   };
 
   useEffect(() => {
@@ -137,23 +139,27 @@ const SearchDropdown = ({ onCompanySelect }) => {
   }, [selectedOption, currentLanguage]);
 
   const handleDropdownFocus = () => {
-    setSearchTerm("");
+    if (isValidOption) setSearchTerm("");
+    else setSearchTerm(searchRef.current.value);
+
     setIsDropdownOpen(true);
   };
 
   const handleModalInputClick = () => {
-    setSearchTerm(""); // Clear search term
-    setIsMobilePopupOpen(true); // Open the dropdown
+    if (isValidOption) setSearchTerm("");
+    else setSearchTerm(searchRef.current.value);
+
+    setIsMobilePopupOpen(true);
   };
 
   const handleDropdownBlur = () => {
     setTimeout(() => {
       if (!isDropdownClicked) {
-        if (selectedOption) {
+        if (isValidOption && selectedOption) {
           setSearchTerm(
             localized(selectedOption, "shortName", currentLanguage)
           ); // Revert to selected option if nothing new is chosen
-        }
+        } else if (!isValidOption) setSearchTerm(searchRef.current.value);
         setIsDropdownOpen(false); // Close dropdown
         setIsMobilePopupOpen(false);
       }
@@ -162,7 +168,6 @@ const SearchDropdown = ({ onCompanySelect }) => {
   };
 
   const handleDropdownClick = (e) => {
-    // fix for clicking on the edge of the market row
     if (
       e.target.className === "" &&
       e.target.firstElementChild &&
@@ -187,6 +192,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
     <div style={{ width: "100%", maxWidth: "400px", margin: "auto" }}>
       <div className="top_search_bar" style={{ position: "relative" }}>
         <input
+          ref={searchRef}
           type="text"
           placeholder={strings.searchByCompany}
           value={searchTerm}
@@ -322,6 +328,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
           >
             {/* Input Field Inside Modal */}
             <input
+              ref={searchRef}
               type="text"
               placeholder={strings.searchByCompany}
               value={searchTerm}
