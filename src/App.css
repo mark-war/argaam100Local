@@ -4469,10 +4469,12 @@ body .table_chart .table-fields tbody td:nth-child(4){
     width: 22px;
     height: 22px;
     background-size: 100%;
+    top: 0;
   }
   .textComment_iconPane{
     width: 24px;
   }
+ 
 }
 .table-responsive {
   overflow-y: auto !important; /* Enable vertical scrolling */
