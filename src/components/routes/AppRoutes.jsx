@@ -18,6 +18,7 @@ import { TrialStatus } from "../common/TrialStatus";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { selectPages } from "../../redux/selectors";
 
 // const ScreenerTablesPage = lazy(() => import("../../pages/ScreenerTablesPage"));
 const TopTenCompaniesPage = lazy(() =>
@@ -65,13 +66,52 @@ function AppRoutes() {
   );
 }
 
+// function LockedPages({ children }) {
+//   const user = useSelector((state) => state.user.user);
+//   const hasAccess = user?.HasArgaam100ChartsAccess === "true";
+
+//   // if (!hasAccess) {
+//   //   return <Navigate to={`/en/request`} replace />;
+//   // }
+
+//   return children;
+// }
+
 function LockedPages({ children }) {
+  const { lang, tabName } = useParams(); // take the language and tab name from the url parameter
   const user = useSelector((state) => state.user.user);
+  const pages = useSelector(selectPages); // select the page object
+
+  // find the selected tab based on the tab name parameter
+  const selectedTab = pages
+    .flatMap((page) => page.sections)
+    .flatMap((section) => section.tabs)
+    .find(
+      (tab) => tab.tabNameEn.toLowerCase() === tabName.replaceAll("-", " ")
+    );
+
+  // find the default tab based on the isSelected property
+  const defaultTab = pages
+    .flatMap((page) => page.sections)
+    .flatMap((section) => section.tabs)
+    .find((tab) => tab.isSelected);
+
+  // flag to check if user has access
   const hasAccess = user?.HasArgaam100ChartsAccess === "true";
 
-  // if (!hasAccess) {
-  //   return <Navigate to={`/en/request`} replace />;
-  // }
+  // if the selected tab is not equal to the free page sub id config then redirect to default
+  if (selectedTab) {
+    const isFreePage =
+      String(selectedTab?.tabId) === import.meta.env.VITE_FREEPAGESUBID;
+    if (!isFreePage && !hasAccess) {
+      return (
+        <Navigate
+          to={`/${lang}/argaam-100/${defaultTab?.tabNameEn.toLowerCase()}`}
+          replace
+        />
+      );
+    }
+  }
 
   return children;
 }

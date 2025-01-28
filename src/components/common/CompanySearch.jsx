@@ -20,6 +20,7 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const [isMobilePopupOpen, setIsMobilePopupOpen] = useState(false);
   const isMobile = useIsMobile(500);
   const searchRef = useRef(searchTerm);
+  const selectedCompanyRef = useRef("");
 
   const normalizeArabic = (text) => {
     return text
@@ -98,12 +99,20 @@ const SearchDropdown = ({ onCompanySelect }) => {
 
   const handleCompanySelect = (company) => {
     setSelectedOption(company);
-    setSearchTerm(localized(company, "shortName", currentLanguage));
 
     onCompanySelect(company);
 
+    // store the selected company on the reference
+    selectedCompanyRef.current = localized(
+      company,
+      "shortName",
+      currentLanguage
+    );
+
     if (!isMobile) setIsDropdownOpen(false);
     else setIsMobilePopupOpen(false);
+
+    setSearchTerm(localized(company, "shortName", currentLanguage));
   };
 
   const toggleMobilePopup = () => {
@@ -155,10 +164,8 @@ const SearchDropdown = ({ onCompanySelect }) => {
   const handleDropdownBlur = () => {
     setTimeout(() => {
       if (!isDropdownClicked) {
-        if (isValidOption && selectedOption) {
-          setSearchTerm(
-            localized(selectedOption, "shortName", currentLanguage)
-          ); // Revert to selected option if nothing new is chosen
+        if ((searchTerm === "" || isValidOption) && selectedOption) {
+          setSearchTerm(selectedCompanyRef.current.valueOf());
         } else if (!isValidOption) setSearchTerm(searchRef.current.value);
         setIsDropdownOpen(false); // Close dropdown
         setIsMobilePopupOpen(false);
@@ -175,9 +182,10 @@ const SearchDropdown = ({ onCompanySelect }) => {
         e.target.offsetWidth > e.target.clientWidth ||
         e.target.offsetHeight > e.target.clientHeight
       )
-    )
+    ) {
       setIsDropdownOpen(false);
-    setIsDropdownClicked(true); // Mark dropdown as clicked
+      setIsDropdownClicked(true);
+    }
   };
 
   // TO BE USED IF REQUIRED TO TOGGLE SECTORS TO MINIMIZE AND EXPAND COMPANIES
