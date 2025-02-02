@@ -3,46 +3,34 @@ name: CI/CD Workflow
 on:
   push:
     branches:
-      - dev # Trigger on push to the 'dev' branch
+      - dev
   pull_request:
     branches:
-      - dev # Trigger on PRs targeting the 'dev' branch
+      - dev
 
 jobs:
   build:
-    runs-on: windows-latest # Run on the latest Windows runner
+    runs-on: [self-hosted, windows]
 
     steps:
-      # Checkout the code from GitHub repository
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      # Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: "18" # Use Node.js version 18
+          node-version: "18"
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Build the application
       - name: Build the application
         run: npm run build
 
-      # Upload the artifact (optional, for backup or later use)
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: dist/
-
-      # Copy files to IIS Server (use the appropriate path for your environment)
-      - name: Copy files to IIS Server
+      - name: Copy files to local destination
         shell: pwsh
         run: |
-          $destinationPath = "C:\inetpub\wwwroot\argaam100\dist"  # The local destination directory
+          $destinationPath = "C:\inetpub\wwwroot\argaam100\dist"
 
           # Check if destination directory exists
           if (-Not (Test-Path -Path $destinationPath)) {
@@ -53,9 +41,3 @@ jobs:
           # Copy the build contents to the destination directory
           Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
           Write-Host "Files copied to $destinationPath"
-
-      # Restart IIS website (optional, if needed for deployment)
-      - name: Restart IIS
-        shell: pwsh
-        run: |
-          iisreset
