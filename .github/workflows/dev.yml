@@ -28,7 +28,7 @@ jobs:
         run: npm run build
 
       - name: Copy files to local destination
-        shell: pwsh
+        shell: powershell
         run: |
           $destinationPath = "C:\inetpub\wwwroot\argaam100\dist"
 
