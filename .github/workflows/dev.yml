@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: build/
+          path: dist/
 
       # Copy files to IIS Server (use the appropriate path for your environment)
       - name: Copy files to IIS Server
