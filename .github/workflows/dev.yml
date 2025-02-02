@@ -21,6 +21,26 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Load environment variables from GitHub Secrets
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> $GITHUB_ENV
+          echo "VITE_APP_LOGIN_URL=${{ secrets.VITE_APP_LOGIN_URL }}" >> $GITHUB_ENV
+          echo "VITE_APP_LOGOUT_URL=${{ secrets.VITE_APP_LOGOUT_URL }}" >> $GITHUB_ENV
+          echo "VITE_APP_REGISTER_URL=${{ secrets.VITE_APP_REGISTER_URL }}" >> $GITHUB_ENV
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_CHARTS_API_URL=${{ secrets.VITE_CHARTS_API_URL }}" >> $GITHUB_ENV
+          echo "VITE_CHARTS_URL=${{ secrets.VITE_CHARTS_URL }}" >> $GITHUB_ENV
+          echo "VITE_DECIMALS=${{ secrets.VITE_DECIMALS }}" >> $GITHUB_ENV
+          echo "VITE_DEFAULT_LANGUAGE=${{ secrets.VITE_DEFAULT_LANGUAGE }}" >> $GITHUB_ENV
+          echo "VITE_DEFAULT_MARKETID=${{ secrets.VITE_DEFAULT_MARKETID }}" >> $GITHUB_ENV
+          echo "VITE_EXPIRATION_IN_MINUTES=${{ secrets.VITE_EXPIRATION_IN_MINUTES }}" >> $GITHUB_ENV
+          echo "VITE_FREEPAGEID=${{ secrets.VITE_FREEPAGEID }}" >> $GITHUB_ENV
+          echo "VITE_FREEPAGESUBID=${{ secrets.VITE_FREEPAGESUBID }}" >> $GITHUB_ENV
+          echo "VITE_PE_FIELDIDS=${{ secrets.VITE_PE_FIELDIDS }}" >> $GITHUB_ENV
+          echo "VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }}" >> $GITHUB_ENV
+          echo "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}" >> $GITHUB_ENV
+          echo "VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: npm install
 
