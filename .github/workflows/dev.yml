@@ -50,13 +50,16 @@ jobs:
         shell: powershell
         run: |
           $destinationPath = "C:\inetpub\wwwroot\argaam100\dist"
+
           # Check if destination directory exists
           if (-Not (Test-Path -Path $destinationPath)) {
             Write-Host "Destination directory does not exist, creating..."
             New-Item -ItemType Directory -Path $destinationPath
           }
-          # Remove all fiels in hte
-          Remove-Item -Path $destinationPath -Recurse -Force
+
+          # Remove all existing files and subdirectories
+          Get-ChildItem -Path $destinationPath -Force | Remove-Item -Recurse -Force
+
           # Copy the build contents to the destination directory
           Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
           Write-Host "Files copied to $destinationPath"
