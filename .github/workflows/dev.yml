@@ -49,7 +49,7 @@ jobs:
       - name: Copy files to local destination
         shell: powershell
         run: |
-          $destinationPath = "C:\inetpub\wwwroot\argaam100\dist"
+          $destinationPath = "C:\Users\mark\Sites\build"
 
           # Check if destination directory exists
           if (-Not (Test-Path -Path $destinationPath)) {
