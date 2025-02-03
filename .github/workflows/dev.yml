@@ -66,6 +66,23 @@ jobs:
           name: build
           path: dist
 
+      - name: Update web.config with action URL
+        shell: powershell
+        run: |
+          $webConfigPath = "dist\web.config"
+          $actionUrl = "/argaam100/dist/"  # Replace with your dynamic action URL
+
+          # Read web.config content
+          $webConfigContent = Get-Content -Path $webConfigPath -Raw
+
+          # Replace placeholder with actual action URL
+          $webConfigContent = $webConfigContent -replace "{{ACTION_URL}}", $actionUrl
+
+          # Write the updated content back to the web.config
+          Set-Content -Path $webConfigPath -Value $webConfigContent
+
+          Write-Host "web.config updated with action URL"
+
       - name: Copy files to deployment directory
         shell: powershell
         run: |
@@ -79,3 +96,14 @@ jobs:
           # Copy files
           Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
           Write-Host "Deployment successful to $destinationPath"
+
+          # Now explicitly copy the custom web.config
+          $webConfigSource = "path_to_your_custom_web.config"
+          $webConfigDestination = "C:\inetpub\wwwroot\argaam100\web.config"
+
+          if (Test-Path -Path $webConfigSource) {
+            Copy-Item -Path $webConfigSource -Destination $webConfigDestination -Force
+            Write-Host "web.config deployed successfully"
+          } else {
+            Write-Host "web.config not found, skipping deployment of web.config"
+          }
