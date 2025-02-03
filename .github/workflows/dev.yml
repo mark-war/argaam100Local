@@ -1,4 +1,5 @@
 name: CI/CD Workflow
+
 on:
   push:
     branches:
@@ -6,16 +7,20 @@ on:
   pull_request:
     branches:
       - dev
+
 jobs:
+  # Build Job
   build:
     runs-on: [self-hosted, windows]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+
       - name: Load environment variables from GitHub Secrets
         shell: powershell
         run: |
@@ -39,13 +44,48 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
       - name: Build the application
         run: npm run build
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build
           path: dist
+
+  # Test Job (Placeholder for tests)
+  # test:
+  #   runs-on: [self-hosted, windows]
+  #   needs: build  # Ensure that tests only run after the build job completes
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: "18"
+
+  #     - name: Install dependencies
+  #       run: npm install
+
+  #     - name: Run tests
+  #       run: npm run test  # Replace with your actual test script command
+
+  # Deploy Job
+  deploy:
+    runs-on: [self-hosted, windows]
+    needs: build # Ensure the build completes before deploying
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+
       - name: Copy files to local destination
         shell: powershell
         run: |
