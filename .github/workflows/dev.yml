@@ -36,6 +36,7 @@ jobs:
           Write-Output "VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }}" | Out-File -FilePath $env:GITHUB_ENV -Append
           Write-Output "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}" | Out-File -FilePath $env:GITHUB_ENV -Append
           Write-Output "VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+
       - name: Install dependencies
         run: npm install
       - name: Build the application
@@ -54,6 +55,12 @@ jobs:
             Write-Host "Destination directory does not exist, creating..."
             New-Item -ItemType Directory -Path $destinationPath
           }
+          # Remove all fiels in hte
+          Remove-Item -Path $destinationPath -Recurse -Force
           # Copy the build contents to the destination directory
           Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
           Write-Host "Files copied to $destinationPath"
+
+          # Restart IIS to apply changes
+          Write-Host "Restarting IIS..."
+          iisreset /restart
