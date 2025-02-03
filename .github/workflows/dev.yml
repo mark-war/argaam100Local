@@ -40,6 +40,7 @@ jobs:
           echo "VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }}" >> $GITHUB_ENV
           echo "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}" >> $GITHUB_ENV
           echo "VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}" >> $GITHUB_ENV
+        shell: powershell
 
       - name: Debug Environment Variables (Length Only)
         run: |
@@ -60,7 +61,7 @@ jobs:
           echo "VITE_REFRESH_ONRELOAD length: ${#VITE_REFRESH_ONRELOAD}"
           echo "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE length: ${#VITE_SCREEENER_TABLE_ITEMS_PER_PAGE}"
           echo "VITE_SUPPORTED_LANGUAGES length: ${#VITE_SUPPORTED_LANGUAGES}"
-        shell: bash
+        shell: powershell
 
       - name: Install dependencies
         run: npm install
