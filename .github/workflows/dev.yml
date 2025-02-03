@@ -22,6 +22,7 @@ jobs:
           node-version: "18"
 
       - name: Load environment variables from GitHub Secrets
+        shell: powershell
         run: |
           Write-Output "VITE_API_URL=${{ secrets.VITE_API_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
           Write-Output "VITE_APP_LOGIN_URL=${{ secrets.VITE_APP_LOGIN_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
@@ -40,10 +41,9 @@ jobs:
           Write-Output "VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }}" | Out-File -FilePath $env:GITHUB_ENV -Append
           Write-Output "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}" | Out-File -FilePath $env:GITHUB_ENV -Append
           Write-Output "VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}" | Out-File -FilePath $env:GITHUB_ENV -Append
-        shell: powershell
 
       - name: Debug Environment Variables
-        shell: pwsh
+        shell: powershell
         run: |
           Write-Output "VITE_SUPPORTED_LANGUAGES: $env:VITE_SUPPORTED_LANGUAGES"
 
