@@ -48,6 +48,16 @@ jobs:
       - name: Build the application
         run: npm run build
 
+      - name: Check if dist directory exists
+        shell: powershell
+        run: |
+          $distPath = "dist"
+          if (-Not (Test-Path -Path $distPath)) {
+            Write-Error "Build directory 'dist' not found. The build might have failed."
+            exit 1
+          }
+          Write-Host "'dist' directory exists."
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -85,6 +95,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build
+          path: dist
+
+      - name: Check downloaded files
+        shell: powershell
+        run: |
+          Write-Host "Checking contents of the 'dist' folder after download..."
+          Get-ChildItem -Path dist
 
       - name: Copy files to local destination
         shell: powershell
@@ -99,6 +116,10 @@ jobs:
 
           # Remove all existing files and subdirectories
           Get-ChildItem -Path $destinationPath -Force | Remove-Item -Recurse -Force
+
+          # Log the contents of the dist folder before copying
+          Write-Host "Contents of 'dist' folder:"
+          Get-ChildItem -Path "dist" -Recurse
 
           # Copy the build contents to the destination directory
           Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
