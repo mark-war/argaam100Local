@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest # Change to self-hosted if needed
+    runs-on: [self-hosted, windows]
 
     steps:
       - name: Checkout code
