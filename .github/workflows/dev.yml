@@ -41,6 +41,27 @@ jobs:
           echo "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}" >> $GITHUB_ENV
           echo "VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}" >> $GITHUB_ENV
 
+      - name: Debug Environment Variables (Length Only)
+        run: |
+          echo "VITE_API_URL length: ${#VITE_API_URL}"
+          echo "VITE_APP_LOGIN_URL length: ${#VITE_APP_LOGIN_URL}"
+          echo "VITE_APP_LOGOUT_URL length: ${#VITE_APP_LOGOUT_URL}"
+          echo "VITE_APP_REGISTER_URL length: ${#VITE_APP_REGISTER_URL}"
+          echo "VITE_BASE_URL length: ${#VITE_BASE_URL}"
+          echo "VITE_CHARTS_API_URL length: ${#VITE_CHARTS_API_URL}"
+          echo "VITE_CHARTS_URL length: ${#VITE_CHARTS_URL}"
+          echo "VITE_DECIMALS length: ${#VITE_DECIMALS}"
+          echo "VITE_DEFAULT_LANGUAGE length: ${#VITE_DEFAULT_LANGUAGE}"
+          echo "VITE_DEFAULT_MARKETID length: ${#VITE_DEFAULT_MARKETID}"
+          echo "VITE_EXPIRATION_IN_MINUTES length: ${#VITE_EXPIRATION_IN_MINUTES}"
+          echo "VITE_FREEPAGEID length: ${#VITE_FREEPAGEID}"
+          echo "VITE_FREEPAGESUBID length: ${#VITE_FREEPAGESUBID}"
+          echo "VITE_PE_FIELDIDS length: ${#VITE_PE_FIELDIDS}"
+          echo "VITE_REFRESH_ONRELOAD length: ${#VITE_REFRESH_ONRELOAD}"
+          echo "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE length: ${#VITE_SCREEENER_TABLE_ITEMS_PER_PAGE}"
+          echo "VITE_SUPPORTED_LANGUAGES length: ${#VITE_SUPPORTED_LANGUAGES}"
+        shell: bash
+
       - name: Install dependencies
         run: npm install
 
