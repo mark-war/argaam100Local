@@ -1,5 +1,4 @@
 name: CI/CD Workflow
-
 on:
   push:
     branches:
@@ -7,72 +6,54 @@ on:
   pull_request:
     branches:
       - dev
-
 jobs:
   build:
     runs-on: [self-hosted, windows]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-
       - name: Load environment variables from GitHub Secrets
         shell: powershell
         run: |
-          @"
-          VITE_API_URL=${{ secrets.VITE_API_URL }}
-          VITE_APP_LOGIN_URL=${{ secrets.VITE_APP_LOGIN_URL }}
-          VITE_APP_LOGOUT_URL=${{ secrets.VITE_APP_LOGOUT_URL }}
-          VITE_APP_REGISTER_URL=${{ secrets.VITE_APP_REGISTER_URL }}
-          VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
-          VITE_CHARTS_API_URL=${{ secrets.VITE_CHARTS_API_URL }}
-          VITE_CHARTS_URL=${{ secrets.VITE_CHARTS_URL }}
-          VITE_DECIMALS=${{ secrets.VITE_DECIMALS }}
-          VITE_DEFAULT_LANGUAGE=${{ secrets.VITE_DEFAULT_LANGUAGE }}
-          VITE_DEFAULT_MARKETID=${{ secrets.VITE_DEFAULT_MARKETID }}
-          VITE_EXPIRATION_IN_MINUTES=${{ secrets.VITE_EXPIRATION_IN_MINUTES }}
-          VITE_FREEPAGEID=${{ secrets.VITE_FREEPAGEID }}
-          VITE_FREEPAGESUBID=${{ secrets.VITE_FREEPAGESUBID }}
-          VITE_PE_FIELDIDS=${{ secrets.VITE_PE_FIELDIDS }}
-          VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }}
-          VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}
-          VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}
-          "@ | Out-File -FilePath .env -Encoding utf8
-
+          Write-Output "VITE_API_URL=${{ secrets.VITE_API_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_APP_LOGIN_URL=${{ secrets.VITE_APP_LOGIN_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_APP_LOGOUT_URL=${{ secrets.VITE_APP_LOGOUT_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_APP_REGISTER_URL=${{ secrets.VITE_APP_REGISTER_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_CHARTS_API_URL=${{ secrets.VITE_CHARTS_API_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_CHARTS_URL=${{ secrets.VITE_CHARTS_URL }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_DECIMALS=${{ secrets.VITE_DECIMALS }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_DEFAULT_LANGUAGE=${{ secrets.VITE_DEFAULT_LANGUAGE }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_DEFAULT_MARKETID=${{ secrets.VITE_DEFAULT_MARKETID }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_EXPIRATION_IN_MINUTES=${{ secrets.VITE_EXPIRATION_IN_MINUTES }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_FREEPAGEID=${{ secrets.VITE_FREEPAGEID }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_FREEPAGESUBID=${{ secrets.VITE_FREEPAGESUBID }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_PE_FIELDIDS=${{ secrets.VITE_PE_FIELDIDS }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+          Write-Output "VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }}" | Out-File -FilePath $env:GITHUB_ENV -Append
       - name: Install dependencies
         run: npm install
-
       - name: Build the application
         run: npm run build
-
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build
           path: dist
-
-  deploy:
-    needs: build
-    runs-on: self-hosted
-
-    steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: dist
-
-      - name: Copy files to deployment directory
+      - name: Copy files to local destination
         shell: powershell
         run: |
           $destinationPath = "C:\inetpub\wwwroot\argaam100\dist"
+          # Check if destination directory exists
           if (-Not (Test-Path -Path $destinationPath)) {
-            New-Item -ItemType Directory -Path $destinationPath -Force
+            Write-Host "Destination directory does not exist, creating..."
+            New-Item -ItemType Directory -Path $destinationPath
           }
+          # Copy the build contents to the destination directory
           Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
-          Write-Host "Deployment successful to $destinationPath"
+          Write-Host "Files copied to $destinationPath"
