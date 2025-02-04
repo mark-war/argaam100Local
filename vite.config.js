@@ -11,7 +11,11 @@ export default defineConfig({
     port: 3000,
   },
   preview: {
-    allowedHosts: [".herokuapp.com"], // Allow all Heroku subdomains
+    allowedHosts: [
+      "localhost",
+      "argaam100-0909d2fe3c15.herokuapp.com", // Use the exact domain you see in the error
+      "herokuapp.com",
+    ],
   },
   build: {
     // Set the output directory for the build files
