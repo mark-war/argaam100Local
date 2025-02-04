@@ -11,7 +11,8 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "serve": "vite preview",
-    "postbuild": "node postbuild.js"
+    "postbuild": "node postbuild.js",
+    "start": "vite preview"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
