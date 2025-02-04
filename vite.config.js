@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     // This will handle SPA routing during development
     historyApiFallback: true,
+    port: 3000,
   },
   build: {
     // Set the output directory for the build files
