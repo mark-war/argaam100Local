@@ -65,7 +65,7 @@ jobs:
             --app ${{ secrets.HEROKU_APP_NAME }}
             heroku config:set VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }} \
             --app ${{ secrets.HEROKU_APP_NAME }}
-          heroku config --app $HEROKU_APP_NAME
+          heroku config --app ${{ secrets.HEROKU_APP_NAME }}
 
       # Build the Docker image locally (using your Dockerfile)
       - name: Build Docker Image
