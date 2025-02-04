@@ -10,6 +10,9 @@ export default defineConfig({
     historyApiFallback: true,
     port: 3000,
   },
+  preview: {
+    allowedHosts: [".herokuapp.com"], // Allow all Heroku subdomains
+  },
   build: {
     // Set the output directory for the build files
     outDir: "dist",
