@@ -26,4 +26,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Run the app using the 'vite preview' command, which is configured in the "serve" script
-CMD ["npm", "start"]
+CMD ["sh", "-c", "vite preview --port $PORT --host"]

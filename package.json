@@ -11,7 +11,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "serve": "vite preview",
-    "start": "vite preview --host 0.0.0.0 --port 3000",
+    "start": "vite preview --host 0.0.0.0 --port $PORT",
     "postbuild": "node postbuild.js",
     "heroku-postbuild": "npm install --production=false && npm run build"
   },
@@ -39,13 +39,13 @@
     "react-toastify": "^10.0.6",
     "redux-persist": "^6.0.0",
     "web-vitals": "^2.1.4",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "@vitejs/plugin-react": "^4.3.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
