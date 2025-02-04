@@ -14,10 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Log in to Heroku Container Registry using Heroku API Key
-      - name: Login to Heroku Container Registry
+      - name: Install Heroku CLI
         run: |
-          echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=_ --password-stdin registry.heroku.com
+          curl https://cli-assets.heroku.com/install.sh | sh
+          echo "Heroku CLI installed"
+
+      - name: Set up Heroku API key
+        run: echo ${{ secrets.HEROKU_API_KEY }} | heroku auth:token
+
+      # Log in to Heroku Container Registry using Heroku API Key
+      - name: Log in to Heroku Container Registry
+        run: heroku container:login
 
       # Build the Docker image locally (using your Dockerfile)
       - name: Build Docker Image
