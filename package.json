@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "serve": "vite preview",
     "postbuild": "node postbuild.js",
-    "start": "vite preview"
+    "start": "vite"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
