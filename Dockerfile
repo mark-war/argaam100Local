@@ -25,8 +25,5 @@ RUN npm run build:development
 # Expose the port the app will run on
 EXPOSE 3000
 
-# Use a simple static server to serve the built app
-RUN npm install -g serve
-
-# Serve the build output
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Run the app using the 'vite preview' command, which is configured in the "serve" script
+CMD ["npm", "run", "serve"]
