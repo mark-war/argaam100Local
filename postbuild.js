@@ -1,7 +1,6 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import fs from "fs-extra";
-// import injectActionUrl from "./injectActionUrl.js";
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
@@ -32,9 +31,6 @@ fs.readdir(sourceDir, (err, files) => {
       fs.copyFileSync(srcPath, `${ar100Dir}/${file}`);
     }
   });
-
-  // inject the action URL
-  // injectActionUrl();
 
   console.log(
     "Build files organized into language-specific folders with subfolders."
