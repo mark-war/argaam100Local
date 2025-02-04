@@ -23,7 +23,7 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          echo $HEROKU_API_KEY | heroku auth:token
+          echo $HEROKU_API_KEY | heroku auth:login --api-key
           heroku container:login
 
         # Set environment variables on Heroku
@@ -48,25 +48,40 @@ jobs:
           VITE_SCREEENER_TABLE_ITEMS_PER_PAGE: ${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}
           VITE_SUPPORTED_LANGUAGES: ${{ secrets.VITE_SUPPORTED_LANGUAGES }}
         run: |
-          heroku config:set \
-              VITE_API_URL="${VITE_API_URL}" \
-              VITE_APP_LOGIN_URL="${VITE_APP_LOGIN_URL}" \
-              VITE_APP_LOGOUT_URL="${VITE_APP_LOGOUT_URL}" \
-              VITE_APP_REGISTER_URL="${VITE_APP_REGISTER_URL}" \
-              VITE_BASE_URL="${VITE_BASE_URL}" \
-              VITE_CHARTS_API_URL="${VITE_CHARTS_API_URL}" \
-              VITE_CHARTS_URL="${VITE_CHARTS_URL}" \
-              VITE_DECIMALS="${VITE_DECIMALS}" \
-              VITE_DEFAULT_LANGUAGE="${VITE_DEFAULT_LANGUAGE}" \
-              VITE_DEFAULT_MARKETID="${VITE_DEFAULT_MARKETID}" \
-              VITE_EXPIRATION_IN_MINUTES="${VITE_EXPIRATION_IN_MINUTES}" \
-              VITE_FREEPAGEID="${VITE_FREEPAGEID}" \
-              VITE_FREEPAGESUBID="${VITE_FREEPAGESUBID}" \
-              VITE_PE_FIELDIDS="${VITE_PE_FIELDIDS}" \
-              VITE_REFRESH_ONRELOAD="${VITE_REFRESH_ONRELOAD}" \
-              VITE_SCREEENER_TABLE_ITEMS_PER_PAGE="${VITE_SCREEENER_TABLE_ITEMS_PER_PAGE}" \
-              VITE_SUPPORTED_LANGUAGES="${VITE_SUPPORTED_LANGUAGES}" \
-              --app "${HEROKU_APP_NAME}"
+          heroku config:set VITE_API_URL=${{ secrets.VITE_API_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+          heroku config:set VITE_APP_LOGIN_URL=${{ secrets.VITE_APP_LOGIN_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_APP_LOGOUT_URL=${{ secrets.VITE_APP_LOGOUT_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_APP_REGISTER_URL=${{ secrets.VITE_APP_REGISTER_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_CHARTS_API_URL=${{ secrets.VITE_CHARTS_API_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_CHARTS_URL=${{ secrets.VITE_CHARTS_URL }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_DECIMALS=${{ secrets.VITE_DECIMALS }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_DEFAULT_LANGUAGE=${{ secrets.VITE_DEFAULT_LANGUAGE }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_DEFAULT_MARKETID=${{ secrets.VITE_DEFAULT_MARKETID }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_EXPIRATION_IN_MINUTES=${{ secrets.VITE_EXPIRATION_IN_MINUTES }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_FREEPAGEID=${{ secrets.VITE_FREEPAGEID }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_FREEPAGESUBID=${{ secrets.VITE_FREEPAGESUBID }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_PE_FIELDIDS=${{ secrets.VITE_PE_FIELDIDS }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_REFRESH_ONRELOAD=${{ secrets.VITE_REFRESH_ONRELOAD }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
+            heroku config:set VITE_SUPPORTED_LANGUAGES=${{ secrets.VITE_SUPPORTED_LANGUAGES }} \
+            --app ${{ secrets.HEROKU_APP_NAME }}
           heroku config --app $HEROKU_APP_NAME
 
       # Build the Docker image locally (using your Dockerfile)
