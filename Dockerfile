@@ -20,7 +20,7 @@ RUN npm install
 COPY --chown=node:node . .
 
 # Build the production files
-RUN npm run build:development
+RUN npm run build
 
 # Expose the port the app will run on
 EXPOSE 3000
