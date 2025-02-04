@@ -19,15 +19,11 @@ jobs:
           curl https://cli-assets.heroku.com/install.sh | sh
           echo "Heroku CLI installed"
 
-      - name: Login to Heroku using API Key
-        run: |
-          echo "machine api.heroku.com" > ~/.netrc
-          echo "  login ${HEROKU_API_KEY}" >> ~/.netrc
-          echo "  password" >> ~/.netrc
-
-      # Log in to Heroku Container Registry using Heroku API Key
       - name: Log in to Heroku Container Registry
-        run: heroku container:login
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          echo $HEROKU_API_KEY | heroku auth:token
 
       # Build the Docker image locally (using your Dockerfile)
       - name: Build Docker Image
