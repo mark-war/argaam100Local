@@ -19,8 +19,14 @@ RUN npm install
 # Copy application source code
 COPY --chown=node:node . .
 
+# Build the production files
+RUN npm run build:development
+
 # Expose the port the app will run on
 EXPOSE 3000
 
-# Command to run the app inside the container
-CMD ["npm", "run", "dev"]
+# Use a simple static server to serve the built app
+RUN npm install -g serve
+
+# Serve the build output
+CMD ["serve", "-s", "dist", "-l", "3000"]
