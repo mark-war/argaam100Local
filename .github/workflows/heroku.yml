@@ -26,15 +26,7 @@ jobs:
           echo $HEROKU_API_KEY | heroku auth:token
           heroku container:login
 
-      # Build the Docker image locally (using your Dockerfile)
-      - name: Build Docker Image
-        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
-
-      # Push the Docker image to Heroku Container Registry
-      - name: Push Docker Image
-        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-
-      # Set environment variables on Heroku
+        # Set environment variables on Heroku
       - name: Set Environment Variables on Heroku
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
@@ -57,24 +49,32 @@ jobs:
           VITE_SUPPORTED_LANGUAGES: ${{ secrets.VITE_SUPPORTED_LANGUAGES }}
         run: |
           heroku config:set \
-            VITE_API_URL=$VITE_API_URL \
-            VITE_APP_LOGIN_URL=$VITE_APP_LOGIN_URL \
-            VITE_APP_LOGOUT_URL=$VITE_APP_LOGOUT_URL \
-            VITE_APP_REGISTER_URL=$VITE_APP_REGISTER_URL \
-            VITE_BASE_URL=$VITE_BASE_URL \
-            VITE_CHARTS_API_URL=$VITE_CHARTS_API_URL \
-            VITE_CHARTS_URL=$VITE_CHARTS_URL \
-            VITE_DECIMALS=$VITE_DECIMALS \
-            VITE_DEFAULT_LANGUAGE=$VITE_DEFAULT_LANGUAGE \
-            VITE_DEFAULT_MARKETID=$VITE_DEFAULT_MARKETID \
-            VITE_EXPIRATION_IN_MINUTES=$VITE_EXPIRATION_IN_MINUTES \
-            VITE_FREEPAGEID=$VITE_FREEPAGEID \
-            VITE_FREEPAGESUBID=$VITE_FREEPAGESUBID \
-            VITE_PE_FIELDIDS=$VITE_PE_FIELDIDS \
-            VITE_REFRESH_ONRELOAD=$VITE_REFRESH_ONRELOAD \
-            VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=$VITE_SCREEENER_TABLE_ITEMS_PER_PAGE \
-            VITE_SUPPORTED_LANGUAGES=$VITE_SUPPORTED_LANGUAGES \
-            --app $HEROKU_APP_NAME
+              VITE_API_URL=$VITE_API_URL \
+              VITE_APP_LOGIN_URL=$VITE_APP_LOGIN_URL \
+              VITE_APP_LOGOUT_URL=$VITE_APP_LOGOUT_URL \
+              VITE_APP_REGISTER_URL=$VITE_APP_REGISTER_URL \
+              VITE_BASE_URL=$VITE_BASE_URL \
+              VITE_CHARTS_API_URL=$VITE_CHARTS_API_URL \
+              VITE_CHARTS_URL=$VITE_CHARTS_URL \
+              VITE_DECIMALS=$VITE_DECIMALS \
+              VITE_DEFAULT_LANGUAGE=$VITE_DEFAULT_LANGUAGE \
+              VITE_DEFAULT_MARKETID=$VITE_DEFAULT_MARKETID \
+              VITE_EXPIRATION_IN_MINUTES=$VITE_EXPIRATION_IN_MINUTES \
+              VITE_FREEPAGEID=$VITE_FREEPAGEID \
+              VITE_FREEPAGESUBID=$VITE_FREEPAGESUBID \
+              VITE_PE_FIELDIDS=$VITE_PE_FIELDIDS \
+              VITE_REFRESH_ONRELOAD=$VITE_REFRESH_ONRELOAD \
+              VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=$VITE_SCREEENER_TABLE_ITEMS_PER_PAGE \
+              VITE_SUPPORTED_LANGUAGES=$VITE_SUPPORTED_LANGUAGES \
+              --app $HEROKU_APP_NAME
+
+      # Build the Docker image locally (using your Dockerfile)
+      - name: Build Docker Image
+        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+
+      # Push the Docker image to Heroku Container Registry
+      - name: Push Docker Image
+        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
       # Release the Docker container on Heroku
       - name: Release the Image on Heroku
