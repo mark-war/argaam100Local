@@ -34,6 +34,48 @@ jobs:
       - name: Push Docker Image
         run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
+      # Set environment variables on Heroku
+      - name: Set Environment Variables on Heroku
+        env:
+          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_APP_LOGIN_URL: ${{ secrets.VITE_APP_LOGIN_URL }}
+          VITE_APP_LOGOUT_URL: ${{ secrets.VITE_APP_LOGOUT_URL }}
+          VITE_APP_REGISTER_URL: ${{ secrets.VITE_APP_REGISTER_URL }}
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+          VITE_CHARTS_API_URL: ${{ secrets.VITE_CHARTS_API_URL }}
+          VITE_CHARTS_URL: ${{ secrets.VITE_CHARTS_URL }}
+          VITE_DECIMALS: ${{ secrets.VITE_DECIMALS }}
+          VITE_DEFAULT_LANGUAGE: ${{ secrets.VITE_DEFAULT_LANGUAGE }}
+          VITE_DEFAULT_MARKETID: ${{ secrets.VITE_DEFAULT_MARKETID }}
+          VITE_EXPIRATION_IN_MINUTES: ${{ secrets.VITE_EXPIRATION_IN_MINUTES }}
+          VITE_FREEPAGEID: ${{ secrets.VITE_FREEPAGEID }}
+          VITE_FREEPAGESUBID: ${{ secrets.VITE_FREEPAGESUBID }}
+          VITE_PE_FIELDIDS: ${{ secrets.VITE_PE_FIELDIDS }}
+          VITE_REFRESH_ONRELOAD: ${{ secrets.VITE_REFRESH_ONRELOAD }}
+          VITE_SCREEENER_TABLE_ITEMS_PER_PAGE: ${{ secrets.VITE_SCREEENER_TABLE_ITEMS_PER_PAGE }}
+          VITE_SUPPORTED_LANGUAGES: ${{ secrets.VITE_SUPPORTED_LANGUAGES }}
+        run: |
+          heroku config:set \
+            VITE_API_URL=$VITE_API_URL \
+            VITE_APP_LOGIN_URL=$VITE_APP_LOGIN_URL \
+            VITE_APP_LOGOUT_URL=$VITE_APP_LOGOUT_URL \
+            VITE_APP_REGISTER_URL=$VITE_APP_REGISTER_URL \
+            VITE_BASE_URL=$VITE_BASE_URL \
+            VITE_CHARTS_API_URL=$VITE_CHARTS_API_URL \
+            VITE_CHARTS_URL=$VITE_CHARTS_URL \
+            VITE_DECIMALS=$VITE_DECIMALS \
+            VITE_DEFAULT_LANGUAGE=$VITE_DEFAULT_LANGUAGE \
+            VITE_DEFAULT_MARKETID=$VITE_DEFAULT_MARKETID \
+            VITE_EXPIRATION_IN_MINUTES=$VITE_EXPIRATION_IN_MINUTES \
+            VITE_FREEPAGEID=$VITE_FREEPAGEID \
+            VITE_FREEPAGESUBID=$VITE_FREEPAGESUBID \
+            VITE_PE_FIELDIDS=$VITE_PE_FIELDIDS \
+            VITE_REFRESH_ONRELOAD=$VITE_REFRESH_ONRELOAD \
+            VITE_SCREEENER_TABLE_ITEMS_PER_PAGE=$VITE_SCREEENER_TABLE_ITEMS_PER_PAGE \
+            VITE_SUPPORTED_LANGUAGES=$VITE_SUPPORTED_LANGUAGES \
+            --app $HEROKU_APP_NAME
+
       # Release the Docker container on Heroku
       - name: Release the Image on Heroku
         run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
