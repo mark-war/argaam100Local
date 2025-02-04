@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "vite preview --host 0.0.0.0 --port 3000",
     "dev": "vite",
     "build": "vite build",
     "build:development": "vite build --mode development",
@@ -12,7 +13,7 @@
     "preview": "vite preview",
     "serve": "vite preview",
     "postbuild": "node postbuild.js",
-    "start": "vite preview --host 0.0.0.0 --port 3000"
+    "heroku-postbuild": "npm install && npm run build"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
