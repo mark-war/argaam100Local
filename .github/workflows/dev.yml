@@ -74,6 +74,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: static-release-${{ github.run_number }}
+          path: ${{ github.workspace }}/static-release-${{ github.run_number }}
 
       - name: Backup the current build folder
         shell: powershell
@@ -93,10 +94,11 @@ jobs:
         shell: powershell
         run: |
           $buildPath = "C:\Users\mark\Sites\build"
+          $artifactPath = "$env:${{ github.workspace }}/static-release-${{ github.run_number }}"
           # Remove the existing build contents
           Remove-Item -Path "$buildPath\*" -Recurse -Force
           # Copy the new build content from the artifact
-          Copy-Item -Path "static-release-${{ github.run_number }}\*" -Destination "$buildPath" -Recurse
+          Copy-Item -Path $artifactPath\* -Destination "$buildPath" -Recurse
 
       - name: Create Static Release
         uses: ncipollo/release-action@v1
