@@ -158,4 +158,4 @@ jobs:
       - name: Deploy Docker container
         shell: powershell
         run: |
-          docker run -d -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:${{ github.sha }}
+          docker run -d -p 3000:3000 ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:${{ github.sha }}
