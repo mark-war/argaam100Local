@@ -3,13 +3,13 @@ name: CI/CD Workflow
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
     branches:
-      - main
+      - dev
 
 jobs:
-  # Build Job
+  # Build Job (for Static Release)
   build:
     runs-on: [self-hosted, windows]
     steps:
@@ -51,42 +51,21 @@ jobs:
       - name: Check if dist directory exists
         shell: powershell
         run: |
-          $distPath = "dist"
-          if (-Not (Test-Path -Path $distPath)) {
+          if (-Not (Test-Path -Path "dist")) {
             Write-Error "Build directory 'dist' not found. The build might have failed."
             exit 1
           }
-          Write-Host "'dist' directory exists."
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: static-release-${{ github.run_number }}
           path: dist
 
-  # Test Job (Placeholder for tests)
-  # test:
-  #   runs-on: [self-hosted, windows]
-  #   needs: build  # Ensure that tests only run after the build job completes
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "18"
-
-  #     - name: Install dependencies
-  #       run: npm install
-
-  #     - name: Run tests
-  #       run: npm run test  # Replace with your actual test script command
-
-  # Deploy Job
-  deploy:
+  # Docker Build & Push Job
+  docker:
     runs-on: [self-hosted, windows]
-    needs: build # Ensure the build completes before deploying
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -94,37 +73,75 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: build
+          name: static-release-${{ github.run_number }}
           path: dist
 
-      - name: Check downloaded files
-        shell: powershell
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Build Docker Image
+        run: docker build -t myapp:${{ github.run_number }} .
+
+      - name: Tag Docker Image
         run: |
-          Write-Host "Checking contents of the 'dist' folder after download..."
-          Get-ChildItem -Path dist
+          docker tag myapp:${{ github.run_number }} mydockerhubuser/myapp:${{ github.run_number }}
+          docker tag myapp:${{ github.run_number }} mydockerhubuser/myapp:latest
 
-      - name: Copy files to local destination
-        shell: powershell
+      - name: Push Docker Image to Docker Hub
         run: |
-          $destinationPath = "C:\Users\mark\Sites\build"
+          docker push mydockerhubuser/myapp:${{ github.run_number }}
+          docker push mydockerhubuser/myapp:latest
 
-          # Check if destination directory exists
-          if (-Not (Test-Path -Path $destinationPath)) {
-            Write-Host "Destination directory does not exist, creating..."
-            New-Item -ItemType Directory -Path $destinationPath
-          }
+  # Static Release Deployment Job
+  deploy_static:
+    runs-on: [self-hosted, windows]
+    needs: build
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: static-release-${{ github.run_number }}
+          path: C:\Users\mark\Sites\build-${{ github.run_number }}
 
-          # Remove all existing files and subdirectories
-          Get-ChildItem -Path $destinationPath -Force | Remove-Item -Recurse -Force
+      - name: Restart IIS to apply changes
+        run: iisreset /restart
 
-          # Log the contents of the dist folder before copying
-          Write-Host "Contents of 'dist' folder:"
-          Get-ChildItem -Path "dist" -Recurse
+      - name: Create Static Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: static-release-${{ github.run_number }}
+          name: "Static Release ${{ github.run_number }}"
+          body: "Static files for release ${{ github.run_number }}."
+          draft: false
+          prerelease: false
 
-          # Copy the build contents to the destination directory
-          Copy-Item -Path "dist\*" -Destination $destinationPath -Recurse -Force
-          Write-Host "Files copied to $destinationPath"
+  # Docker Release Deployment Job
+  deploy_docker:
+    runs-on: [self-hosted, windows]
+    needs: docker
+    steps:
+      - name: Pull latest Docker Image
+        run: docker pull mydockerhubuser/myapp:${{ github.run_number }}
 
-          # Restart IIS to apply changes
-          Write-Host "Restarting IIS..."
-          iisreset /restart
+      - name: Stop and remove old container
+        run: |
+          docker stop myapp || true
+          docker rm myapp || true
+
+      - name: Run the container temporarily to extract files
+        run: |
+          docker create --name temp-container mydockerhubuser/myapp:${{ github.run_number }}
+          docker cp temp-container:/usr/share/nginx/html C:\Users\mark\Sites\docker-build-${{ github.run_number }}
+          docker rm temp-container
+
+      - name: Restart IIS to apply changes
+        run: iisreset /restart
+
+      - name: Create Docker Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: docker-release-${{ github.run_number }}
+          name: "Docker Release ${{ github.run_number }}"
+          body: "Docker build for release ${{ github.run_number }}."
+          draft: false
+          prerelease: false
