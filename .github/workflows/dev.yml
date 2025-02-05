@@ -139,10 +139,14 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 
+      - name: Verify Docker Login
+        run: docker info
+        shell: powershell
+
       - name: Push Docker image
         shell: powershell
         run: |
-          docker push my-app:$env:GITHUB_SHA
+          docker push my-app:${{ github.sha }}
 
       - name: Restart IIS to apply changes
         shell: powershell
@@ -155,11 +159,11 @@ jobs:
     needs: docker_push
     steps:
       - name: Pull Docker image
-        shell: bash
+        shell: powershell
         run: |
-          docker pull my-app:$GITHUB_SHA
+          docker pull my-app:${{ github.sha }}
 
       - name: Deploy Docker container
-        shell: bash
+        shell: powershell
         run: |
-          docker run -d -p 80:80 my-app:$GITHUB_SHA
+          docker run -d -p 80:80 my-app:${{ github.sha }}
