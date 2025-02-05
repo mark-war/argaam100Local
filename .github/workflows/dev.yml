@@ -59,76 +59,56 @@ jobs:
             exit 1
           }
 
-      # Step to Backup Current build folder
-      - name: Backup current build folder (zip)
-        shell: powershell
-        run: |
-          $timestamp = (Get-Date -Format "yyyyMMdd_HHmmss")
-          $buildPath = "./build/"
-
-          # Check if the build directory exists
-          if (Test-Path -Path $buildPath) {
-              Compress-Archive -Path "$buildPath*" -DestinationPath "./build-backup-${timestamp}.zip"
-          } else {
-              Write-Error "Build directory '$buildPath' not found. Skipping compression."
-          }
-
-      # Upload the backup artifact
-      - name: Upload Build Backup Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-backup-${{ github.run_number }}
-          path: "./build-backup-${timestamp}.zip"
-
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: static-release-${{ github.run_number }}
           path: dist
 
-  # Docker Build & Push Job
-  docker:
+  # Static Deployment Job
+  static_deploy:
     runs-on: [self-hosted, windows]
     needs: build
     steps:
+      - name: Backup the current build folder
+        shell: powershell
+        run: |
+          $timestamp = (Get-Date -Format "yyyyMMdd_HHmmss")
+          $buildPath = "C:\Users\mark\Sites\build"
+          $backupPath = "C:\Users\mark\Sites\build-backup-${timestamp}.zip"
+          # Check if the build folder exists
+          if (Test-Path -Path $buildPath) {
+              Compress-Archive -Path "$buildPath\*" -DestinationPath $backupPath
+              Write-Output "Backup of the current build folder created at $backupPath."
+          } else {
+              Write-Error "Build folder '$buildPath' not found. Skipping backup."
+          }
+
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: static-release-${{ github.run_number }}
-          path: dist
+      - name: Install dependencies
+        run: npm install
 
-      - name: Log in to Docker Hub
-        run: docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin "${{ secrets.DOCKER_HUB_PASSWORD }}"
+      - name: Build the application
+        run: npm run build:production
 
-      - name: Build Docker Image
-        run: docker build -t myapp:${{ github.run_number }} .
-
-      - name: Tag Docker Image
+      - name: Check if dist directory exists
+        shell: powershell
         run: |
-          docker tag myapp:${{ github.run_number }} mydockerhubuser/myapp:${{ github.run_number }}
-          docker tag myapp:${{ github.run_number }} mydockerhubuser/myapp:latest
+          if (-Not (Test-Path -Path "dist")) {
+            Write-Error "Build directory 'dist' not found. The build might have failed."
+            exit 1
+          }
 
-      - name: Push Docker Image to Docker Hub
+      - name: Overwrite the existing build folder with new content
+        shell: powershell
         run: |
-          docker push mydockerhubuser/myapp:${{ github.run_number }}
-          docker push mydockerhubuser/myapp:latest
-
-  # Static Release Deployment Job
-  deploy_static:
-    runs-on: [self-hosted, windows]
-    needs: build
-    steps:
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: static-release-${{ github.run_number }}
-          path: C:\Users\mark\Sites\build
-
-      - name: Restart IIS to apply changes
-        run: iisreset /restart
+          $buildPath = "C:\Users\mark\Sites\build"
+          # Remove the existing build contents
+          Remove-Item -Path "$buildPath\*" -Recurse -Force
+          # Copy the new build content from the dist folder
+          Copy-Item -Path "dist\*" -Destination "$buildPath" -Recurse
 
       - name: Create Static Release
         uses: ncipollo/release-action@v1
@@ -139,33 +119,58 @@ jobs:
           draft: false
           prerelease: false
 
-  # Docker Release Deployment Job
-  deploy_docker:
+      - name: Zip the New Build Folder as Backup
+        shell: powershell
+        run: |
+          $timestamp = (Get-Date -Format "yyyyMMdd_HHmmss")
+          $buildPath = "C:\Users\mark\Sites\build"
+          # Check if the build folder exists
+          if (Test-Path -Path $buildPath) {
+              Compress-Archive -Path "$buildPath\*" -DestinationPath "C:\Users\mark\Sites\build-backup-${timestamp}.zip"
+              Write-Output "Backup of the new build folder created at C:\Users\mark\Sites\build-backup-${timestamp}.zip"
+          } else {
+              Write-Error "Build folder '$buildPath' not found. Skipping backup."
+          }
+
+  # Docker Build Job
+  docker_build:
     runs-on: [self-hosted, windows]
-    needs: docker
+    needs: build
     steps:
-      - name: Pull latest Docker Image
-        run: docker pull mydockerhubuser/myapp:${{ github.run_number }}
-
-      - name: Stop and remove old container
+      - name: Build Docker image
+        shell: bash
         run: |
-          docker stop myapp || true
-          docker rm myapp || true
+          docker build -t my-app:$GITHUB_SHA .
 
-      - name: Run the container temporarily to extract files
+  # Docker Push Job
+  docker_push:
+    runs-on: [self-hosted, windows]
+    needs: docker_build
+    steps:
+      - name: Docker Login
+        shell: bash
         run: |
-          docker create --name temp-container mydockerhubuser/myapp:${{ github.run_number }}
-          docker cp temp-container:/usr/share/nginx/html C:\Users\mark\Sites\docker-build-${{ github.run_number }}
-          docker rm temp-container
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image
+        shell: bash
+        run: |
+          docker push my-app:$GITHUB_SHA
 
       - name: Restart IIS to apply changes
         run: iisreset /restart
 
-      - name: Create Docker Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: docker-release-${{ github.run_number }}
-          name: "Docker Release ${{ github.run_number }}"
-          body: "Docker build for release ${{ github.run_number }}."
-          draft: false
-          prerelease: false
+  # Docker Deploy Job
+  docker_deploy:
+    runs-on: [self-hosted, windows]
+    needs: docker_push
+    steps:
+      - name: Pull Docker image
+        shell: bash
+        run: |
+          docker pull my-app:$GITHUB_SHA
+
+      - name: Deploy Docker container
+        shell: bash
+        run: |
+          docker run -d -p 80:80 my-app:$GITHUB_SHA
