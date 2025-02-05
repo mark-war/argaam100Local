@@ -117,7 +117,7 @@ jobs:
       - name: Build Docker image
         shell: powershell
         run: |
-          docker build -t my-app:$env:GITHUB_SHA .
+          docker build -t my-app:${{ github.sha }} .
 
   # Docker Push Job
   docker_push:
@@ -128,6 +128,11 @@ jobs:
         shell: powershell
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: List Docker images
+        shell: powershell
+        run: |
+          docker images
 
       - name: Push Docker image
         shell: powershell
