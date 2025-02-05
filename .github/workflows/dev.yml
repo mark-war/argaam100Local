@@ -64,7 +64,14 @@ jobs:
         shell: powershell
         run: |
           $timestamp = (Get-Date -Format "yyyyMMdd_HHmmss")
-          Compress-Archive -Path "./build/*" -DestinationPath "./build-backup-${timestamp}.zip"
+          $buildPath = "./build/"
+
+          # Check if the build directory exists
+          if (Test-Path -Path $buildPath) {
+              Compress-Archive -Path "$buildPath*" -DestinationPath "./build-backup-${timestamp}.zip"
+          } else {
+              Write-Error "Build directory '$buildPath' not found. Skipping compression."
+          }
 
       # Upload the backup artifact
       - name: Upload Build Backup Artifact
