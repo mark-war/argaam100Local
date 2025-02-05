@@ -75,7 +75,7 @@ jobs:
         run: |
           $timestamp = (Get-Date -Format "yyyyMMdd_HHmmss")
           $buildPath = "C:\Users\mark\Sites\build"
-          $backupPath = "C:\Users\mark\Sites\build-backup-${timestamp}.zip"
+          $backupPath = "C:\Users\mark\Sites\build-backup-${timestamp}-${{ github.run_number }}.zip"
           # Check if the build folder exists
           if (Test-Path -Path $buildPath) {
               Compress-Archive -Path "$buildPath\*" -DestinationPath $backupPath
@@ -119,28 +119,15 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Zip the New Build Folder as Backup
-        shell: powershell
-        run: |
-          $timestamp = (Get-Date -Format "yyyyMMdd_HHmmss")
-          $buildPath = "C:\Users\mark\Sites\build"
-          # Check if the build folder exists
-          if (Test-Path -Path $buildPath) {
-              Compress-Archive -Path "$buildPath\*" -DestinationPath "C:\Users\mark\Sites\build-backup-${timestamp}.zip"
-              Write-Output "Backup of the new build folder created at C:\Users\mark\Sites\build-backup-${timestamp}.zip"
-          } else {
-              Write-Error "Build folder '$buildPath' not found. Skipping backup."
-          }
-
   # Docker Build Job
   docker_build:
     runs-on: [self-hosted, windows]
     needs: build
     steps:
       - name: Build Docker image
-        shell: bash
+        shell: powershell
         run: |
-          docker build -t my-app:$GITHUB_SHA .
+          docker build -t my-app:$env:GITHUB_SHA .
 
   # Docker Push Job
   docker_push:
@@ -148,17 +135,19 @@ jobs:
     needs: docker_build
     steps:
       - name: Docker Login
-        shell: bash
+        shell: powershell
         run: |
-          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Push Docker image
-        shell: bash
+        shell: powershell
         run: |
-          docker push my-app:$GITHUB_SHA
+          docker push my-app:$env:GITHUB_SHA
 
       - name: Restart IIS to apply changes
-        run: iisreset /restart
+        shell: powershell
+        run: |
+          iisreset /restart
 
   # Docker Deploy Job
   docker_deploy:
